@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{15a7ffaa-a53f-409d-b330-9acc6dda8271}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{d5c2a3ad-02ba-4586-8d56-27d2682342b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core">
+      <UniqueIdentifier>{1d5075ad-20f1-4d42-a37d-f9c6cd0763a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\PlatformSpecific">
+      <UniqueIdentifier>{fd35f04f-090c-4842-914e-3ae7ef510b94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\PlatformSpecific\WindowsPhone">
+      <UniqueIdentifier>{caf05c39-bf26-4b46-8a85-bf643735b61d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Core\PrecompiledHeader.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\main.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.cpp">
+      <Filter>Source\PlatformSpecific\WindowsPhone</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Core\PrecompiledHeader.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.h">
+      <Filter>Source\PlatformSpecific\WindowsPhone</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\ApplicationIcon.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\TileMedium.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\TileSmall.png">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="WMAppManifest.xml" />
+  </ItemGroup>
+</Project>
