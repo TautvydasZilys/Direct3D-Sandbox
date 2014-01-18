@@ -22,7 +22,7 @@ struct Point2D
 #define WIDE1(x) WIDE2(x)
 #define __WFILE__ WIDE1(__FILE__)
 
-#if !DEBUG
+#if !_DEBUG && !DEBUG
 #define Assert(x)	(void)(x)
 #elif WINDOWS_PHONE
 #define Assert(x)   do \
