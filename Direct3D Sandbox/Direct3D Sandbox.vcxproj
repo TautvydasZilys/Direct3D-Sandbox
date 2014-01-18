@@ -259,6 +259,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Constants.cpp" />
+    <ClCompile Include="Source\Core\Input.cpp" />
     <ClCompile Include="Source\Core\main.cpp" />
     <ClCompile Include="Source\Core\PrecompiledHeader.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
@@ -271,6 +272,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Constants.h" />
+    <ClInclude Include="Source\Core\Input.h" />
     <ClInclude Include="Source\Core\PrecompiledHeader.h" />
     <ClInclude Include="Source\Core\System.h" />
     <ClInclude Include="Source\Core\Tools.h" />

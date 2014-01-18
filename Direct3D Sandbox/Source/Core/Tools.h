@@ -7,10 +7,16 @@ private:
 	~Tools();
 
 public:
-	
 
 };
 
+struct Point2D
+{
+	float x, y;
+
+	Point2D() {}
+	Point2D(float x, float y) : x(x), y(y) {}
+};
 
 #define WIDE2(x) L##x
 #define WIDE1(x) WIDE2(x)
@@ -25,7 +31,7 @@ public:
 						{ \
 							OutputDebugStringW(L"Fatal Error!\r\n"); \
 							OutputDebugStringW((__WFILE__ + wstring(L": ") + to_wstring(__LINE__) + L"\r\n").c_str()); \
-							assert(false); \
+							__debugbreak(); \
 						} \
 					} \
 					while (false)

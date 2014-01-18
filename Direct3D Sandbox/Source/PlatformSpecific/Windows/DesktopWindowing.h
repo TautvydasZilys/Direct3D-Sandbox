@@ -15,16 +15,19 @@ private:
 	void CreateDesktopWindow(int width, int height, bool fullscreen);
 	void DestroyDesktopWindow();
 
+	void RegisterForRawInput();
+	void HandleRawInput(WPARAM wParam, LPARAM lParam) const;
+
 public:
 	DesktopWindowing(int width = 0, int height = 0, bool fullscreen = false);
 	~DesktopWindowing();
 	
-	void DispatchMessages();
-	LRESULT HandleMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);	
+	void DispatchMessages() const;
+	LRESULT HandleMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) const;
 
-	int GetWidth() { return m_Width; }
-	int GetHeight() { return m_Height; }
-	HWND GetWindowHandle() { return m_WindowHandle; }
+	int GetWidth() const { return m_Width; }
+	int GetHeight() const { return m_Height; }
+	HWND GetWindowHandle() const { return m_WindowHandle; }
 };
 
 #endif

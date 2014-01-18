@@ -1,7 +1,9 @@
 #include "PrecompiledHeader.h"
-#include "DesktopWindowing.h"
-#include "Tools.h"
+
 #include "Constants.h"
+#include "DesktopWindowing.h"
+#include "Input.h"
+#include "Tools.h"
 
 #if !WINDOWS_PHONE
 
@@ -20,6 +22,7 @@ DesktopWindowing::DesktopWindowing(int width, int height, bool fullscreen) :
 	s_WindowingInstance = this;
 
 	CreateDesktopWindow(width, height, fullscreen);
+	RegisterForRawInput();
 }
 
 DesktopWindowing::~DesktopWindowing()
@@ -99,7 +102,25 @@ void DesktopWindowing::DestroyDesktopWindow()
 	UnregisterClass(Constants::ApplicationName.c_str(), m_ProgramInstance);
 }
 
-void DesktopWindowing::DispatchMessages()
+void DesktopWindowing::RegisterForRawInput()
+{
+	RAWINPUTDEVICE Rid[2];
+        
+	Rid[0].usUsagePage = 0x01;
+	Rid[0].usUsage = 0x02;					// Mouse
+	Rid[0].dwFlags = RIDEV_CAPTUREMOUSE;
+	Rid[0].hwndTarget = m_WindowHandle;
+
+	Rid[1].usUsagePage = 0x01;
+	Rid[1].usUsage = 0x06;					// Keyboard
+	Rid[1].dwFlags = 0;
+	Rid[1].hwndTarget = m_WindowHandle;
+
+	auto result = RegisterRawInputDevices(Rid, 2, sizeof(Rid[0]));
+	Assert(result != 0);
+}
+
+void DesktopWindowing::DispatchMessages() const
 {
 	MSG msg;
 	ZeroMemory(&msg, sizeof(MSG));
@@ -111,17 +132,16 @@ void DesktopWindowing::DispatchMessages()
 	}
 }
 
-LRESULT DesktopWindowing::HandleMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT DesktopWindowing::HandleMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) const
 {	
 	switch (uMsg)
 	{
-		case WM_CLOSE:
-		case WM_DESTROY:
 		case WM_QUIT:
-			exit(0);
+			Input::GetInstance().Quit();
 			return 0;
-
+			
 		case WM_INPUT:
+			HandleRawInput(lParam, wParam);
 			return 0;
 
 		default:
@@ -129,4 +149,37 @@ LRESULT DesktopWindowing::HandleMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 	}
 }
 
-#endif
+void DesktopWindowing::HandleRawInput(WPARAM wParam, LPARAM lParam) const
+{
+	unsigned int dataSize;
+	auto& input = Input::GetInstance();
+
+	GetRawInputData((HRAWINPUT)lParam, RID_INPUT, NULL, &dataSize, sizeof(RAWINPUTHEADER));
+	auto buffer = unique_ptr<unsigned char[]>(new unsigned char[dataSize]);
+	GetRawInputData((HRAWINPUT)lParam, RID_INPUT, buffer.get(), &dataSize, sizeof(RAWINPUTHEADER));
+
+	RAWINPUT* raw = (RAWINPUT*)buffer.get();
+
+	if (raw->header.dwType == RIM_TYPEKEYBOARD) 
+	{
+		if (raw->data.keyboard.Message == WM_KEYDOWN && wParam == 0)
+		{
+			input.KeyDown(raw->data.keyboard.VKey);
+		}
+		else if (raw->data.keyboard.Message == WM_KEYUP)
+		{
+			input.KeyUp(raw->data.keyboard.VKey);
+		}
+	}
+	else if (raw->header.dwType == RIM_TYPEMOUSE && wParam == 0) 
+	{
+		if (raw->data.mouse.usButtonFlags == RI_MOUSE_WHEEL)
+		{
+			input.SetMouseWheelDisplacement(static_cast<long>(raw->data.mouse.usButtonData));
+		}
+
+		input.SetMouseDisplacement(raw->data.mouse.lLastX, raw->data.mouse.lLastY);
+	}
+}
+
+#endif	// !WINDOWS_PHONE

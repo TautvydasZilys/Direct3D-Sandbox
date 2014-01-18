@@ -1,6 +1,8 @@
 #pragma once
 #if WINDOWS_PHONE
 
+#include "Tools.h"
+
 class PhoneWindowing
 {
 private:
@@ -11,11 +13,11 @@ private:
 public:
 	PhoneWindowing();
 	
-	void DispatchMessages();
+	void DispatchMessages() const;
 
-	int GetWidth() { return m_Width; }
-	int GetHeight() { return m_Height; }
-	HWND GetWindowHandle() { return m_WindowHandle; }
+	int GetWidth() const { return m_Width; }
+	int GetHeight() const { return m_Height; }
+	HWND GetWindowHandle() const { return m_WindowHandle; }
 };
 
 ref class PhoneFrameworkView sealed : public Windows::ApplicationModel::Core::IFrameworkView
@@ -38,6 +40,11 @@ protected:
 	void OnPointerPressed(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::PointerEventArgs^ args);
 	void OnPointerMoved(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::PointerEventArgs^ args);
 	void OnPointerReleased(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::PointerEventArgs^ args);
+
+private:
+	int numberOfFingersDown;
+
+	map<int, Point2D> cursorPosition;
 };
 
 ref class Direct3DApplicationSource sealed : Windows::ApplicationModel::Core::IFrameworkViewSource
