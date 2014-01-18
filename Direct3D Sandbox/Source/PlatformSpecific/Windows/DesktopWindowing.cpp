@@ -108,7 +108,7 @@ void DesktopWindowing::RegisterForRawInput()
         
 	Rid[0].usUsagePage = 0x01;
 	Rid[0].usUsage = 0x02;					// Mouse
-	Rid[0].dwFlags = RIDEV_CAPTUREMOUSE;
+	Rid[0].dwFlags = RIDEV_CAPTUREMOUSE | RIDEV_NOLEGACY;
 	Rid[0].hwndTarget = m_WindowHandle;
 
 	Rid[1].usUsagePage = 0x01;
@@ -128,7 +128,7 @@ void DesktopWindowing::DispatchMessages() const
 	while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 	{
 		TranslateMessage(&msg);
-		DispatchMessage(&msg);			
+		DispatchMessage(&msg);
 	}
 }
 
@@ -141,22 +141,21 @@ LRESULT DesktopWindowing::HandleMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 			return 0;
 			
 		case WM_INPUT:
-			HandleRawInput(lParam, wParam);
-			return 0;
+			return HandleRawInput(wParam, lParam);
 
 		default:
 			return DefWindowProc(hWnd, uMsg, wParam, lParam);
 	}
 }
 
-void DesktopWindowing::HandleRawInput(WPARAM wParam, LPARAM lParam) const
+LRESULT DesktopWindowing::HandleRawInput(WPARAM wParam, LPARAM lParam) const
 {
 	unsigned int dataSize;
 	auto& input = Input::GetInstance();
 
-	GetRawInputData((HRAWINPUT)lParam, RID_INPUT, NULL, &dataSize, sizeof(RAWINPUTHEADER));
+	auto result = GetRawInputData((HRAWINPUT)lParam, RID_INPUT, NULL, &dataSize, sizeof(RAWINPUTHEADER));
 	auto buffer = unique_ptr<unsigned char[]>(new unsigned char[dataSize]);
-	GetRawInputData((HRAWINPUT)lParam, RID_INPUT, buffer.get(), &dataSize, sizeof(RAWINPUTHEADER));
+	result = GetRawInputData((HRAWINPUT)lParam, RID_INPUT, buffer.get(), &dataSize, sizeof(RAWINPUTHEADER));
 
 	RAWINPUT* raw = (RAWINPUT*)buffer.get();
 
@@ -170,6 +169,7 @@ void DesktopWindowing::HandleRawInput(WPARAM wParam, LPARAM lParam) const
 		{
 			input.KeyUp(raw->data.keyboard.VKey);
 		}
+		return 0;
 	}
 	else if (raw->header.dwType == RIM_TYPEMOUSE && wParam == 0) 
 	{
@@ -179,7 +179,10 @@ void DesktopWindowing::HandleRawInput(WPARAM wParam, LPARAM lParam) const
 		}
 
 		input.SetMouseDisplacement(raw->data.mouse.lLastX, raw->data.mouse.lLastY);
+		return 0;
 	}
+
+	return DefRawInputProc(&raw, 1, sizeof(RAWINPUTHEADER));
 }
 
 #endif	// !WINDOWS_PHONE

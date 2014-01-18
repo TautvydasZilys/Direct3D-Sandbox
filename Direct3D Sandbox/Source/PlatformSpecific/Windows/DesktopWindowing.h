@@ -16,7 +16,7 @@ private:
 	void DestroyDesktopWindow();
 
 	void RegisterForRawInput();
-	void HandleRawInput(WPARAM wParam, LPARAM lParam) const;
+	LRESULT HandleRawInput(WPARAM wParam, LPARAM lParam) const;
 
 public:
 	DesktopWindowing(int width = 0, int height = 0, bool fullscreen = false);
