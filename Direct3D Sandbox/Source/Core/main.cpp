@@ -2,6 +2,8 @@
 
 #if !WINDOWS_PHONE
 
+#include "Source\PlatformSpecific\Windows\DesktopWindowing.h"
+
 int CALLBACK WinMain(
   _In_  HINSTANCE hInstance,
   _In_  HINSTANCE hPrevInstance,
@@ -9,6 +11,9 @@ int CALLBACK WinMain(
   _In_  int nCmdShow
 )
 {
+	DesktopWindowing windowing;
+	windowing.Run();
+
 	return 0;
 }
 
