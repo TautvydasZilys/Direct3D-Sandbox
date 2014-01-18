@@ -1,10 +1,27 @@
 #pragma once
 #if WINDOWS_PHONE
 
-ref class PhoneWindowing sealed : public Windows::ApplicationModel::Core::IFrameworkView
+class PhoneWindowing
 {
+private:
+	int m_Width;
+	int m_Height;
+	HWND m_WindowHandle;
+
 public:
 	PhoneWindowing();
+	
+	void DispatchMessages();
+
+	int GetWidth() { return m_Width; }
+	int GetHeight() { return m_Height; }
+	HWND GetWindowHandle() { return m_WindowHandle; }
+};
+
+ref class PhoneFrameworkView sealed : public Windows::ApplicationModel::Core::IFrameworkView
+{
+public:
+	PhoneFrameworkView();
 	
 	virtual void Initialize(Windows::ApplicationModel::Core::CoreApplicationView^ applicationView);
 	virtual void SetWindow(Windows::UI::Core::CoreWindow^ window);

@@ -99,13 +99,34 @@ void DesktopWindowing::DestroyDesktopWindow()
 	UnregisterClass(Constants::ApplicationName.c_str(), m_ProgramInstance);
 }
 
-LRESULT DesktopWindowing::HandleMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+void DesktopWindowing::DispatchMessages()
 {
-	return DefWindowProc(hWnd, uMsg, wParam, lParam);
+	MSG msg;
+	ZeroMemory(&msg, sizeof(MSG));
+
+	while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);			
+	}
 }
 
-void DesktopWindowing::Run()
-{
+LRESULT DesktopWindowing::HandleMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{	
+	switch (uMsg)
+	{
+		case WM_CLOSE:
+		case WM_DESTROY:
+		case WM_QUIT:
+			exit(0);
+			return 0;
+
+		case WM_INPUT:
+			return 0;
+
+		default:
+			return DefWindowProc(hWnd, uMsg, wParam, lParam);
+	}
 }
 
 #endif

@@ -264,6 +264,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
       <PrecompiledHeaderFile>PrecompiledHeader.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Source\Core\System.cpp" />
     <ClCompile Include="Source\Core\Tools.cpp" />
     <ClCompile Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.cpp" />
     <ClCompile Include="Source\PlatformSpecific\Windows\DesktopWindowing.cpp" />
@@ -271,6 +272,7 @@
   <ItemGroup>
     <ClInclude Include="Source\Core\Constants.h" />
     <ClInclude Include="Source\Core\PrecompiledHeader.h" />
+    <ClInclude Include="Source\Core\System.h" />
     <ClInclude Include="Source\Core\Tools.h" />
     <ClInclude Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.h" />
     <ClInclude Include="Source\PlatformSpecific\Windows\DesktopWindowing.h" />

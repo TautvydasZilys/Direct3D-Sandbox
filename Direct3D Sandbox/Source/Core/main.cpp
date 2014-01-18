@@ -1,8 +1,7 @@
 #include "PrecompiledHeader.h"
+#include "System.h"
 
 #if !WINDOWS_PHONE
-
-#include "Source\PlatformSpecific\Windows\DesktopWindowing.h"
 
 int CALLBACK WinMain(
   _In_  HINSTANCE hInstance,
@@ -11,8 +10,8 @@ int CALLBACK WinMain(
   _In_  int nCmdShow
 )
 {
-	DesktopWindowing windowing;
-	windowing.Run();
+	System system;
+	system.Run();
 
 	return 0;
 }

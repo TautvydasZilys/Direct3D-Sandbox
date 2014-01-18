@@ -24,7 +24,7 @@ public:
 						if (!(x)) \
 						{ \
 							OutputDebugStringW(L"Fatal Error!\r\n"); \
-							OutputDebugStringW((__WFILE__ + wstring(L": ") + to_wstring(__LINE__)).c_str()); \
+							OutputDebugStringW((__WFILE__ + wstring(L": ") + to_wstring(__LINE__) + L"\r\n").c_str()); \
 							assert(false); \
 						} \
 					} \
