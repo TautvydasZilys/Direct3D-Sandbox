@@ -15,6 +15,11 @@ private:
 
 	Input& m_Input;
 
+	float m_CurrentTime;
+	float m_LastFpsTime;
+	float m_Fps;
+
+	void IncrementFpsCounter();
 public:
 	System();
 	~System();

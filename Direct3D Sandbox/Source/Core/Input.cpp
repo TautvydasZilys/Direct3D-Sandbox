@@ -15,7 +15,7 @@ Input& Input::GetInstance()
 }
 
 Input::Input() :
-	m_Quit(false), m_MouseX(0), m_MouseY(0), m_PinchDisplacement(0), m_MouseWheelDisplacement(0)
+	m_Quit(false), m_Paused(false), m_MouseX(0), m_MouseY(0), m_PinchDisplacement(0), m_MouseWheelDisplacement(0)
 {
 }
 

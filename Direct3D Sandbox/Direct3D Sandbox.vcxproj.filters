@@ -19,6 +19,9 @@
     <Filter Include="Source\PlatformSpecific\WindowsPhone">
       <UniqueIdentifier>{caf05c39-bf26-4b46-8a85-bf643735b61d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Graphics">
+      <UniqueIdentifier>{e6d5f0c7-82f7-4f30-b49a-136d86326d33}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\PrecompiledHeader.cpp">
@@ -45,6 +48,9 @@
     <ClCompile Include="Source\Core\Input.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphics\Direct3D.cpp">
+      <Filter>Source\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\PrecompiledHeader.h">
@@ -67,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="Source\Core\Input.h">
       <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Direct3D.h">
+      <Filter>Source\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
