@@ -13,6 +13,9 @@
     <Filter Include="Source\PlatformSpecific">
       <UniqueIdentifier>{fd35f04f-090c-4842-914e-3ae7ef510b94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\PlatformSpecific\Windows">
+      <UniqueIdentifier>{c6e9f5f2-596e-489f-b749-e3f434053e88}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\PlatformSpecific\WindowsPhone">
       <UniqueIdentifier>{caf05c39-bf26-4b46-8a85-bf643735b61d}</UniqueIdentifier>
     </Filter>
@@ -27,6 +30,15 @@
     <ClCompile Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.cpp">
       <Filter>Source\PlatformSpecific\WindowsPhone</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PlatformSpecific\Windows\DesktopWindowing.cpp">
+      <Filter>Source\PlatformSpecific\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Tools.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Constants.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\PrecompiledHeader.h">
@@ -34,6 +46,15 @@
     </ClInclude>
     <ClInclude Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.h">
       <Filter>Source\PlatformSpecific\WindowsPhone</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlatformSpecific\Windows\DesktopWindowing.h">
+      <Filter>Source\PlatformSpecific\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Tools.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Constants.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
