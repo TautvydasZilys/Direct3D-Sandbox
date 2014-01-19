@@ -31,10 +31,9 @@ public:
 	long HandleMouseWheelDisplacement();
 
 	void Quit() { m_Quit = true;}
-	bool ShouldQuit() { return m_Quit; }
+	bool ShouldQuit() const { return m_Quit; }
 
-	void Pause() { m_Paused = true; }
-	void Unpause() { m_Paused = false; }
-	bool IsPaused() { return m_Paused; }
+	void SetPause(bool paused) { m_Paused = paused; }
+	bool IsPaused() const { return m_Paused; }
 };
 
