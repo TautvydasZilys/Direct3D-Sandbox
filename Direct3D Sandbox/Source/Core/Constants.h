@@ -13,5 +13,7 @@ public:
 
 	static const int MultiSampingAntiAliasing;
 	static const UINT D3DDeviceFlags;
+
+	static const D3D11_FILL_MODE D3DFillMode;
 };
 
