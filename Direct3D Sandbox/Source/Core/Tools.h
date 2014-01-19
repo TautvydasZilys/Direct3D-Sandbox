@@ -35,11 +35,7 @@ struct Point2D
 	Point2D(float x, float y) : x(x), y(y) {}
 };
 
-#define WIDE2(x) L##x
-#define WIDE1(x) WIDE2(x)
-#define __WFILE__ WIDE1(__FILE__)
-
-#if !_DEBUG && !DEBUG
+#if !DEBUG
 #define Assert(x)	(void)(x)
 #elif WINDOWS_PHONE
 #define Assert(x)   do \

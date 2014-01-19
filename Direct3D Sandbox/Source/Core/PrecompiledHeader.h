@@ -1,13 +1,40 @@
 #pragma once
 
-#include <assert.h>
+#include <algorithm>
 #include <map>
 #include <memory>
+#include <sstream>
 #include <string>
+
 #include <unknwn.h>
 #include <Windows.h>
-
 #include <wrl.h>
+
+#include <D3D11.h>
 
 using namespace Microsoft::WRL;
 using namespace std;
+
+#ifndef DEBUG
+#define	DEBUG _DEBUG
+#endif
+
+#define WIDE2(x) L##x
+#define WIDE1(x) WIDE2(x)
+#define __WFILE__ WIDE1(__FILE__)
+
+#if WINDOWS_PHONE
+extern "C" HRESULT WINAPI D3D11CreateDeviceAndSwapChain(
+    _In_opt_ IDXGIAdapter* pAdapter,
+    D3D_DRIVER_TYPE DriverType,
+    HMODULE Software,
+    UINT Flags,
+    _In_reads_opt_( FeatureLevels ) CONST D3D_FEATURE_LEVEL* pFeatureLevels,
+    UINT FeatureLevels,
+    UINT SDKVersion,
+    _In_opt_ CONST DXGI_SWAP_CHAIN_DESC* pSwapChainDesc,
+    _Out_opt_ IDXGISwapChain** ppSwapChain,
+    _Out_opt_ ID3D11Device** ppDevice,
+    _Out_opt_ D3D_FEATURE_LEVEL* pFeatureLevel,
+    _Out_opt_ ID3D11DeviceContext** ppImmediateContext );
+#endif
