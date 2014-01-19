@@ -7,10 +7,12 @@
 using namespace Windows::ApplicationModel;
 using namespace Windows::ApplicationModel::Core;
 using namespace Windows::ApplicationModel::Activation;
-using namespace Windows::UI::Core;
-using namespace Windows::System;
 using namespace Windows::Foundation;
 using namespace Windows::Graphics::Display;
+using namespace Windows::Phone::UI::Input;
+using namespace Windows::System;
+using namespace Windows::System::Display;
+using namespace Windows::UI::Core;
 
 struct __declspec(uuid("45D64A29-A63E-4CB6-B498-5781D298CB4F")) __declspec(novtable)
 ICoreWindowInterop : IUnknown
@@ -19,7 +21,8 @@ ICoreWindowInterop : IUnknown
     virtual HRESULT __stdcall put_MessageHandled(unsigned char) = 0;
 };
 
-PhoneWindowing::PhoneWindowing()
+PhoneWindowing::PhoneWindowing() :
+	m_WindowHandle(nullptr), m_DisplayRequest(ref new DisplayRequest)
 {
 	ComPtr<ICoreWindowInterop> windowInterop;
 	
@@ -34,15 +37,19 @@ PhoneWindowing::PhoneWindowing()
 
 	result = windowInterop->get_WindowHandle(&m_WindowHandle);
 	Assert(result == S_OK);
+
+	m_DisplayRequest->RequestActive();
+}
+
+PhoneWindowing::~PhoneWindowing()
+{
+	m_DisplayRequest->RequestRelease();
 }
 
 void PhoneWindowing::DispatchMessages() const
 {
-	if (!Input::GetInstance().IsPaused())
-	{
-		CoreWindow::GetForCurrentThread()->Dispatcher->ProcessEvents(Windows::UI::Core::CoreProcessEventsOption::ProcessAllIfPresent);
-	}
-	else
+	CoreWindow::GetForCurrentThread()->Dispatcher->ProcessEvents(Windows::UI::Core::CoreProcessEventsOption::ProcessAllIfPresent);
+	if (Input::GetInstance().IsPaused())
 	{
 		CoreWindow::GetForCurrentThread()->Dispatcher->ProcessEvents(Windows::UI::Core::CoreProcessEventsOption::ProcessOneAndAllPending);
 	}
@@ -57,6 +64,7 @@ void PhoneFrameworkView::Initialize(CoreApplicationView^ applicationView)
 	applicationView->Activated += ref new TypedEventHandler<CoreApplicationView^, IActivatedEventArgs^>(this, &PhoneFrameworkView::OnActivated);
 	CoreApplication::Suspending += ref new EventHandler<SuspendingEventArgs^>(this, &PhoneFrameworkView::OnSuspending);
 	CoreApplication::Resuming += ref new EventHandler<Platform::Object^>(this, &PhoneFrameworkView::OnResuming);
+	HardwareButtons::BackPressed += ref new EventHandler<BackPressedEventArgs^>(this, &PhoneFrameworkView::OnBackButtonPressed);
 }
 
 void PhoneFrameworkView::SetWindow(CoreWindow^ window)
@@ -66,6 +74,8 @@ void PhoneFrameworkView::SetWindow(CoreWindow^ window)
 	window->PointerPressed += ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &PhoneFrameworkView::OnPointerPressed);
 	window->PointerMoved +=	ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &PhoneFrameworkView::OnPointerMoved);
 	window->PointerReleased += ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &PhoneFrameworkView::OnPointerReleased);
+	window->KeyDown += ref new TypedEventHandler<CoreWindow^, KeyEventArgs^>(this, &PhoneFrameworkView::OnKeyDown);
+	window->KeyUp += ref new TypedEventHandler<CoreWindow^, KeyEventArgs^>(this, &PhoneFrameworkView::OnKeyUp);
 }
 
 void PhoneFrameworkView::Load(Platform::String^ entryPoint)
@@ -85,6 +95,7 @@ void PhoneFrameworkView::Uninitialize()
 
 void PhoneFrameworkView::OnVisibilityChanged(CoreWindow^ sender, VisibilityChangedEventArgs^ args)
 {
+	Input::GetInstance().SetPause(!args->Visible);
 }
 
 void PhoneFrameworkView::OnWindowClosed(CoreWindow^ sender, CoreWindowEventArgs^ args)
@@ -142,6 +153,18 @@ void PhoneFrameworkView::OnPointerReleased(CoreWindow^ sender, PointerEventArgs^
 	numberOfFingersDown--;
 }
 
+void PhoneFrameworkView::OnKeyDown(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::KeyEventArgs^ args)
+{
+	Input::GetInstance().KeyDown(static_cast<int>(args->VirtualKey));
+	args->Handled = true;
+}
+
+void PhoneFrameworkView::OnKeyUp(Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::KeyEventArgs^ args)
+{
+	Input::GetInstance().KeyUp(static_cast<int>(args->VirtualKey));
+	args->Handled = true;
+}
+
 void PhoneFrameworkView::OnActivated(CoreApplicationView^ applicationView, IActivatedEventArgs^ args)
 {
 	CoreWindow::GetForCurrentThread()->Activate();
@@ -149,12 +172,14 @@ void PhoneFrameworkView::OnActivated(CoreApplicationView^ applicationView, IActi
 
 void PhoneFrameworkView::OnSuspending(Platform::Object^ sender, SuspendingEventArgs^ args)
 {
-	Input::GetInstance().Pause();
 }
  
 void PhoneFrameworkView::OnResuming(Platform::Object^ sender, Platform::Object^ args)
 {
-	Input::GetInstance().Unpause();
+}
+
+void PhoneFrameworkView::OnBackButtonPressed(Platform::Object^ sender, BackPressedEventArgs^ args)
+{
 }
 
 IFrameworkView^ Direct3DApplicationSource::CreateView()
