@@ -286,7 +286,14 @@
     </ClCompile>
     <ClCompile Include="Source\Core\System.cpp" />
     <ClCompile Include="Source\Core\Tools.cpp" />
+    <ClCompile Include="Source\Graphics\AutoShader.cpp" />
+    <ClCompile Include="Source\Graphics\ConstantBuffer.cpp" />
     <ClCompile Include="Source\Graphics\Direct3D.cpp" />
+    <ClCompile Include="Source\Graphics\IShader.cpp" />
+    <ClCompile Include="Source\Graphics\PixelShader.cpp" />
+    <ClCompile Include="Source\Graphics\RenderParameters.cpp" />
+    <ClCompile Include="Source\Graphics\ShaderProgram.cpp" />
+    <ClCompile Include="Source\Graphics\VertexShader.cpp" />
     <ClCompile Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.cpp" />
     <ClCompile Include="Source\PlatformSpecific\Windows\DesktopWindowing.cpp" />
   </ItemGroup>
@@ -296,7 +303,14 @@
     <ClInclude Include="Source\Core\PrecompiledHeader.h" />
     <ClInclude Include="Source\Core\System.h" />
     <ClInclude Include="Source\Core\Tools.h" />
+    <ClInclude Include="Source\Graphics\AutoShader.h" />
+    <ClInclude Include="Source\Graphics\ConstantBuffer.h" />
     <ClInclude Include="Source\Graphics\Direct3D.h" />
+    <ClInclude Include="Source\Graphics\IShader.h" />
+    <ClInclude Include="Source\Graphics\PixelShader.h" />
+    <ClInclude Include="Source\Graphics\RenderParameters.h" />
+    <ClInclude Include="Source\Graphics\ShaderProgram.h" />
+    <ClInclude Include="Source\Graphics\VertexShader.h" />
     <ClInclude Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.h" />
     <ClInclude Include="Source\PlatformSpecific\Windows\DesktopWindowing.h" />
   </ItemGroup>

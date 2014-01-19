@@ -25,6 +25,8 @@ public:
 		QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&timer));
 		return static_cast<float>(timer) / static_cast<float>(m_PerformanceCounterFrequency);
 	}
+
+	static vector<uint8_t> ReadFileToVector(wstring path);
 };
 
 struct Point2D

@@ -1,16 +1,20 @@
 #pragma once
 
 #include <algorithm>
+#include <fstream>
 #include <map>
 #include <memory>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include <unknwn.h>
 #include <Windows.h>
 #include <wrl.h>
 
 #include <D3D11.h>
+#include <d3dcompiler.h>
+#include <DirectXMath.h>
 
 using namespace Microsoft::WRL;
 using namespace std;
