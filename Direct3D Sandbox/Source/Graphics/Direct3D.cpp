@@ -80,24 +80,24 @@ void Direct3D::CreateBackBufferResources(int width, int height)
 	GetDepthStencilViewDescription(depthStencilViewDescription);
 
 	result = m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &backBuffer);
-	Assert(result);
+	Assert(result == S_OK);
 
 	result = m_Device->CreateRenderTargetView(backBuffer.Get(), NULL, &m_RenderTargetView);
-	Assert(result);
+	Assert(result == S_OK);
 
 	result = m_Device->CreateTexture2D(&depthBufferDescription, nullptr, &m_DepthStencilBuffer);
-	Assert(result);
+	Assert(result == S_OK);
 
 	depthStencilDescription.DepthEnable = true;
 	result = m_Device->CreateDepthStencilState(&depthStencilDescription, &m_DepthStencilState);
-	Assert(result);
+	Assert(result == S_OK);
 
 	depthStencilDescription.DepthEnable = false;
 	result = m_Device->CreateDepthStencilState(&depthStencilDescription, &m_DisabledDepthStencilState);
-	Assert(result);
+	Assert(result == S_OK);
 
 	result = m_Device->CreateDepthStencilView(m_DepthStencilBuffer.Get(), &depthStencilViewDescription, &m_DepthStencilView);
-	Assert(result);
+	Assert(result == S_OK);
 }
 
 void Direct3D::CreateRasterizerAndBlendStates(int width, int height)
@@ -113,10 +113,10 @@ void Direct3D::CreateRasterizerAndBlendStates(int width, int height)
 	GetBlendStateDescription(blendDescription);
 
 	result = m_Device->CreateRasterizerState(&rasterizerDescription, &m_RasterizerState);
-	Assert(result);
+	Assert(result == S_OK);
 
 	result = m_Device->CreateBlendState(&blendDescription, &m_BlendState);
-	Assert(result);
+	Assert(result == S_OK);
 
 	m_DeviceContext->RSSetState(m_RasterizerState.Get());
 	m_DeviceContext->RSSetViewports(1, &viewport);
@@ -148,7 +148,6 @@ DXGI_RATIONAL Direct3D::GetRefreshRate(ComPtr<IDXGIOutput> dxgiOutput, int width
 
 	refreshRate.Numerator = 0;
 	refreshRate.Denominator = 1;
-
 
 	if (Constants::VSyncEnabled)
 	{
@@ -216,7 +215,7 @@ void Direct3D::GetDepthBufferDescription(int width, int height, D3D11_TEXTURE2D_
 	depthBufferDescription.MipLevels = 1;
 	depthBufferDescription.ArraySize = 1;
 
-	depthBufferDescription.Format = DXGI_FORMAT_D32_FLOAT;
+	depthBufferDescription.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	depthBufferDescription.SampleDesc.Count = 1;
 	depthBufferDescription.SampleDesc.Quality = 0;
 
@@ -252,7 +251,7 @@ void Direct3D::GetDepthStencilViewDescription(D3D11_DEPTH_STENCIL_VIEW_DESC& dep
 {
 	ZeroMemory(&depthStencilViewDescription, sizeof(depthStencilViewDescription));
 
-	depthStencilViewDescription.Format = DXGI_FORMAT_D32_FLOAT;
+	depthStencilViewDescription.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	depthStencilViewDescription.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	depthStencilViewDescription.Flags = 0;
 	depthStencilViewDescription.Texture2D.MipSlice = 0;
@@ -319,11 +318,11 @@ void Direct3D::SwapBuffers()
 {
 	if (Constants::VSyncEnabled)
 	{
-		m_SwapChain->Present(1, 0);
+		Assert(m_SwapChain->Present(1, 0) == S_OK);
 	}
 	else
 	{
-		m_SwapChain->Present(0, 0);
+		Assert(m_SwapChain->Present(0, 0) == S_OK);
 	}
 }
 
