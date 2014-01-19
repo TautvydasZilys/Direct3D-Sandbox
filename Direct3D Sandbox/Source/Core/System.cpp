@@ -22,8 +22,25 @@ void System::Run()
 		m_CurrentTime = Tools::GetTime();
 		m_Windowing.DispatchMessages();
 
+		Update();
+		Draw();
+
 		IncrementFpsCounter();
 	}
+}
+
+void System::Update()
+{
+	if (m_Input.IsKeyDown(VK_ESCAPE))
+	{
+		m_Input.Quit();
+	}
+}
+
+void System::Draw()
+{
+	m_Direct3D.StartDrawing(1.0f);
+	m_Direct3D.SwapBuffers();
 }
 
 void System::IncrementFpsCounter()

@@ -21,6 +21,8 @@ private:
 	float m_LastFpsTime;
 	float m_Fps;
 
+	void Update();
+	void Draw();
 	void IncrementFpsCounter();
 public:
 	System();
