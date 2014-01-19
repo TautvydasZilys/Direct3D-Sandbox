@@ -3,14 +3,14 @@
 #include "Direct3D.h"
 #include "Tools.h"
 
-Direct3D::Direct3D(HWND hWnd, int width, int height, bool windowed)
+Direct3D::Direct3D(HWND hWnd, int width, int height, bool fullscreen)
 {
 	ComPtr<IDXGIAdapter1> dxgiAdapter;
 	ComPtr<IDXGIOutput> dxgiOutput;
 
 	GetDXGIAdapterAndOutput(dxgiAdapter, dxgiOutput);
 	auto refreshRate = GetRefreshRate(dxgiOutput, width, height);
-	auto featureLevel = CreateDeviceAndSwapChain(hWnd, width, height, refreshRate, windowed);
+	auto featureLevel = CreateDeviceAndSwapChain(hWnd, width, height, refreshRate, fullscreen);
 
 	PrintAdapterInfo(dxgiAdapter, featureLevel);
 }
@@ -93,7 +93,7 @@ DXGI_RATIONAL Direct3D::GetRefreshRate(ComPtr<IDXGIOutput> dxgiOutput, int width
 	return refreshRate;
 }
 
-void Direct3D::GetSwapChainDescription(HWND hWnd, int width, int height, const DXGI_RATIONAL& refreshRate, bool windowed, DXGI_SWAP_CHAIN_DESC& swapChainDescription)
+void Direct3D::GetSwapChainDescription(HWND hWnd, int width, int height, const DXGI_RATIONAL& refreshRate, bool fullscreen, DXGI_SWAP_CHAIN_DESC& swapChainDescription)
 {
 	ZeroMemory(&swapChainDescription, sizeof(swapChainDescription));
 
@@ -119,10 +119,10 @@ void Direct3D::GetSwapChainDescription(HWND hWnd, int width, int height, const D
 
 	swapChainDescription.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 
-	swapChainDescription.Windowed = windowed;
+	swapChainDescription.Windowed = !fullscreen;
 }
 
-D3D_FEATURE_LEVEL Direct3D::CreateDeviceAndSwapChain(HWND hWnd, int width, int height, const DXGI_RATIONAL& refreshRate, bool windowed)
+D3D_FEATURE_LEVEL Direct3D::CreateDeviceAndSwapChain(HWND hWnd, int width, int height, const DXGI_RATIONAL& refreshRate, bool fullscreen)
 {
 	HRESULT result;
 	DXGI_SWAP_CHAIN_DESC swapChainDescription;
@@ -143,7 +143,7 @@ D3D_FEATURE_LEVEL Direct3D::CreateDeviceAndSwapChain(HWND hWnd, int width, int h
 	deviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 	
-	GetSwapChainDescription(hWnd, width, height, refreshRate, windowed, swapChainDescription);
+	GetSwapChainDescription(hWnd, width, height, refreshRate, fullscreen, swapChainDescription);
 
 	result = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, deviceFlags, 
 		featureLevels, sizeof(featureLevels) / sizeof(D3D_FEATURE_LEVEL), D3D11_SDK_VERSION, &swapChainDescription, 

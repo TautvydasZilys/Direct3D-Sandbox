@@ -15,9 +15,10 @@ public:
 	
 	void DispatchMessages() const;
 
-	int GetWidth() const { return m_Width; }
-	int GetHeight() const { return m_Height; }
-	HWND GetWindowHandle() const { return m_WindowHandle; }
+	inline int GetWidth() const { return m_Width; }
+	inline int GetHeight() const { return m_Height; }
+	inline bool IsFullscreen() const { return true; }
+	inline HWND GetWindowHandle() const { return m_WindowHandle; }
 };
 
 ref class PhoneFrameworkView sealed : public Windows::ApplicationModel::Core::IFrameworkView

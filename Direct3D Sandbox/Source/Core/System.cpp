@@ -4,7 +4,7 @@
 
 System::System() :
 	m_Input(Input::GetInstance()),
-	m_Direct3D(m_Windowing.GetWindowHandle(), m_Windowing.GetWidth(), m_Windowing.GetHeight(), true),
+	m_Direct3D(m_Windowing.GetWindowHandle(), m_Windowing.GetWidth(), m_Windowing.GetHeight(), m_Windowing.IsFullscreen()),
 	m_CurrentTime(Tools::GetTime()),
 	m_Fps(0), 
 	m_LastFpsTime(m_CurrentTime)

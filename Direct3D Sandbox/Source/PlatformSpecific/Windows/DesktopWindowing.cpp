@@ -18,10 +18,13 @@ DesktopWindowing::DesktopWindowing(int width, int height, bool fullscreen) :
 		height = GetSystemMetrics(SM_CYSCREEN);
 	}
 	
+	m_Width = width;
+	m_Height = height;
+
 	Assert(s_WindowingInstance == nullptr);
 	s_WindowingInstance = this;
 
-	CreateDesktopWindow(width, height, fullscreen);
+	CreateDesktopWindow();
 	RegisterForRawInput();
 }
 
@@ -33,7 +36,7 @@ DesktopWindowing::~DesktopWindowing()
 	s_WindowingInstance = nullptr;
 }
 
-void DesktopWindowing::CreateDesktopWindow(int width, int height, bool fullscreen)
+void DesktopWindowing::CreateDesktopWindow()
 {
 	WNDCLASSEX windowInfo;
 	DEVMODE screenSettings;
@@ -58,12 +61,12 @@ void DesktopWindowing::CreateDesktopWindow(int width, int height, bool fullscree
 	
 	RegisterClassEx(&windowInfo);
 	
-	if (fullscreen)
+	if (m_Fullscreen)
 	{
 		ZeroMemory(&screenSettings, sizeof(screenSettings));
 		screenSettings.dmSize = sizeof(DEVMODE);
-		screenSettings.dmPelsWidth  = static_cast<DWORD>(width);
-		screenSettings.dmPelsHeight = static_cast<DWORD>(height);
+		screenSettings.dmPelsWidth  = static_cast<DWORD>(m_Width);
+		screenSettings.dmPelsHeight = static_cast<DWORD>(m_Height);
 		screenSettings.dmBitsPerPel = 32;			
 		screenSettings.dmFields = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
 
@@ -74,12 +77,12 @@ void DesktopWindowing::CreateDesktopWindow(int width, int height, bool fullscree
 	else
 	{
 		// Place the window in the middle of the screen.
-		posX = (GetSystemMetrics(SM_CXSCREEN) - width) / 2;
-		posY = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
+		posX = (GetSystemMetrics(SM_CXSCREEN) - m_Width) / 2;
+		posY = (GetSystemMetrics(SM_CYSCREEN) - m_Height) / 2;
 	}
 
 	m_WindowHandle = CreateWindowEx(WS_EX_APPWINDOW, windowInfo.lpszClassName, windowInfo.lpszClassName, WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP, 
-		posX, posY, width, height, NULL, NULL, m_ProgramInstance, NULL);
+		posX, posY, m_Width, m_Height, NULL, NULL, m_ProgramInstance, NULL);
 	Assert(m_WindowHandle != nullptr);
 
 	ShowWindow(m_WindowHandle, SW_SHOW);
