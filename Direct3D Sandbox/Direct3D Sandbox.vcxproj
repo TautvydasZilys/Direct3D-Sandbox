@@ -141,7 +141,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
       <IgnoreSpecificDefaultLibraries>ole32.lib</IgnoreSpecificDefaultLibraries>
-      <AdditionalOptions>DXGI.lib d3d11.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>DXGI.lib d3d11.lib d3dcompiler.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
       <ShaderModel>4.0_level_9_3</ShaderModel>
@@ -160,7 +160,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalOptions>DXGI.lib d3d11.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>DXGI.lib d3d11.lib d3dcompiler.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
       <ShaderModel>4.0_level_9_3</ShaderModel>
@@ -179,7 +179,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalOptions>DXGI.lib d3d11.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>DXGI.lib d3d11.lib d3dcompiler.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
       <ShaderModel>4.0_level_9_3</ShaderModel>
@@ -209,7 +209,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
       <IgnoreSpecificDefaultLibraries>ole32.lib</IgnoreSpecificDefaultLibraries>
-      <AdditionalOptions>DXGI.lib d3d11.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>DXGI.lib d3d11.lib d3dcompiler.lib %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>WindowsPhoneCore.lib;RuntimeObject.lib;PhoneAppModelHost.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
@@ -237,7 +237,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalOptions>DXGI.lib d3d11.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>DXGI.lib d3d11.lib d3dcompiler.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
       <ShaderModel>4.0_level_9_3</ShaderModel>
@@ -264,7 +264,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalOptions>DXGI.lib d3d11.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>DXGI.lib d3d11.lib d3dcompiler.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
       <ShaderModel>4.0_level_9_3</ShaderModel>
