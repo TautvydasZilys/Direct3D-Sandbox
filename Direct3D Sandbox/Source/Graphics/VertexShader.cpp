@@ -10,7 +10,7 @@ VertexShader::VertexShader(ComPtr<ID3D11Device> device, wstring path)
 	result = device->CreateVertexShader(&shaderBuffer[0], shaderBuffer.size(), nullptr, &m_Shader);
 	Assert(result == S_OK);
 
-	Reflect();
+	Reflect(device, shaderBuffer);
 }
 
 
