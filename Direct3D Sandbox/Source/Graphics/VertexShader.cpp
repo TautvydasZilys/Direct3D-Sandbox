@@ -27,4 +27,14 @@ void VertexShader::ReflectVirtual(ComPtr<ID3D11Device> device, ComPtr<ID3D11Shad
 
 void VertexShader::ReflectInputLayout(ComPtr<ID3D11Device> device, ComPtr<ID3D11ShaderReflection> shaderReflection, const D3D11_SHADER_DESC& shaderDescription)
 {
+	HRESULT result;
+	D3D11_SIGNATURE_PARAMETER_DESC parameterDescription;
+
+	for (auto i = 0u; i < shaderDescription.InputParameters; i++)
+	{
+		result = shaderReflection->GetInputParameterDesc(i, &parameterDescription);
+		Assert(result == S_OK);
+
+		m_InputLayoutItems.emplace_back(device, parameterDescription);
+	}
 }

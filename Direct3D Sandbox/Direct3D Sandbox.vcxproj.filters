@@ -72,6 +72,9 @@
     <ClCompile Include="Source\Graphics\ShaderProgram.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphics\InputLayoutItem.cpp">
+      <Filter>Source\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\PrecompiledHeader.h">
@@ -117,6 +120,9 @@
       <Filter>Source\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics\ShaderProgram.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\InputLayoutItem.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
   </ItemGroup>

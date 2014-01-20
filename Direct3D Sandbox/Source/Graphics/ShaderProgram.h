@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ConstantBuffer.h"
+#include "InputLayoutItem.h"
 
 class ShaderProgram
 {

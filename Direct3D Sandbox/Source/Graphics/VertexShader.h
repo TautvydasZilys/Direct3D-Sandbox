@@ -7,6 +7,7 @@ class VertexShader :
 {
 private:
 	ComPtr<ID3D11VertexShader> m_Shader;
+	vector<InputLayoutItem> m_InputLayoutItems;
 	
 	virtual void ReflectVirtual(ComPtr<ID3D11Device> device, ComPtr<ID3D11ShaderReflection> shaderReflection, const D3D11_SHADER_DESC& shaderDescription);
 	void ReflectInputLayout(ComPtr<ID3D11Device> device, ComPtr<ID3D11ShaderReflection> shaderReflection, const D3D11_SHADER_DESC& shaderDescription);
