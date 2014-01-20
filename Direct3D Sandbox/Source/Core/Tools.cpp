@@ -1,7 +1,23 @@
 #include "PrecompiledHeader.h"
 #include "Tools.h"
 
-long long int Tools::m_PerformanceCounterFrequency;
+inline static long long int InitPerformanceCounterFrequency()
+{
+	long long int frequency;
+
+	QueryPerformanceFrequency(reinterpret_cast<LARGE_INTEGER*>(&frequency));
+	return frequency;
+}
+
+long long int s_PerformanceCounterFrequency = InitPerformanceCounterFrequency();
+
+float Tools::GetTime()
+{
+	long long int timer;
+
+	QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&timer));
+	return static_cast<float>(timer) / static_cast<float>(m_PerformanceCounterFrequency);
+}
 
 vector<uint8_t> Tools::ReadFileToVector(wstring path)
 {

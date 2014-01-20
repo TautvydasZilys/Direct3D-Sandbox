@@ -2,31 +2,12 @@
 
 #include "PrecompiledHeader.h"
 
-class Tools
-{
-private:
-	Tools();
-	~Tools();
-	
+namespace Tools
+{	
 	static long long int m_PerformanceCounterFrequency;
-	
-	inline static int InitPerformanceCounterFrequency()
-	{
-		QueryPerformanceFrequency(reinterpret_cast<LARGE_INTEGER*>(&m_PerformanceCounterFrequency));
-		return 0;
-	}
 
-public:	
-	static inline float GetTime()
-	{
-		static int dummy = InitPerformanceCounterFrequency();
-		long long int timer;
-
-		QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&timer));
-		return static_cast<float>(timer) / static_cast<float>(m_PerformanceCounterFrequency);
-	}
-
-	static vector<uint8_t> ReadFileToVector(wstring path);
+	float GetTime();
+	vector<uint8_t> ReadFileToVector(wstring path);
 };
 
 struct Point2D
