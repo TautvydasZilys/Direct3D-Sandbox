@@ -124,11 +124,11 @@ void PhoneFrameworkView::OnPointerMoved(CoreWindow^ sender, PointerEventArgs^ ar
 	{
 		int id2;
 
-		for (auto it = cursorPosition.begin(); it != cursorPosition.end(); it++)
+		for (const auto& it : cursorPosition)
 		{
-			if (it->first != id)
+			if (it.first != id)
 			{
-				id2 = it->first;
+				id2 = it.first;
 				break;
 			}
 		}
