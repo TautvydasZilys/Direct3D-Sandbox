@@ -22,6 +22,11 @@ void ShaderProgram::Reflect(ComPtr<ID3D11Device> device, const vector<uint8_t>& 
 	result = shaderReflection->GetDesc(&shaderDescription);
 	Assert(result == S_OK);
 
+	ReflectVirtual(device, shaderReflection, shaderDescription);
+}
+
+void ShaderProgram::ReflectVirtual(ComPtr<ID3D11Device> device, ComPtr<ID3D11ShaderReflection> shaderReflection, const D3D11_SHADER_DESC& shaderDescription)
+{
 	ReflectConstantBuffers(device, shaderReflection, shaderDescription);
 }
 

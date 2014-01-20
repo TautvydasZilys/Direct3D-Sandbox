@@ -17,3 +17,14 @@ VertexShader::VertexShader(ComPtr<ID3D11Device> device, wstring path)
 VertexShader::~VertexShader()
 {
 }
+
+void VertexShader::ReflectVirtual(ComPtr<ID3D11Device> device, ComPtr<ID3D11ShaderReflection> shaderReflection, const D3D11_SHADER_DESC& shaderDescription)
+{
+	ShaderProgram::ReflectVirtual(device, shaderReflection, shaderDescription);
+
+	ReflectInputLayout(device, shaderReflection, shaderDescription);
+}
+
+void VertexShader::ReflectInputLayout(ComPtr<ID3D11Device> device, ComPtr<ID3D11ShaderReflection> shaderReflection, const D3D11_SHADER_DESC& shaderDescription)
+{
+}
