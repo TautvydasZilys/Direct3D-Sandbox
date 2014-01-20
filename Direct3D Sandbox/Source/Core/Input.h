@@ -19,9 +19,9 @@ public:
 	~Input();
 	static Input& GetInstance();
 	
-	void KeyDown(int key) { m_KeyMap[key] = true; }
-	void KeyUp(int key) { m_KeyMap[key] = false; }
-	bool IsKeyDown(int key) const { return m_KeyMap[key]; }
+	inline void KeyDown(int key) { m_KeyMap[key] = true; }
+	inline void KeyUp(int key) { m_KeyMap[key] = false; }
+	inline bool IsKeyDown(int key) const { return m_KeyMap[key]; }
 
 	void SetMouseDisplacement(long x, long y);
 	void SetPinchDisplacement(long delta);
@@ -30,10 +30,10 @@ public:
 	long HandlePinchDisplacement();
 	long HandleMouseWheelDisplacement();
 
-	void Quit() { m_Quit = true;}
-	bool ShouldQuit() const { return m_Quit; }
+	inline void Quit() { m_Quit = true;}
+	inline bool ShouldQuit() const { return m_Quit; }
 
-	void SetPause(bool paused) { m_Paused = paused; }
-	bool IsPaused() const { return m_Paused; }
+	inline void SetPause(bool paused) { m_Paused = paused; }
+	inline bool IsPaused() const { return m_Paused; }
 };
 

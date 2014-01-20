@@ -18,7 +18,7 @@ struct GlobalParameters
 	GLOBAL_PARAMETERS
 #undef FIELD
 
-	const void* GetField(const string& fieldName) const
+	inline const void* GetField(const string& fieldName) const
 	{
 #define FIELD(type, name) if (fieldName == #name) return &name;
 		GLOBAL_PARAMETERS
@@ -34,7 +34,7 @@ struct ModelParameters
 	MODEL_PARAMETERS
 #undef FIELD
 
-	const void* GetField(const string& fieldName) const
+	inline const void* GetField(const string& fieldName) const
 	{
 #define FIELD(type, name) if (fieldName == #name) return &name;
 		MODEL_PARAMETERS

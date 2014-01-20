@@ -35,8 +35,8 @@ public:
 	Direct3D(HWND hWnd, int width, int height, bool fullscreen);
 	~Direct3D();
 
-	ComPtr<ID3D11Device> GetDevice() const { return m_Device; }
-	ComPtr<ID3D11DeviceContext> GetDeviceContext() const { return m_DeviceContext; }
+	inline ComPtr<ID3D11Device> GetDevice() const { return m_Device; }
+	inline ComPtr<ID3D11DeviceContext> GetDeviceContext() const { return m_DeviceContext; }
 	
 	void StartDrawing(float red = 0.0f, float green = 0.0f, float blue = 0.0f, float alpha = 1.0f);
 	void SwapBuffers();
