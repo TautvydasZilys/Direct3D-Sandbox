@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include <initguid.h>
 #include <unknwn.h>
 #include <Windows.h>
 #include <wrl.h>
