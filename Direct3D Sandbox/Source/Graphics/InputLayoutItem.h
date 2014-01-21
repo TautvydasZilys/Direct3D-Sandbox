@@ -16,6 +16,11 @@ public:
 
 	~InputLayoutItem();
 
+	const string& GetName() const { return m_Name; }
+	unsigned int GetSemanticIndex() const { return m_SemanticIndex; }
+	DXGI_FORMAT GetFormat() const { return m_Format; }
+	unsigned int GetSize() const { return m_Size; }
+
 	void FillInputElementDescription(D3D11_INPUT_ELEMENT_DESC& elementDescription) const;
 };
 

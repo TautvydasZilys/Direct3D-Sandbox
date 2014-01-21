@@ -32,6 +32,7 @@ void VertexShader::ReflectInputLayout(ComPtr<ID3D11Device> device, const vector<
 	HRESULT result;
 	D3D11_SIGNATURE_PARAMETER_DESC parameterDescription;
 	unique_ptr<D3D11_INPUT_ELEMENT_DESC[]> inputLayoutDescription(new D3D11_INPUT_ELEMENT_DESC[shaderDescription.InputParameters]);
+	m_InputLayoutSize = 0;
 
 	for (auto i = 0u; i < shaderDescription.InputParameters; i++)
 	{
@@ -39,10 +40,63 @@ void VertexShader::ReflectInputLayout(ComPtr<ID3D11Device> device, const vector<
 		Assert(result == S_OK);
 
 		m_InputLayoutItems.emplace_back(device, parameterDescription);
+		m_InputLayoutSize += m_InputLayoutItems[i].GetSize();
 		m_InputLayoutItems[i].FillInputElementDescription(inputLayoutDescription[i]);
 	}
 		
 	result = device->CreateInputLayout(inputLayoutDescription.get(), shaderDescription.InputParameters, 
 		shaderBuffer.data(), shaderBuffer.size(), &m_InputLayout);
 	Assert(result);
+}
+
+ComPtr<ID3D11Buffer> VertexShader::CreateVertexBuffer(ComPtr<ID3D11Device> device, const vector<VertexParameters>& vertices) const
+{
+	HRESULT result;
+	D3D11_BUFFER_DESC bufferDescription;
+	D3D11_SUBRESOURCE_DATA vertexData;
+	ComPtr<ID3D11Buffer> vertexBuffer;
+	VertexParameters dummyParameter;
+
+	unique_ptr<uint8_t> vertexInput(new uint8_t[m_InputLayoutSize * vertices.size()]);
+	vector<unsigned int> sourceFieldOffsets(m_InputLayoutItems.size()), destinationFieldOffsets(m_InputLayoutItems.size());
+	
+	for (auto i = 0u; i < m_InputLayoutItems.size(); i++)
+	{
+		sourceFieldOffsets[i] = VertexParameters::GetFieldByteOffset(m_InputLayoutItems[i].GetName());
+		Assert(sourceFieldOffsets[i] > -1);
+
+		if (i == 0)
+		{
+			destinationFieldOffsets[i] = 0;
+		}
+		else
+		{
+			destinationFieldOffsets[i] = destinationFieldOffsets[i - 1] + m_InputLayoutItems[i - 1].GetSize();
+		}
+	}
+
+	for (auto i = 0u; i < vertices.size(); i++)
+	{
+		for (auto j = 0u; j < m_InputLayoutItems.size(); j++)
+		{
+			memcpy(vertexInput.get() + i * m_InputLayoutSize + destinationFieldOffsets[j], 
+				reinterpret_cast<const uint8_t*>(&vertices[i]) + sourceFieldOffsets[i], m_InputLayoutItems[i].GetSize());
+		}
+	}
+	
+	bufferDescription.Usage = D3D11_USAGE_IMMUTABLE;
+	bufferDescription.ByteWidth = static_cast<UINT>(m_InputLayoutSize * vertices.size());
+	bufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	bufferDescription.CPUAccessFlags = 0;
+	bufferDescription.MiscFlags = 0;
+	bufferDescription.StructureByteStride = 0;
+
+	vertexData.pSysMem = vertexInput.get();
+	vertexData.SysMemPitch = 0;
+	vertexData.SysMemSlicePitch = 0;
+
+	result = device->CreateBuffer(&bufferDescription, &vertexData, &vertexBuffer);
+	Assert(result == S_OK);
+
+	return vertexBuffer;
 }
