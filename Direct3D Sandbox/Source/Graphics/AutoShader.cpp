@@ -11,7 +11,13 @@ AutoShader::~AutoShader()
 {
 }
 
-void AutoShader::Render(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters)
+ComPtr<ID3D11Buffer> AutoShader::CreateVertexBuffer(ComPtr<ID3D11Device> device, const vector<VertexParameters>& vertices) const
 {
+	return m_VertexShader.CreateVertexBuffer(device, vertices);
+}
 
+void AutoShader::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters)
+{
+	m_VertexShader.SetRenderParameters(deviceContext, renderParameters);
+	m_PixelShader.SetRenderParameters(deviceContext, renderParameters);
 }

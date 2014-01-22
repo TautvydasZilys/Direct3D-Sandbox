@@ -13,7 +13,8 @@ private:
 public:
 	AutoShader(ComPtr<ID3D11Device> device, wstring vertexShaderPath, wstring pixelShaderPath);
 	virtual ~AutoShader();
-
-	virtual void Render(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters);
+	
+	virtual ComPtr<ID3D11Buffer> CreateVertexBuffer(ComPtr<ID3D11Device> device, const vector<VertexParameters>& vertices) const;
+	virtual void SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters);
 };
 
