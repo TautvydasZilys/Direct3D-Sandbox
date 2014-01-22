@@ -3,7 +3,7 @@
 #include "Tools.h"
 
 AutoShader::AutoShader(ComPtr<ID3D11Device> device, wstring vertexShaderPath, wstring pixelShaderPath) :
-	vertexShader(device, vertexShaderPath), pixelShader(device, pixelShaderPath)
+	m_VertexShader(device, vertexShaderPath), m_PixelShader(device, pixelShaderPath)
 {
 }
 

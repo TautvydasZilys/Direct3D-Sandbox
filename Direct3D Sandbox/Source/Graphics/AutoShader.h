@@ -7,8 +7,8 @@
 class AutoShader : IShader
 {
 private:
-	VertexShader vertexShader;
-	PixelShader pixelShader;
+	VertexShader m_VertexShader;
+	PixelShader m_PixelShader;
 
 public:
 	AutoShader(ComPtr<ID3D11Device> device, wstring vertexShaderPath, wstring pixelShaderPath);
