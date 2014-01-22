@@ -11,7 +11,7 @@ AutoShader::~AutoShader()
 {
 }
 
-void AutoShader::Render(const GlobalParameters& globalParameters, const ModelParameters& modelParameters)
+void AutoShader::Render(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters)
 {
 
 }

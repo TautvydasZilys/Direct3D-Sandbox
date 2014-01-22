@@ -17,5 +17,7 @@ protected:
 
 public:
 	virtual ~ShaderProgram();
+	
+	void SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters);
 };
 

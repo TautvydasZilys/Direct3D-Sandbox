@@ -39,3 +39,11 @@ void ShaderProgram::ReflectConstantBuffers(ComPtr<ID3D11Device> device, ComPtr<I
 		m_ConstantBuffers.emplace_back(device, buffer);
 	}
 }
+
+void ShaderProgram::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters)
+{
+	for (auto& buffer : m_ConstantBuffers)
+	{
+		buffer.SetRenderParameters(deviceContext, renderParameters);
+	}
+}

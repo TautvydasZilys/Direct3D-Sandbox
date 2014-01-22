@@ -26,6 +26,7 @@ ConstantBuffer::ConstantBuffer(ComPtr<ID3D11Device> device, ID3D11ShaderReflecti
 		m_Fields.emplace_back(string(fieldDescription.Name), fieldDescription.StartOffset, fieldDescription.Size);
 	}
 	
+	sort(begin(m_Fields), end(m_Fields));
 	m_Size = bufferDescription.Size;
 
 	constantBufferDescription.Usage = D3D11_USAGE_DYNAMIC;
@@ -53,19 +54,13 @@ ConstantBuffer::~ConstantBuffer()
 {
 }
 
-void ConstantBuffer::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext, const GlobalParameters& globalParameters, const ModelParameters& modelParameters)
+void ConstantBuffer::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters)
 {
 	bool shouldSet = false;
 
-	for_each (begin(m_Fields), end(m_Fields), [&shouldSet, globalParameters, modelParameters](ConstantBufferField& field)
+	for_each (begin(m_Fields), end(m_Fields), [&shouldSet, &renderParameters](ConstantBufferField& field)
 	{
-		auto parameterPtr = globalParameters.GetField(field.GetName());		
-		
-		if (parameterPtr == nullptr) 
-		{
-			parameterPtr = modelParameters.GetField(field.GetName());
-		}
-
+		auto parameterPtr = renderParameters.GetField(field.GetName());
 		Assert(parameterPtr != nullptr);
 
 		shouldSet |= field.SetValueIfNeeded(parameterPtr);
@@ -91,16 +86,4 @@ void ConstantBuffer::SetRenderParametersNoCheck(ComPtr<ID3D11DeviceContext> devi
 	});
 
 	deviceContext->Unmap(m_Buffer.Get(), 0);
-}
-
-bool ConstantBufferField::SetValueIfNeeded(const void* value)
-{
-	auto shouldSet = memcmp(m_Value.get(), value, m_Size) != 0;
-
-	if (shouldSet)
-	{
-		memcpy(m_Value.get(), value, m_Size);
-	}
-
-	return shouldSet;
 }

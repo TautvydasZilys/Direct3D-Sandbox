@@ -75,6 +75,7 @@
     <ClCompile Include="Source\Graphics\InputLayoutItem.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphics\ConstantBufferField.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\PrecompiledHeader.h">
@@ -125,6 +126,7 @@
     <ClInclude Include="Source\Graphics\InputLayoutItem.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Graphics\ConstantBufferField.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\ApplicationIcon.png">

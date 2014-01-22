@@ -15,6 +15,6 @@ public:
 	AutoShader(ComPtr<ID3D11Device> device, wstring vertexShaderPath, wstring pixelShaderPath);
 	virtual ~AutoShader();
 
-	virtual void Render(const GlobalParameters& globalParameters, const ModelParameters& modelParameters);
+	virtual void Render(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters);
 };
 

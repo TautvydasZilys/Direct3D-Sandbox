@@ -2,13 +2,10 @@
 
 #include "PrecompiledHeader.h"
 
-#define GLOBAL_PARAMETERS \
+#define RENDER_PARAMETERS \
 			FIELD(float, time) \
 			FIELD(DirectX::XMFLOAT4X4, projectionMatrix) \
-			FIELD(DirectX::XMFLOAT4X4, viewMatrix)
-
-
-#define MODEL_PARAMETERS \
+			FIELD(DirectX::XMFLOAT4X4, viewMatrix) \
 			FIELD(DirectX::XMFLOAT4X4, worldMatrix)
 
 
@@ -22,16 +19,16 @@
 
 
 
-struct GlobalParameters
+struct RenderParameters
 {
 #define FIELD(type, name) type name;
-	GLOBAL_PARAMETERS
+	RENDER_PARAMETERS
 #undef FIELD
 
 	inline const uint8_t* GetField(const string& fieldName) const
 	{
 #define FIELD(type, name) if (_stricmp(fieldName.c_str(), #name) == 0) return reinterpret_cast<const uint8_t*>(&name);
-		GLOBAL_PARAMETERS
+		RENDER_PARAMETERS
 #undef FIELD
 
 		return nullptr;
@@ -39,33 +36,8 @@ struct GlobalParameters
 
 	inline static unsigned int GetFieldByteOffset(const string& fieldName)
 	{
-#define FIELD(type, name) if (_stricmp(fieldName.c_str(), #name) == 0) return offsetof(GlobalParameters, name);
-		GLOBAL_PARAMETERS
-#undef FIELD
-
-		return -1;
-	}
-};
-
-struct ModelParameters
-{	
-#define FIELD(type, name) type name;
-	MODEL_PARAMETERS
-#undef FIELD
-
-	inline const uint8_t* GetField(const string& fieldName) const
-	{
-#define FIELD(type, name) if (_stricmp(fieldName.c_str(), #name) == 0) return reinterpret_cast<const uint8_t*>(&name);
-		MODEL_PARAMETERS
-#undef FIELD
-
-		return nullptr;
-	}
-
-	inline static unsigned int GetFieldByteOffset(const string& fieldName)
-	{
-#define FIELD(type, name) if (_stricmp(fieldName.c_str(), #name) == 0) return offsetof(ModelParameters, name);
-		MODEL_PARAMETERS
+#define FIELD(type, name) if (_stricmp(fieldName.c_str(), #name) == 0) return offsetof(RenderParameters, name);
+		RENDER_PARAMETERS
 #undef FIELD
 
 		return -1;

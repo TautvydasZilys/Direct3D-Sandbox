@@ -9,6 +9,6 @@ protected:
 
 public:
 	virtual ~IShader();
-	virtual void Render(const GlobalParameters& globalParameters, const ModelParameters& modelParameters) = 0;
+	virtual void Render(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters) = 0;
 };
 
