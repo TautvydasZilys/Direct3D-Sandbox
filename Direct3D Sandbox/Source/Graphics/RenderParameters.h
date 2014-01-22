@@ -25,6 +25,8 @@ struct RenderParameters
 	RENDER_PARAMETERS
 #undef FIELD
 
+	RenderParameters() {}
+
 	inline const uint8_t* GetField(const string& fieldName) const
 	{
 #define FIELD(type, name) if (_stricmp(fieldName.c_str(), #name) == 0) return reinterpret_cast<const uint8_t*>(&name);
@@ -42,6 +44,10 @@ struct RenderParameters
 
 		return -1;
 	}
+
+private:
+	RenderParameters(const RenderParameters& other);
+	RenderParameters& operator=(const RenderParameters& other);
 };
 
 struct VertexParameters
@@ -49,6 +55,8 @@ struct VertexParameters
 #define FIELD(type, name) type name;
 	VERTEX_PARAMETERS
 #undef FIELD
+
+	VertexParameters() {}
 
 	inline const uint8_t* GetField(const string& fieldName) const
 	{
@@ -67,5 +75,9 @@ struct VertexParameters
 
 		return -1;
 	}
+
+private:
+	VertexParameters(const VertexParameters& other);
+	VertexParameters& operator=(const VertexParameters& other);
 };
 
