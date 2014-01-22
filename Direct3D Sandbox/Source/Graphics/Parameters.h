@@ -71,7 +71,7 @@ struct VertexParameters
 		VERTEX_PARAMETERS
 #undef FIELD
 
-		return -1;
+		return 0xFFFFFFFF;
 	}
 
 private:

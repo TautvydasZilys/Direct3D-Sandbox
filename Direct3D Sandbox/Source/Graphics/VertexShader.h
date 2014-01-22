@@ -1,6 +1,10 @@
 #pragma once
 
+#include "InputLayoutItem.h"
 #include "ShaderProgram.h"
+
+struct VertexParameters;
+struct RenderParameters;
 
 class VertexShader :
 	public ShaderProgram

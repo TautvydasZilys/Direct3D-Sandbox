@@ -1,11 +1,15 @@
 #include "PrecompiledHeader.h"
 #include "InputLayoutItem.h"
-
+#include "Parameters.h"
+#include "Tools.h"
 
 InputLayoutItem::InputLayoutItem(ComPtr<ID3D11Device> device, const D3D11_SIGNATURE_PARAMETER_DESC& parameterDescription) :
 	m_Name(parameterDescription.SemanticName),
-	m_SemanticIndex(parameterDescription.SemanticIndex)
+	m_SemanticIndex(parameterDescription.SemanticIndex),
+	m_ParameterOffset(VertexParameters::GetFieldByteOffset(m_Name))
 {
+	Assert(m_ParameterOffset != 0xFFFFFFFF);
+
 	if (parameterDescription.Mask == 1)
 	{
 		switch (parameterDescription.ComponentType)
