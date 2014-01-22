@@ -7,6 +7,8 @@ class IShader
 {
 protected:
 	IShader();
+	IShader(IShader& other);
+	IShader& operator=(const IShader& other);
 
 public:
 	virtual ~IShader();

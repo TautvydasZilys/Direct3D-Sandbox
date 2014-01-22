@@ -280,6 +280,7 @@
     <ClCompile Include="Source\Core\Constants.cpp" />
     <ClCompile Include="Source\Core\Input.cpp" />
     <ClCompile Include="Source\Core\main.cpp" />
+    <ClCompile Include="Source\Core\ModelInstance.cpp" />
     <ClCompile Include="Source\Core\PrecompiledHeader.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
       <PrecompiledHeaderFile>PrecompiledHeader.h</PrecompiledHeaderFile>
@@ -292,6 +293,7 @@
     <ClCompile Include="Source\Graphics\Direct3D.cpp" />
     <ClCompile Include="Source\Graphics\InputLayoutItem.cpp" />
     <ClCompile Include="Source\Graphics\IShader.cpp" />
+    <ClCompile Include="Source\Graphics\Model.cpp" />
     <ClCompile Include="Source\Graphics\PixelShader.cpp" />
     <ClCompile Include="Source\Graphics\Parameters.cpp" />
     <ClCompile Include="Source\Graphics\ShaderProgram.cpp" />
@@ -302,6 +304,7 @@
   <ItemGroup>
     <ClInclude Include="Source\Core\Constants.h" />
     <ClInclude Include="Source\Core\Input.h" />
+    <ClInclude Include="Source\Core\ModelInstance.h" />
     <ClInclude Include="Source\Core\PrecompiledHeader.h" />
     <ClInclude Include="Source\Core\System.h" />
     <ClInclude Include="Source\Core\Tools.h" />
@@ -311,6 +314,7 @@
     <ClInclude Include="Source\Graphics\Direct3D.h" />
     <ClInclude Include="Source\Graphics\InputLayoutItem.h" />
     <ClInclude Include="Source\Graphics\IShader.h" />
+    <ClInclude Include="Source\Graphics\Model.h" />
     <ClInclude Include="Source\Graphics\PixelShader.h" />
     <ClInclude Include="Source\Graphics\Parameters.h" />
     <ClInclude Include="Source\Graphics\ShaderProgram.h" />
