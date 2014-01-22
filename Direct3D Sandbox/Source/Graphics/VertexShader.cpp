@@ -100,3 +100,10 @@ ComPtr<ID3D11Buffer> VertexShader::CreateVertexBuffer(ComPtr<ID3D11Device> devic
 
 	return vertexBuffer;
 }
+
+void VertexShader::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters)
+{
+	ShaderProgram::SetRenderParameters(deviceContext, renderParameters);
+
+	deviceContext->VSSetShader(m_Shader.Get(), nullptr, 0);
+}

@@ -13,7 +13,13 @@ PixelShader::PixelShader(ComPtr<ID3D11Device> device, wstring path)
 	Reflect(device, shaderBuffer);
 }
 
-
 PixelShader::~PixelShader()
 {
+}
+
+void PixelShader::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters)
+{
+	ShaderProgram::SetRenderParameters(deviceContext, renderParameters);
+
+	deviceContext->PSSetShader(m_Shader.Get(), nullptr, 0);
 }

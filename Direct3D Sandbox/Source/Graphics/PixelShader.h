@@ -10,5 +10,7 @@ private:
 public:
 	PixelShader(ComPtr<ID3D11Device> device, wstring path);
 	virtual ~PixelShader();
+	
+	virtual void SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters);
 };
 
