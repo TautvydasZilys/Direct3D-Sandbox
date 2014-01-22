@@ -1,4 +1,5 @@
 #include "PrecompiledHeader.h"
+#include "Parameters.h"
 #include "PixelShader.h"
 #include "Tools.h"
 

@@ -1,4 +1,5 @@
 #include "PrecompiledHeader.h"
+#include "Parameters.h"
 #include "ShaderProgram.h"
 #include "Tools.h"
 

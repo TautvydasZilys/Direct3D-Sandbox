@@ -1,6 +1,6 @@
 #include "PrecompiledHeader.h"
 #include "ConstantBufferField.h"
-#include "RenderParameters.h"
+#include "Parameters.h"
 #include "Tools.h"
 
 ConstantBufferField::ConstantBufferField(const string& name, unsigned int byteOffset, unsigned int size) : 

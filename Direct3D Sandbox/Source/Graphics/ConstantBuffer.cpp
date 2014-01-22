@@ -1,5 +1,6 @@
 #include "PrecompiledHeader.h"
 #include "ConstantBuffer.h"
+#include "Parameters.h"
 #include "Tools.h"
 
 ConstantBuffer::ConstantBuffer(ComPtr<ID3D11Device> device, ID3D11ShaderReflectionConstantBuffer* bufferReflection)

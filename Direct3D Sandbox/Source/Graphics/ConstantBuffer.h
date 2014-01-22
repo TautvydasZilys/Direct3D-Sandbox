@@ -1,7 +1,8 @@
 #pragma once
 
 #include "ConstantBufferField.h"
-#include "RenderParameters.h"
+
+struct RenderParameters;
 
 class ConstantBuffer
 {

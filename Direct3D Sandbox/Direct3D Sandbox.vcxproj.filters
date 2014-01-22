@@ -51,9 +51,6 @@
     <ClCompile Include="Source\Graphics\Direct3D.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\RenderParameters.cpp">
-      <Filter>Source\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Graphics\AutoShader.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
@@ -75,7 +72,12 @@
     <ClCompile Include="Source\Graphics\InputLayoutItem.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\ConstantBufferField.cpp" />
+    <ClCompile Include="Source\Graphics\Parameters.cpp">
+      <Filter>Source\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\ConstantBufferField.cpp">
+      <Filter>Source\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\PrecompiledHeader.h">
@@ -102,9 +104,6 @@
     <ClInclude Include="Source\Graphics\Direct3D.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphics\RenderParameters.h">
-      <Filter>Source\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Graphics\AutoShader.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
@@ -126,7 +125,12 @@
     <ClInclude Include="Source\Graphics\InputLayoutItem.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphics\ConstantBufferField.h" />
+    <ClInclude Include="Source\Graphics\Parameters.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\ConstantBufferField.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\ApplicationIcon.png">

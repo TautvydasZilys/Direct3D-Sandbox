@@ -1,2 +1,2 @@
 #include "PrecompiledHeader.h"
-#include "RenderParameters.h"
+#include "Parameters.h"

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "PrecompiledHeader.h"
-
 #define RENDER_PARAMETERS \
 			FIELD(float, time) \
 			FIELD(DirectX::XMFLOAT4X4, projectionMatrix) \

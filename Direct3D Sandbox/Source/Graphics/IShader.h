@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RenderParameters.h"
+struct RenderParameters;
 
 class IShader
 {
