@@ -42,7 +42,7 @@ struct RenderParameters
 		RENDER_PARAMETERS
 #undef FIELD
 
-		return -1;
+		return 0xFFFFFFFF;
 	}
 
 private:

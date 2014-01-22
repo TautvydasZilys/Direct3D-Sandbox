@@ -23,7 +23,7 @@ ConstantBuffer::ConstantBuffer(ComPtr<ID3D11Device> device, ID3D11ShaderReflecti
 		result = field->GetDesc(&fieldDescription);
 		Assert(result == S_OK);
 
-		m_Fields.emplace_back(string(fieldDescription.Name), fieldDescription.StartOffset, fieldDescription.Size);
+		m_Fields.emplace_back(fieldDescription.Name, fieldDescription.StartOffset, fieldDescription.Size);
 	}
 	
 	sort(begin(m_Fields), end(m_Fields));
@@ -56,17 +56,14 @@ ConstantBuffer::~ConstantBuffer()
 
 void ConstantBuffer::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters)
 {
-	bool shouldSet = false;
+	bool shouldCopyToGPU = false;
 
-	for_each (begin(m_Fields), end(m_Fields), [&shouldSet, &renderParameters](ConstantBufferField& field)
+	for_each (begin(m_Fields), end(m_Fields), [&shouldCopyToGPU, &renderParameters](ConstantBufferField& field)
 	{
-		auto parameterPtr = renderParameters.GetField(field.GetName());
-		Assert(parameterPtr != nullptr);
-
-		shouldSet |= field.SetValueIfNeeded(parameterPtr);
+		shouldCopyToGPU |= field.SetValueIfNeeded(reinterpret_cast<const uint8_t*>(&renderParameters) + field.GetParameterOffset());
 	});
 
-	if (shouldSet)
+	if (shouldCopyToGPU)
 	{
 		SetRenderParametersNoCheck(deviceContext);
 	}
