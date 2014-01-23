@@ -3,9 +3,7 @@
 #include "PrecompiledHeader.h"
 
 namespace Tools
-{	
-	static long long int m_PerformanceCounterFrequency;
-
+{
 	float GetTime();
 	vector<uint8_t> ReadFileToVector(wstring path);
 };

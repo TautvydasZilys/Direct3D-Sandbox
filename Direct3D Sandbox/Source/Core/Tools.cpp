@@ -16,7 +16,7 @@ float Tools::GetTime()
 	long long int timer;
 
 	QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&timer));
-	return static_cast<float>(timer) / static_cast<float>(m_PerformanceCounterFrequency);
+	return static_cast<float>(timer) / static_cast<float>(s_PerformanceCounterFrequency);
 }
 
 vector<uint8_t> Tools::ReadFileToVector(wstring path)
