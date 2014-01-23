@@ -39,7 +39,6 @@ private:
 	Model(const Model& other);															// Not implemented (no copying allowed)
 	Model& operator=(const Model& other);												// Not implemented (no copying allowed)
 
-	//friend class unordered_map<ModelId, Model, ModelIdHash>;
 	template <typename _Ty1, typename _Ty2>
 	friend struct pair;
 
