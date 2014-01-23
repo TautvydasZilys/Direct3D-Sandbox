@@ -49,6 +49,7 @@ ConstantBuffer::ConstantBuffer(ConstantBuffer&& other) :
 	m_Fields(std::move(other.m_Fields)),
 	m_Size(other.m_Size)
 {
+	other.m_Buffer = nullptr;
 }
 
 ConstantBuffer::~ConstantBuffer()
