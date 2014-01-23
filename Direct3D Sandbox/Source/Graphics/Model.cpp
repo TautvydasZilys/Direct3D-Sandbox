@@ -51,7 +51,7 @@ Model& Model::Get(const string& modelPath, IShader& shader)
 
 void Model::Render(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters)
 {
-	auto offset = 0u;
+	auto const offset = 0u;
 
 	m_Shader.SetRenderParameters(deviceContext, renderParameters);
 
