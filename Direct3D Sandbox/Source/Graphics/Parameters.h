@@ -18,7 +18,6 @@
 			FIELD(DirectX::XMFLOAT3, binormal)
 
 
-
 struct RenderParameters
 {
 #define FIELD(type, name) type name;
@@ -75,6 +74,15 @@ struct VertexParameters
 
 		return 0xFFFFFFFF;
 	}
+
+	inline bool operator==(const VertexParameters& other) const
+	{
+		return 
+#define FIELD(type, name) memcmp(&name, &other.name, sizeof(type)) == 0 &&
+			VERTEX_PARAMETERS
+#undef FIELD
+			true;
+	};
 
 private:
 	VertexParameters(const VertexParameters& other);

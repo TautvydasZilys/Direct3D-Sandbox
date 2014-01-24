@@ -80,7 +80,19 @@ static void CalculateTangentsAndBinormals(ModelData& model)
 
 static void OptimizeModel(ModelData& model)
 {
-	unordered_map<const VertexParameters*, int> vertexMap;
+	auto vertexPtrHash = [](const VertexParameters* value) -> size_t
+	{
+		return hash<VertexParameters>()(*value);
+	};
+
+	auto compareVertexPtrValues = [](const VertexParameters* first, const VertexParameters* second) -> bool
+	{
+		return *first == *second;
+	};
+
+	unordered_map<const VertexParameters*, int, function<size_t(const VertexParameters* value)>, 
+		function<bool(const VertexParameters*, const VertexParameters*)>> vertexMap(16, vertexPtrHash, compareVertexPtrValues);
+
 	map<int, int> indexChanges;
 
 	for (auto i = 0u; i < model.vertexCount; i++)
