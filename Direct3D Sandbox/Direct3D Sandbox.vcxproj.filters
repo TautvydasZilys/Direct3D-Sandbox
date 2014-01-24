@@ -141,7 +141,7 @@
       <Filter>Source\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\System.h">
-      <Filter>Source\Graphics</Filter>
+      <Filter>Source\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
