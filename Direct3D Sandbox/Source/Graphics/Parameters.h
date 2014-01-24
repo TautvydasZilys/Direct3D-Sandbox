@@ -1,5 +1,7 @@
 #pragma once
 
+#include "PrecompiledHeader.h"
+
 #define RENDER_PARAMETERS \
 			FIELD(float, time) \
 			FIELD(DirectX::XMFLOAT4X4, projectionMatrix) \
@@ -79,3 +81,42 @@ private:
 	VertexParameters& operator=(const VertexParameters& other);
 };
 
+template<> 
+struct hash<DirectX::XMFLOAT2>
+{	
+	size_t operator()(const DirectX::XMFLOAT2& value) const
+	{
+		return hash<float>()(value.x) ^ hash<float>()(value.y);
+	}
+};
+
+template<> 
+struct hash<DirectX::XMFLOAT3>
+{	
+	size_t operator()(const DirectX::XMFLOAT3& value) const
+	{
+		return hash<float>()(value.x) ^ hash<float>()(value.y) ^ hash<float>()(value.z);
+	}
+};
+
+template<> 
+struct hash<DirectX::XMFLOAT4>
+{	
+	size_t operator()(const DirectX::XMFLOAT4& value) const
+	{
+		return hash<float>()(value.x) ^ hash<float>()(value.y) ^ hash<float>()(value.z) ^ hash<float>()(value.y);
+	}
+};
+
+template<> 
+struct hash<VertexParameters>
+{	
+	size_t operator()(const VertexParameters& value) const
+	{
+		return
+#define FIELD(type, name) hash<type>()(value.name) ^
+			VERTEX_PARAMETERS
+#undef FIELD
+			0;
+	}
+};

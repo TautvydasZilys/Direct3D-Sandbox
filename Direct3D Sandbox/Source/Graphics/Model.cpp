@@ -3,6 +3,7 @@
 #include "Model.h"
 #include "Tools.h"
 
+unordered_map<string, const ModelData> Model::s_ModelDataCache;
 unordered_map<ModelId, Model, ModelIdHash> Model::s_ModelCache;
 
 Model::Model(ComPtr<ID3D11Device> device, IShader& shader, const string& modelPath) :
@@ -12,7 +13,18 @@ Model::Model(ComPtr<ID3D11Device> device, IShader& shader, const string& modelPa
 	m_IndexCount(0),
 	m_Shader(shader)
 {
-	// Implement vertex loading here
+	auto cachedModel = s_ModelDataCache.find(modelPath);
+
+	if (cachedModel == s_ModelDataCache.end())
+	{
+		s_ModelDataCache.insert(make_pair(modelPath, Tools::LoadModel(modelPath, false)));
+		cachedModel = s_ModelDataCache.find(modelPath);
+	}
+
+	auto& modelData = cachedModel->second;
+	m_VertexBuffer = shader.CreateVertexBuffer(device, modelData);
+
+	// TO DO: Create index buffer here
 
 	Assert(m_IndexCount > 0);
 }

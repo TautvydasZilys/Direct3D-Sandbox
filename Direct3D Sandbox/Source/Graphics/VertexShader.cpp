@@ -50,7 +50,7 @@ void VertexShader::ReflectInputLayout(ComPtr<ID3D11Device> device, const vector<
 	Assert(result);
 }
 
-ComPtr<ID3D11Buffer> VertexShader::CreateVertexBuffer(ComPtr<ID3D11Device> device, const vector<VertexParameters>& vertices) const
+ComPtr<ID3D11Buffer> VertexShader::CreateVertexBuffer(ComPtr<ID3D11Device> device, const ModelData& model) const
 {
 	HRESULT result;
 	D3D11_BUFFER_DESC bufferDescription;
@@ -58,7 +58,7 @@ ComPtr<ID3D11Buffer> VertexShader::CreateVertexBuffer(ComPtr<ID3D11Device> devic
 	ComPtr<ID3D11Buffer> vertexBuffer;
 	VertexParameters dummyParameter;
 
-	unique_ptr<uint8_t> vertexInput(new uint8_t[m_InputLayoutSize * vertices.size()]);
+	unique_ptr<uint8_t> vertexInput(new uint8_t[m_InputLayoutSize * model.vertexCount]);
 	vector<unsigned int> destinationFieldOffsets(m_InputLayoutItems.size());
 	
 	destinationFieldOffsets[0] = 0;
@@ -67,17 +67,17 @@ ComPtr<ID3D11Buffer> VertexShader::CreateVertexBuffer(ComPtr<ID3D11Device> devic
 		destinationFieldOffsets[i] = destinationFieldOffsets[i - 1] + m_InputLayoutItems[i - 1].GetSize();
 	}
 
-	for (auto i = 0u; i < vertices.size(); i++)
+	for (auto i = 0u; i < model.vertexCount; i++)
 	{
 		for (auto j = 0u; j < m_InputLayoutItems.size(); j++)
 		{
 			memcpy(vertexInput.get() + i * m_InputLayoutSize + destinationFieldOffsets[j], 
-				reinterpret_cast<const uint8_t*>(&vertices[i]) + m_InputLayoutItems[i].GetParameterOffset(), m_InputLayoutItems[i].GetSize());
+				reinterpret_cast<const uint8_t*>(&model.vertices[i]) + m_InputLayoutItems[i].GetParameterOffset(), m_InputLayoutItems[i].GetSize());
 		}
 	}
 	
 	bufferDescription.Usage = D3D11_USAGE_IMMUTABLE;
-	bufferDescription.ByteWidth = static_cast<UINT>(m_InputLayoutSize * vertices.size());
+	bufferDescription.ByteWidth = static_cast<UINT>(m_InputLayoutSize * model.vertexCount);
 	bufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bufferDescription.CPUAccessFlags = 0;
 	bufferDescription.MiscFlags = 0;

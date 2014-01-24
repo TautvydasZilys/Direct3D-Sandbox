@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Tools.h"
+
 class IShader;
 struct RenderParameters;
 
@@ -27,7 +29,8 @@ private:
 	ComPtr<ID3D11Buffer> m_IndexBuffer;
 	unsigned int m_IndexCount;
 	IShader& m_Shader;
-
+	
+	static unordered_map<string, const ModelData> s_ModelDataCache;
 	static unordered_map<ModelId, Model, ModelIdHash> s_ModelCache;
 #if DEBUG
 	string m_Key;

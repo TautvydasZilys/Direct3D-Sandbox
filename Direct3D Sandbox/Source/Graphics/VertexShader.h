@@ -24,8 +24,8 @@ private:
 public:
 	VertexShader(ComPtr<ID3D11Device> device, wstring path);
 	virtual ~VertexShader();
-
-	ComPtr<ID3D11Buffer> CreateVertexBuffer(ComPtr<ID3D11Device> device, const vector<VertexParameters>& vertices) const;
+	
+	ComPtr<ID3D11Buffer> CreateVertexBuffer(ComPtr<ID3D11Device> device, const ModelData& model) const;
 	inline const unsigned int* GetInputLayoutSizePtr() const { return &m_InputLayoutSize; }
 
 	virtual void SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters);
