@@ -47,7 +47,7 @@ void VertexShader::ReflectInputLayout(ComPtr<ID3D11Device> device, const vector<
 		
 	result = device->CreateInputLayout(inputLayoutDescription.get(), shaderDescription.InputParameters, 
 		shaderBuffer.data(), shaderBuffer.size(), &m_InputLayout);
-	Assert(result);
+	Assert(result == S_OK);
 }
 
 ComPtr<ID3D11Buffer> VertexShader::CreateVertexBuffer(ComPtr<ID3D11Device> device, const ModelData& model) const
