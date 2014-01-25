@@ -1,5 +1,6 @@
 #include "PrecompiledHeader.h"
 #include "Constants.h"
+#include "Source\Graphics\IShader.h"
 #include "System.h"
 #include "Tools.h"
 
@@ -11,7 +12,12 @@ System::System() :
 	m_LastFpsTime(m_CurrentTime),
 	m_Camera(true, Constants::VerticalFieldOfView, m_Windowing.GetAspectRatio(), 0, 0)
 {
+	IShader::LoadShaders(m_Direct3D.GetDevice());
 
+	for (const auto& model : Tools::GetFilesInDirectory(L"Assets\\Models", L"*.obj", true))
+	{
+		Model::InitializeModel(m_Direct3D.GetDevice(), IShader::GetShader(ShaderType::COLOR_SHADER), model);
+	}
 }
 
 System::~System()
