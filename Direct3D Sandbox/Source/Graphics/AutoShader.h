@@ -4,7 +4,7 @@
 #include "PixelShader.h"
 #include "VertexShader.h"
 
-class AutoShader : IShader
+class AutoShader : public IShader
 {
 private:
 	VertexShader m_VertexShader;
