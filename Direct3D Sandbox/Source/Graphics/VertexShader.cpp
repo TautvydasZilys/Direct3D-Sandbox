@@ -14,7 +14,6 @@ VertexShader::VertexShader(ComPtr<ID3D11Device> device, wstring path)
 	Reflect(device, shaderBuffer);
 }
 
-
 VertexShader::~VertexShader()
 {
 }
@@ -96,7 +95,8 @@ ComPtr<ID3D11Buffer> VertexShader::CreateVertexBuffer(ComPtr<ID3D11Device> devic
 void VertexShader::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters)
 {
 	ShaderProgram::SetRenderParameters(deviceContext, renderParameters);
-	
+
 	deviceContext->IASetInputLayout(m_InputLayout.Get());
 	deviceContext->VSSetShader(m_Shader.Get(), nullptr, 0);
+	deviceContext->VSSetConstantBuffers(0, static_cast<UINT>(m_ConstantBufferPtrs.size()), m_ConstantBufferPtrs.data());
 }

@@ -25,4 +25,5 @@ public:
 	~ConstantBuffer();
 
 	void SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters);
+	ID3D11Buffer* GetPtr() const { return m_Buffer.Get(); }
 };

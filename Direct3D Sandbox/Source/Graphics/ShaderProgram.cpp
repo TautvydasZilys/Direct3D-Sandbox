@@ -34,10 +34,14 @@ void ShaderProgram::ReflectVirtual(ComPtr<ID3D11Device> device, const vector<uin
 
 void ShaderProgram::ReflectConstantBuffers(ComPtr<ID3D11Device> device, ComPtr<ID3D11ShaderReflection> shaderReflection, const D3D11_SHADER_DESC& shaderDescription)
 {
+	m_ConstantBuffers.reserve(shaderDescription.ConstantBuffers);
+	m_ConstantBufferPtrs.reserve(shaderDescription.ConstantBuffers);
+
 	for (auto i = 0u; i < shaderDescription.ConstantBuffers; i++)
 	{
 		auto buffer = shaderReflection->GetConstantBufferByIndex(i);
 		m_ConstantBuffers.emplace_back(device, buffer);
+		m_ConstantBufferPtrs.push_back(m_ConstantBuffers[i].GetPtr());
 	}
 }
 

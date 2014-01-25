@@ -23,4 +23,5 @@ void PixelShader::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext,
 	ShaderProgram::SetRenderParameters(deviceContext, renderParameters);
 
 	deviceContext->PSSetShader(m_Shader.Get(), nullptr, 0);
+	deviceContext->PSSetConstantBuffers(0, static_cast<UINT>(m_ConstantBufferPtrs.size()), m_ConstantBufferPtrs.data());
 }

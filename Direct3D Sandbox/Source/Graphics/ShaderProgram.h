@@ -6,6 +6,7 @@ class ShaderProgram
 {
 protected:
 	vector<ConstantBuffer> m_ConstantBuffers;
+	vector<ID3D11Buffer*> m_ConstantBufferPtrs;
 	
 	ShaderProgram();
 	void Reflect(ComPtr<ID3D11Device> device, const vector<uint8_t>& shaderBuffer);
