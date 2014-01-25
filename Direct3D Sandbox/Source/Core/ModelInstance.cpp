@@ -2,7 +2,7 @@
 #include "ModelInstance.h"
 #include "Parameters.h"
 
-ModelInstance::ModelInstance(ComPtr<ID3D11Device> device, IShader& shader, string modelPath, const ModelParameters& modelParameters) :
+ModelInstance::ModelInstance(ComPtr<ID3D11Device> device, IShader& shader, wstring modelPath, const ModelParameters& modelParameters) :
 	m_Model(Model::Get(modelPath, shader)),
 	m_Parameters(modelParameters)
 {

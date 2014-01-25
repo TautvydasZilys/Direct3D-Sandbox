@@ -3,10 +3,10 @@
 #include "Model.h"
 #include "Tools.h"
 
-unordered_map<string, const ModelData> Model::s_ModelDataCache;
+unordered_map<wstring, const ModelData> Model::s_ModelDataCache;
 unordered_map<ModelId, Model, ModelIdHash> Model::s_ModelCache;
 
-Model::Model(ComPtr<ID3D11Device> device, IShader& shader, const string& modelPath) :
+Model::Model(ComPtr<ID3D11Device> device, IShader& shader, const wstring& modelPath) :
 #if DEBUG
 	m_Key(modelPath),
 #endif
@@ -46,14 +46,14 @@ Model::~Model()
 {
 }
 
-void Model::InitializeModel(ComPtr<ID3D11Device> device, IShader& shader, const string& modelPath)
+void Model::InitializeModel(ComPtr<ID3D11Device> device, IShader& shader, const wstring& modelPath)
 {
 	Assert(s_ModelCache.find(ModelId(modelPath, shader)) == s_ModelCache.end());
 
 	s_ModelCache.insert(make_pair(ModelId(modelPath, shader), Model(device, shader, modelPath)));
 }
 
-Model& Model::Get(const string& modelPath, IShader& shader)
+Model& Model::Get(const wstring& modelPath, IShader& shader)
 {
 	auto model = s_ModelCache.find(ModelId(modelPath, shader));
 	

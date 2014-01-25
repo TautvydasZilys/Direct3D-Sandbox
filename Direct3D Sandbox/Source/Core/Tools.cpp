@@ -180,7 +180,7 @@ static ModelData ParseFaces(const vector<DirectX::XMFLOAT4>& coordinates, const 
 	return model;
 }
 
-ModelData Tools::LoadModel(const string& path, bool shouldInverse)
+ModelData Tools::LoadModel(const wstring& path, bool shouldInverse)
 {
 	vector<DirectX::XMFLOAT4> coordinates;
 	vector<DirectX::XMFLOAT2> textures;

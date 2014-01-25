@@ -9,7 +9,7 @@ namespace Tools
 {
 	float GetTime();
 	vector<uint8_t> ReadFileToVector(const wstring& path);
-	ModelData LoadModel(const string& path, bool shouldInverse);
+	ModelData LoadModel(const wstring& path, bool shouldInverse);
 };
 
 struct Point2D

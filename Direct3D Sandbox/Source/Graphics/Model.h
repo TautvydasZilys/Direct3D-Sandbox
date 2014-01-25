@@ -7,10 +7,10 @@ struct RenderParameters;
 
 struct ModelId
 {
-	const string path;
+	const wstring path;
 	const IShader& shader;
 
-	ModelId(string path, const IShader& shader) : path(std::move(path)), shader(shader) { }
+	ModelId(wstring path, const IShader& shader) : path(std::move(path)), shader(shader) { }
 	bool operator==(const ModelId& other) const { return path == other.path && (&shader == &other.shader); }
 };
 
@@ -18,7 +18,7 @@ struct ModelIdHash
 {
 	size_t operator()(const ModelId& value) const
     {
-		return hash<string>()(value.path) ^ hash<const void*>()(&value.shader);
+		return hash<wstring>()(value.path) ^ hash<const void*>()(&value.shader);
     }
 };
 
@@ -30,13 +30,13 @@ private:
 	unsigned int m_IndexCount;
 	IShader& m_Shader;
 	
-	static unordered_map<string, const ModelData> s_ModelDataCache;
+	static unordered_map<wstring, const ModelData> s_ModelDataCache;
 	static unordered_map<ModelId, Model, ModelIdHash> s_ModelCache;
 #if DEBUG
-	string m_Key;
+	wstring m_Key;
 #endif
 
-	Model(ComPtr<ID3D11Device> device, IShader& shader, const string& modelPath);
+	Model(ComPtr<ID3D11Device> device, IShader& shader, const wstring& modelPath);
 	Model(Model&& other);
 
 	Model(const Model& other);															// Not implemented (no copying allowed)
@@ -48,8 +48,8 @@ private:
 public:
 	~Model();
 
-	static void InitializeModel(ComPtr<ID3D11Device> device, IShader& shader, const string& modelPath);
-	static Model& Get(const string& path, IShader& shader);
+	static void InitializeModel(ComPtr<ID3D11Device> device, IShader& shader, const wstring& modelPath);
+	static Model& Get(const wstring& path, IShader& shader);
 	
 	void Render(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters);
 };
