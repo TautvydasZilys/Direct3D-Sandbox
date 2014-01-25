@@ -15,5 +15,8 @@ public:
 	static const UINT D3DDeviceFlags;
 
 	static const D3D11_FILL_MODE D3DFillMode;
+
+	static const float CameraNear;
+	static const float CameraFar;
 };
 

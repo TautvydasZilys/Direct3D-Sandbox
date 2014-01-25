@@ -1,7 +1,7 @@
 #pragma once
 
+#include "Parameters.h"
 #include "PrecompiledHeader.h"
-#include "Source\Graphics\Parameters.h"
 
 struct ModelData;
 

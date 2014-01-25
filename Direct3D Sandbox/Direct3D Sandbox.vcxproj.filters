@@ -72,9 +72,6 @@
     <ClCompile Include="Source\Graphics\InputLayoutItem.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\Parameters.cpp">
-      <Filter>Source\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Graphics\ConstantBufferField.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
@@ -82,6 +79,12 @@
       <Filter>Source\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\ModelInstance.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Parameters.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Camera.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
   </ItemGroup>
@@ -128,9 +131,6 @@
     <ClInclude Include="Source\Graphics\InputLayoutItem.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphics\Parameters.h">
-      <Filter>Source\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Graphics\ConstantBufferField.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
@@ -141,6 +141,12 @@
       <Filter>Source\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\System.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Parameters.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Camera.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
   </ItemGroup>

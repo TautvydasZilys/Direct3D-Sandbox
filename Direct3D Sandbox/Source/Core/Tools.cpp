@@ -1,6 +1,6 @@
 #include "PrecompiledHeader.h"
 #include "Source\Graphics\Model.h"
-#include "Source\Graphics\Parameters.h"
+#include "Parameters.h"
 #include "Tools.h"
 
 inline static long long int InitPerformanceCounterFrequency()
