@@ -11,7 +11,7 @@ ConstantBuffer::ConstantBuffer(ComPtr<ID3D11Device> device, ID3D11ShaderReflecti
 	D3D11_SHADER_VARIABLE_DESC fieldDescription;
 
 	result = bufferReflection->GetDesc(&bufferDescription);
-	Assert(result = S_OK);
+	Assert(result == S_OK);
 
 #if DEBUG
 	m_Name = bufferDescription.Name;
