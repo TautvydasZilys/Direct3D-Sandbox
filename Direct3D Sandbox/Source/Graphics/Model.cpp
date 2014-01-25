@@ -23,10 +23,26 @@ Model::Model(ComPtr<ID3D11Device> device, IShader& shader, const wstring& modelP
 
 	auto& modelData = cachedModel->second;
 	m_VertexBuffer = shader.CreateVertexBuffer(device, modelData);
-
-	// TO DO: Create index buffer here
-
+	
+	m_IndexCount = modelData.indexCount;
 	Assert(m_IndexCount > 0);
+	
+	D3D11_BUFFER_DESC indexBufferDescription;
+	D3D11_SUBRESOURCE_DATA indexData;
+
+	indexBufferDescription.Usage = D3D11_USAGE_IMMUTABLE;
+	indexBufferDescription.ByteWidth = sizeof(unsigned int) * m_IndexCount;
+	indexBufferDescription.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexBufferDescription.CPUAccessFlags = 0;
+	indexBufferDescription.MiscFlags = 0;
+	indexBufferDescription.StructureByteStride = 0;
+
+	indexData.pSysMem = modelData.indices.get();
+	indexData.SysMemPitch = 0;
+	indexData.SysMemSlicePitch = 0;
+	
+	auto result = device->CreateBuffer(&indexBufferDescription, &indexData, &m_IndexBuffer);
+	Assert(result == S_OK);
 }
 
 Model::Model(Model&& other) :
