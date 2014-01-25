@@ -8,11 +8,7 @@
 class System
 {
 private:
-#if !WINDOWS_PHONE
-	DesktopWindowing m_Windowing;
-#else
-	PhoneWindowing m_Windowing;
-#endif
+	Windowing m_Windowing;
 
 	Direct3D m_Direct3D;
 	Input& m_Input;
@@ -20,7 +16,7 @@ private:
 	float m_CurrentTime;
 	float m_LastFpsTime;
 	float m_Fps;
-
+	
 	void Update();
 	void Draw();
 	void IncrementFpsCounter();

@@ -31,4 +31,6 @@ public:
 	inline HWND GetWindowHandle() const { return m_WindowHandle; }
 };
 
+typedef DesktopWindowing Windowing;
+
 #endif

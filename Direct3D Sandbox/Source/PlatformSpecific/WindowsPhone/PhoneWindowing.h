@@ -60,4 +60,6 @@ public:
 	virtual Windows::ApplicationModel::Core::IFrameworkView^ CreateView();
 };
 
+typedef PhoneWindowing Windowing;
+
 #endif	// WINDOWS_PHONE
