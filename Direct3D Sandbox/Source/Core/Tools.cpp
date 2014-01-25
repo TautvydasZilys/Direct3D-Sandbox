@@ -234,3 +234,46 @@ ModelData Tools::LoadModel(const wstring& path, bool shouldInverse)
 
 	return model;
 }
+
+
+vector<wstring> Tools::GetFilesInDirectory(wstring path, const wstring& searchPattern, bool recursive)
+{
+	vector<wstring> result;
+	WIN32_FIND_DATA findData;
+
+	if (path[path.length() - 1] != L'\\')
+	{
+		path += L'\\';
+	}
+		
+	auto fileName = path + searchPattern;
+	auto searchHandle = FindFirstFile(fileName.c_str(), &findData);
+	Assert(searchHandle != INVALID_HANDLE_VALUE);
+
+	do
+	{
+		if (findData.cFileName != L"." && findData.cFileName != L"..")
+		{
+			if(findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+			{
+				if (recursive)
+				{
+					for (const auto& file : GetFilesInDirectory(path + findData.cFileName, searchPattern, recursive))
+					{
+						result.emplace_back(file);
+					}
+				}
+			}
+			else
+			{
+				result.emplace_back(findData.cFileName);
+			}
+		}
+
+		FindNextFile(searchHandle, &findData);
+	}
+	while (GetLastError() != ERROR_NO_MORE_FILES);
+
+	SetLastError(ERROR_SUCCESS);
+	return result;
+}

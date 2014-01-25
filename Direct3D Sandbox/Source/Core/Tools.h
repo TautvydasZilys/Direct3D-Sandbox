@@ -10,6 +10,7 @@ namespace Tools
 	float GetTime();
 	vector<uint8_t> ReadFileToVector(const wstring& path);
 	ModelData LoadModel(const wstring& path, bool shouldInverse);
+	vector<wstring> GetFilesInDirectory(wstring path, const wstring& searchPattern, bool recursive);
 };
 
 struct Point2D
@@ -48,7 +49,7 @@ private:
 					{ \
 						if (!(x)) \
 						{ \
-							OutputDebugStringW(L"Fatal Error!\r\n"); \
+							OutputDebugStringW(L"Assertion fail!\r\n"); \
 							OutputDebugStringW((__WFILE__ + wstring(L": ") + to_wstring(__LINE__) + L"\r\n").c_str()); \
 							__debugbreak(); \
 						} \
@@ -59,8 +60,8 @@ private:
 					{ \
 						if (!(x)) \
 						{ \
-							OutputDebugStringW(L"Fatal Error!\r\n"); \
-							OutputDebugStringW((__WFILE__ + wstring(L": ") + to_wstring(__LINE__)).c_str()); \
+							OutputDebugStringW(L"Assertion fail!\r\n"); \
+							OutputDebugStringW((__WFILE__ + wstring(L": ") + to_wstring(__LINE__) + L"\r\n").c_str()); \
 							DebugBreak(); \
 						} \
 					} \
