@@ -8,6 +8,7 @@
 
 # Build results
 
+Intermediate/
 [Dd]ebug/
 [Rr]elease/
 x64/
@@ -26,7 +27,6 @@ build/
 *_p.c
 *.ilk
 *.meta
-*.obj
 *.pch
 *.pdb
 *.pgc

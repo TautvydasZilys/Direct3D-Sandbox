@@ -146,6 +146,14 @@
     <FxCompile>
       <ShaderModel>4.0_level_9_3</ShaderModel>
     </FxCompile>
+    <PostBuildEvent>
+      <Command>if not exist "$(OutDir)Shaders" mkdir "$(OutDir)Shaders"
+xcopy "$(OutDir)*.cso" "$(OutDir)Shaders\" /Y
+del "$(OutDir)*.cso"
+
+if not exist "$(OutDir)Assets" mkdir "$(OutDir)Assets"
+xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -165,6 +173,14 @@
     <FxCompile>
       <ShaderModel>4.0_level_9_3</ShaderModel>
     </FxCompile>
+    <PostBuildEvent>
+      <Command>if not exist "$(OutDir)Shaders" mkdir "$(OutDir)Shaders"
+xcopy "$(OutDir)*.cso" "$(OutDir)Shaders\" /Y
+del "$(OutDir)*.cso"
+
+if not exist "$(OutDir)Assets" mkdir "$(OutDir)Assets"
+xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -184,6 +200,14 @@
     <FxCompile>
       <ShaderModel>4.0_level_9_3</ShaderModel>
     </FxCompile>
+    <PostBuildEvent>
+      <Command>if not exist "$(OutDir)Shaders" mkdir "$(OutDir)Shaders"
+xcopy "$(OutDir)*.cso" "$(OutDir)Shaders\" /Y
+del "$(OutDir)*.cso"
+
+if not exist "$(OutDir)Assets" mkdir "$(OutDir)Assets"
+xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <ClCompile>
@@ -215,6 +239,14 @@
     <FxCompile>
       <ShaderModel>4.0_level_9_3</ShaderModel>
     </FxCompile>
+    <PostBuildEvent>
+      <Command>if not exist "$(OutDir)Shaders" mkdir "$(OutDir)Shaders"
+xcopy "$(OutDir)*.cso" "$(OutDir)Shaders\" /Y
+del "$(OutDir)*.cso"
+
+if not exist "$(OutDir)Assets" mkdir "$(OutDir)Assets"
+xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -242,6 +274,14 @@
     <FxCompile>
       <ShaderModel>4.0_level_9_3</ShaderModel>
     </FxCompile>
+    <PostBuildEvent>
+      <Command>if not exist "$(OutDir)Shaders" mkdir "$(OutDir)Shaders"
+xcopy "$(OutDir)*.cso" "$(OutDir)Shaders\" /Y
+del "$(OutDir)*.cso"
+
+if not exist "$(OutDir)Assets" mkdir "$(OutDir)Assets"
+xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -269,6 +309,14 @@
     <FxCompile>
       <ShaderModel>4.0_level_9_3</ShaderModel>
     </FxCompile>
+    <PostBuildEvent>
+      <Command>if not exist "$(OutDir)Shaders" mkdir "$(OutDir)Shaders"
+xcopy "$(OutDir)*.cso" "$(OutDir)Shaders\" /Y
+del "$(OutDir)*.cso"
+
+if not exist "$(OutDir)Assets" mkdir "$(OutDir)Assets"
+xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup Condition="'$(Platform)'=='ARM'">
     <Reference Include="platform.winmd">
@@ -331,6 +379,24 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="WMAppManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Source\Shaders\Pixel\ColorPixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Source\Shaders\Vertex\ColorVertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Condition="'$(Platform)'=='ARM'" Project="$(MSBuildExtensionsPath)\Microsoft\WindowsPhone\v$(TargetPlatformVersion)\Microsoft.Cpp.WindowsPhone.$(TargetPlatformVersion).targets" />

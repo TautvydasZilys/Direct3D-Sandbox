@@ -22,6 +22,15 @@
     <Filter Include="Source\Graphics">
       <UniqueIdentifier>{e6d5f0c7-82f7-4f30-b49a-136d86326d33}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Shaders">
+      <UniqueIdentifier>{cd2fbc80-7713-424c-b019-9cc3c40473e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Shaders\Vertex">
+      <UniqueIdentifier>{cfe1b74a-fee0-4a87-8f63-84ba2b98b0a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Shaders\Pixel">
+      <UniqueIdentifier>{dd0a4f2a-6df2-46e7-9354-3a8137d6547f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\PrecompiledHeader.cpp">
@@ -163,5 +172,13 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="WMAppManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Source\Shaders\Vertex\ColorVertexShader.hlsl">
+      <Filter>Source\Shaders\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shaders\Pixel\ColorPixelShader.hlsl">
+      <Filter>Source\Shaders\Pixel</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
