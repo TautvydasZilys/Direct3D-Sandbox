@@ -72,7 +72,7 @@ ComPtr<ID3D11Buffer> VertexShader::CreateVertexBuffer(ComPtr<ID3D11Device> devic
 		for (auto j = 0u; j < m_InputLayoutItems.size(); j++)
 		{
 			memcpy(vertexInput.get() + i * m_InputLayoutSize + destinationFieldOffsets[j], 
-				reinterpret_cast<const uint8_t*>(&model.vertices[i]) + m_InputLayoutItems[i].GetParameterOffset(), m_InputLayoutItems[i].GetSize());
+				reinterpret_cast<const uint8_t*>(&model.vertices[i]) + m_InputLayoutItems[j].GetParameterOffset(), m_InputLayoutItems[j].GetSize());
 		}
 	}
 	

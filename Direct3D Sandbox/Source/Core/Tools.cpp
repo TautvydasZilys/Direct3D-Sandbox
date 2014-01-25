@@ -105,7 +105,7 @@ static void OptimizeModel(ModelData& model)
 
 	for (auto& vertex : vertexMap)
 	{
-		memcpy(&optimizedVertices[i], &vertex.first, sizeof(VertexParameters));
+		memcpy(&optimizedVertices[i], &*vertex.first, sizeof(VertexParameters));
 		indexChanges[vertex.second] = i;
 
 		i++;
@@ -117,6 +117,7 @@ static void OptimizeModel(ModelData& model)
 	}
 
 	model.vertices = std::move(optimizedVertices);
+	model.vertexCount = vertexMap.size();
 }
 
 static ModelData ParseFaces(const vector<DirectX::XMFLOAT4>& coordinates, const vector<DirectX::XMFLOAT2>& textures,
@@ -266,7 +267,7 @@ vector<wstring> Tools::GetFilesInDirectory(wstring path, const wstring& searchPa
 			}
 			else
 			{
-				result.emplace_back(findData.cFileName);
+				result.emplace_back(path + findData.cFileName);
 			}
 		}
 
