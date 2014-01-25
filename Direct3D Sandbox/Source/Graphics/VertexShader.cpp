@@ -32,6 +32,7 @@ void VertexShader::ReflectInputLayout(ComPtr<ID3D11Device> device, const vector<
 	HRESULT result;
 	D3D11_SIGNATURE_PARAMETER_DESC parameterDescription;
 	unique_ptr<D3D11_INPUT_ELEMENT_DESC[]> inputLayoutDescription(new D3D11_INPUT_ELEMENT_DESC[shaderDescription.InputParameters]);
+	m_InputLayoutItems.reserve(shaderDescription.InputParameters);
 	m_InputLayoutSize = 0;
 
 	for (auto i = 0u; i < shaderDescription.InputParameters; i++)
