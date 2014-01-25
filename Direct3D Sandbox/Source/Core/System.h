@@ -1,9 +1,11 @@
 #pragma once
 
+#include "Camera.h"
+#include "Input.h"
+#include "ModelInstance.h"
 #include "Source\Graphics\Direct3D.h"
 #include "Source\PlatformSpecific\Windows\DesktopWindowing.h"
 #include "Source\PlatformSpecific\WindowsPhone\PhoneWindowing.h"
-#include "Input.h"
 
 class System
 {
@@ -16,7 +18,10 @@ private:
 	float m_CurrentTime;
 	float m_LastFpsTime;
 	float m_Fps;
-	
+
+	Camera m_Camera;
+	vector<ModelInstance> m_Models;
+
 	void Update();
 	void Draw();
 	void IncrementFpsCounter();

@@ -18,5 +18,6 @@ public:
 
 	static const float CameraNear;
 	static const float CameraFar;
+	static const float VerticalFieldOfView;
 };
 

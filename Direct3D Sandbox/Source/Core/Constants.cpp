@@ -17,3 +17,4 @@ const D3D11_FILL_MODE Constants::D3DFillMode = D3D11_FILL_SOLID;
 
 const float Constants::CameraNear = 0.000001f;
 const float Constants::CameraFar = 100000.0f;
+const float Constants::VerticalFieldOfView = 50.625f;

@@ -1,4 +1,5 @@
 #include "PrecompiledHeader.h"
+#include "Constants.h"
 #include "System.h"
 #include "Tools.h"
 
@@ -7,8 +8,10 @@ System::System() :
 	m_Direct3D(m_Windowing.GetWindowHandle(), m_Windowing.GetWidth(), m_Windowing.GetHeight(), m_Windowing.IsFullscreen()),
 	m_CurrentTime(Tools::GetTime()),
 	m_Fps(0), 
-	m_LastFpsTime(m_CurrentTime)
+	m_LastFpsTime(m_CurrentTime),
+	m_Camera(true, Constants::VerticalFieldOfView, m_Windowing.GetAspectRatio(), 0, 0)
 {
+
 }
 
 System::~System()
