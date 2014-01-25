@@ -17,7 +17,7 @@ private:
 	ModelParameters m_Parameters;
 
 public:
-	ModelInstance(ComPtr<ID3D11Device> device, IShader& shader, string modelPath, const ModelParameters& renderParameters);
+	ModelInstance(ComPtr<ID3D11Device> device, IShader& shader, string modelPath, const ModelParameters& modelParameters);
 	~ModelInstance();
 
 	void Render(ComPtr<ID3D11DeviceContext> deviceContext, RenderParameters& renderParameters);
