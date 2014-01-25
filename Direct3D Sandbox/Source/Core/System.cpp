@@ -22,7 +22,7 @@ System::System() :
 	auto& colorShader = IShader::GetShader(ShaderType::COLOR_SHADER);
 	ModelParameters modelParameters; 
 
-	modelParameters.position = DirectX::XMFLOAT3(0.0f, 0.0f, -5.0f);
+	modelParameters.position = DirectX::XMFLOAT3(0.0f, 0.0f, -30.0f);
 	modelParameters.rotation = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 	modelParameters.scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);	
 	modelParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -38,7 +38,8 @@ void System::Run()
 {
 	while (!m_Input.ShouldQuit())
 	{
-		m_CurrentTime = Tools::GetTime();
+		m_DeltaTime = Tools::GetTime() - m_CurrentTime;
+		m_CurrentTime += m_DeltaTime;
 		m_Windowing.DispatchMessages();
 
 		Update();
@@ -54,6 +55,64 @@ void System::Update()
 	{
 		m_Input.Quit();
 	}
+	
+	if (m_Input.IsKeyDown(VK_OEM_3))
+	{
+		m_Camera.GoForward(100.0f * m_DeltaTime);
+	}
+
+	if (m_Input.IsKeyDown('W'))
+	{
+		m_Camera.GoForward(5.0f * m_DeltaTime);
+	}
+	if (m_Input.IsKeyDown('S'))
+	{
+		m_Camera.GoBack(5.0f * m_DeltaTime);
+	}
+	if (m_Input.IsKeyDown('A'))
+	{
+		m_Camera.GoLeft(5.0f * m_DeltaTime);
+	}
+	if (m_Input.IsKeyDown('D'))
+	{
+		m_Camera.GoRight(5.0f * m_DeltaTime);
+	}	
+	if (m_Input.IsKeyDown(VK_SPACE))
+	{
+		m_Camera.GoUp(5.0f * m_DeltaTime);
+	}
+	if (m_Input.IsKeyDown('X'))
+	{
+		m_Camera.GoDown(5.0f * m_DeltaTime);
+	}
+	
+	if (m_Input.IsKeyDown(VK_UP))
+	{
+		m_Camera.LookUp(m_DeltaTime / 2.0f);
+	}
+	if (m_Input.IsKeyDown(VK_DOWN))
+	{
+		m_Camera.LookDown(m_DeltaTime / 2.0f);
+	}
+	if (m_Input.IsKeyDown(VK_LEFT))
+	{
+		m_Camera.LookLeft(m_DeltaTime / 2.0f);
+	}
+	if (m_Input.IsKeyDown(VK_RIGHT))
+	{
+		m_Camera.LookRight(m_DeltaTime / 2.0f);
+	}
+	
+	long mouseX, mouseY;
+	m_Input.HandleMouseDisplacement(mouseX, mouseY);
+	if (mouseX > 0.000001f || mouseX < -0.000001f)
+	{
+		m_Camera.LookRight(mouseX / 1000.0f);
+	}
+	if (mouseY > 0.000001f || mouseY < -0.000001f)
+	{
+		m_Camera.LookDown(mouseY / 1000.0f);
+	}
 }
 
 void System::Draw()
@@ -61,6 +120,7 @@ void System::Draw()
 	RenderParameters renderParameters;
 
 	m_Direct3D.SetBackBufferAsRenderTarget();
+	m_Direct3D.TurnZBufferOn();
 	m_Direct3D.StartDrawing();
 
 	renderParameters.time = m_CurrentTime;

@@ -15,6 +15,7 @@ private:
 	Direct3D m_Direct3D;
 	Input& m_Input;
 
+	float m_DeltaTime;
 	float m_CurrentTime;
 	float m_LastFpsTime;
 	float m_Fps;

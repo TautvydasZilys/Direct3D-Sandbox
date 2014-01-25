@@ -23,25 +23,18 @@ Camera::~Camera()
 {
 }
 
-// Rotation matrix (excluding roll):
-//
-// cos(x) * cos(y)     -sin(x)      cos(x) * sin(y)
-// sin(x) * cos(y)      cos(x)      sin(x) * sin(y)
-//     -sin(y)	          0              cos(y)
-//
-//
 void Camera::GoForward(float value)
 {
 	m_Position.x -= value * cos(m_Rotation.x) * sin(m_Rotation.y);
-	m_Position.y -= value * sin(m_Rotation.x) * sin(m_Rotation.y);
-	m_Position.z -= value * cos(m_Rotation.y);
+	m_Position.y -= -value * sin(m_Rotation.x);
+	m_Position.z -= value * cos(m_Rotation.x) * cos(m_Rotation.y);
 }
 
 void Camera::GoBack(float value)
 {
 	m_Position.x += value * cos(m_Rotation.x) * sin(m_Rotation.y);
-	m_Position.y += value * sin(m_Rotation.x) * sin(m_Rotation.y);
-	m_Position.z += value * cos(m_Rotation.y);
+	m_Position.y += -value * sin(m_Rotation.x);
+	m_Position.z += value * cos(m_Rotation.x) * cos(m_Rotation.y);
 }
 
 void Camera::GoUp(float value)
@@ -63,35 +56,35 @@ void Camera::GoDown(float value)
 void Camera::GoLeft(float value)
 {
 	m_Position.x -= value * cos(m_Rotation.y);
-	m_Position.x -= -value * sin(m_Rotation.y);
+	m_Position.z -= -value * sin(m_Rotation.y);
 }
 
 void Camera::GoRight(float value)
 {
 	m_Position.x += value * cos(m_Rotation.y);
-	m_Position.x += -value * sin(m_Rotation.y);
+	m_Position.z += -value * sin(m_Rotation.y);
 }
 	
 void Camera::LookUp(float value)
-{
-	m_Rotation.x -= value;
-	CheckRotationBounds();
-}
-
-void Camera::LookDown(float value)
 {
 	m_Rotation.x += value;
 	CheckRotationBounds();
 }
 
+void Camera::LookDown(float value)
+{
+	m_Rotation.x -= value;
+	CheckRotationBounds();
+}
+
 void Camera::LookLeft(float value)
 {
-	m_Rotation.y -= value;
+	m_Rotation.y += value;
 }
 
 void Camera::LookRight(float value)
 {
-	m_Rotation.y += value;
+	m_Rotation.y -= value;
 }
 
 void Camera::CheckRotationBounds()
