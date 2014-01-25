@@ -24,7 +24,7 @@ Model::Model(ComPtr<ID3D11Device> device, IShader& shader, const wstring& modelP
 	auto& modelData = cachedModel->second;
 	m_VertexBuffer = shader.CreateVertexBuffer(device, modelData);
 	
-	m_IndexCount = modelData.indexCount;
+	m_IndexCount = static_cast<unsigned int>(modelData.indexCount);
 	Assert(m_IndexCount > 0);
 	
 	D3D11_BUFFER_DESC indexBufferDescription;

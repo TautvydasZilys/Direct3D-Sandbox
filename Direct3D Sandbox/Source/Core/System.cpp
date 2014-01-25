@@ -18,6 +18,15 @@ System::System() :
 	{
 		Model::InitializeModel(m_Direct3D.GetDevice(), IShader::GetShader(ShaderType::COLOR_SHADER), model);
 	}
+
+	auto& colorShader = IShader::GetShader(ShaderType::COLOR_SHADER);
+	ModelParameters modelParameters; 
+
+	modelParameters.position = DirectX::XMFLOAT3(0.0f, 0.0f, -5.0f);
+	modelParameters.rotation = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+	modelParameters.scale = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+
+	m_Models.emplace_back(m_Direct3D.GetDevice(), colorShader, L"Assets\\Models\\Cube.obj", modelParameters);
 }
 
 System::~System()
@@ -48,7 +57,16 @@ void System::Update()
 
 void System::Draw()
 {
-	m_Direct3D.StartDrawing(1.0f);
+	RenderParameters renderParameters;
+
+	m_Direct3D.StartDrawing();
+	m_Camera.SetRenderParameters(renderParameters);
+	
+	for (auto& model : m_Models)
+	{
+		model.Render(m_Direct3D.GetDeviceContext(), renderParameters);
+	}
+
 	m_Direct3D.SwapBuffers();
 }
 
