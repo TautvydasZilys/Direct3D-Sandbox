@@ -11,6 +11,8 @@ namespace Tools
 	vector<uint8_t> ReadFileToVector(const wstring& path);
 	ModelData LoadModel(const wstring& path, bool shouldInverse);
 	vector<wstring> GetFilesInDirectory(wstring path, const wstring& searchPattern, bool recursive);
+
+	wstring ToLower(const wstring& str);
 };
 
 struct Point2D

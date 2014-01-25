@@ -10,7 +10,7 @@ struct ModelId
 	const wstring path;
 	const IShader& shader;
 
-	ModelId(wstring path, const IShader& shader) : path(std::move(path)), shader(shader) { }
+	ModelId(const wstring& path, const IShader& shader) : path(Tools::ToLower(path)), shader(shader) { }
 	bool operator==(const ModelId& other) const { return path == other.path && (&shader == &other.shader); }
 };
 

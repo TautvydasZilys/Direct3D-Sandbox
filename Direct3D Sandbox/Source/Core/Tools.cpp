@@ -278,3 +278,12 @@ vector<wstring> Tools::GetFilesInDirectory(wstring path, const wstring& searchPa
 	SetLastError(ERROR_SUCCESS);
 	return result;
 }
+
+wstring Tools::ToLower(const wstring& str)
+{
+	wstring lowerStr;
+	lowerStr.resize(str.length());
+
+	transform(begin(str), end(str), begin(lowerStr), ::towlower);
+	return lowerStr;
+}
