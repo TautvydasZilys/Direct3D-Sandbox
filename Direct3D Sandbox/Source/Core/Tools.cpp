@@ -90,8 +90,8 @@ static void OptimizeModel(ModelData& model)
 		return *first == *second;
 	};
 
-	unordered_map<const VertexParameters*, int, function<size_t(const VertexParameters* value)>, 
-		function<bool(const VertexParameters*, const VertexParameters*)>> vertexMap(16, vertexPtrHash, compareVertexPtrValues);
+	unordered_map<const VertexParameters*, int, size_t(*)(const VertexParameters*), 
+		bool(*)(const VertexParameters*, const VertexParameters*)> vertexMap(16, vertexPtrHash, compareVertexPtrValues);
 
 	map<int, int> indexChanges;
 
