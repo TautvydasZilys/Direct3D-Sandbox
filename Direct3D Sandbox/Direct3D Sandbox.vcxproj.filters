@@ -31,6 +31,12 @@
     <Filter Include="Source\Shaders\Pixel">
       <UniqueIdentifier>{dd0a4f2a-6df2-46e7-9354-3a8137d6547f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\External">
+      <UniqueIdentifier>{1519717c-9125-4cef-9033-8a9ee22cedf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\External\DirectXTK">
+      <UniqueIdentifier>{8738a2f9-65fe-4c3c-af82-874f3c672cbe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\PrecompiledHeader.cpp">
@@ -96,6 +102,12 @@
     <ClCompile Include="Source\Core\Camera.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphics\SamplerState.cpp">
+      <Filter>Source\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\DirectXTK\DDSTextureLoader.cpp">
+      <Filter>Source\External\DirectXTK</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\PrecompiledHeader.h">
@@ -157,6 +169,18 @@
     </ClInclude>
     <ClInclude Include="Source\Core\Camera.h">
       <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\SamplerState.h">
+      <Filter>Source\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\DirectXTK\DDSTextureLoader.h">
+      <Filter>Source\External\DirectXTK</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\DirectXTK\PlatformHelpers.h">
+      <Filter>Source\External\DirectXTK</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\DirectXTK\dds.h">
+      <Filter>Source\External\DirectXTK</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

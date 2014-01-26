@@ -337,6 +337,7 @@ xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E</Command>
     <ClCompile Include="Source\Core\System.cpp" />
     <ClCompile Include="Source\Core\Parameters.cpp" />
     <ClCompile Include="Source\Core\Tools.cpp" />
+    <ClCompile Include="Source\External\DirectXTK\DDSTextureLoader.cpp" />
     <ClCompile Include="Source\Graphics\AutoShader.cpp" />
     <ClCompile Include="Source\Graphics\ConstantBuffer.cpp" />
     <ClCompile Include="Source\Graphics\ConstantBufferField.cpp" />
@@ -345,6 +346,7 @@ xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E</Command>
     <ClCompile Include="Source\Graphics\IShader.cpp" />
     <ClCompile Include="Source\Graphics\Model.cpp" />
     <ClCompile Include="Source\Graphics\PixelShader.cpp" />
+    <ClCompile Include="Source\Graphics\SamplerState.cpp" />
     <ClCompile Include="Source\Graphics\ShaderProgram.cpp" />
     <ClCompile Include="Source\Graphics\VertexShader.cpp" />
     <ClCompile Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.cpp" />
@@ -359,6 +361,9 @@ xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E</Command>
     <ClInclude Include="Source\Core\PrecompiledHeader.h" />
     <ClInclude Include="Source\Core\System.h" />
     <ClInclude Include="Source\Core\Tools.h" />
+    <ClInclude Include="Source\External\DirectXTK\dds.h" />
+    <ClInclude Include="Source\External\DirectXTK\DDSTextureLoader.h" />
+    <ClInclude Include="Source\External\DirectXTK\PlatformHelpers.h" />
     <ClInclude Include="Source\Graphics\AutoShader.h" />
     <ClInclude Include="Source\Graphics\ConstantBuffer.h" />
     <ClInclude Include="Source\Graphics\ConstantBufferField.h" />
@@ -367,6 +372,7 @@ xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E</Command>
     <ClInclude Include="Source\Graphics\IShader.h" />
     <ClInclude Include="Source\Graphics\Model.h" />
     <ClInclude Include="Source\Graphics\PixelShader.h" />
+    <ClInclude Include="Source\Graphics\SamplerState.h" />
     <ClInclude Include="Source\Graphics\ShaderProgram.h" />
     <ClInclude Include="Source\Graphics\VertexShader.h" />
     <ClInclude Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.h" />
