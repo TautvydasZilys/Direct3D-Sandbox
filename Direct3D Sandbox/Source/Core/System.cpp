@@ -2,6 +2,7 @@
 #include "Constants.h"
 #include "Source\Graphics\IShader.h"
 #include "Source\Graphics\SamplerState.h"
+#include "Source\Graphics\Texture.h"
 #include "System.h"
 #include "Tools.h"
 
@@ -13,13 +14,25 @@ System::System() :
 	m_LastFpsTime(m_CurrentTime),
 	m_Camera(true, Constants::VerticalFieldOfView, m_Windowing.GetAspectRatio(), 0, 0)
 {
+	// Load shaders
 	IShader::LoadShaders(m_Direct3D.GetDevice());
+
+	// Initialize sample states
 	SamplerState::Initialize(m_Direct3D.GetDevice());
 
+	// Load models
 	for (const auto& model : Tools::GetFilesInDirectory(L"Assets\\Models", L"*.obj", true))
 	{
 		Model::InitializeModel(m_Direct3D.GetDevice(), IShader::GetShader(ShaderType::COLOR_SHADER), model);
 	}
+
+	// Load textures
+	for (const auto& texture : Tools::GetFilesInDirectory(L"Assets\\Textures", L"*.dds", true))
+	{
+		Texture::LoadTexture(m_Direct3D.GetDevice(), texture);
+	}
+
+	// Create scene
 
 	auto& colorShader = IShader::GetShader(ShaderType::COLOR_SHADER);
 	ModelParameters modelParameters; 
