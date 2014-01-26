@@ -97,7 +97,16 @@ void VertexShader::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext
 {
 	ShaderProgram::SetRenderParameters(deviceContext, renderParameters);
 
+	SetConstantBuffers(deviceContext);
+
 	deviceContext->IASetInputLayout(m_InputLayout.Get());
 	deviceContext->VSSetShader(m_Shader.Get(), nullptr, 0);
-	deviceContext->VSSetConstantBuffers(0, static_cast<UINT>(m_ConstantBufferPtrs.size()), m_ConstantBufferPtrs.data());
+}
+
+void VertexShader::SetConstantBuffers(ComPtr<ID3D11DeviceContext> deviceContext) const
+{
+	if (m_ConstantBufferPtrs.size() > 0)
+	{
+		deviceContext->VSSetConstantBuffers(0, static_cast<UINT>(m_ConstantBufferPtrs.size()), m_ConstantBufferPtrs.data());
+	}
 }
