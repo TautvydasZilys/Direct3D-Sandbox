@@ -279,6 +279,15 @@ vector<wstring> Tools::GetFilesInDirectory(wstring path, const wstring& searchPa
 	return result;
 }
 
+string Tools::ToLower(const string& str)
+{
+	string lowerStr;
+	lowerStr.resize(str.length());
+
+	transform(begin(str), end(str), begin(lowerStr), ::tolower);
+	return lowerStr;
+}
+
 wstring Tools::ToLower(const wstring& str)
 {
 	wstring lowerStr;
