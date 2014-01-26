@@ -14,11 +14,11 @@ System::System() :
 	m_LastFpsTime(m_CurrentTime),
 	m_Camera(true, Constants::VerticalFieldOfView, m_Windowing.GetAspectRatio(), 0, 0)
 {
-	// Load shaders
-	IShader::LoadShaders(m_Direct3D.GetDevice());
-
 	// Initialize sample states
 	SamplerState::Initialize(m_Direct3D.GetDevice());
+
+	// Load shaders
+	IShader::LoadShaders(m_Direct3D.GetDevice());
 
 	// Load models
 	for (const auto& model : Tools::GetFilesInDirectory(L"Assets\\Models", L"*.obj", true))
@@ -34,7 +34,7 @@ System::System() :
 
 	// Create scene
 
-	auto& colorShader = IShader::GetShader(ShaderType::COLOR_SHADER);
+	auto& textureShader = IShader::GetShader(ShaderType::TEXTURE_SHADER);
 	ModelParameters modelParameters; 
 
 	modelParameters.position = DirectX::XMFLOAT3(0.0f, 0.0f, -30.0f);
@@ -42,7 +42,7 @@ System::System() :
 	modelParameters.scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);	
 	modelParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	m_Models.emplace_back(m_Direct3D.GetDevice(), colorShader, L"Assets\\Models\\Cube.obj", modelParameters);
+	m_Models.emplace_back(m_Direct3D.GetDevice(), textureShader, L"Assets\\Models\\Cube.obj", modelParameters, L"Assets\\Textures\\Bell.dds");
 }
 
 System::~System()
