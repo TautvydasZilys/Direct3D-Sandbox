@@ -17,4 +17,5 @@ void IShader::LoadShaders(ComPtr<ID3D11Device> device)
 	s_Shaders.resize(ShaderType::SHADER_COUNT);
 	
 	s_Shaders[COLOR_SHADER] = make_shared<AutoShader>(device, L"Shaders\\ColorVertexShader.cso", L"Shaders\\ColorPixelShader.cso");
+	s_Shaders[TEXTURE_SHADER] = make_shared<AutoShader>(device, L"Shaders\\TextureVertexShader.cso", L"Shaders\\TexturePixelShader.cso");
 }

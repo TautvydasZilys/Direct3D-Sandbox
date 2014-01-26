@@ -6,6 +6,7 @@ struct RenderParameters;
 enum ShaderType
 {
 	COLOR_SHADER = 0,
+	TEXTURE_SHADER,
 	SHADER_COUNT
 };
 
