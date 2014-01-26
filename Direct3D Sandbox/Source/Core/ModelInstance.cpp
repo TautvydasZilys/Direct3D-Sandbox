@@ -1,12 +1,22 @@
 #include "PrecompiledHeader.h"
 #include "ModelInstance.h"
 #include "Parameters.h"
+#include "Source\Graphics\Texture.h"
 
-ModelInstance::ModelInstance(ComPtr<ID3D11Device> device, IShader& shader, wstring modelPath, const ModelParameters& modelParameters) :
+ModelInstance::ModelInstance(ComPtr<ID3D11Device> device, IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters) :
 	m_Model(Model::Get(modelPath, shader)),
 	m_Parameters(modelParameters)
 {
 }
+
+ModelInstance::ModelInstance(ComPtr<ID3D11Device> device, IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, 
+								const wstring& texturePath) :
+	m_Model(Model::Get(modelPath, shader)),
+	m_Parameters(modelParameters),
+	m_Texture(Texture::Get(texturePath))
+{
+}
+
 
 ModelInstance::~ModelInstance()
 {
@@ -20,6 +30,7 @@ void ModelInstance::Render(ComPtr<ID3D11DeviceContext> deviceContext, RenderPara
 
 	DirectX::XMStoreFloat4x4(&renderParameters.worldMatrix, DirectX::XMMatrixTranspose(scale * rotation * position));
 	renderParameters.color = m_Parameters.color;
+	renderParameters.texture = m_Texture.Get();
 
 	m_Model.Render(deviceContext, renderParameters);
 }

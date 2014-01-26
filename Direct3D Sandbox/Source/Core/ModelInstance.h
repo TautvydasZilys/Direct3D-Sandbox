@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Constants.h"
 #include "Source\Graphics\Model.h"
 
 struct ModelParameters
@@ -15,9 +16,11 @@ class ModelInstance
 private:
 	Model& m_Model;
 	ModelParameters m_Parameters;
+	ComPtr<ID3D11ShaderResourceView> m_Texture;
 
 public:
-	ModelInstance(ComPtr<ID3D11Device> device, IShader& shader, wstring modelPath, const ModelParameters& modelParameters);
+	ModelInstance(ComPtr<ID3D11Device> device, IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters);
+	ModelInstance(ComPtr<ID3D11Device> device, IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, const wstring& texturePath);
 	~ModelInstance();
 
 	void Render(ComPtr<ID3D11DeviceContext> deviceContext, RenderParameters& renderParameters);
