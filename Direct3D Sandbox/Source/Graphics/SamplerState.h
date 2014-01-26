@@ -11,6 +11,7 @@ private:
 
 	SamplerState();
 	~SamplerState();
+
 public:
 	static void Initialize(ComPtr<ID3D11Device> device);
 	static ComPtr<ID3D11SamplerState> Get(const string& name);

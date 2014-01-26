@@ -18,6 +18,7 @@ private:
 	void SetRenderParametersNoCheck(ComPtr<ID3D11DeviceContext> deviceContext);
 
 	ConstantBuffer(const ConstantBuffer& other);
+
 public:
 	ConstantBuffer(ComPtr<ID3D11Device> device, ID3D11ShaderReflectionConstantBuffer* bufferReflection);
 	ConstantBuffer(ConstantBuffer&& other);
