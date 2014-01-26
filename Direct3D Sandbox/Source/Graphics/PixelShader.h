@@ -7,12 +7,16 @@ class PixelShader :
 private:
 	ComPtr<ID3D11PixelShader> m_Shader;
 	vector<unsigned int> m_TextureOffsets;
-	vector<ComPtr<ID3D11SamplerState>> m_SamplerStates;
+	vector<ID3D11SamplerState*> m_SamplerStates;
 
 	void AddTextureOffset(const string& name);
 	void AddSamplerState(const string& name);
 
-protected:	
+	void SetConstantBuffers(ComPtr<ID3D11DeviceContext> deviceContext) const;
+	void SetTextures(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters) const;
+	void SetSamplers(ComPtr<ID3D11DeviceContext> deviceContext) const;
+
+protected:
 	virtual void ReflectVirtual(ComPtr<ID3D11Device> device, const vector<uint8_t>& shaderBuffer, ComPtr<ID3D11ShaderReflection> shaderReflection, 
 		const D3D11_SHADER_DESC& shaderDescription);
 
