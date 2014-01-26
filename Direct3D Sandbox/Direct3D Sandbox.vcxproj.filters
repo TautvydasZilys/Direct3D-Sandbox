@@ -108,6 +108,9 @@
     <ClCompile Include="Source\External\DirectXTK\DDSTextureLoader.cpp">
       <Filter>Source\External\DirectXTK</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphics\Texture.cpp">
+      <Filter>Source\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\PrecompiledHeader.h">
@@ -181,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="Source\External\DirectXTK\dds.h">
       <Filter>Source\External\DirectXTK</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Texture.h">
+      <Filter>Source\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

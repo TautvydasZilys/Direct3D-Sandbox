@@ -348,6 +348,7 @@ xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E</Command>
     <ClCompile Include="Source\Graphics\PixelShader.cpp" />
     <ClCompile Include="Source\Graphics\SamplerState.cpp" />
     <ClCompile Include="Source\Graphics\ShaderProgram.cpp" />
+    <ClCompile Include="Source\Graphics\Texture.cpp" />
     <ClCompile Include="Source\Graphics\VertexShader.cpp" />
     <ClCompile Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.cpp" />
     <ClCompile Include="Source\PlatformSpecific\Windows\DesktopWindowing.cpp" />
@@ -374,6 +375,7 @@ xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E</Command>
     <ClInclude Include="Source\Graphics\PixelShader.h" />
     <ClInclude Include="Source\Graphics\SamplerState.h" />
     <ClInclude Include="Source\Graphics\ShaderProgram.h" />
+    <ClInclude Include="Source\Graphics\Texture.h" />
     <ClInclude Include="Source\Graphics\VertexShader.h" />
     <ClInclude Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.h" />
     <ClInclude Include="Source\PlatformSpecific\Windows\DesktopWindowing.h" />
