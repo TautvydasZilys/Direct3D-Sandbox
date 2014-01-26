@@ -20,12 +20,6 @@ System::System() :
 	// Load shaders
 	IShader::LoadShaders(m_Direct3D.GetDevice());
 
-	// Load models
-	for (const auto& model : Tools::GetFilesInDirectory(L"Assets\\Models", L"*.obj", true))
-	{
-		Model::InitializeModel(m_Direct3D.GetDevice(), IShader::GetShader(ShaderType::COLOR_SHADER), model);
-	}
-
 	// Load textures
 	for (const auto& texture : Tools::GetFilesInDirectory(L"Assets\\Textures", L"*.dds", true))
 	{
@@ -122,11 +116,11 @@ void System::Update()
 	m_Input.HandleMouseDisplacement(mouseX, mouseY);
 	if (mouseX > 0.000001f || mouseX < -0.000001f)
 	{
-		m_Camera.LookRight(mouseX / 1000.0f);
+		m_Camera.LookRight(mouseX / 250.0f);
 	}
 	if (mouseY > 0.000001f || mouseY < -0.000001f)
 	{
-		m_Camera.LookDown(mouseY / 1000.0f);
+		m_Camera.LookDown(mouseY / 250.0f);
 	}
 }
 

@@ -69,10 +69,16 @@ void Model::InitializeModel(ComPtr<ID3D11Device> device, IShader& shader, const 
 	s_ModelCache.insert(make_pair(ModelId(modelPath, shader), Model(device, shader, modelPath)));
 }
 
-Model& Model::Get(const wstring& modelPath, IShader& shader)
+Model& Model::Get(ComPtr<ID3D11Device> device, const wstring& modelPath, IShader& shader)
 {
 	auto model = s_ModelCache.find(ModelId(modelPath, shader));
 	
+	if (model == s_ModelCache.end())
+	{
+		InitializeModel(device, shader, modelPath);
+	}
+
+	model = s_ModelCache.find(ModelId(modelPath, shader));
 	Assert(model != s_ModelCache.end());
 	return model->second;
 }

@@ -41,15 +41,15 @@ private:
 
 	Model(const Model& other);															// Not implemented (no copying allowed)
 	Model& operator=(const Model& other);												// Not implemented (no copying allowed)
+	
+	static void InitializeModel(ComPtr<ID3D11Device> device, IShader& shader, const wstring& modelPath);
 
 	template <typename _Ty1, typename _Ty2>
 	friend struct pair;
 
 public:
 	~Model();
-
-	static void InitializeModel(ComPtr<ID3D11Device> device, IShader& shader, const wstring& modelPath);
-	static Model& Get(const wstring& path, IShader& shader);
+	static Model& Get(ComPtr<ID3D11Device> device, const wstring& path, IShader& shader);
 	
 	void Render(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters);
 };

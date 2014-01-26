@@ -4,14 +4,14 @@
 #include "Source\Graphics\Texture.h"
 
 ModelInstance::ModelInstance(ComPtr<ID3D11Device> device, IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters) :
-	m_Model(Model::Get(modelPath, shader)),
+	m_Model(Model::Get(device, modelPath, shader)),
 	m_Parameters(modelParameters)
 {
 }
 
 ModelInstance::ModelInstance(ComPtr<ID3D11Device> device, IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, 
 								const wstring& texturePath) :
-	m_Model(Model::Get(modelPath, shader)),
+	m_Model(Model::Get(device, modelPath, shader)),
 	m_Parameters(modelParameters),
 	m_Texture(Texture::Get(texturePath))
 {
