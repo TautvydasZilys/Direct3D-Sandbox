@@ -1,5 +1,6 @@
 #include "PrecompiledHeader.h"
 #include "..\..\Source\Core\Tools.h"
+#include "ModelProcessor.h"
 #include "ShaderReflector.h"
 
 int CALLBACK wWinMain(
@@ -20,6 +21,12 @@ int CALLBACK wWinMain(
 	for (auto& shaderPath : Tools::GetFilesInDirectory(argv[1], L"*.cso", true))
 	{
 		ShaderReflector::ReflectShader(shaderPath);
+	}
+
+	const wstring modelOutputPath(argv[3]);
+	for (auto& modelPath : Tools::GetFilesInDirectory(argv[2], L"*.obj", true))
+	{
+		ModelProcessor::ProcessModel(modelPath, modelOutputPath);
 	}
 
 	LocalFree(argv);
