@@ -24,6 +24,11 @@ int CALLBACK wWinMain(
 	}
 
 	const wstring modelOutputPath(argv[3]);
+	if (!Tools::DirectoryExists(modelOutputPath))
+	{
+		CreateDirectory(modelOutputPath.c_str(), nullptr);
+	}
+
 	for (auto& modelPath : Tools::GetFilesInDirectory(argv[2], L"*.obj", true))
 	{
 		ModelProcessor::ProcessModel(modelPath, modelOutputPath);
