@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Direct3D Sandbox", "Direct3D Sandbox\Direct3D Sandbox.vcxproj", "{02CC7373-1DE5-457E-A28E-727459CCBB51}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Direct3DPostProcessor", "Direct3DPostProcessor\Direct3DPostProcessor.vcxproj", "{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Direct3DPostProcessor", "Direct3D Sandbox\Tools\Direct3DPostProcessor\Direct3DPostProcessor.vcxproj", "{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
