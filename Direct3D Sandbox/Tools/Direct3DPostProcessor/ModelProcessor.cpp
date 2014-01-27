@@ -203,7 +203,7 @@ static ModelData LoadModel(const wstring& path, bool shouldInverse)
 
 void ModelProcessor::ProcessModel(const wstring& path, const wstring& outputPath)
 {
-	auto modelName = path.substr(path.find_last_of(L'\\'));		// Remove folder
+	auto modelName = path.substr(path.find_last_of(L'\\') + 1);		// Remove folder
 	modelName = modelName.substr(0, modelName.length() - 4);	// Remove extension
 
 	if (outputPath[outputPath.length() - 1] != L'\\')
@@ -215,10 +215,10 @@ void ModelProcessor::ProcessModel(const wstring& path, const wstring& outputPath
 		modelName = outputPath + modelName;
 	}
 
-	for (bool i = false; i <= true; i++)
+	for (int i = 0; i < 2; i++)
 	{
-		auto model = LoadModel(path, i);
-		ofstream out(path + modelName + L".model", ios::binary);
+		auto model = LoadModel(path, i == 1);
+		ofstream out(modelName + L".model", ios::binary);
 		
 		// Vertices
 		out.write(reinterpret_cast<char*>(&model.vertexCount), sizeof(int));

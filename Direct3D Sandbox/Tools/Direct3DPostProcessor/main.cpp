@@ -13,23 +13,26 @@ int CALLBACK wWinMain(
 	int argc;
 	wchar_t** argv = CommandLineToArgvW(lpCmdLine, &argc);
 
-	if (argc != 4)
+	if (argc != 3)
 	{
-		wcout << L"Invalid number of parameters! Usage: " << argv[0] << L"<shaderDirectory> <modelInputDirectory> <modelOutputDirectory>" << endl;
+		wchar_t exeName[MAX_PATH];
+		GetModuleFileName(nullptr, exeName, MAX_PATH);
+
+		wcout << L"Invalid number of parameters! Usage: " << exeName << L" <shaderDirectory> <modelInputDirectory> <modelOutputDirectory>" << endl;
 	}
 
-	for (auto& shaderPath : Tools::GetFilesInDirectory(argv[1], L"*.cso", true))
+	for (auto& shaderPath : Tools::GetFilesInDirectory(argv[0], L"*.cso", true))
 	{
 		ShaderReflector::ReflectShader(shaderPath);
 	}
 
-	const wstring modelOutputPath(argv[3]);
+	const wstring modelOutputPath(argv[2]);
 	if (!Tools::DirectoryExists(modelOutputPath))
 	{
 		CreateDirectory(modelOutputPath.c_str(), nullptr);
 	}
 
-	for (auto& modelPath : Tools::GetFilesInDirectory(argv[2], L"*.obj", true))
+	for (auto& modelPath : Tools::GetFilesInDirectory(argv[1], L"*.obj", true))
 	{
 		ModelProcessor::ProcessModel(modelPath, modelOutputPath);
 	}
