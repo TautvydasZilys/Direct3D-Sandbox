@@ -5,10 +5,11 @@
     <ClCompile Include="PrecompiledHeader.cpp" />
     <ClCompile Include="ShaderReflector.cpp" />
     <ClCompile Include="..\..\Source\Core\Tools.cpp" />
+    <ClCompile Include="ModelProcessor.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PrecompiledHeader.h" />
     <ClInclude Include="ShaderReflector.h" />
     <ClInclude Include="..\..\Source\Core\Tools.h" />
+    <ClInclude Include="ModelProcessor.h" />
   </ItemGroup>
 </Project>
