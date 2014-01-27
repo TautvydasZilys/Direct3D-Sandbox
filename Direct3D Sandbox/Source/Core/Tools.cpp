@@ -1,5 +1,4 @@
 #include "PrecompiledHeader.h"
-#include "Source\Graphics\Model.h"
 #include "Parameters.h"
 #include "Tools.h"
 
@@ -131,7 +130,7 @@ static ModelData ParseFaces(const vector<DirectX::XMFLOAT4>& coordinates, const 
 	model.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[model.vertexCount]);
 	model.indices = unique_ptr<int[]>(new int[model.indexCount]);
 
-	for (int i = 0; i < facesCount;)
+	for (auto i = 0u; i < facesCount;)
 	{
 		for (int j = 0; j < 3; j++, i++)
 		{

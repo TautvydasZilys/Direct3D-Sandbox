@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Core\Tools.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PrecompiledHeader.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -88,6 +89,7 @@
     <ClCompile Include="ShaderReflector.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Core\Tools.h" />
     <ClInclude Include="PrecompiledHeader.h" />
     <ClInclude Include="ShaderReflector.h" />
   </ItemGroup>
