@@ -22,6 +22,8 @@ PixelShader::~PixelShader()
 void PixelShader::ReflectVirtual(ComPtr<ID3D11Device> device, const vector<uint8_t>& shaderBuffer, ComPtr<ID3D11ShaderReflection> shaderReflection, 
 									const D3D11_SHADER_DESC& shaderDescription)
 {
+	ShaderProgram::ReflectVirtual(device, shaderBuffer, shaderReflection, shaderDescription);
+
 	HRESULT result;
 	D3D11_SHADER_INPUT_BIND_DESC desc;
 
