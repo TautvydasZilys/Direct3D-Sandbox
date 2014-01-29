@@ -36,7 +36,7 @@ System::System() :
 	modelParameters.scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);	
 	modelParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	m_Models.emplace_back(m_Direct3D.GetDevice(), textureShader, L"Assets\\Models\\Cube.obj", modelParameters, L"Assets\\Textures\\Bell.dds");
+	m_Models.emplace_back(m_Direct3D.GetDevice(), textureShader, L"Assets\\Models\\Cube.model", modelParameters, L"Assets\\Textures\\Bell.dds");
 }
 
 System::~System()
