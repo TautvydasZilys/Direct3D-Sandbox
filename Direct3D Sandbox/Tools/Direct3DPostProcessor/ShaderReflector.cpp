@@ -140,7 +140,7 @@ static void ReflectOnInputLayout(vector<uint8_t>& metadataBuffer, ComPtr<ID3D11S
 		parameterOffset = RenderParameters::GetFieldByteOffset(semanticName);
 		Assert(parameterOffset != 0xFFFFFFFF);		
 
-		metadataBuffer.resize(metadataBuffer.size() + 20 + semanticName.length());
+		metadataBuffer.resize(metadataBuffer.size() + 17 + semanticName.length());
 
 		AddString(metadataBuffer, byteOffset, semanticName);
 		AddUInt(metadataBuffer, byteOffset, parameterDescription.SemanticIndex);
