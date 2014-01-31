@@ -137,7 +137,7 @@ static void ReflectOnInputLayout(vector<uint8_t>& metadataBuffer, ComPtr<ID3D11S
 
 		GetDXGIFormatAndSize(parameterDescription.Mask, parameterDescription.ComponentType, dxgiFormat, itemSize);
 		semanticName = parameterDescription.SemanticName;
-		parameterOffset = RenderParameters::GetFieldByteOffset(semanticName);
+		parameterOffset = VertexParameters::GetFieldByteOffset(semanticName);
 
 		metadataBuffer.resize(metadataBuffer.size() + 17 + semanticName.length());
 
@@ -164,7 +164,7 @@ static void ReflectOnOtherResources(vector<uint8_t>& metadataBuffer, ComPtr<ID3D
 {	
 	HRESULT result;
 	D3D11_SHADER_INPUT_BIND_DESC desc;
-	unsigned int numberOfResources;
+	unsigned int numberOfResources = 0;
 
 	auto positionForResourceCount = metadataBuffer.size();
 	metadataBuffer.resize(positionForResourceCount + 4);
@@ -212,11 +212,11 @@ vector<uint8_t> ReflectShaderImpl(const vector<uint8_t>& shaderBuffer)
 	}
 	
 	segmentPositionOffset = 4;
-	AddUInt(metadataBuffer, segmentPositionOffset, byteOffset);
+	AddUInt(metadataBuffer, segmentPositionOffset, metadataBuffer.size());
 	ReflectOnInputLayout(metadataBuffer, shaderReflection, shaderDescription);
 
 	segmentPositionOffset = 8;
-	AddUInt(metadataBuffer, segmentPositionOffset, byteOffset);
+	AddUInt(metadataBuffer, segmentPositionOffset, metadataBuffer.size());
 	ReflectOnOtherResources(metadataBuffer, shaderReflection, shaderDescription);
 
 	return metadataBuffer;
@@ -230,10 +230,12 @@ vector<uint8_t> ReflectShaderImpl(const vector<uint8_t>& shaderBuffer)
 //		4 bytes - offset of texture data
 //
 // 4 bytes - number of constant buffers
-// 12 * n bytes - constant buffer data:
-//		4 bytes - paramater offset
-//		4 bytes - start offset
-//		4 bytes - size
+// n Constants buffer data:
+//		4 bytes - number of constant buffer variables
+//		m constant buffer variable data:
+//			4 bytes - paramater offset
+//			4 bytes - start offset
+//			4 bytes - size
 //
 // 4 bytes - number of input layout items
 // n Input layout data:
