@@ -128,3 +128,18 @@ wstring Tools::ToLower(const wstring& str)
 	transform(begin(str), end(str), begin(lowerStr), ::towlower);
 	return lowerStr;
 }
+
+
+string Tools::BufferReader::ReadString(const vector<uint8_t>& buffer, unsigned int& position)
+{
+	string str = reinterpret_cast<const char*>(&buffer[position]);
+	position += str.length() + 1;
+	return str;
+}
+
+unsigned int Tools::BufferReader::ReadUInt(const vector<uint8_t>& buffer, unsigned int& position)
+{
+	auto value = *reinterpret_cast<const unsigned int*>(&buffer[position]);
+	position += 4;
+	return value;
+}

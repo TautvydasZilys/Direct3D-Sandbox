@@ -16,6 +16,12 @@ namespace Tools
 
 	string ToLower(const string& str);
 	wstring ToLower(const wstring& str);
+
+	namespace BufferReader
+	{
+		string ReadString(const vector<uint8_t>& buffer, unsigned int& position);
+		unsigned int ReadUInt(const vector<uint8_t>& buffer, unsigned int& position);
+	}
 };
 
 struct Point2D
