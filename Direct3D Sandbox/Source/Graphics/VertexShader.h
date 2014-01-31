@@ -15,13 +15,13 @@ private:
 	vector<InputLayoutItem> m_InputLayoutItems;
 	unsigned int m_InputLayoutSize;
 	
-	virtual void ReflectVirtual(ComPtr<ID3D11Device> device, const vector<uint8_t>& shaderBuffer, ComPtr<ID3D11ShaderReflection> shaderReflection, 
-		const D3D11_SHADER_DESC& shaderDescription);
-
 	void ReflectInputLayout(ComPtr<ID3D11Device> device, const vector<uint8_t>& shaderBuffer, ComPtr<ID3D11ShaderReflection> shaderReflection, 
 		const D3D11_SHADER_DESC& shaderDescription);
 
 	void SetConstantBuffers(ComPtr<ID3D11DeviceContext> deviceContext) const;
+	
+protected:
+	virtual void Reflect(ComPtr<ID3D11Device> device, const vector<uint8_t>& metadataBuffer);
 
 public:
 	VertexShader(ComPtr<ID3D11Device> device, wstring path);

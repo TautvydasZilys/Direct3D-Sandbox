@@ -11,36 +11,25 @@ ShaderProgram::~ShaderProgram()
 {
 }
 
-void ShaderProgram::Reflect(ComPtr<ID3D11Device> device, const vector<uint8_t>& shaderBuffer)
+void ShaderProgram::Reflect(ComPtr<ID3D11Device> device, const vector<uint8_t>& metadataBuffer)
 {
-	HRESULT result;
-	ComPtr<ID3D11ShaderReflection> shaderReflection;
-	D3D11_SHADER_DESC shaderDescription;
-
-	result = D3DReflect(shaderBuffer.data(), shaderBuffer.size(), IID_ID3D11ShaderReflection, &shaderReflection);
-	Assert(result == S_OK);
-		
-	result = shaderReflection->GetDesc(&shaderDescription);
-	Assert(result == S_OK);
-
-	ReflectVirtual(device, shaderBuffer, shaderReflection, shaderDescription);
+	ReflectConstantBuffers(device, metadataBuffer);
 }
 
-void ShaderProgram::ReflectVirtual(ComPtr<ID3D11Device> device, const vector<uint8_t>& shaderBuffer, ComPtr<ID3D11ShaderReflection> shaderReflection,
-									const D3D11_SHADER_DESC& shaderDescription)
+void ShaderProgram::ReflectConstantBuffers(ComPtr<ID3D11Device> device, const vector<uint8_t>& metadataBuffer)
 {
-	ReflectConstantBuffers(device, shaderReflection, shaderDescription);
-}
+	using namespace Tools::BufferReader;
 
-void ShaderProgram::ReflectConstantBuffers(ComPtr<ID3D11Device> device, ComPtr<ID3D11ShaderReflection> shaderReflection, const D3D11_SHADER_DESC& shaderDescription)
-{
-	m_ConstantBuffers.reserve(shaderDescription.ConstantBuffers);
-	m_ConstantBufferPtrs.reserve(shaderDescription.ConstantBuffers);
+	auto byteOffset = 0u;
+	byteOffset = ReadUInt(metadataBuffer, byteOffset);
+	auto numberOfConstantBuffers = ReadUInt(metadataBuffer, byteOffset);
 
-	for (auto i = 0u; i < shaderDescription.ConstantBuffers; i++)
+	m_ConstantBuffers.reserve(numberOfConstantBuffers);
+	m_ConstantBufferPtrs.reserve(numberOfConstantBuffers);
+
+	for (auto i = 0u; i < numberOfConstantBuffers; i++)
 	{
-		auto buffer = shaderReflection->GetConstantBufferByIndex(i);
-		m_ConstantBuffers.emplace_back(device, buffer);
+		m_ConstantBuffers.emplace_back(device, metadataBuffer, byteOffset);
 		m_ConstantBufferPtrs.push_back(m_ConstantBuffers[i].GetPtr());
 	}
 }

@@ -7,16 +7,12 @@ private:
 	unsigned int m_ByteOffset;
 	unsigned int m_Size;
 	unique_ptr<uint8_t[]> m_Value;
-
-#if DEBUG
-	string m_Name;
-#endif
-
+	
 	ConstantBufferField(const ConstantBufferField& other);
 	ConstantBufferField& operator=(const ConstantBufferField& other);
 
 public:
-	ConstantBufferField(const string& name, unsigned int byteOffset, unsigned int size);
+	ConstantBufferField(unsigned int parameterOffset, unsigned int byteOffset, unsigned int size);
 	ConstantBufferField(ConstantBufferField&& other);
 	ConstantBufferField& operator=(ConstantBufferField&& other);
 

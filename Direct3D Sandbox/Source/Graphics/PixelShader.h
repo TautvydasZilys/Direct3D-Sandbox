@@ -17,8 +17,7 @@ private:
 	void SetSamplers(ComPtr<ID3D11DeviceContext> deviceContext) const;
 
 protected:
-	virtual void ReflectVirtual(ComPtr<ID3D11Device> device, const vector<uint8_t>& shaderBuffer, ComPtr<ID3D11ShaderReflection> shaderReflection, 
-		const D3D11_SHADER_DESC& shaderDescription);
+	virtual void Reflect(ComPtr<ID3D11Device> device, const vector<uint8_t>& metadataBuffer);
 
 public:
 	PixelShader(ComPtr<ID3D11Device> device, wstring path);

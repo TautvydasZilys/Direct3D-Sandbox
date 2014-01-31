@@ -3,32 +3,28 @@
 #include "Parameters.h"
 #include "Tools.h"
 
-ConstantBuffer::ConstantBuffer(ComPtr<ID3D11Device> device, ID3D11ShaderReflectionConstantBuffer* bufferReflection)
+ConstantBuffer::ConstantBuffer(ComPtr<ID3D11Device> device, const vector<uint8_t>& metadataBuffer, unsigned int& byteOffset) :
+	m_Size(0)
 {
-	HRESULT result;
-	D3D11_BUFFER_DESC constantBufferDescription;
-	D3D11_SHADER_BUFFER_DESC bufferDescription;
-	D3D11_SHADER_VARIABLE_DESC fieldDescription;
+	using namespace Tools::BufferReader;
 
-	result = bufferReflection->GetDesc(&bufferDescription);
-	Assert(result == S_OK);
+	auto numberOfFields = ReadUInt(metadataBuffer, byteOffset);
+	m_Fields.reserve(numberOfFields);
 
-#if DEBUG
-	m_Name = bufferDescription.Name;
-#endif
-
-	for (auto i = 0u; i < bufferDescription.Variables; i++)
+	for (auto i = 0u; i < numberOfFields; i++)
 	{
-		auto field = bufferReflection->GetVariableByIndex(i);
+		auto parameterOffset = ReadUInt(metadataBuffer, byteOffset);
+		auto startOffset = ReadUInt(metadataBuffer, byteOffset);
+		auto size = ReadUInt(metadataBuffer, byteOffset);
 
-		result = field->GetDesc(&fieldDescription);
-		Assert(result == S_OK);
-
-		m_Fields.emplace_back(fieldDescription.Name, fieldDescription.StartOffset, fieldDescription.Size);
+		m_Size += size;
+		m_Fields.emplace_back(parameterOffset, startOffset, size);
 	}
 	
 	sort(begin(m_Fields), end(m_Fields));
-	m_Size = bufferDescription.Size;
+
+	HRESULT result;
+	D3D11_BUFFER_DESC constantBufferDescription;
 
 	constantBufferDescription.Usage = D3D11_USAGE_DYNAMIC;
 	constantBufferDescription.ByteWidth = m_Size;
@@ -42,9 +38,6 @@ ConstantBuffer::ConstantBuffer(ComPtr<ID3D11Device> device, ID3D11ShaderReflecti
 }
 
 ConstantBuffer::ConstantBuffer(ConstantBuffer&& other) :
-#if DEBUG
-	m_Name(other.m_Name),
-#endif
 	m_Buffer(other.m_Buffer),
 	m_Fields(std::move(other.m_Fields)),
 	m_Size(other.m_Size)
