@@ -11,7 +11,7 @@ static void AddUInt(vector<uint8_t>& buffer, unsigned int& byteOffset, unsigned 
 static void AddString(vector<uint8_t>& buffer, unsigned int& byteOffset, const string& str)
 {
 	auto length = str.length() + 1;		// Length + null terminator
-	memcpy(&buffer[byteOffset + 4], str.c_str(), length);
+	memcpy(&buffer[byteOffset], str.c_str(), length);
 	byteOffset += length;
 }
 
