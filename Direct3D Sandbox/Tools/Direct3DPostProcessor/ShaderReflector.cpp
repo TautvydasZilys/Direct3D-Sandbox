@@ -138,7 +138,6 @@ static void ReflectOnInputLayout(vector<uint8_t>& metadataBuffer, ComPtr<ID3D11S
 		GetDXGIFormatAndSize(parameterDescription.Mask, parameterDescription.ComponentType, dxgiFormat, itemSize);
 		semanticName = parameterDescription.SemanticName;
 		parameterOffset = RenderParameters::GetFieldByteOffset(semanticName);
-		Assert(parameterOffset != 0xFFFFFFFF);		
 
 		metadataBuffer.resize(metadataBuffer.size() + 17 + semanticName.length());
 
