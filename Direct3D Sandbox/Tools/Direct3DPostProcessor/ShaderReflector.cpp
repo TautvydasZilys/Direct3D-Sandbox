@@ -193,8 +193,9 @@ vector<uint8_t> ReflectShaderImpl(const vector<uint8_t>& shaderBuffer)
 	HRESULT result;
 	ComPtr<ID3D11ShaderReflection> shaderReflection;
 	D3D11_SHADER_DESC shaderDescription;
-	unsigned int byteOffset;
-	vector<uint8_t> metadataBuffer(4);
+	unsigned int byteOffset = 12;
+	unsigned int segmentPositionOffset;
+	vector<uint8_t> metadataBuffer(16);
 
 	result = D3DReflect(shaderBuffer.data(), shaderBuffer.size(), IID_ID3D11ShaderReflection, &shaderReflection);
 	Assert(result == S_OK);
@@ -202,14 +203,21 @@ vector<uint8_t> ReflectShaderImpl(const vector<uint8_t>& shaderBuffer)
 	result = shaderReflection->GetDesc(&shaderDescription);
 	Assert(result == S_OK);
 
+	segmentPositionOffset = 0;
+	AddUInt(metadataBuffer, segmentPositionOffset, byteOffset);
 	AddUInt(metadataBuffer, byteOffset, shaderDescription.ConstantBuffers);
 	for (auto i = 0u; i < shaderDescription.ConstantBuffers; i++)
 	{
 		auto bufferReflection = shaderReflection->GetConstantBufferByIndex(i);
 		ReflectOnConstantBuffer(metadataBuffer, bufferReflection);
 	}
-
+	
+	segmentPositionOffset = 4;
+	AddUInt(metadataBuffer, segmentPositionOffset, byteOffset);
 	ReflectOnInputLayout(metadataBuffer, shaderReflection, shaderDescription);
+
+	segmentPositionOffset = 8;
+	AddUInt(metadataBuffer, segmentPositionOffset, byteOffset);
 	ReflectOnOtherResources(metadataBuffer, shaderReflection, shaderDescription);
 
 	return metadataBuffer;
@@ -217,11 +225,10 @@ vector<uint8_t> ReflectShaderImpl(const vector<uint8_t>& shaderBuffer)
 
 // Metadata format:
 //
-// 16 bytes - metadata file index of byte offsets
+// 12 bytes - metadata file index of byte offsets
 //		4 bytes - offset of constant buffer data
 //		4 bytes - offset of input layout data
 //		4 bytes - offset of texture data
-//		4 bytes - offset of sampler state data
 //
 // 4 bytes - number of constant buffers
 // 12 * n bytes - constant buffer data:
