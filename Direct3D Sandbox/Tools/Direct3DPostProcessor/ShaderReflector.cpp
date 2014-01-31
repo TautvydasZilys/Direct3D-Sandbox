@@ -92,11 +92,13 @@ static void GetDXGIFormatAndSize(int mask, D3D_REGISTER_COMPONENT_TYPE component
 static void ReflectOnConstantBuffer(vector<uint8_t>& metadataBuffer, ID3D11ShaderReflectionConstantBuffer* bufferReflection)
 {	
 	HRESULT result;
-	D3D11_BUFFER_DESC constantBufferDescription;
 	D3D11_SHADER_BUFFER_DESC bufferDescription;
 	D3D11_SHADER_VARIABLE_DESC fieldDescription;
 	unsigned int parameterOffset;
 	
+	result = bufferReflection->GetDesc(&bufferDescription);
+	Assert(result == S_OK);
+
 	auto byteOffset = metadataBuffer.size();
 	metadataBuffer.resize(byteOffset + 4 + 12 * bufferDescription.Variables);
 	AddUInt(metadataBuffer, byteOffset, bufferDescription.Variables);
@@ -108,7 +110,7 @@ static void ReflectOnConstantBuffer(vector<uint8_t>& metadataBuffer, ID3D11Shade
 		result = field->GetDesc(&fieldDescription);
 		Assert(result == S_OK);
 		
-		auto parameterOffset = RenderParameters::GetFieldByteOffset(fieldDescription.Name);
+		parameterOffset = RenderParameters::GetFieldByteOffset(fieldDescription.Name);
 		Assert(parameterOffset != 0xFFFFFFFF);
 		
 		AddUInt(metadataBuffer, byteOffset, parameterOffset);
@@ -172,6 +174,8 @@ vector<uint8_t> ReflectShaderImpl(const vector<uint8_t>& shaderBuffer)
 	}
 
 	ReflectOnInputLayout(metadataBuffer, shaderReflection, shaderDescription);
+
+	return metadataBuffer;
 }
 
 // Metadata format:
@@ -200,6 +204,8 @@ void ShaderReflector::ReflectShader(const wstring& path)
 	auto metadataBuffer = ReflectShaderImpl(shaderBuffer);
 
 	ofstream out(outputPath, ios::binary);
+	Assert(out.is_open());
+
 	out.write(reinterpret_cast<const char*>(metadataBuffer.data()), metadataBuffer.size());
 	out.close();
 }
