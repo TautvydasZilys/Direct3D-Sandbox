@@ -85,7 +85,9 @@ void DesktopWindowing::CreateDesktopWindow()
 		posX, posY, m_Width, m_Height, NULL, NULL, m_ProgramInstance, NULL);
 	Assert(m_WindowHandle != nullptr);
 
+#pragma warning(suppress: 6387)
 	ShowWindow(m_WindowHandle, SW_SHOW);
+#pragma warning(suppress: 6387)
 	SetForegroundWindow(m_WindowHandle);
 	SetFocus(m_WindowHandle);
 
@@ -153,7 +155,7 @@ LRESULT DesktopWindowing::HandleMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 
 LRESULT DesktopWindowing::HandleRawInput(WPARAM wParam, LPARAM lParam) const
 {
-	unsigned int dataSize;
+	unsigned int dataSize = 0;
 	auto& input = Input::GetInstance();
 
 	auto result = GetRawInputData((HRAWINPUT)lParam, RID_INPUT, NULL, &dataSize, sizeof(RAWINPUTHEADER));

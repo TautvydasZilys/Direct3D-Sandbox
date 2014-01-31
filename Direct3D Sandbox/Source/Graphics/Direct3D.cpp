@@ -151,7 +151,7 @@ DXGI_RATIONAL Direct3D::GetRefreshRate(ComPtr<IDXGIOutput> dxgiOutput, int width
 
 	if (Constants::VSyncEnabled)
 	{
-		UINT numberOfDisplayModes;
+		UINT numberOfDisplayModes = 0;
 
 		auto result = dxgiOutput->GetDisplayModeList(DXGI_FORMAT_B8G8R8A8_UNORM, 0, &numberOfDisplayModes, nullptr);
 		if (result == S_OK)
