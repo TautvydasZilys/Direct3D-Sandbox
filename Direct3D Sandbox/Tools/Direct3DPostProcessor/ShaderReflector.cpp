@@ -150,6 +150,44 @@ static void ReflectOnInputLayout(vector<uint8_t>& metadataBuffer, ComPtr<ID3D11S
 	}
 }
 
+static void AddResource(vector<uint8_t>& metadataBuffer, unsigned int type, const string& name)
+{
+	auto byteOffset = metadataBuffer.size();
+
+	metadataBuffer.resize(byteOffset + 5 + name.length());
+	AddUInt(metadataBuffer, byteOffset, type);
+	AddString(metadataBuffer, byteOffset, name);
+}
+
+
+static void ReflectOnOtherResources(vector<uint8_t>& metadataBuffer, ComPtr<ID3D11ShaderReflection> shaderReflection, 
+										const D3D11_SHADER_DESC& shaderDescription)
+{	
+	HRESULT result;
+	D3D11_SHADER_INPUT_BIND_DESC desc;
+	unsigned int numberOfResources;
+
+	auto positionForResourceCount = metadataBuffer.size();
+	metadataBuffer.resize(positionForResourceCount + 4);
+
+	for (auto i = 0u; i < shaderDescription.BoundResources; i++)
+	{
+		result = shaderReflection->GetResourceBindingDesc(i, &desc);
+		Assert(result == S_OK);
+
+		switch (desc.Type)
+		{
+		case D3D_SIT_SAMPLER:
+		case D3D_SIT_TEXTURE:
+			AddResource(metadataBuffer, desc.Type, desc.Name);
+			numberOfResources++;
+			break;
+		}
+	}
+
+	AddUInt(metadataBuffer, positionForResourceCount, numberOfResources);
+}
+
 vector<uint8_t> ReflectShaderImpl(const vector<uint8_t>& shaderBuffer)
 {
 	HRESULT result;
@@ -172,6 +210,7 @@ vector<uint8_t> ReflectShaderImpl(const vector<uint8_t>& shaderBuffer)
 	}
 
 	ReflectOnInputLayout(metadataBuffer, shaderReflection, shaderDescription);
+	ReflectOnOtherResources(metadataBuffer, shaderReflection, shaderDescription);
 
 	return metadataBuffer;
 }
@@ -198,6 +237,11 @@ vector<uint8_t> ReflectShaderImpl(const vector<uint8_t>& shaderBuffer)
 //		4 bytes - itemSize
 //		4 bytes - parameter offset
 // 
+// 4 bytes - number of other resources (currently textures and sampler states) 
+//		4 bytes - resource type (D3D_SIT_TEXTURE and D3D_SIT_SAMPLER)
+//		* - resource name (null terminated)
+//
+//
 void ShaderReflector::ReflectShader(const wstring& path)
 {
 	wstring outputPath = path.substr(0, path.length() - 3) + L".shadermetadata";
