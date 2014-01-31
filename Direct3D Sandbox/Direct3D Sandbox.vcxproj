@@ -186,7 +186,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
       <IgnoreSpecificDefaultLibraries>ole32.lib</IgnoreSpecificDefaultLibraries>
-      <AdditionalOptions>DXGI.lib d3d11.lib d3dcompiler.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>DXGI.lib d3d11.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
       <ShaderModel>4.0_level_9_3</ShaderModel>
@@ -221,7 +221,7 @@ del xcopyexclude.txt
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
       <IgnoreSpecificDefaultLibraries>ole32.lib</IgnoreSpecificDefaultLibraries>
-      <AdditionalOptions>DXGI.lib d3d11.lib d3dcompiler.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>DXGI.lib d3d11.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
       <ShaderModel>4.0_level_9_3</ShaderModel>
@@ -250,7 +250,7 @@ del xcopyexclude.txt</Command>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalOptions>DXGI.lib d3d11.lib d3dcompiler.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>DXGI.lib d3d11.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
       <ShaderModel>4.0_level_9_3</ShaderModel>
@@ -281,7 +281,7 @@ del xcopyexclude.txt
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalOptions>DXGI.lib d3d11.lib d3dcompiler.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>DXGI.lib d3d11.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
       <ShaderModel>4.0_level_9_3</ShaderModel>
@@ -310,7 +310,7 @@ del xcopyexclude.txt</Command>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalOptions>DXGI.lib d3d11.lib d3dcompiler.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>DXGI.lib d3d11.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
       <ShaderModel>4.0_level_9_3</ShaderModel>
@@ -341,7 +341,7 @@ del xcopyexclude.txt
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalOptions>DXGI.lib d3d11.lib d3dcompiler.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>DXGI.lib d3d11.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
       <ShaderModel>4.0_level_9_3</ShaderModel>
@@ -381,7 +381,7 @@ del xcopyexclude.txt</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
       <IgnoreSpecificDefaultLibraries>ole32.lib</IgnoreSpecificDefaultLibraries>
-      <AdditionalOptions>DXGI.lib d3d11.lib d3dcompiler.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>DXGI.lib d3d11.lib %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>WindowsPhoneCore.lib;RuntimeObject.lib;PhoneAppModelHost.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
@@ -421,7 +421,7 @@ del xcopyexclude.txt
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalOptions>DXGI.lib d3d11.lib d3dcompiler.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>DXGI.lib d3d11.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
       <ShaderModel>4.0_level_9_3</ShaderModel>
@@ -460,7 +460,7 @@ del xcopyexclude.txt
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalOptions>DXGI.lib d3d11.lib d3dcompiler.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>DXGI.lib d3d11.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
       <ShaderModel>4.0_level_9_3</ShaderModel>
