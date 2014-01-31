@@ -10,11 +10,9 @@ static void AddUInt(vector<uint8_t>& buffer, unsigned int& byteOffset, unsigned 
 
 static void AddString(vector<uint8_t>& buffer, unsigned int& byteOffset, const string& str)
 {
-	auto length = str.length();
-	
-	AddUInt(buffer, byteOffset, length);
+	auto length = str.length() + 1;		// Length + null terminator
 	memcpy(&buffer[byteOffset + 4], str.c_str(), length);
-	byteOffset += length + 4;
+	byteOffset += length;
 }
 
 static void GetDXGIFormatAndSize(int mask, D3D_REGISTER_COMPONENT_TYPE componentType, DXGI_FORMAT& dxgiFormat, unsigned int& size)
@@ -193,8 +191,12 @@ vector<uint8_t> ReflectShaderImpl(const vector<uint8_t>& shaderBuffer)
 //		4 bytes - size
 //
 // 4 bytes - number of input layout items
-// 
-// 
+// n Input layout data:
+//		* - semantic name string (null terminated)
+//		4 bytes - semantic index
+//		4 bytes - dxgiFormat
+//		4 bytes - itemSize
+//		4 bytes - parameter offset
 // 
 void ShaderReflector::ReflectShader(const wstring& path)
 {
