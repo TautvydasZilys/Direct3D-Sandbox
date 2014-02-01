@@ -65,6 +65,8 @@ void System::Update()
 		m_Input.Quit();
 	}
 	
+	m_Camera.GoForward(m_Input.HandlePinchDisplacement() / 100.0f);
+
 	if (m_Input.IsKeyDown(VK_OEM_3))
 	{
 		m_Camera.GoForward(100.0f * m_DeltaTime);

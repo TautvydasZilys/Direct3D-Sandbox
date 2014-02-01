@@ -53,12 +53,12 @@ long Input::HandlePinchDisplacement()
 {
 	auto returnValue = m_PinchDisplacement;
 	m_PinchDisplacement = 0;
-	return m_PinchDisplacement;
+	return returnValue;
 }
 
 long Input::HandleMouseWheelDisplacement()
 {
 	auto returnValue = m_MouseWheelDisplacement;
 	m_MouseWheelDisplacement = 0;
-	return m_MouseWheelDisplacement;
+	return returnValue;
 }
