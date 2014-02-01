@@ -78,7 +78,7 @@ vector<wstring> Tools::GetFilesInDirectory(wstring path, const wstring& searchPa
 
 	do
 	{
-		if (findData.cFileName != L"." && findData.cFileName != L"..")
+		if (_wcsicmp(findData.cFileName, L".") != 0 && _wcsicmp(findData.cFileName, L"..") != 0)
 		{
 			if(findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 			{
