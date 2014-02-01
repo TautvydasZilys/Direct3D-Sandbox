@@ -55,8 +55,12 @@ ModelData Tools::LoadModel(const wstring& path, bool shouldInvert)
 	in.read(reinterpret_cast<char*>(model.vertices.get()), model.vertexCount * sizeof(VertexParameters));
 
 	in.read(reinterpret_cast<char*>(&model.indexCount), sizeof(int));
-	model.indices = unique_ptr<unsigned int[]>(new unsigned int[model.vertexCount]);
+	model.indices = unique_ptr<unsigned int[]>(new unsigned int[model.indexCount]);
 	in.read(reinterpret_cast<char*>(model.indices.get()), model.indexCount * sizeof(unsigned int));
+
+	OutputDebugString((L"Loading model from " + path + L":\r\n").c_str());
+	OutputDebugString((L"\tNumber of vertices: " + to_wstring(model.vertexCount) + L"\r\n").c_str());
+	OutputDebugString((L"\tNumber of indices: " + to_wstring(model.indexCount) + L"\r\n").c_str());
 
 	in.close();
 	return model;
@@ -136,7 +140,7 @@ wstring Tools::ToLower(const wstring& str)
 string Tools::BufferReader::ReadString(const vector<uint8_t>& buffer, unsigned int& position)
 {
 	string str = reinterpret_cast<const char*>(&buffer[position]);
-	position += str.length() + 1;
+	position += static_cast<unsigned int>(str.length()) + 1;
 	return str;
 }
 
