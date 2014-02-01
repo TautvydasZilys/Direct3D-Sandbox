@@ -12,7 +12,7 @@ PixelShader::PixelShader(ComPtr<ID3D11Device> device, wstring path)
 	Assert(result == S_OK);
 	
 	auto extensionIndex = path.find_last_of('.');
-	auto metadataBuffer = Tools::ReadFileToVector(path.substr(0, extensionIndex + 1) + L".shadermetadata");
+	auto metadataBuffer = Tools::ReadFileToVector(path.substr(0, extensionIndex + 1) + L"shadermetadata");
 
 	Reflect(device, shaderBuffer, metadataBuffer);
 }

@@ -253,7 +253,7 @@ vector<uint8_t> ReflectShaderImpl(const vector<uint8_t>& shaderBuffer)
 //
 void ShaderReflector::ReflectShader(const wstring& path)
 {
-	wstring outputPath = path.substr(0, path.length() - 3) + L".shadermetadata";
+	wstring outputPath = path.substr(0, path.length() - 3) + L"shadermetadata";
 
 	auto shaderBuffer = Tools::ReadFileToVector(path);
 	auto metadataBuffer = ReflectShaderImpl(shaderBuffer);
