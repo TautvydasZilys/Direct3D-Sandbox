@@ -107,11 +107,17 @@ ComPtr<ID3D11Buffer> VertexShader::CreateVertexBuffer(const ModelData& model) co
 void VertexShader::SetRenderParameters(const RenderParameters& renderParameters)
 {
 	ShaderProgram::SetRenderParameters(renderParameters);
+	
+	static const VertexShader* shaderWhichLastSet = nullptr;
 
-	auto deviceContext = GetD3D11DeviceContext();
+	if (shaderWhichLastSet != this)
+	{
+		shaderWhichLastSet = this;
 
-	deviceContext->IASetInputLayout(m_InputLayout.Get());
-	deviceContext->VSSetShader(m_Shader.Get(), nullptr, 0);
+		auto deviceContext = GetD3D11DeviceContext();
+		deviceContext->IASetInputLayout(m_InputLayout.Get());
+		deviceContext->VSSetShader(m_Shader.Get(), nullptr, 0);
+	}
 }
 
 void VertexShader::SetConstantBuffersImpl() const

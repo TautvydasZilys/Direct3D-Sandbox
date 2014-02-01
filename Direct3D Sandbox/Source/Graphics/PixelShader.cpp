@@ -25,8 +25,13 @@ PixelShader::~PixelShader()
 void PixelShader::SetRenderParameters(const RenderParameters& renderParameters)
 {
 	ShaderProgram::SetRenderParameters(renderParameters);
-
-	GetD3D11DeviceContext()->PSSetShader(m_Shader.Get(), nullptr, 0);
+	
+	static const PixelShader* shaderWhichLastSet = nullptr;
+	if (shaderWhichLastSet != this)
+	{
+		shaderWhichLastSet = this;
+		GetD3D11DeviceContext()->PSSetShader(m_Shader.Get(), nullptr, 0);
+	}
 }
 
 void PixelShader::SetConstantBuffersImpl() const

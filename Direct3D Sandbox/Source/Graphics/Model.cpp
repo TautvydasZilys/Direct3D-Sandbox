@@ -87,13 +87,18 @@ Model& Model::Get(const wstring& modelPath, IShader& shader)
 void Model::Render(const RenderParameters& renderParameters)
 {
 	auto const offset = 0u;
+	static const Model* modelWhichLastSet = nullptr;
 	auto deviceContext = GetD3D11DeviceContext();
 
 	m_Shader.SetRenderParameters(renderParameters);
-
-	deviceContext->IASetVertexBuffers(0, 1, m_VertexBuffer.GetAddressOf(), m_Shader.GetInputLayoutSizePtr(), &offset);
-	deviceContext->IASetIndexBuffer(m_IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	
+	if (modelWhichLastSet != this)
+	{
+		modelWhichLastSet = this;
+		deviceContext->IASetVertexBuffers(0, 1, m_VertexBuffer.GetAddressOf(), m_Shader.GetInputLayoutSizePtr(), &offset);
+		deviceContext->IASetIndexBuffer(m_IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	}
 
 	deviceContext->DrawIndexed(m_IndexCount, 0, 0);
 }
