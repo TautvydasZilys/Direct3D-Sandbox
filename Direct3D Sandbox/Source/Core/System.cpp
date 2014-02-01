@@ -31,13 +31,23 @@ System::System() :
 
 	auto& playgroundShader = IShader::GetShader(ShaderType::PLAYGROUND_SHADER);
 	ModelParameters modelParameters; 
-
-	modelParameters.position = DirectX::XMFLOAT3(0.0f, 0.0f, -30.0f);
+	
 	modelParameters.rotation = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
-	modelParameters.scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);	
+	modelParameters.scale = DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f);	
 	modelParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	m_Models.emplace_back(m_Direct3D.GetDevice(), playgroundShader, L"Assets\\Models\\Cube.model", modelParameters, L"Assets\\Textures\\Bell.dds");
+	for (float i = -14.0f; i < 14.0f; i++)
+	{
+		for (float j = -14.0f; j < 14.0f; j++)
+		{
+			for (float k = -14.0f; k < 14.0f; k++)
+			{
+				modelParameters.position = DirectX::XMFLOAT3(i, j, k - 30.0f);
+
+				m_Models.emplace_back(m_Direct3D.GetDevice(), playgroundShader, L"Assets\\Models\\Cube.model", modelParameters, L"Assets\\Textures\\Bell.dds");
+			}
+		}
+	}
 }
 
 System::~System()

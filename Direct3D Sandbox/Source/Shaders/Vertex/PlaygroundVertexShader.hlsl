@@ -28,11 +28,14 @@ PixelInput main(VertexInput input)
 	PixelInput output;
 
 	output.position = mul(input.position, worldMatrix);
+
+	output.position.w *= 2.0f + sin(time);
+
 	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projectionMatrix);
 
-	output.tex = input.tex;
-	output.tex.x += time * 0.25f;
+	output.tex = 4.0f * input.tex;
+	output.tex.x += time;
 
 	return output;
 }
