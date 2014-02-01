@@ -18,7 +18,6 @@
 #include <wrl.h>
 
 #include <D3D11.h>
-#include <d3dcompiler.h>
 #include <DirectXMath.h>
 
 using namespace Microsoft::WRL;
