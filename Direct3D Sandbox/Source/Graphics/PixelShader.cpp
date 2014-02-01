@@ -30,15 +30,27 @@ void PixelShader::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext,
 
 void PixelShader::SetConstantBuffersImpl(ComPtr<ID3D11DeviceContext> deviceContext) const
 {
-	deviceContext->PSSetConstantBuffers(0, static_cast<UINT>(m_ConstantBufferPtrs.size()), m_ConstantBufferPtrs.data());
+	static const PixelShader* shaderWhichLastSet = nullptr;
+
+	if (shaderWhichLastSet != this)
+	{
+		shaderWhichLastSet = this;
+		deviceContext->PSSetConstantBuffers(0, static_cast<UINT>(m_ConstantBufferPtrs.size()), m_ConstantBufferPtrs.data());
+	}
 }
 
-void PixelShader::SetTexturesImpl(ComPtr<ID3D11DeviceContext> deviceContext, const vector<ID3D11ShaderResourceView*> textures) const
+void PixelShader::SetTexturesImpl(ComPtr<ID3D11DeviceContext> deviceContext)
 {
-	deviceContext->PSSetShaderResources(0, static_cast<UINT>(textures.size()), textures.data());
+	deviceContext->PSSetShaderResources(0, static_cast<UINT>(m_Textures.size()), m_Textures.data());
 }
 
 void PixelShader::SetSamplersImpl(ComPtr<ID3D11DeviceContext> deviceContext) const
 {
-	deviceContext->PSSetSamplers(0, static_cast<UINT>(m_SamplerStates.size()), m_SamplerStates.data());
+	static const PixelShader* shaderWhichLastSet = nullptr;
+
+	if (shaderWhichLastSet != this)
+	{
+		shaderWhichLastSet = this;
+		deviceContext->PSSetSamplers(0, static_cast<UINT>(m_SamplerStates.size()), m_SamplerStates.data());
+	}
 }

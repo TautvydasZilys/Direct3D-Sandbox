@@ -60,6 +60,8 @@ void ShaderProgram::ReflectOtherResources(const vector<uint8_t>& metadataBuffer)
 			break;
 		}
 	}
+
+	m_Textures.resize(m_TextureOffsets.size());
 }
 
 void ShaderProgram::AddTextureOffset(const string& name)
@@ -96,20 +98,27 @@ void ShaderProgram::SetConstantBuffers(ComPtr<ID3D11DeviceContext> deviceContext
 	}
 }
 
-void ShaderProgram::SetTextures(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters) const
+void ShaderProgram::SetTextures(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters)
 {	
 	const auto textureCount = m_TextureOffsets.size();
 
 	if (textureCount > 0)
 	{
-		vector<ID3D11ShaderResourceView*> textures(textureCount);
+		bool shouldSet = false;
 
 		for (auto i = 0u; i < textureCount; i++)
 		{
-			memcpy(&textures[i], reinterpret_cast<const uint8_t*>(&renderParameters) + m_TextureOffsets[i], sizeof(ID3D11ShaderResourceView));
+			if (memcmp(&m_Textures[i], reinterpret_cast<const uint8_t*>(&renderParameters) + m_TextureOffsets[i], sizeof(ID3D11ShaderResourceView)) != 0)
+			{
+				shouldSet = true;
+				memcpy(&m_Textures[i], reinterpret_cast<const uint8_t*>(&renderParameters) + m_TextureOffsets[i], sizeof(ID3D11ShaderResourceView));
+			}
 		}
 
-		SetTexturesImpl(deviceContext, textures);
+		if (shouldSet)
+		{
+			SetTexturesImpl(deviceContext);
+		}
 	}
 }
 

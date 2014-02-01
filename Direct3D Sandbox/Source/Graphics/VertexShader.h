@@ -18,7 +18,7 @@ private:
 	void ReflectInputLayout(ComPtr<ID3D11Device> device, const vector<uint8_t>& shaderBuffer, const vector<uint8_t>& metadataBuffer);
 	
 	virtual void SetConstantBuffersImpl(ComPtr<ID3D11DeviceContext> deviceContext) const;
-	virtual void SetTexturesImpl(ComPtr<ID3D11DeviceContext> deviceContext, const vector<ID3D11ShaderResourceView*> textures) const;
+	virtual void SetTexturesImpl(ComPtr<ID3D11DeviceContext> deviceContext);
 	virtual void SetSamplersImpl(ComPtr<ID3D11DeviceContext> deviceContext) const;
 	
 protected:

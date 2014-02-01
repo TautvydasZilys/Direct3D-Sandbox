@@ -113,15 +113,27 @@ void VertexShader::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext
 
 void VertexShader::SetConstantBuffersImpl(ComPtr<ID3D11DeviceContext> deviceContext) const
 {
-	deviceContext->VSSetConstantBuffers(0, static_cast<UINT>(m_ConstantBufferPtrs.size()), m_ConstantBufferPtrs.data());
+	static const VertexShader* shaderWhichLastSet = nullptr;
+
+	if (shaderWhichLastSet != this)
+	{
+		shaderWhichLastSet = this;
+		deviceContext->VSSetConstantBuffers(0, static_cast<UINT>(m_ConstantBufferPtrs.size()), m_ConstantBufferPtrs.data());
+	}
 }
 
-void VertexShader::SetTexturesImpl(ComPtr<ID3D11DeviceContext> deviceContext, const vector<ID3D11ShaderResourceView*> textures) const
+void VertexShader::SetTexturesImpl(ComPtr<ID3D11DeviceContext> deviceContext)
 {
-	deviceContext->VSSetShaderResources(0, static_cast<UINT>(textures.size()), textures.data());
+	deviceContext->VSSetShaderResources(0, static_cast<UINT>(m_Textures.size()), m_Textures.data());
 }
 
 void VertexShader::SetSamplersImpl(ComPtr<ID3D11DeviceContext> deviceContext) const
 {
-	deviceContext->VSSetSamplers(0, static_cast<UINT>(m_SamplerStates.size()), m_SamplerStates.data());
+	static const VertexShader* shaderWhichLastSet = nullptr;
+
+	if (shaderWhichLastSet != this)
+	{
+		shaderWhichLastSet = this;
+		deviceContext->VSSetSamplers(0, static_cast<UINT>(m_SamplerStates.size()), m_SamplerStates.data());
+	}
 }
