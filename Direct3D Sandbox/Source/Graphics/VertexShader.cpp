@@ -11,7 +11,10 @@ VertexShader::VertexShader(ComPtr<ID3D11Device> device, wstring path)
 	result = device->CreateVertexShader(&shaderBuffer[0], shaderBuffer.size(), nullptr, &m_Shader);
 	Assert(result == S_OK);
 
-	Reflect(device, shaderBuffer);
+	auto extensionIndex = path.find_last_of('.');
+	auto metadataBuffer = Tools::ReadFileToVector(path.substr(0, extensionIndex + 1) + L".shadermetadata");
+
+	Reflect(device, shaderBuffer, metadataBuffer);
 }
 
 VertexShader::~VertexShader()
@@ -30,7 +33,6 @@ void VertexShader::ReflectInputLayout(ComPtr<ID3D11Device> device, const vector<
 	using namespace Tools::BufferReader;
 
 	HRESULT result;
-	D3D11_SIGNATURE_PARAMETER_DESC parameterDescription;
 
 	auto byteOffset = 4u;
 	byteOffset = ReadUInt(metadataBuffer, byteOffset);
@@ -48,7 +50,7 @@ void VertexShader::ReflectInputLayout(ComPtr<ID3D11Device> device, const vector<
 		auto itemSize = ReadUInt(metadataBuffer, byteOffset);
 		auto parameterOffset = ReadUInt(metadataBuffer, byteOffset);
 
-		m_InputLayoutItems.emplace_back(device, semanticName, semanticIndex, dxgiFormat, itemSize, parameterOffset);
+		m_InputLayoutItems.emplace_back(semanticName, semanticIndex, dxgiFormat, itemSize, parameterOffset);
 		m_InputLayoutSize += m_InputLayoutItems[i].GetSize();
 		m_InputLayoutItems[i].FillInputElementDescription(inputLayoutDescription[i]);
 	}

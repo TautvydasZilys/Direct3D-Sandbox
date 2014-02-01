@@ -1,4 +1,5 @@
 #include "PrecompiledHeader.h"
+#include <d3dcompiler.h>
 #include "ShaderReflector.h"
 #include "Tools.h"
 
