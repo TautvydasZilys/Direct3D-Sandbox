@@ -73,7 +73,7 @@ vector<wstring> Tools::GetFilesInDirectory(wstring path, const wstring& searchPa
 	}
 		
 	auto fileName = path + searchPattern;
-	auto searchHandle = FindFirstFile(fileName.c_str(), &findData);
+	auto searchHandle = FindFirstFileEx(fileName.c_str(), FindExInfoStandard, &findData, FindExSearchNameMatch, nullptr, 0);
 	Assert(searchHandle != INVALID_HANDLE_VALUE);
 
 	do
@@ -106,9 +106,12 @@ vector<wstring> Tools::GetFilesInDirectory(wstring path, const wstring& searchPa
 
 bool Tools::DirectoryExists(const wstring& path)
 {
-	auto attributes = GetFileAttributes(path.c_str());
+	WIN32_FILE_ATTRIBUTE_DATA attributes;
 
-	return (attributes != INVALID_FILE_ATTRIBUTES) && (attributes & FILE_ATTRIBUTE_DIRECTORY);
+	auto result = GetFileAttributesEx(path.c_str(), GetFileExInfoStandard, &attributes);
+	Assert(result != 0 || GetLastError() == ERROR_FILE_NOT_FOUND);
+
+	return (attributes.dwFileAttributes != INVALID_FILE_ATTRIBUTES) && (attributes.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
 }
 
 string Tools::ToLower(const string& str)
