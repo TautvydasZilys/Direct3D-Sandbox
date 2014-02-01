@@ -12,7 +12,7 @@ private:
 	InputLayoutItem(const InputLayoutItem& other);
 
 public:
-	InputLayoutItem(ComPtr<ID3D11Device> device, const D3D11_SIGNATURE_PARAMETER_DESC& parameterDescription);
+	InputLayoutItem(const string& semanticName, unsigned int semanticIndex, DXGI_FORMAT dxgiFormat, unsigned int itemSize, unsigned int parameterOffset);
 	InputLayoutItem(InputLayoutItem&& other);
 
 	~InputLayoutItem();

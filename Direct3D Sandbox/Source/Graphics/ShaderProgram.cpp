@@ -11,7 +11,7 @@ ShaderProgram::~ShaderProgram()
 {
 }
 
-void ShaderProgram::Reflect(ComPtr<ID3D11Device> device, const vector<uint8_t>& metadataBuffer)
+void ShaderProgram::Reflect(ComPtr<ID3D11Device> device, const vector<uint8_t>& shaderBuffer, const vector<uint8_t>& metadataBuffer)
 {
 	ReflectConstantBuffers(device, metadataBuffer);
 }

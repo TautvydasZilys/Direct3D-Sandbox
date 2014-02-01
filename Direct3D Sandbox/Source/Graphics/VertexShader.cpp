@@ -18,34 +18,42 @@ VertexShader::~VertexShader()
 {
 }
 
-void VertexShader::ReflectVirtual(ComPtr<ID3D11Device> device, const vector<uint8_t>& shaderBuffer, ComPtr<ID3D11ShaderReflection> shaderReflection, 
-									const D3D11_SHADER_DESC& shaderDescription)
+void VertexShader::Reflect(ComPtr<ID3D11Device> device, const vector<uint8_t>& shaderBuffer, const vector<uint8_t>& metadataBuffer)
 {
-	ShaderProgram::ReflectVirtual(device, shaderBuffer, shaderReflection, shaderDescription);
+	ShaderProgram::Reflect(device, shaderBuffer, metadataBuffer);
 
-	ReflectInputLayout(device, shaderBuffer, shaderReflection, shaderDescription);
+	ReflectInputLayout(device, shaderBuffer, metadataBuffer);
 }
 
-void VertexShader::ReflectInputLayout(ComPtr<ID3D11Device> device, const vector<uint8_t>& shaderBuffer, ComPtr<ID3D11ShaderReflection> shaderReflection, 
-										const D3D11_SHADER_DESC& shaderDescription)
+void VertexShader::ReflectInputLayout(ComPtr<ID3D11Device> device, const vector<uint8_t>& shaderBuffer, const vector<uint8_t>& metadataBuffer)
 {
+	using namespace Tools::BufferReader;
+
 	HRESULT result;
 	D3D11_SIGNATURE_PARAMETER_DESC parameterDescription;
-	unique_ptr<D3D11_INPUT_ELEMENT_DESC[]> inputLayoutDescription(new D3D11_INPUT_ELEMENT_DESC[shaderDescription.InputParameters]);
-	m_InputLayoutItems.reserve(shaderDescription.InputParameters);
+
+	auto byteOffset = 4u;
+	byteOffset = ReadUInt(metadataBuffer, byteOffset);
+	auto numberOfInputLayoutItems = ReadUInt(metadataBuffer, byteOffset);
+	
+	unique_ptr<D3D11_INPUT_ELEMENT_DESC[]> inputLayoutDescription(new D3D11_INPUT_ELEMENT_DESC[numberOfInputLayoutItems]);
+	m_InputLayoutItems.reserve(numberOfInputLayoutItems);
 	m_InputLayoutSize = 0;
 
-	for (auto i = 0u; i < shaderDescription.InputParameters; i++)
+	for (auto i = 0u; i < numberOfInputLayoutItems; i++)
 	{
-		result = shaderReflection->GetInputParameterDesc(i, &parameterDescription);
-		Assert(result == S_OK);
+		auto semanticName =	ReadString(metadataBuffer, byteOffset);
+		auto semanticIndex = ReadUInt(metadataBuffer, byteOffset);
+		auto dxgiFormat = static_cast<DXGI_FORMAT>(ReadUInt(metadataBuffer, byteOffset));
+		auto itemSize = ReadUInt(metadataBuffer, byteOffset);
+		auto parameterOffset = ReadUInt(metadataBuffer, byteOffset);
 
-		m_InputLayoutItems.emplace_back(device, parameterDescription);
+		m_InputLayoutItems.emplace_back(device, semanticName, semanticIndex, dxgiFormat, itemSize, parameterOffset);
 		m_InputLayoutSize += m_InputLayoutItems[i].GetSize();
 		m_InputLayoutItems[i].FillInputElementDescription(inputLayoutDescription[i]);
 	}
 		
-	result = device->CreateInputLayout(inputLayoutDescription.get(), shaderDescription.InputParameters, 
+	result = device->CreateInputLayout(inputLayoutDescription.get(), numberOfInputLayoutItems, 
 		shaderBuffer.data(), shaderBuffer.size(), &m_InputLayout);
 	Assert(result == S_OK);
 }

@@ -9,7 +9,7 @@ protected:
 	vector<ID3D11Buffer*> m_ConstantBufferPtrs;
 	
 	ShaderProgram();
-	virtual void Reflect(ComPtr<ID3D11Device> device, const vector<uint8_t>& metadataBuffer);
+	virtual void Reflect(ComPtr<ID3D11Device> device, const vector<uint8_t>& shaderBuffer, const vector<uint8_t>& metadataBuffer);
 
 	void ReflectConstantBuffers(ComPtr<ID3D11Device> device, const vector<uint8_t>& metadataBuffer);
 
