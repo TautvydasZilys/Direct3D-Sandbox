@@ -18,3 +18,9 @@ const D3D11_FILL_MODE Constants::D3DFillMode = D3D11_FILL_SOLID;
 const float Constants::CameraNear = 0.01f;
 const float Constants::CameraFar = 1000.0f;
 const float Constants::VerticalFieldOfView = 50.625f;
+
+#if WINDOWS_PHONE
+const float Constants::DefaultMouseSensitivity = 0.2f;
+#else
+const float Constants::DefaultMouseSensitivity = 0.5f;
+#endif

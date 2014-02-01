@@ -12,6 +12,7 @@ System::System() :
 	m_CurrentTime(Tools::GetTime()),
 	m_Fps(0), 
 	m_LastFpsTime(m_CurrentTime),
+	m_MouseSensitivity(Constants::DefaultMouseSensitivity),
 	m_Camera(true, Constants::VerticalFieldOfView, m_Windowing.GetAspectRatio(), 0, 0)
 {
 	// Initialize sample states
@@ -118,11 +119,20 @@ void System::Update()
 	m_Input.HandleMouseDisplacement(mouseX, mouseY);
 	if (mouseX > 0.000001f || mouseX < -0.000001f)
 	{
-		m_Camera.LookRight(mouseX / 250.0f);
+		m_Camera.LookRight(m_MouseSensitivity * mouseX / 250.0f);
 	}
 	if (mouseY > 0.000001f || mouseY < -0.000001f)
 	{
-		m_Camera.LookDown(mouseY / 250.0f);
+		m_Camera.LookDown(m_MouseSensitivity * mouseY / 250.0f);
+	}
+
+	if (m_Input.IsKeyDown(VK_ADD))
+	{
+		m_MouseSensitivity += m_DeltaTime * m_MouseSensitivity;
+	}
+	if (m_Input.IsKeyDown(VK_SUBTRACT))
+	{
+		m_MouseSensitivity -= m_DeltaTime * m_MouseSensitivity;
 	}
 }
 

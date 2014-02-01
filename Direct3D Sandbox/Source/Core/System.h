@@ -14,6 +14,7 @@ private:
 
 	Direct3D m_Direct3D;
 	Input& m_Input;
+	float m_MouseSensitivity;
 
 	float m_DeltaTime;
 	float m_CurrentTime;
