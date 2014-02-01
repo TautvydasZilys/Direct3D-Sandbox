@@ -117,8 +117,8 @@ void PhoneFrameworkView::OnPointerMoved(CoreWindow^ sender, PointerEventArgs^ ar
 
 	if (numberOfFingersDown == 1)
 	{
-		input.SetMouseDisplacement(static_cast<long int>(cursorPosition[id].y - args->CurrentPoint->RawPosition.Y), 
-								   static_cast<long int>(args->CurrentPoint->RawPosition.X - cursorPosition[id].x));
+		input.SetMouseDisplacement(static_cast<long int>(cursorPosition[id].x - args->CurrentPoint->RawPosition.X), 
+								   static_cast<long int>(cursorPosition[id].y - args->CurrentPoint->RawPosition.Y));
 	}
 	else if (numberOfFingersDown == 2)
 	{
