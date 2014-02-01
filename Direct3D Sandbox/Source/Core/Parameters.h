@@ -8,7 +8,8 @@
 			FIELD(DirectX::XMFLOAT4X4, viewMatrix) \
 			FIELD(DirectX::XMFLOAT4X4, worldMatrix) \
 			FIELD(DirectX::XMFLOAT4, color) \
-			FIELD(ID3D11ShaderResourceView*, texture)
+			FIELD(ID3D11ShaderResourceView*, texture) \
+			FIELD(DirectX::XMFLOAT4, padding)
 
 
 #define VERTEX_PARAMETERS \

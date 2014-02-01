@@ -9,6 +9,7 @@ ConstantBufferField::ConstantBufferField(unsigned int parameterOffset, unsigned 
 	m_Size(size), 
 	m_Value(new uint8_t[size])
 {
+	Assert(m_ParameterOffset != 0xFFFFFFFF);
 }
 
 ConstantBufferField::ConstantBufferField(ConstantBufferField&& other) :

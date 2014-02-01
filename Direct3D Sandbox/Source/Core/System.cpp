@@ -29,7 +29,7 @@ System::System() :
 
 	// Create scene
 
-	auto& textureShader = IShader::GetShader(ShaderType::TEXTURE_SHADER);
+	auto& playgroundShader = IShader::GetShader(ShaderType::PLAYGROUND_SHADER);
 	ModelParameters modelParameters; 
 
 	modelParameters.position = DirectX::XMFLOAT3(0.0f, 0.0f, -30.0f);
@@ -37,7 +37,7 @@ System::System() :
 	modelParameters.scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);	
 	modelParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	m_Models.emplace_back(m_Direct3D.GetDevice(), textureShader, L"Assets\\Models\\Cube.model", modelParameters, L"Assets\\Textures\\Bell.dds");
+	m_Models.emplace_back(m_Direct3D.GetDevice(), playgroundShader, L"Assets\\Models\\Cube.model", modelParameters, L"Assets\\Textures\\Bell.dds");
 }
 
 System::~System()

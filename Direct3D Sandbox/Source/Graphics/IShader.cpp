@@ -18,4 +18,5 @@ void IShader::LoadShaders(ComPtr<ID3D11Device> device)
 	
 	s_Shaders[COLOR_SHADER] = make_shared<AutoShader>(device, L"Shaders\\ColorVertexShader.cso", L"Shaders\\ColorPixelShader.cso");
 	s_Shaders[TEXTURE_SHADER] = make_shared<AutoShader>(device, L"Shaders\\TextureVertexShader.cso", L"Shaders\\TexturePixelShader.cso");
+	s_Shaders[PLAYGROUND_SHADER] = make_shared<AutoShader>(device, L"Shaders\\PlaygroundVertexShader.cso", L"Shaders\\PlaygroundPixelShader.cso");
 }

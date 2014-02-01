@@ -216,5 +216,11 @@
     <FxCompile Include="Source\Shaders\Vertex\TextureVertexShader.hlsl">
       <Filter>Source\Shaders\Vertex</Filter>
     </FxCompile>
+    <FxCompile Include="Source\Shaders\Pixel\PlaygroundPixelShader.hlsl">
+      <Filter>Source\Shaders\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shaders\Vertex\PlaygroundVertexShader.hlsl">
+      <Filter>Source\Shaders\Vertex</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
