@@ -48,7 +48,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <XapOutputs>true</XapOutputs>
-    <XapFilename>Direct3DSandbox1_$(Configuration)_$(Platform).xap</XapFilename>
+    <XapFilename>Direct3D Sandbox_$(Configuration)_$(Platform).xap</XapFilename>
     <WinMDAssembly>true</WinMDAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Platform)'=='Win32'" Label="Globals">
@@ -148,14 +148,17 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
+    <CustomBuildAfterTargets>XapPackager</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|ARM'">
     <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
+    <CustomBuildAfterTargets>XapPackager</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
+    <CustomBuildAfterTargets>XapPackager</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
@@ -203,6 +206,24 @@ del xcopyexclude.txt
 
 "$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models"</Command>
     </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>del "$(OutDir)$(ProjectName)_$(Configuration)_$(Platform).xap"
+"$(ProjectDir)Tools\7z\7z.exe" a -tzip "$(OutDir)$(ProjectName)_$(Configuration)_$(Platform).xap" "$(OutDir)*.*" -r
+</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Message>Packing XAP.</Message>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>dummy</Outputs>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <TreatOutputAsContent>true</TreatOutputAsContent>
+    </CustomBuildStep>
+    <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|ARM'">
     <ClCompile>
@@ -236,6 +257,24 @@ echo \Models\ &gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt</Command>
     </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>del "$(OutDir)$(ProjectName)_$(Configuration)_$(Platform).xap"
+"$(ProjectDir)Tools\7z\7z.exe" a -tzip "$(OutDir)$(ProjectName)_$(Configuration)_$(Platform).xap" "$(OutDir)*.*" -r
+</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Message>Packing XAP.</Message>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>dummy</Outputs>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <TreatOutputAsContent>true</TreatOutputAsContent>
+    </CustomBuildStep>
+    <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -399,6 +438,24 @@ del xcopyexclude.txt
 
 "$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models"</Command>
     </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>del "$(OutDir)$(ProjectName)_$(Configuration)_$(Platform).xap"
+"$(ProjectDir)Tools\7z\7z.exe" a -tzip "$(OutDir)$(ProjectName)_$(Configuration)_$(Platform).xap" "$(OutDir)*.*" -r
+</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Message>Packing XAP.</Message>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>dummy</Outputs>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <TreatOutputAsContent>true</TreatOutputAsContent>
+    </CustomBuildStep>
+    <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
