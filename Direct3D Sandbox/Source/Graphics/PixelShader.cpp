@@ -1,7 +1,6 @@
 #include "PrecompiledHeader.h"
 #include "Parameters.h"
 #include "PixelShader.h"
-#include "SamplerState.h"
 #include "Tools.h"
 
 PixelShader::PixelShader(ComPtr<ID3D11Device> device, wstring path)
@@ -17,46 +16,6 @@ PixelShader::PixelShader(ComPtr<ID3D11Device> device, wstring path)
 
 PixelShader::~PixelShader()
 {
-}
-
-void PixelShader::ReflectVirtual(ComPtr<ID3D11Device> device, const vector<uint8_t>& shaderBuffer, ComPtr<ID3D11ShaderReflection> shaderReflection, 
-									const D3D11_SHADER_DESC& shaderDescription)
-{
-	ShaderProgram::ReflectVirtual(device, shaderBuffer, shaderReflection, shaderDescription);
-
-	HRESULT result;
-	D3D11_SHADER_INPUT_BIND_DESC desc;
-
-	for (auto i = 0u; i < shaderDescription.BoundResources; i++)
-	{
-		result = shaderReflection->GetResourceBindingDesc(i, &desc);
-		Assert(result == S_OK);
-
-		switch (desc.Type)
-		{
-		case D3D_SIT_TEXTURE:
-			AddTextureOffset(desc.Name);
-			break;
-
-		case D3D_SIT_SAMPLER:
-			AddSamplerState(desc.Name);
-			break;
-		}
-	}
-}
-
-void PixelShader::AddTextureOffset(const string& name)
-{
-	auto offset = RenderParameters::GetFieldByteOffset(name);
-	Assert(offset != 0xFFFFFFFF);
-
-	m_TextureOffsets.push_back(offset);
-}
-
-void PixelShader::AddSamplerState(const string& name)
-{
-	auto samplerState = SamplerState::Get(name);
-	m_SamplerStates.push_back(samplerState.Get());
 }
 
 void PixelShader::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters)
