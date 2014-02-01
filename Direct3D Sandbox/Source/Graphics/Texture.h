@@ -9,7 +9,7 @@ private:
 	~Texture();
 
 public:	
-	static void LoadTexture(ComPtr<ID3D11Device> device, const wstring& path);
+	static void LoadTexture(const wstring& path);
 	static ComPtr<ID3D11ShaderResourceView> Get(const wstring& path);
 };
 

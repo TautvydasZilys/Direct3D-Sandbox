@@ -1,34 +1,35 @@
 #include "PrecompiledHeader.h"
+#include "Direct3D.h"
 #include "Parameters.h"
 #include "Tools.h"
 #include "VertexShader.h"
 
-VertexShader::VertexShader(ComPtr<ID3D11Device> device, wstring path)
+VertexShader::VertexShader(wstring path)
 {
 	HRESULT result;
 
 	auto shaderBuffer = Tools::ReadFileToVector(path);
-	result = device->CreateVertexShader(&shaderBuffer[0], shaderBuffer.size(), nullptr, &m_Shader);
+	result = GetD3D11Device()->CreateVertexShader(&shaderBuffer[0], shaderBuffer.size(), nullptr, &m_Shader);
 	Assert(result == S_OK);
 
 	auto extensionIndex = path.find_last_of('.');
 	auto metadataBuffer = Tools::ReadFileToVector(path.substr(0, extensionIndex + 1) + L"shadermetadata");
 
-	Reflect(device, shaderBuffer, metadataBuffer);
+	Reflect(shaderBuffer, metadataBuffer);
 }
 
 VertexShader::~VertexShader()
 {
 }
 
-void VertexShader::Reflect(ComPtr<ID3D11Device> device, const vector<uint8_t>& shaderBuffer, const vector<uint8_t>& metadataBuffer)
+void VertexShader::Reflect(const vector<uint8_t>& shaderBuffer, const vector<uint8_t>& metadataBuffer)
 {
-	ShaderProgram::Reflect(device, shaderBuffer, metadataBuffer);
+	ShaderProgram::Reflect(shaderBuffer, metadataBuffer);
 
-	ReflectInputLayout(device, shaderBuffer, metadataBuffer);
+	ReflectInputLayout(shaderBuffer, metadataBuffer);
 }
 
-void VertexShader::ReflectInputLayout(ComPtr<ID3D11Device> device, const vector<uint8_t>& shaderBuffer, const vector<uint8_t>& metadataBuffer)
+void VertexShader::ReflectInputLayout(const vector<uint8_t>& shaderBuffer, const vector<uint8_t>& metadataBuffer)
 {
 	using namespace Tools::BufferReader;
 
@@ -55,12 +56,12 @@ void VertexShader::ReflectInputLayout(ComPtr<ID3D11Device> device, const vector<
 		m_InputLayoutItems[i].FillInputElementDescription(inputLayoutDescription[i]);
 	}
 		
-	result = device->CreateInputLayout(inputLayoutDescription.get(), numberOfInputLayoutItems, 
+	result = GetD3D11Device()->CreateInputLayout(inputLayoutDescription.get(), numberOfInputLayoutItems, 
 		shaderBuffer.data(), shaderBuffer.size(), &m_InputLayout);
 	Assert(result == S_OK);
 }
 
-ComPtr<ID3D11Buffer> VertexShader::CreateVertexBuffer(ComPtr<ID3D11Device> device, const ModelData& model) const
+ComPtr<ID3D11Buffer> VertexShader::CreateVertexBuffer(const ModelData& model) const
 {
 	HRESULT result;
 	D3D11_BUFFER_DESC bufferDescription;
@@ -97,43 +98,45 @@ ComPtr<ID3D11Buffer> VertexShader::CreateVertexBuffer(ComPtr<ID3D11Device> devic
 	vertexData.SysMemPitch = 0;
 	vertexData.SysMemSlicePitch = 0;
 
-	result = device->CreateBuffer(&bufferDescription, &vertexData, &vertexBuffer);
+	result = GetD3D11Device()->CreateBuffer(&bufferDescription, &vertexData, &vertexBuffer);
 	Assert(result == S_OK);
 
 	return vertexBuffer;
 }
 
-void VertexShader::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters)
+void VertexShader::SetRenderParameters(const RenderParameters& renderParameters)
 {
-	ShaderProgram::SetRenderParameters(deviceContext, renderParameters);
+	ShaderProgram::SetRenderParameters(renderParameters);
+
+	auto deviceContext = GetD3D11DeviceContext();
 
 	deviceContext->IASetInputLayout(m_InputLayout.Get());
 	deviceContext->VSSetShader(m_Shader.Get(), nullptr, 0);
 }
 
-void VertexShader::SetConstantBuffersImpl(ComPtr<ID3D11DeviceContext> deviceContext) const
+void VertexShader::SetConstantBuffersImpl() const
 {
 	static const VertexShader* shaderWhichLastSet = nullptr;
 
 	if (shaderWhichLastSet != this)
 	{
 		shaderWhichLastSet = this;
-		deviceContext->VSSetConstantBuffers(0, static_cast<UINT>(m_ConstantBufferPtrs.size()), m_ConstantBufferPtrs.data());
+		GetD3D11DeviceContext()->VSSetConstantBuffers(0, static_cast<UINT>(m_ConstantBufferPtrs.size()), m_ConstantBufferPtrs.data());
 	}
 }
 
-void VertexShader::SetTexturesImpl(ComPtr<ID3D11DeviceContext> deviceContext)
+void VertexShader::SetTexturesImpl()
 {
-	deviceContext->VSSetShaderResources(0, static_cast<UINT>(m_Textures.size()), m_Textures.data());
+	GetD3D11DeviceContext()->VSSetShaderResources(0, static_cast<UINT>(m_Textures.size()), m_Textures.data());
 }
 
-void VertexShader::SetSamplersImpl(ComPtr<ID3D11DeviceContext> deviceContext) const
+void VertexShader::SetSamplersImpl() const
 {
 	static const VertexShader* shaderWhichLastSet = nullptr;
 
 	if (shaderWhichLastSet != this)
 	{
 		shaderWhichLastSet = this;
-		deviceContext->VSSetSamplers(0, static_cast<UINT>(m_SamplerStates.size()), m_SamplerStates.data());
+		GetD3D11DeviceContext()->VSSetSamplers(0, static_cast<UINT>(m_SamplerStates.size()), m_SamplerStates.data());
 	}
 }

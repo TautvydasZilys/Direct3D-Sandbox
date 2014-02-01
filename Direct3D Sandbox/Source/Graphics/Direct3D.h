@@ -2,7 +2,9 @@
 
 class Direct3D
 {
-private:	
+private:
+	static Direct3D* s_Instance;
+
 	ComPtr<ID3D11Device> m_Device;
 	ComPtr<ID3D11DeviceContext> m_DeviceContext;
 	ComPtr<IDXGISwapChain> m_SwapChain;
@@ -31,12 +33,14 @@ private:
 	void GetViewPort(int width, int height, D3D11_VIEWPORT& viewport) const;
 	void GetBlendStateDescription(D3D11_BLEND_DESC& blendDescription) const;
 
+	static inline const Direct3D& GetInstance() { return *s_Instance; }
+
 public:
 	Direct3D(HWND hWnd, int width, int height, bool fullscreen);
 	~Direct3D();
 
-	inline ComPtr<ID3D11Device> GetDevice() const { return m_Device; }
-	inline ComPtr<ID3D11DeviceContext> GetDeviceContext() const { return m_DeviceContext; }
+	static inline ID3D11Device* GetDevice() { return GetInstance().m_Device.Get(); }
+	static inline ID3D11DeviceContext* GetDeviceContext() { return GetInstance().m_DeviceContext.Get(); }
 	
 	void StartDrawing(float red = 0.0f, float green = 0.0f, float blue = 0.0f, float alpha = 1.0f);
 	void SwapBuffers();
@@ -47,3 +51,5 @@ public:
 	void TurnZBufferOff();
 };
 
+inline ID3D11Device* GetD3D11Device() { return Direct3D::GetDevice(); }
+inline ID3D11DeviceContext* GetD3D11DeviceContext() { return Direct3D::GetDeviceContext(); }

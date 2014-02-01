@@ -2,8 +2,8 @@
 #include "AutoShader.h"
 #include "Tools.h"
 
-AutoShader::AutoShader(ComPtr<ID3D11Device> device, wstring vertexShaderPath, wstring pixelShaderPath) :
-	m_VertexShader(device, vertexShaderPath), m_PixelShader(device, pixelShaderPath)
+AutoShader::AutoShader(wstring vertexShaderPath, wstring pixelShaderPath) :
+	m_VertexShader(vertexShaderPath), m_PixelShader(pixelShaderPath)
 {
 }
 
@@ -11,13 +11,13 @@ AutoShader::~AutoShader()
 {
 }
 
-ComPtr<ID3D11Buffer> AutoShader::CreateVertexBuffer(ComPtr<ID3D11Device> device, const ModelData& model) const
+ComPtr<ID3D11Buffer> AutoShader::CreateVertexBuffer(const ModelData& model) const
 {
-	return m_VertexShader.CreateVertexBuffer(device, model);
+	return m_VertexShader.CreateVertexBuffer(model);
 }
 
-void AutoShader::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters)
+void AutoShader::SetRenderParameters(const RenderParameters& renderParameters)
 {
-	m_VertexShader.SetRenderParameters(deviceContext, renderParameters);
-	m_PixelShader.SetRenderParameters(deviceContext, renderParameters);
+	m_VertexShader.SetRenderParameters(renderParameters);
+	m_PixelShader.SetRenderParameters(renderParameters);
 }

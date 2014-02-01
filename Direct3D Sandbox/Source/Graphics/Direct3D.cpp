@@ -3,8 +3,12 @@
 #include "Direct3D.h"
 #include "Tools.h"
 
+Direct3D* Direct3D::s_Instance;
+
 Direct3D::Direct3D(HWND hWnd, int width, int height, bool fullscreen)
 {
+	s_Instance = this;
+
 	ComPtr<IDXGIAdapter1> dxgiAdapter;
 	ComPtr<IDXGIOutput> dxgiOutput;
 

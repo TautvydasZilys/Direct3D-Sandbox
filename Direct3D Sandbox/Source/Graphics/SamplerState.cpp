@@ -1,4 +1,5 @@
 #include "PrecompiledHeader.h"
+#include "Direct3D.h"
 #include "SamplerState.h"
 #include "Tools.h"
 
@@ -8,7 +9,7 @@ unordered_map<string, ComPtr<ID3D11SamplerState>> SamplerState::s_SamplerStates;
 bool SamplerState::s_Initialized = false;
 #endif
 
-void SamplerState::Initialize(ComPtr<ID3D11Device> device)
+void SamplerState::Initialize()
 {
 #if DEBUG
 	Assert(s_Initialized == false);
@@ -18,6 +19,8 @@ void SamplerState::Initialize(ComPtr<ID3D11Device> device)
 	HRESULT result;
 	D3D11_SAMPLER_DESC samplerDescription;
 	ComPtr<ID3D11SamplerState> samplerState;
+
+	auto device = GetD3D11Device();
 
 	samplerDescription.Filter = D3D11_FILTER_ANISOTROPIC;
 	samplerDescription.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;

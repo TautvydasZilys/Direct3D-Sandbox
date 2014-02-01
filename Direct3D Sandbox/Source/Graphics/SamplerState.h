@@ -13,7 +13,7 @@ private:
 	~SamplerState();
 
 public:
-	static void Initialize(ComPtr<ID3D11Device> device);
+	static void Initialize();
 	static ComPtr<ID3D11SamplerState> Get(const string& name);
 };
 

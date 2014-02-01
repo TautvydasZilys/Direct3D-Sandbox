@@ -1,9 +1,10 @@
 #include "PrecompiledHeader.h"
+#include "Direct3D.h"
 #include "ConstantBuffer.h"
 #include "Parameters.h"
 #include "Tools.h"
 
-ConstantBuffer::ConstantBuffer(ComPtr<ID3D11Device> device, const vector<uint8_t>& metadataBuffer, unsigned int& byteOffset) :
+ConstantBuffer::ConstantBuffer(const vector<uint8_t>& metadataBuffer, unsigned int& byteOffset) :
 	m_Size(0)
 {
 	using namespace Tools::BufferReader;
@@ -33,7 +34,7 @@ ConstantBuffer::ConstantBuffer(ComPtr<ID3D11Device> device, const vector<uint8_t
 	constantBufferDescription.MiscFlags = 0;
 	constantBufferDescription.StructureByteStride = 0;
 
-	result = device->CreateBuffer(&constantBufferDescription, nullptr, &m_Buffer);
+	result = GetD3D11Device()->CreateBuffer(&constantBufferDescription, nullptr, &m_Buffer);
 	Assert(result == S_OK);
 }
 
@@ -49,7 +50,7 @@ ConstantBuffer::~ConstantBuffer()
 {
 }
 
-void ConstantBuffer::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters)
+void ConstantBuffer::SetRenderParameters(const RenderParameters& renderParameters)
 {
 	bool shouldCopyToGPU = false;
 
@@ -60,15 +61,16 @@ void ConstantBuffer::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceConte
 
 	if (shouldCopyToGPU)
 	{
-		SetRenderParametersNoCheck(deviceContext);
+		SetRenderParametersNoCheck();
 	}
 }
 
-void ConstantBuffer::SetRenderParametersNoCheck(ComPtr<ID3D11DeviceContext> deviceContext)
+void ConstantBuffer::SetRenderParametersNoCheck()
 {
 	HRESULT result;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	
+	auto deviceContext = GetD3D11DeviceContext();
+
 	result = deviceContext->Map(m_Buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	Assert(result == S_OK);
 	

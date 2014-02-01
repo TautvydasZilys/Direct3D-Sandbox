@@ -12,11 +12,11 @@ IShader::~IShader()
 {
 }
 
-void IShader::LoadShaders(ComPtr<ID3D11Device> device)
+void IShader::LoadShaders()
 {
 	s_Shaders.resize(ShaderType::SHADER_COUNT);
 	
-	s_Shaders[COLOR_SHADER] = make_shared<AutoShader>(device, L"Shaders\\ColorVertexShader.cso", L"Shaders\\ColorPixelShader.cso");
-	s_Shaders[TEXTURE_SHADER] = make_shared<AutoShader>(device, L"Shaders\\TextureVertexShader.cso", L"Shaders\\TexturePixelShader.cso");
-	s_Shaders[PLAYGROUND_SHADER] = make_shared<AutoShader>(device, L"Shaders\\PlaygroundVertexShader.cso", L"Shaders\\PlaygroundPixelShader.cso");
+	s_Shaders[COLOR_SHADER] = make_shared<AutoShader>(L"Shaders\\ColorVertexShader.cso", L"Shaders\\ColorPixelShader.cso");
+	s_Shaders[TEXTURE_SHADER] = make_shared<AutoShader>(L"Shaders\\TextureVertexShader.cso", L"Shaders\\TexturePixelShader.cso");
+	s_Shaders[PLAYGROUND_SHADER] = make_shared<AutoShader>(L"Shaders\\PlaygroundVertexShader.cso", L"Shaders\\PlaygroundPixelShader.cso");
 }

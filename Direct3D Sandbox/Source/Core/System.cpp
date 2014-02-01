@@ -16,15 +16,15 @@ System::System() :
 	m_Camera(true, Constants::VerticalFieldOfView, m_Windowing.GetAspectRatio(), 0, 0)
 {
 	// Initialize sample states
-	SamplerState::Initialize(m_Direct3D.GetDevice());
+	SamplerState::Initialize();
 
 	// Load shaders
-	IShader::LoadShaders(m_Direct3D.GetDevice());
+	IShader::LoadShaders();
 
 	// Load textures
 	for (const auto& texture : Tools::GetFilesInDirectory(L"Assets\\Textures", L"*.dds", true))
 	{
-		Texture::LoadTexture(m_Direct3D.GetDevice(), texture);
+		Texture::LoadTexture(texture);
 	}
 
 	// Create scene
@@ -44,7 +44,7 @@ System::System() :
 			{
 				modelParameters.position = DirectX::XMFLOAT3(i, j, k - 30.0f);
 
-				m_Models.emplace_back(m_Direct3D.GetDevice(), playgroundShader, L"Assets\\Models\\Cube.model", modelParameters, L"Assets\\Textures\\Bell.dds");
+				m_Models.emplace_back(playgroundShader, L"Assets\\Models\\Cube.model", modelParameters, L"Assets\\Textures\\Bell.dds");
 			}
 		}
 	}
@@ -159,7 +159,7 @@ void System::Draw()
 	
 	for (auto& model : m_Models)
 	{
-		model.Render(m_Direct3D.GetDeviceContext(), renderParameters);
+		model.Render(renderParameters);
 	}
 
 	m_Direct3D.SwapBuffers();

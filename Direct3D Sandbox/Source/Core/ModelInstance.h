@@ -19,10 +19,10 @@ private:
 	ComPtr<ID3D11ShaderResourceView> m_Texture;
 
 public:
-	ModelInstance(ComPtr<ID3D11Device> device, IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters);
-	ModelInstance(ComPtr<ID3D11Device> device, IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, const wstring& texturePath);
+	ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters);
+	ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, const wstring& texturePath);
 	~ModelInstance();
 
-	void Render(ComPtr<ID3D11DeviceContext> deviceContext, RenderParameters& renderParameters);
+	void Render(RenderParameters& renderParameters);
 };
 

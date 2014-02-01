@@ -7,13 +7,13 @@ class PixelShader :
 private:
 	ComPtr<ID3D11PixelShader> m_Shader;
 	
-	virtual void SetConstantBuffersImpl(ComPtr<ID3D11DeviceContext> deviceContext) const;
-	virtual void SetTexturesImpl(ComPtr<ID3D11DeviceContext> deviceContext);
-	virtual void SetSamplersImpl(ComPtr<ID3D11DeviceContext> deviceContext) const;
+	virtual void SetConstantBuffersImpl() const;
+	virtual void SetTexturesImpl();
+	virtual void SetSamplersImpl() const;
 	
 public:
-	PixelShader(ComPtr<ID3D11Device> device, wstring path);
+	PixelShader(wstring path);
 	virtual ~PixelShader();
 	
-	virtual void SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters);
+	virtual void SetRenderParameters(const RenderParameters& renderParameters);
 };

@@ -12,13 +12,13 @@ ShaderProgram::~ShaderProgram()
 {
 }
 
-void ShaderProgram::Reflect(ComPtr<ID3D11Device> device, const vector<uint8_t>& shaderBuffer, const vector<uint8_t>& metadataBuffer)
+void ShaderProgram::Reflect(const vector<uint8_t>& shaderBuffer, const vector<uint8_t>& metadataBuffer)
 {
-	ReflectConstantBuffers(device, metadataBuffer);
+	ReflectConstantBuffers(metadataBuffer);
 	ReflectOtherResources(metadataBuffer);
 }
 
-void ShaderProgram::ReflectConstantBuffers(ComPtr<ID3D11Device> device, const vector<uint8_t>& metadataBuffer)
+void ShaderProgram::ReflectConstantBuffers(const vector<uint8_t>& metadataBuffer)
 {
 	using namespace Tools::BufferReader;
 
@@ -31,7 +31,7 @@ void ShaderProgram::ReflectConstantBuffers(ComPtr<ID3D11Device> device, const ve
 
 	for (auto i = 0u; i < numberOfConstantBuffers; i++)
 	{
-		m_ConstantBuffers.emplace_back(device, metadataBuffer, byteOffset);
+		m_ConstantBuffers.emplace_back(metadataBuffer, byteOffset);
 		m_ConstantBufferPtrs.push_back(m_ConstantBuffers[i].GetPtr());
 	}
 }
@@ -78,27 +78,27 @@ void ShaderProgram::AddSamplerState(const string& name)
 	m_SamplerStates.push_back(samplerState.Get());
 }
 
-void ShaderProgram::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters)
+void ShaderProgram::SetRenderParameters(const RenderParameters& renderParameters)
 {
 	for (auto& buffer : m_ConstantBuffers)
 	{
-		buffer.SetRenderParameters(deviceContext, renderParameters);
+		buffer.SetRenderParameters(renderParameters);
 	}
 	
-	SetConstantBuffers(deviceContext);
-	SetTextures(deviceContext, renderParameters);
-	SetSamplers(deviceContext);
+	SetConstantBuffers();
+	SetTextures(renderParameters);
+	SetSamplers();
 }
 
-void ShaderProgram::SetConstantBuffers(ComPtr<ID3D11DeviceContext> deviceContext) const
+void ShaderProgram::SetConstantBuffers() const
 {
 	if (m_ConstantBufferPtrs.size() > 0)
 	{
-		SetConstantBuffersImpl(deviceContext);
+		SetConstantBuffersImpl();
 	}
 }
 
-void ShaderProgram::SetTextures(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters)
+void ShaderProgram::SetTextures(const RenderParameters& renderParameters)
 {	
 	const auto textureCount = m_TextureOffsets.size();
 
@@ -117,15 +117,15 @@ void ShaderProgram::SetTextures(ComPtr<ID3D11DeviceContext> deviceContext, const
 
 		if (shouldSet)
 		{
-			SetTexturesImpl(deviceContext);
+			SetTexturesImpl();
 		}
 	}
 }
 
-void ShaderProgram::SetSamplers(ComPtr<ID3D11DeviceContext> deviceContext) const
+void ShaderProgram::SetSamplers() const
 {
 	if (m_SamplerStates.size() > 0)
 	{
-		SetSamplersImpl(deviceContext);
+		SetSamplersImpl();
 	}
 }
