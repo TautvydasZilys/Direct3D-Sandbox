@@ -82,4 +82,41 @@ void ShaderProgram::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContex
 	{
 		buffer.SetRenderParameters(deviceContext, renderParameters);
 	}
+	
+	SetConstantBuffers(deviceContext);
+	SetTextures(deviceContext, renderParameters);
+	SetSamplers(deviceContext);
+}
+
+void ShaderProgram::SetConstantBuffers(ComPtr<ID3D11DeviceContext> deviceContext) const
+{
+	if (m_ConstantBufferPtrs.size() > 0)
+	{
+		SetConstantBuffersImpl(deviceContext);
+	}
+}
+
+void ShaderProgram::SetTextures(ComPtr<ID3D11DeviceContext> deviceContext, const RenderParameters& renderParameters) const
+{	
+	const auto textureCount = m_TextureOffsets.size();
+
+	if (textureCount > 0)
+	{
+		vector<ID3D11ShaderResourceView*> textures(textureCount);
+
+		for (auto i = 0u; i < textureCount; i++)
+		{
+			memcpy(&textures[i], reinterpret_cast<const uint8_t*>(&renderParameters) + m_TextureOffsets[i], sizeof(ID3D11ShaderResourceView));
+		}
+
+		SetTexturesImpl(deviceContext, textures);
+	}
+}
+
+void ShaderProgram::SetSamplers(ComPtr<ID3D11DeviceContext> deviceContext) const
+{
+	if (m_SamplerStates.size() > 0)
+	{
+		SetSamplersImpl(deviceContext);
+	}
 }

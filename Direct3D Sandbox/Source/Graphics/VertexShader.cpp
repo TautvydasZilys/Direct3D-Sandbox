@@ -105,16 +105,21 @@ void VertexShader::SetRenderParameters(ComPtr<ID3D11DeviceContext> deviceContext
 {
 	ShaderProgram::SetRenderParameters(deviceContext, renderParameters);
 
-	SetConstantBuffers(deviceContext);
-
 	deviceContext->IASetInputLayout(m_InputLayout.Get());
 	deviceContext->VSSetShader(m_Shader.Get(), nullptr, 0);
 }
 
-void VertexShader::SetConstantBuffers(ComPtr<ID3D11DeviceContext> deviceContext) const
+void VertexShader::SetConstantBuffersImpl(ComPtr<ID3D11DeviceContext> deviceContext) const
 {
-	if (m_ConstantBufferPtrs.size() > 0)
-	{
-		deviceContext->VSSetConstantBuffers(0, static_cast<UINT>(m_ConstantBufferPtrs.size()), m_ConstantBufferPtrs.data());
-	}
+	deviceContext->VSSetConstantBuffers(0, static_cast<UINT>(m_ConstantBufferPtrs.size()), m_ConstantBufferPtrs.data());
+}
+
+void VertexShader::SetTexturesImpl(ComPtr<ID3D11DeviceContext> deviceContext, const vector<ID3D11ShaderResourceView*> textures) const
+{
+	deviceContext->VSSetShaderResources(0, static_cast<UINT>(textures.size()), textures.data());
+}
+
+void VertexShader::SetSamplersImpl(ComPtr<ID3D11DeviceContext> deviceContext) const
+{
+	deviceContext->VSSetSamplers(0, static_cast<UINT>(m_SamplerStates.size()), m_SamplerStates.data());
 }
