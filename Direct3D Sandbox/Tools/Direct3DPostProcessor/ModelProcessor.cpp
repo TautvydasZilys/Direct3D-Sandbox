@@ -66,6 +66,10 @@ static void OptimizeModel(ModelData& model)
 	}
 
 	int i = 0;
+	cout << "Optimizing model..." << endl;
+	cout << "\tVertex count before: " << model.vertexCount << endl;
+	cout << "\tVertex count after:  " << vertexMap.size() << endl << endl;
+
 	unique_ptr<VertexParameters[]> optimizedVertices(new VertexParameters[vertexMap.size()]);
 
 	for (auto& vertex : vertexMap)
@@ -86,7 +90,7 @@ static void OptimizeModel(ModelData& model)
 }
 
 static ModelData ParseFaces(const vector<DirectX::XMFLOAT4>& coordinates, const vector<DirectX::XMFLOAT2>& textures,
-							const vector<DirectX::XMFLOAT3>& normals, vector<string>& faces, bool shouldInverse)
+							const vector<DirectX::XMFLOAT3>& normals, vector<string>& faces)
 {
 	DirectX::XMFLOAT4 color(1.0f, 1.0f, 1.0f, 1.0f);
 	auto const facesCount = faces.size();
@@ -126,27 +130,21 @@ static ModelData ParseFaces(const vector<DirectX::XMFLOAT4>& coordinates, const 
 			else
 			{
 				model.vertices[i].textureCoordinates = DirectX::XMFLOAT2(0.0f, 0.0f);
-			} 
+			}
+			
+			model.vertices[i].binormal = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+			model.vertices[i].tangent = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 		}
-				
-		if (shouldInverse)
-		{
-			model.indices[i - 3] = i - 3;
-			model.indices[i - 2] = i - 2;
-			model.indices[i - 1] = i - 1;
-		}
-		else
-		{
-			model.indices[i - 3] = i - 3;
-			model.indices[i - 2] = i - 1;
-			model.indices[i - 1] = i - 2;
-		}
+
+		model.indices[i - 3] = i - 3;
+		model.indices[i - 2] = i - 1;
+		model.indices[i - 1] = i - 2;
 	}
 
 	return model;
 }
 
-static ModelData LoadModel(const wstring& path, bool shouldInverse)
+static ModelData LoadModel(const wstring& path)
 {
 	vector<DirectX::XMFLOAT4> coordinates;
 	vector<DirectX::XMFLOAT2> textures;
@@ -193,12 +191,27 @@ static ModelData LoadModel(const wstring& path, bool shouldInverse)
 	
 	in.close();
 
-	auto model = ParseFaces(coordinates, textures, normals, faces, shouldInverse);
+	auto model = ParseFaces(coordinates, textures, normals, faces);
 
 	OptimizeModel(model);
 	CalculateTangentsAndBinormals(model);
 
 	return model;
+}
+
+static void SaveModel(const wstring& path, const ModelData& model)
+{	
+	ofstream out(path, ios::binary);
+
+	// Vertices
+	out.write(reinterpret_cast<const char*>(&model.vertexCount), sizeof(int));
+	out.write(reinterpret_cast<const char*>(model.vertices.get()), model.vertexCount * sizeof(VertexParameters));
+
+	// Indices
+	out.write(reinterpret_cast<const char*>(&model.indexCount), sizeof(int));
+	out.write(reinterpret_cast<const char*>(model.indices.get()), model.indexCount * sizeof(unsigned int));
+
+	out.close();
 }
 
 void ModelProcessor::ProcessModel(const wstring& path, const wstring& outputPath)
@@ -214,22 +227,17 @@ void ModelProcessor::ProcessModel(const wstring& path, const wstring& outputPath
 	{
 		modelName = outputPath + modelName;
 	}
+	
+	auto model = LoadModel(path);
 
-	for (int i = 0; i < 2; i++)
+	SaveModel(modelName + L".model", model);		
+	
+	// Invert model
+	modelName += L"_inverted";
+	for (auto i = 0u; i < model.indexCount; i += 3)
 	{
-		auto model = LoadModel(path, i == 1);
-		ofstream out(modelName + L".model", ios::binary);
-		
-		// Vertices
-		out.write(reinterpret_cast<char*>(&model.vertexCount), sizeof(int));
-		out.write(reinterpret_cast<char*>(model.vertices.get()), model.vertexCount * sizeof(VertexParameters));
-
-		// Indices
-		out.write(reinterpret_cast<char*>(&model.indexCount), sizeof(int));
-		out.write(reinterpret_cast<char*>(model.indices.get()), model.indexCount * sizeof(unsigned int));
-
-		out.close();
-
-		modelName += L"_inverted";
+		swap(model.indices[i], model.indices[i + 1]);
 	}
+
+	SaveModel(modelName + L".model", model);
 }

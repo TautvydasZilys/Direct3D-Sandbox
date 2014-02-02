@@ -115,7 +115,7 @@ struct hash<DirectX::XMFLOAT4>
 {	
 	size_t operator()(const DirectX::XMFLOAT4& value) const
 	{
-		return hash<float>()(value.x) ^ hash<float>()(value.y) ^ hash<float>()(value.z) ^ hash<float>()(value.y);
+		return hash<float>()(value.x) ^ hash<float>()(value.y) ^ hash<float>()(value.z) ^ hash<float>()(value.w);
 	}
 };
 
