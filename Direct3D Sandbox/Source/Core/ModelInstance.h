@@ -16,6 +16,7 @@ class ModelInstance
 private:
 	Model& m_Model;
 	DirectX::XMFLOAT4X4 m_WorldMatrix;
+	DirectX::XMFLOAT4X4 m_InversedTransposedWorldMatrix;
 	DirectX::XMFLOAT4 m_Color;
 	ComPtr<ID3D11ShaderResourceView> m_Texture;
 

@@ -544,6 +544,7 @@ del xcopyexclude.txt
   <ItemGroup>
     <ClCompile Include="Source\Core\Camera.cpp" />
     <ClCompile Include="Source\Core\Constants.cpp" />
+    <ClCompile Include="Source\Core\DirectionalLight.cpp" />
     <ClCompile Include="Source\Core\Input.cpp" />
     <ClCompile Include="Source\Core\main.cpp" />
     <ClCompile Include="Source\Core\ModelInstance.cpp" />
@@ -573,6 +574,7 @@ del xcopyexclude.txt
   <ItemGroup>
     <ClInclude Include="Source\Core\Camera.h" />
     <ClInclude Include="Source\Core\Constants.h" />
+    <ClInclude Include="Source\Core\DirectionalLight.h" />
     <ClInclude Include="Source\Core\Input.h" />
     <ClInclude Include="Source\Core\ModelInstance.h" />
     <ClInclude Include="Source\Core\Parameters.h" />

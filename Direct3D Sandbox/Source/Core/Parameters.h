@@ -7,9 +7,14 @@
 			FIELD(DirectX::XMFLOAT4X4, projectionMatrix) \
 			FIELD(DirectX::XMFLOAT4X4, viewMatrix) \
 			FIELD(DirectX::XMFLOAT4X4, worldMatrix) \
+			FIELD(DirectX::XMFLOAT4X4, inversedTransposedWorldMatrix) \
 			FIELD(DirectX::XMFLOAT4, color) \
+			FIELD(DirectX::XMFLOAT3, lightDirection) \
+			FIELD(DirectX::XMFLOAT3, lightColor) \
+			FIELD(DirectX::XMFLOAT3, ambientColor) \
+			FIELD(float, specularIntensity) \
+			FIELD(DirectX::XMFLOAT4, padding) \
 			FIELD(ID3D11ShaderResourceView*, texture) \
-			FIELD(DirectX::XMFLOAT4, padding)
 
 
 #define VERTEX_PARAMETERS \

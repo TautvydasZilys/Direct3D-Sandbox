@@ -13,7 +13,8 @@ System::System() :
 	m_Fps(0), 
 	m_LastFpsTime(m_CurrentTime),
 	m_MouseSensitivity(Constants::DefaultMouseSensitivity),
-	m_Camera(true, Constants::VerticalFieldOfView, m_Windowing.GetAspectRatio(), 0, 0)
+	m_Camera(true, Constants::VerticalFieldOfView, m_Windowing.GetAspectRatio(), 0, 0),
+	m_Light(DirectX::XMFLOAT3(3.0f, -2.0f, -1.0f), DirectX::XMFLOAT3(0.7f, 0.7f, 0.6f), DirectX::XMFLOAT3(0.4f, 0.4f, 0.4f), 32)  
 {
 	// Initialize sample states
 	SamplerState::Initialize();
@@ -156,6 +157,7 @@ void System::Draw()
 
 	renderParameters.time = m_CurrentTime;
 	m_Camera.SetRenderParameters(renderParameters);
+	m_Light.SetRenderParameters(renderParameters);
 	
 	for (auto& model : m_Models)
 	{

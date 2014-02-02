@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Camera.h"
+#include "DirectionalLight.h"
 #include "Input.h"
 #include "ModelInstance.h"
 #include "Source\Graphics\Direct3D.h"
@@ -22,6 +23,7 @@ private:
 	float m_Fps;
 
 	Camera m_Camera;
+	DirectionalLight m_Light;
 	vector<ModelInstance> m_Models;
 
 	void Update();

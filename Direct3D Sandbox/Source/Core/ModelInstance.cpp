@@ -29,12 +29,16 @@ void ModelInstance::Initialize(const ModelParameters& modelParameters)
 	DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationRollPitchYaw(modelParameters.rotation.x, modelParameters.rotation.y, modelParameters.rotation.z);
 	DirectX::XMMATRIX scale = DirectX::XMMatrixScaling(modelParameters.scale.x, modelParameters.scale.y, modelParameters.scale.z);
 
-	DirectX::XMStoreFloat4x4(&m_WorldMatrix, DirectX::XMMatrixTranspose(scale * rotation * position));
+	DirectX::XMMATRIX worldMatrix = scale * rotation * position;
+	
+	DirectX::XMStoreFloat4x4(&m_WorldMatrix, DirectX::XMMatrixTranspose(worldMatrix));
+	DirectX::XMStoreFloat4x4(&m_InversedTransposedWorldMatrix, DirectX::XMMatrixInverse(nullptr, worldMatrix));
 }
 
 void ModelInstance::Render(RenderParameters& renderParameters)
 {
 	memcpy(&renderParameters.worldMatrix, &m_WorldMatrix, sizeof(DirectX::XMFLOAT4X4));
+	memcpy(&renderParameters.inversedTransposedWorldMatrix, &m_InversedTransposedWorldMatrix, sizeof(DirectX::XMFLOAT4X4));
 	renderParameters.color = m_Color;
 	renderParameters.texture = m_Texture.Get();
 

@@ -1,26 +1,29 @@
-cbuffer MatrixBuffer
+cbuffer PerModelInstanceBuffer
 {
 	matrix worldMatrix;
-    matrix viewMatrix;
-    matrix projectionMatrix;
+	matrix inversedTransposedWorldMatrix;
 };
 
-cbuffer TimeBuffer
+cbuffer PerFrameBuffer
 {
 	float time;
 	float3 padding;
+    matrix viewMatrix;
+    matrix projectionMatrix;
 };
 
 struct VertexInput
 {
     float4 position : POSITION;
 	float2 tex : TEXTURECOORDINATES;
+	float3 normal : NORMAL;
 };
 
 struct PixelInput
 {
     float4 position : SV_POSITION;
     float2 tex : TEXTURECOORDINATES;
+	float3 normal : NORMAL;
 };
 
 PixelInput main(VertexInput input)
@@ -36,6 +39,8 @@ PixelInput main(VertexInput input)
 
 	output.tex = 4.0f * input.tex;
 	output.tex.x += time;
+
+    output.normal = -mul(input.normal, (float3x3)inversedTransposedWorldMatrix);
 
 	return output;
 }
