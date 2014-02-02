@@ -33,16 +33,16 @@ System::System() :
 	ModelParameters modelParameters; 
 	
 	modelParameters.rotation = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
-	modelParameters.scale = DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f);	
+	modelParameters.scale = DirectX::XMFLOAT3(0.75f, 0.75f, 0.75f);	
 	modelParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	for (float i = -14.0f; i < 14.0f; i++)
+	for (float i = -15.0f; i < 15.0f; i++)
 	{
-		for (float j = -14.0f; j < 14.0f; j++)
+		for (float j = -15.0f; j < 15.0f; j++)
 		{
-			for (float k = -14.0f; k < 14.0f; k++)
+			for (float k = -15.0f; k < 15.0f; k++)
 			{
-				modelParameters.position = DirectX::XMFLOAT3(i, j, k - 30.0f);
+				modelParameters.position = DirectX::XMFLOAT3(i, j, k);
 
 				m_Models.emplace_back(playgroundShader, L"Assets\\Models\\Cube.model", modelParameters, L"Assets\\Textures\\Bell.dds");
 			}
