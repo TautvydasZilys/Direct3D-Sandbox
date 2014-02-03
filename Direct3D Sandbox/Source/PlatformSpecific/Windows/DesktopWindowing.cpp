@@ -7,8 +7,6 @@
 
 #if !WINDOWS_PHONE
 
-static DesktopWindowing* s_WindowingInstance = nullptr;
-
 DesktopWindowing::DesktopWindowing(int width, int height, bool fullscreen) :
 	m_WindowHandle(nullptr), m_ProgramInstance(GetModuleHandle(nullptr)), m_Fullscreen(fullscreen)
 {
@@ -21,9 +19,6 @@ DesktopWindowing::DesktopWindowing(int width, int height, bool fullscreen) :
 	m_Width = width;
 	m_Height = height;
 
-	Assert(s_WindowingInstance == nullptr);
-	s_WindowingInstance = this;
-
 	CreateDesktopWindow();
 	RegisterForRawInput();
 }
@@ -31,9 +26,6 @@ DesktopWindowing::DesktopWindowing(int width, int height, bool fullscreen) :
 DesktopWindowing::~DesktopWindowing()
 {
 	DestroyDesktopWindow();
-
-	Assert(s_WindowingInstance != nullptr);
-	s_WindowingInstance = nullptr;
 }
 
 void DesktopWindowing::CreateDesktopWindow()
@@ -56,7 +48,7 @@ void DesktopWindowing::CreateDesktopWindow()
 	
 	windowInfo.lpfnWndProc = [](HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) -> LRESULT
 	{
-		return s_WindowingInstance->HandleMessage(hWnd, uMsg, wParam, lParam);
+		return reinterpret_cast<DesktopWindowing*>(lParam)->HandleMessage(hWnd, uMsg, wParam, lParam);
 	};
 	
 	RegisterClassEx(&windowInfo);
@@ -82,7 +74,7 @@ void DesktopWindowing::CreateDesktopWindow()
 	}
 
 	m_WindowHandle = CreateWindowEx(WS_EX_APPWINDOW, windowInfo.lpszClassName, windowInfo.lpszClassName, WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP, 
-		posX, posY, m_Width, m_Height, NULL, NULL, m_ProgramInstance, NULL);
+		posX, posY, m_Width, m_Height, NULL, NULL, m_ProgramInstance, this);
 	Assert(m_WindowHandle != nullptr);
 
 #pragma warning(suppress: 6387)
