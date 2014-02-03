@@ -18,7 +18,7 @@ struct PixelInput
 
 float4 main(PixelInput input) : SV_TARGET
 {
-	float4 lightIntensity;
+	float3 lightIntensity;
 	float4 color;
 	
 	color = Texture.Sample(WrapSampler, input.tex);
