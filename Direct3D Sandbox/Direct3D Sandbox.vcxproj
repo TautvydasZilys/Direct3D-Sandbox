@@ -204,7 +204,7 @@ echo \Models\ &gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt
 
-"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models"</Command>
+"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Win32\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models"</Command>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>del "$(OutDir)$(ProjectName)_$(Configuration)_$(Platform).xap"
@@ -304,7 +304,7 @@ echo \Models\ &gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt
 
-"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models"</Command>
+"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Win32\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|Win32'">
@@ -364,7 +364,7 @@ echo \Models\ &gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt
 
-"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models"</Command>
+"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\x64\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|x64'">
@@ -436,7 +436,7 @@ echo \Models\ &gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt
 
-"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models"</Command>
+"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Win32\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models"</Command>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>del "$(OutDir)$(ProjectName)_$(Configuration)_$(Platform).xap"
@@ -493,7 +493,7 @@ echo \Models\ &gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt
 
-"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models"</Command>
+"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Win32\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -532,7 +532,7 @@ echo \Models\ &gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt
 
-"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models"</Command>
+"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\x64\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup Condition="'$(Platform)'=='ARM'">

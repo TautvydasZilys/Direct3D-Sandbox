@@ -3,13 +3,13 @@
 #include "ShaderReflector.h"
 #include "Tools.h"
 
-static void AddUInt(vector<uint8_t>& buffer, unsigned int& byteOffset, unsigned int value)
+static void AddUInt(vector<uint8_t>& buffer, size_t& byteOffset, unsigned int value)
 {
 	memcpy(&buffer[byteOffset], &value, 4);
 	byteOffset += 4;
 }
 
-static void AddString(vector<uint8_t>& buffer, unsigned int& byteOffset, const string& str)
+static void AddString(vector<uint8_t>& buffer, size_t& byteOffset, const string& str)
 {
 	auto length = str.length() + 1;		// Length + null terminator
 	memcpy(&buffer[byteOffset], str.c_str(), length);
@@ -193,8 +193,8 @@ vector<uint8_t> ReflectShaderImpl(const vector<uint8_t>& shaderBuffer)
 	HRESULT result;
 	ComPtr<ID3D11ShaderReflection> shaderReflection;
 	D3D11_SHADER_DESC shaderDescription;
-	unsigned int byteOffset = 12;
-	unsigned int segmentPositionOffset;
+	size_t byteOffset = 12;
+	size_t segmentPositionOffset;
 	vector<uint8_t> metadataBuffer(16);
 
 	result = D3DReflect(shaderBuffer.data(), shaderBuffer.size(), IID_ID3D11ShaderReflection, &shaderReflection);
@@ -204,7 +204,7 @@ vector<uint8_t> ReflectShaderImpl(const vector<uint8_t>& shaderBuffer)
 	Assert(result == S_OK);
 
 	segmentPositionOffset = 0;
-	AddUInt(metadataBuffer, segmentPositionOffset, byteOffset);
+	AddUInt(metadataBuffer, segmentPositionOffset, static_cast<unsigned int>(byteOffset));
 	AddUInt(metadataBuffer, byteOffset, shaderDescription.ConstantBuffers);
 	for (auto i = 0u; i < shaderDescription.ConstantBuffers; i++)
 	{
@@ -213,11 +213,11 @@ vector<uint8_t> ReflectShaderImpl(const vector<uint8_t>& shaderBuffer)
 	}
 	
 	segmentPositionOffset = 4;
-	AddUInt(metadataBuffer, segmentPositionOffset, metadataBuffer.size());
+	AddUInt(metadataBuffer, segmentPositionOffset, static_cast<unsigned int>(metadataBuffer.size()));
 	ReflectOnInputLayout(metadataBuffer, shaderReflection, shaderDescription);
 
 	segmentPositionOffset = 8;
-	AddUInt(metadataBuffer, segmentPositionOffset, metadataBuffer.size());
+	AddUInt(metadataBuffer, segmentPositionOffset, static_cast<unsigned int>(metadataBuffer.size()));
 	ReflectOnOtherResources(metadataBuffer, shaderReflection, shaderDescription);
 
 	return metadataBuffer;

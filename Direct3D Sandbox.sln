@@ -42,14 +42,14 @@ Global
 		{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}.Debug PostProcessor|ARM.Build.0 = Debug|Win32
 		{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}.Debug PostProcessor|Win32.ActiveCfg = Debug|Win32
 		{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}.Debug PostProcessor|Win32.Build.0 = Debug|Win32
-		{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}.Debug PostProcessor|x64.ActiveCfg = Debug|Win32
-		{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}.Debug PostProcessor|x64.Build.0 = Debug|Win32
+		{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}.Debug PostProcessor|x64.ActiveCfg = Debug|x64
+		{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}.Debug PostProcessor|x64.Build.0 = Debug|x64
 		{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}.Debug|ARM.ActiveCfg = Release|Win32
 		{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}.Debug|Win32.ActiveCfg = Release|Win32
-		{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}.Debug|x64.ActiveCfg = Release|Win32
+		{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}.Debug|x64.ActiveCfg = Release|x64
 		{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}.Release|ARM.ActiveCfg = Release|Win32
 		{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}.Release|Win32.ActiveCfg = Release|Win32
-		{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}.Release|x64.ActiveCfg = Release|Win32
+		{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}.Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
