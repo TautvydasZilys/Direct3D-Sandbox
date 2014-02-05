@@ -220,7 +220,7 @@ void Direct3D::GetDepthBufferDescription(int width, int height, D3D11_TEXTURE2D_
 	depthBufferDescription.ArraySize = 1;
 
 	depthBufferDescription.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	depthBufferDescription.SampleDesc.Count = 1;
+	depthBufferDescription.SampleDesc.Count = Constants::MultiSampingAntiAliasing;
 	depthBufferDescription.SampleDesc.Quality = 0;
 
 	depthBufferDescription.Usage = D3D11_USAGE_DEFAULT;
@@ -256,7 +256,7 @@ void Direct3D::GetDepthStencilViewDescription(D3D11_DEPTH_STENCIL_VIEW_DESC& dep
 	ZeroMemory(&depthStencilViewDescription, sizeof(depthStencilViewDescription));
 
 	depthStencilViewDescription.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	depthStencilViewDescription.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	depthStencilViewDescription.ViewDimension = Constants::MultiSampingAntiAliasing > 1 ? D3D11_DSV_DIMENSION_TEXTURE2DMS : D3D11_DSV_DIMENSION_TEXTURE2D;
 	depthStencilViewDescription.Flags = 0;
 	depthStencilViewDescription.Texture2D.MipSlice = 0;
 }
