@@ -10,13 +10,13 @@ const bool Constants::VSyncEnabled = false;
 const bool Constants::VSyncEnabled = true;
 #endif
 
-const int Constants::MultiSampingAntiAliasing = 1;
+const int Constants::MultiSampingAntiAliasing = 4;
 const UINT Constants::D3DDeviceFlags = D3D11_CREATE_DEVICE_SINGLETHREADED;
 
 const D3D11_FILL_MODE Constants::D3DFillMode = D3D11_FILL_SOLID;
 
 const float Constants::CameraNear = 0.01f;
-const float Constants::CameraFar = 1000.0f;
+const float Constants::CameraFar = 10000.0f;
 const float Constants::VerticalFieldOfView = 50.625f;
 
 #if WINDOWS_PHONE
