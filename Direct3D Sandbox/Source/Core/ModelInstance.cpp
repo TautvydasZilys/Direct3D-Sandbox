@@ -5,29 +5,29 @@
 
 ModelInstance::ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters) :
 	m_Model(Model::Get(modelPath, shader)),
-	m_Color(modelParameters.color)
+	m_Parameters(modelParameters)
 {
-	Initialize(modelParameters);
+	Initialize();
 }
 
 ModelInstance::ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, 
 								const wstring& texturePath) :
 	m_Model(Model::Get(modelPath, shader)),
-	m_Color(modelParameters.color),
+	m_Parameters(modelParameters),
 	m_Texture(Texture::Get(texturePath))
 {
-	Initialize(modelParameters);
+	Initialize();
 }
 
 ModelInstance::~ModelInstance()
 {
 }
 
-void ModelInstance::Initialize(const ModelParameters& modelParameters)
+void ModelInstance::Initialize()
 {
-	DirectX::XMMATRIX position = DirectX::XMMatrixTranslation(modelParameters.position.x, modelParameters.position.y, modelParameters.position.z);
-	DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationRollPitchYaw(modelParameters.rotation.x, modelParameters.rotation.y, modelParameters.rotation.z);
-	DirectX::XMMATRIX scale = DirectX::XMMatrixScaling(modelParameters.scale.x, modelParameters.scale.y, modelParameters.scale.z);
+	DirectX::XMMATRIX position = DirectX::XMMatrixTranslation(m_Parameters.position.x, m_Parameters.position.y, m_Parameters.position.z);
+	DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationRollPitchYaw(m_Parameters.rotation.x, m_Parameters.rotation.y, m_Parameters.rotation.z);
+	DirectX::XMMATRIX scale = DirectX::XMMatrixScaling(m_Parameters.scale.x, m_Parameters.scale.y, m_Parameters.scale.z);
 
 	DirectX::XMMATRIX worldMatrix = scale * rotation * position;
 	
@@ -35,11 +35,17 @@ void ModelInstance::Initialize(const ModelParameters& modelParameters)
 	DirectX::XMStoreFloat4x4(&m_InversedTransposedWorldMatrix, DirectX::XMMatrixInverse(nullptr, worldMatrix));
 }
 
+void ModelInstance::SetPosition(const DirectX::XMFLOAT3& position)
+{
+	m_Parameters.position = position;
+	Initialize();
+}
+
 void ModelInstance::Render(RenderParameters& renderParameters)
 {
 	memcpy(&renderParameters.worldMatrix, &m_WorldMatrix, sizeof(DirectX::XMFLOAT4X4));
 	memcpy(&renderParameters.inversedTransposedWorldMatrix, &m_InversedTransposedWorldMatrix, sizeof(DirectX::XMFLOAT4X4));
-	renderParameters.color = m_Color;
+	renderParameters.color = m_Parameters.color;
 	renderParameters.texture = m_Texture.Get();
 
 	m_Model.Render(renderParameters);

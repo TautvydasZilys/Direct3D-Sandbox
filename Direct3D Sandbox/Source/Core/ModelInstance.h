@@ -15,17 +15,19 @@ class ModelInstance
 {
 private:
 	Model& m_Model;
+	ModelParameters m_Parameters;
 	DirectX::XMFLOAT4X4 m_WorldMatrix;
 	DirectX::XMFLOAT4X4 m_InversedTransposedWorldMatrix;
-	DirectX::XMFLOAT4 m_Color;
 	ComPtr<ID3D11ShaderResourceView> m_Texture;
 
-	void Initialize(const ModelParameters& modelParameters);
+	void Initialize();
 
 public:
 	ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters);
 	ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, const wstring& texturePath);
 	~ModelInstance();
+
+	void SetPosition(const DirectX::XMFLOAT3& position);
 
 	void Render(RenderParameters& renderParameters);
 };
