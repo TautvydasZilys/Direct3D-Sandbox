@@ -26,9 +26,14 @@ private:
 	DirectionalLight m_Light;
 	vector<ModelInstance> m_Models;
 
+	unsigned int m_SkyboxIndex;
+	unsigned int m_GroundIndex;
+
 	void Update();
 	void Draw();
 	void IncrementFpsCounter();
+
+	void UpdateInput();
 public:
 	System();
 	~System();

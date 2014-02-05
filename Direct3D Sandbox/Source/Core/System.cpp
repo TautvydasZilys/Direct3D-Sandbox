@@ -31,24 +31,20 @@ System::System() :
 	// Create scene
 
 	auto& playgroundShader = IShader::GetShader(ShaderType::PLAYGROUND_SHADER);
+	auto& textureShader = IShader::GetShader(ShaderType::TEXTURE_SHADER);
+
 	ModelParameters modelParameters; 
 	
+	modelParameters.position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 	modelParameters.rotation = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
-	modelParameters.scale = DirectX::XMFLOAT3(0.75f, 0.75f, 0.75f);	
+	modelParameters.scale = DirectX::XMFLOAT3(5000.0f, 5000.0f, 5000.0f);	
 	modelParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	for (float i = -15.0f; i < 15.0f; i++)
-	{
-		for (float j = -15.0f; j < 15.0f; j++)
-		{
-			for (float k = -15.0f; k < 15.0f; k++)
-			{
-				modelParameters.position = DirectX::XMFLOAT3(i, j, k);
-
-				m_Models.emplace_back(playgroundShader, L"Assets\\Models\\Cube.model", modelParameters, L"Assets\\Textures\\Bell.dds");
-			}
-		}
-	}
+	m_SkyboxIndex = static_cast<unsigned int>(m_Models.size());
+	m_Models.emplace_back(textureShader, L"Assets\\Models\\skybox.model", modelParameters, L"Assets\\Textures\\Skybox.dds");
+		
+	m_GroundIndex = static_cast<unsigned int>(m_Models.size());
+	m_Models.emplace_back(textureShader, L"Assets\\Models\\tiledPlane.model", modelParameters, L"Assets\\Textures\\Grass.dds");
 }
 
 System::~System()
@@ -71,6 +67,17 @@ void System::Run()
 }
 
 void System::Update()
+{
+	UpdateInput();
+	
+	auto position = m_Camera.GetPosition();
+	m_Models[m_SkyboxIndex].SetPosition(position);
+
+	position.y = 0.0f;
+	m_Models[m_GroundIndex].SetPosition(position);
+}
+
+void System::UpdateInput()
 {
 	if (m_Input.IsKeyDown(VK_ESCAPE))
 	{
