@@ -112,4 +112,6 @@ void Camera::SetRenderParameters(RenderParameters& renderParameters) const
 
 	DirectX::XMStoreFloat4x4(&renderParameters.viewMatrix, DirectX::XMMatrixTranspose(viewMatrix));
 	memcpy(&renderParameters.projectionMatrix, &m_ProjectionMatrix, sizeof(DirectX::XMFLOAT4X4));
+
+	renderParameters.cameraPosition = m_Position;
 }
