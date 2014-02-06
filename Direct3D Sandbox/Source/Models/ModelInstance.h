@@ -15,10 +15,12 @@ class ModelInstance
 {
 private:
 	Model& m_Model;
-	ModelParameters m_Parameters;
 	DirectX::XMFLOAT4X4 m_WorldMatrix;
 	DirectX::XMFLOAT4X4 m_InversedTransposedWorldMatrix;
 	ComPtr<ID3D11ShaderResourceView> m_Texture;
+
+protected:
+	ModelParameters m_Parameters;
 
 	void Initialize();
 

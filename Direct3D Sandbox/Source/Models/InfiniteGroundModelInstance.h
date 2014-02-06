@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ModelInstance.h"
+#include "CameraPositionLockedModelInstance.h"
 
 class InfiniteGroundModelInstance :
-	public ModelInstance
+	public CameraPositionLockedModelInstance
 {
 private:
 	DirectX::XMFLOAT2 m_Scale;

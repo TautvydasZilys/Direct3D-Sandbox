@@ -52,6 +52,13 @@ private:
 	ModelData& operator=(const ModelData& other);
 };
 
+template <typename T>
+struct TypedDimensions
+{
+	T x, y, z;
+
+	TypedDimensions(T x, T y, T z) : x(x), y(y), z(z) {}
+};
 
 #if !DEBUG
 #define Assert(x)	(void)(x)

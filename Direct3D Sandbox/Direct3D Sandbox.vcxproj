@@ -567,6 +567,7 @@ del xcopyexclude.txt
     <ClCompile Include="Source\Graphics\ShaderProgram.cpp" />
     <ClCompile Include="Source\Graphics\Texture.cpp" />
     <ClCompile Include="Source\Graphics\VertexShader.cpp" />
+    <ClCompile Include="Source\Models\CameraPositionLockedModelInstance.cpp" />
     <ClCompile Include="Source\Models\InfiniteGroundModelInstance.cpp" />
     <ClCompile Include="Source\Models\ModelInstance.cpp" />
     <ClCompile Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.cpp" />
@@ -596,6 +597,7 @@ del xcopyexclude.txt
     <ClInclude Include="Source\Graphics\ShaderProgram.h" />
     <ClInclude Include="Source\Graphics\Texture.h" />
     <ClInclude Include="Source\Graphics\VertexShader.h" />
+    <ClInclude Include="Source\Models\CameraPositionLockedModelInstance.h" />
     <ClInclude Include="Source\Models\InfiniteGroundModelInstance.h" />
     <ClInclude Include="Source\Models\ModelInstance.h" />
     <ClInclude Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.h" />

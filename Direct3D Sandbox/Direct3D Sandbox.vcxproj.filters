@@ -120,6 +120,9 @@
     <ClCompile Include="Source\Models\InfiniteGroundModelInstance.cpp">
       <Filter>Source\Models</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Models\CameraPositionLockedModelInstance.cpp">
+      <Filter>Source\Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\PrecompiledHeader.h">
@@ -201,6 +204,9 @@
       <Filter>Source\Models</Filter>
     </ClInclude>
     <ClInclude Include="Source\Models\InfiniteGroundModelInstance.h">
+      <Filter>Source\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Models\CameraPositionLockedModelInstance.h">
       <Filter>Source\Models</Filter>
     </ClInclude>
   </ItemGroup>
