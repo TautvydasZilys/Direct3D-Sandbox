@@ -4,7 +4,6 @@
 #include "DirectionalLight.h"
 #include "Input.h"
 #include "Source\Graphics\Direct3D.h"
-#include "Source\Models\InfiniteGroundModelInstance.h"
 #include "Source\Models\ModelInstance.h"
 #include "Source\PlatformSpecific\Windows\DesktopWindowing.h"
 #include "Source\PlatformSpecific\WindowsPhone\PhoneWindowing.h"
@@ -25,11 +24,8 @@ private:
 
 	Camera m_Camera;
 	DirectionalLight m_Light;
-	vector<ModelInstance> m_Models;
-
-	unsigned int m_SkyboxIndex;
-	unsigned int m_GroundIndex;
-
+	vector<shared_ptr<ModelInstance>> m_Models;
+	
 	void Update();
 	void Draw();
 	void IncrementFpsCounter();

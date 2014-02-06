@@ -20,5 +20,5 @@ void InfiniteGroundModelInstance::Render(RenderParameters& renderParameters)
 	renderParameters.groundScale = m_Scale;
 	renderParameters.uvTiling = m_uvTiling;
 
-	ModelInstance::Render(renderParameters);
+	CameraPositionLockedModelInstance::Render(renderParameters);
 }

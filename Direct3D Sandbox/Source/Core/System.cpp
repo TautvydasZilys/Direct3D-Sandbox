@@ -3,6 +3,7 @@
 #include "Source\Graphics\IShader.h"
 #include "Source\Graphics\SamplerState.h"
 #include "Source\Graphics\Texture.h"
+#include "Source\Models\InfiniteGroundModelInstance.h"
 #include "System.h"
 #include "Tools.h"
 
@@ -40,11 +41,10 @@ System::System() :
 	modelParameters.scale = DirectX::XMFLOAT3(5000.0f, 5000.0f, 5000.0f);	
 	modelParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	m_SkyboxIndex = static_cast<unsigned int>(m_Models.size());
-	m_Models.emplace_back(textureShader, L"Assets\\Models\\skybox.model", modelParameters, L"Assets\\Textures\\Skybox.dds");
-		
-	m_GroundIndex = static_cast<unsigned int>(m_Models.size());
-	m_Models.emplace_back(textureShader, L"Assets\\Models\\tiledPlane.model", modelParameters, L"Assets\\Textures\\Grass.dds");
+	m_Models.emplace_back(make_shared<CameraPositionLockedModelInstance>(textureShader, L"Assets\\Models\\skybox.model", modelParameters, 
+		L"Assets\\Textures\\Skybox.dds", TypedDimensions<bool>(true, true, true)));
+	
+	m_Models.emplace_back(make_shared<InfiniteGroundModelInstance>(modelParameters, L"Assets\\Textures\\Grass.dds", DirectX::XMFLOAT2(200.0f, 200.0f)));
 }
 
 System::~System()
@@ -69,12 +69,6 @@ void System::Run()
 void System::Update()
 {
 	UpdateInput();
-	
-	auto position = m_Camera.GetPosition();
-	m_Models[m_SkyboxIndex].SetPosition(position);
-
-	position.y = 0.0f;
-	m_Models[m_GroundIndex].SetPosition(position);
 }
 
 void System::UpdateInput()
@@ -168,7 +162,7 @@ void System::Draw()
 	
 	for (auto& model : m_Models)
 	{
-		model.Render(renderParameters);
+		model->Render(renderParameters);
 	}
 
 	m_Direct3D.SwapBuffers();

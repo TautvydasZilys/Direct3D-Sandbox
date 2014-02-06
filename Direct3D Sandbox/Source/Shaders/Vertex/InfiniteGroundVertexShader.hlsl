@@ -3,6 +3,9 @@ cbuffer MatrixBuffer
 	matrix worldMatrix;
     matrix viewMatrix;
     matrix projectionMatrix;
+	matrix inversedTransposedWorldMatrix;
+	float3 cameraPosition;
+	float padding;
 };
 
 cbuffer GroundInfoBuffer
@@ -15,27 +18,26 @@ struct VertexInput
 {
     float4 position : POSITION;
 	float2 tex : TEXTURECOORDINATES;
+	float3 normal : NORMAL;
 };
 
 struct PixelInput
 {
     float4 position : SV_POSITION;
     float2 tex : TEXTURECOORDINATES;
+	float3 normal : NORMAL;
 };
 
 PixelInput main(VertexInput input)
 {
 	PixelInput output;
-
-	float2 groundPosition;
-
+	
 	output.position = mul(input.position, worldMatrix);
-	groundPosition = output.position.xz - input.position.xz;
-
 	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projectionMatrix);
-
-	output.tex = input.tex + groundPosition * uvTiling / groundScale;
+	
+	output.tex = uvTiling * (input.tex + cameraPosition.xz / groundScale);
+    output.normal = -mul(input.normal, (float3x3)inversedTransposedWorldMatrix);
 
 	return output;
 }
