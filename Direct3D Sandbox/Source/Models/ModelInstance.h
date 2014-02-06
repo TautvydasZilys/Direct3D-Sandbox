@@ -25,10 +25,10 @@ private:
 public:
 	ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters);
 	ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, const wstring& texturePath);
-	~ModelInstance();
+	virtual ~ModelInstance();
 
 	void SetPosition(const DirectX::XMFLOAT3& position);
 
-	void Render(RenderParameters& renderParameters);
+	virtual void Render(RenderParameters& renderParameters);
 };
 

@@ -37,6 +37,9 @@
     <Filter Include="Source\External\DirectXTK">
       <UniqueIdentifier>{8738a2f9-65fe-4c3c-af82-874f3c672cbe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Models">
+      <UniqueIdentifier>{fe196ddd-5ba2-4dbb-af78-540370bd309d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\PrecompiledHeader.cpp">
@@ -93,9 +96,6 @@
     <ClCompile Include="Source\Graphics\Model.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\ModelInstance.cpp">
-      <Filter>Source\Core</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Core\Parameters.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
@@ -113,6 +113,12 @@
     </ClCompile>
     <ClCompile Include="Source\Core\DirectionalLight.cpp">
       <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Models\ModelInstance.cpp">
+      <Filter>Source\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Models\InfiniteGroundModelInstance.cpp">
+      <Filter>Source\Models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -164,9 +170,6 @@
     <ClInclude Include="Source\Graphics\Model.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Core\ModelInstance.h">
-      <Filter>Source\Core</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Core\System.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
@@ -193,6 +196,12 @@
     </ClInclude>
     <ClInclude Include="Source\Core\DirectionalLight.h">
       <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Models\ModelInstance.h">
+      <Filter>Source\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Models\InfiniteGroundModelInstance.h">
+      <Filter>Source\Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -227,6 +236,12 @@
     </FxCompile>
     <FxCompile Include="Source\Shaders\Vertex\PlaygroundVertexShader.hlsl">
       <Filter>Source\Shaders\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shaders\Vertex\InfiniteGroundVertexShader.hlsl">
+      <Filter>Source\Shaders\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shaders\Pixel\LightingPixelShader.hlsl">
+      <Filter>Source\Shaders\Pixel</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

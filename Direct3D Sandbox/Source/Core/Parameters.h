@@ -13,8 +13,10 @@
 			FIELD(DirectX::XMFLOAT3, lightColor) \
 			FIELD(DirectX::XMFLOAT3, ambientColor) \
 			FIELD(float, specularIntensity) \
+			FIELD(DirectX::XMFLOAT2, groundScale) \
+			FIELD(DirectX::XMFLOAT2, uvTiling) \
 			FIELD(DirectX::XMFLOAT4, padding) \
-			FIELD(ID3D11ShaderResourceView*, texture) \
+			FIELD(ID3D11ShaderResourceView*, texture)
 
 
 #define VERTEX_PARAMETERS \

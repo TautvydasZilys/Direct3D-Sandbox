@@ -141,7 +141,7 @@
       <AdditionalOptions>d3dcompiler.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)DLLs\$(Platform)\*.*" "$(OutDir)"</Command>
+      <Command>xcopy "$(ProjectDir)DLLs\$(Platform)\*.*" "$(OutDir)" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -163,7 +163,7 @@
       <AdditionalOptions>d3dcompiler.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)DLLs\$(Platform)\*.*" "$(OutDir)"</Command>
+      <Command>xcopy "$(ProjectDir)DLLs\$(Platform)\*.*" "$(OutDir)" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
