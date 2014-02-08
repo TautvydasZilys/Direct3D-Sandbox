@@ -16,7 +16,7 @@ System::System() :
 	m_Fps(0), 
 	m_LastFpsTime(m_CurrentTime),
 	m_MouseSensitivity(Constants::DefaultMouseSensitivity),
-	m_Camera(new FPSControllerCamera(true, Constants::VerticalFieldOfView, m_Windowing.GetAspectRatio(), 0, 0)),
+	m_Camera(new FPSControllerCamera(true, Constants::VerticalFieldOfView, m_Windowing.GetAspectRatio(), 0, 0, 1.0f)),
 	m_Light(DirectX::XMFLOAT3(3.0f, -2.0f, -1.0f), DirectX::XMFLOAT3(0.7f, 0.7f, 0.6f), DirectX::XMFLOAT3(0.4f, 0.4f, 0.4f), 32)  
 {
 	// Initialize sample states
@@ -60,8 +60,8 @@ void System::Run()
 {
 	while (!m_Input.ShouldQuit())
 	{
-		m_DeltaTime = Tools::GetTime() - m_CurrentTime;
-		m_CurrentTime += m_DeltaTime;
+		m_FrameTime = Tools::GetTime() - m_CurrentTime;
+		m_CurrentTime += m_FrameTime;
 		m_Windowing.DispatchMessages();
 
 		Update();
@@ -96,49 +96,49 @@ void System::UpdateInput()
 
 	if (m_Input.IsKeyDown(VK_OEM_3))
 	{
-		m_Camera->GoForward(100.0f * m_DeltaTime);
+		m_Camera->GoForward(100.0f * m_FrameTime);
 	}
 
 	if (m_Input.IsKeyDown('W'))
 	{
-		m_Camera->GoForward(5.0f * m_DeltaTime);
+		m_Camera->GoForward(5.0f * m_FrameTime);
 	}
 	if (m_Input.IsKeyDown('S'))
 	{
-		m_Camera->GoBack(5.0f * m_DeltaTime);
+		m_Camera->GoBack(5.0f * m_FrameTime);
 	}
 	if (m_Input.IsKeyDown('A'))
 	{
-		m_Camera->GoLeft(5.0f * m_DeltaTime);
+		m_Camera->GoLeft(5.0f * m_FrameTime);
 	}
 	if (m_Input.IsKeyDown('D'))
 	{
-		m_Camera->GoRight(5.0f * m_DeltaTime);
+		m_Camera->GoRight(5.0f * m_FrameTime);
 	}	
 	if (m_Input.IsKeyDown(VK_SPACE))
 	{
-		m_Camera->GoUp(5.0f * m_DeltaTime);
+		m_Camera->GoUp(5.0f * m_FrameTime);
 	}
 	if (m_Input.IsKeyDown('X'))
 	{
-		m_Camera->GoDown(5.0f * m_DeltaTime);
+		m_Camera->GoDown(5.0f * m_FrameTime);
 	}
 	
 	if (m_Input.IsKeyDown(VK_UP))
 	{
-		m_Camera->LookUp(m_DeltaTime / 2.0f);
+		m_Camera->LookUp(m_FrameTime / 2.0f);
 	}
 	if (m_Input.IsKeyDown(VK_DOWN))
 	{
-		m_Camera->LookDown(m_DeltaTime / 2.0f);
+		m_Camera->LookDown(m_FrameTime / 2.0f);
 	}
 	if (m_Input.IsKeyDown(VK_LEFT))
 	{
-		m_Camera->LookLeft(m_DeltaTime / 2.0f);
+		m_Camera->LookLeft(m_FrameTime / 2.0f);
 	}
 	if (m_Input.IsKeyDown(VK_RIGHT))
 	{
-		m_Camera->LookRight(m_DeltaTime / 2.0f);
+		m_Camera->LookRight(m_FrameTime / 2.0f);
 	}
 	
 	long mouseX, mouseY;
@@ -154,11 +154,11 @@ void System::UpdateInput()
 
 	if (m_Input.IsKeyDown(VK_ADD))
 	{
-		m_MouseSensitivity += m_DeltaTime * m_MouseSensitivity;
+		m_MouseSensitivity += m_FrameTime * m_MouseSensitivity;
 	}
 	if (m_Input.IsKeyDown(VK_SUBTRACT))
 	{
-		m_MouseSensitivity -= m_DeltaTime * m_MouseSensitivity;
+		m_MouseSensitivity -= m_FrameTime * m_MouseSensitivity;
 	}
 }
 
@@ -171,6 +171,8 @@ void System::Draw()
 	m_Direct3D.StartDrawing();
 
 	renderParameters.time = m_CurrentTime;
+	renderParameters.frameTime = m_FrameTime;
+
 	m_Camera->SetRenderParameters(renderParameters);
 	m_Light.SetRenderParameters(renderParameters);
 	

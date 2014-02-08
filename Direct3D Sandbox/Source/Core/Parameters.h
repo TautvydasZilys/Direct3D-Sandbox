@@ -4,6 +4,7 @@
 
 #define RENDER_PARAMETERS \
 			FIELD(float, time) \
+			FIELD(float, frameTime) \
 			FIELD(DirectX::XMFLOAT4X4, projectionMatrix) \
 			FIELD(DirectX::XMFLOAT4X4, viewMatrix) \
 			FIELD(DirectX::XMFLOAT4X4, worldMatrix) \

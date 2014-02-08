@@ -18,7 +18,7 @@ private:
 	Input& m_Input;
 	float m_MouseSensitivity;
 
-	float m_DeltaTime;
+	float m_FrameTime;
 	float m_CurrentTime;
 	float m_LastFpsTime;
 	float m_Fps;
