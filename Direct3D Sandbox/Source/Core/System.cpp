@@ -38,13 +38,16 @@ System::System() :
 	
 	modelParameters.position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
 	modelParameters.rotation = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
-	modelParameters.scale = DirectX::XMFLOAT3(5000.0f, 5000.0f, 5000.0f);	
+	modelParameters.scale = DirectX::XMFLOAT3(5000.0f, 5000.0f, 5000.0f);
 	modelParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	m_Models.emplace_back(make_shared<CameraPositionLockedModelInstance>(textureShader, L"Assets\\Models\\skybox.model", modelParameters, 
 		L"Assets\\Textures\\Skybox.dds", TypedDimensions<bool>(true, true, true)));
 	
-	m_Models.emplace_back(make_shared<InfiniteGroundModelInstance>(modelParameters, L"Assets\\Textures\\Grass.dds", DirectX::XMFLOAT2(200.0f, 200.0f)));
+	modelParameters.scale = DirectX::XMFLOAT3(4000.0f, 4000.0f, 4000.0f);
+	m_Models.emplace_back(make_shared<InfiniteGroundModelInstance>(modelParameters, L"Assets\\Textures\\Grass.dds", DirectX::XMFLOAT2(5000.0f, 5000.0f)));
+
+	m_Camera.SetPosition(0.0f, 1.0f, 0.0f);
 }
 
 System::~System()
@@ -69,6 +72,15 @@ void System::Run()
 void System::Update()
 {
 	UpdateInput();
+
+	wstringstream debugStream;
+	debugStream.setf(ios::fixed);
+	debugStream.precision(3);
+
+	auto& cameraPosition = m_Camera.GetPosition();
+	debugStream << L"Camera position: " << cameraPosition.x << L" " << cameraPosition.y << L" " << cameraPosition.z << endl;
+
+	OutputDebugStringW(debugStream.str().c_str());
 }
 
 void System::UpdateInput()
