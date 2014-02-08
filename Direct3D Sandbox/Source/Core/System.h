@@ -19,9 +19,9 @@ private:
 	float m_MouseSensitivity;
 
 	float m_FrameTime;
-	float m_CurrentTime;
-	float m_LastFpsTime;
-	float m_Fps;
+	double m_CurrentTime;
+	double m_LastFpsTime;
+	int m_Fps;
 
 	unique_ptr<Camera> m_Camera;
 	DirectionalLight m_Light;

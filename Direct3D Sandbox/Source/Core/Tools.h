@@ -7,7 +7,7 @@ struct ModelData;
 
 namespace Tools
 {
-	float GetTime();
+	double GetTime();
 	vector<uint8_t> ReadFileToVector(const wstring& path);
 	ModelData LoadModel(const wstring& path, bool shouldInvert);
 

@@ -12,12 +12,12 @@ inline static long long int InitPerformanceCounterFrequency()
 
 long long int s_PerformanceCounterFrequency = InitPerformanceCounterFrequency();
 
-float Tools::GetTime()
+double Tools::GetTime()
 {
 	long long int timer;
 
 	QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&timer));
-	return static_cast<float>(timer) / static_cast<float>(s_PerformanceCounterFrequency);
+	return static_cast<double>(timer) / static_cast<double>(s_PerformanceCounterFrequency);
 }
 
 vector<uint8_t> Tools::ReadFileToVector(const wstring& path)

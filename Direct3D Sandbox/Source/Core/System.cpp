@@ -16,7 +16,7 @@ System::System() :
 	m_Fps(0), 
 	m_LastFpsTime(m_CurrentTime),
 	m_MouseSensitivity(Constants::DefaultMouseSensitivity),
-	m_Camera(new FPSControllerCamera(true, Constants::VerticalFieldOfView, m_Windowing.GetAspectRatio(), 0, 0, 1.0f)),
+	m_Camera(new FPSControllerCamera(true, Constants::VerticalFieldOfView, m_Windowing.GetAspectRatio(), 0, 0, 2.0f)),
 	m_Light(DirectX::XMFLOAT3(3.0f, -2.0f, -1.0f), DirectX::XMFLOAT3(0.7f, 0.7f, 0.6f), DirectX::XMFLOAT3(0.4f, 0.4f, 0.4f), 32)  
 {
 	// Initialize sample states
@@ -60,8 +60,9 @@ void System::Run()
 {
 	while (!m_Input.ShouldQuit())
 	{
-		m_FrameTime = Tools::GetTime() - m_CurrentTime;
-		m_CurrentTime += m_FrameTime;
+		auto currentTime = Tools::GetTime();
+		m_FrameTime = static_cast<float>(currentTime - m_CurrentTime);
+		m_CurrentTime = currentTime;
 		m_Windowing.DispatchMessages();
 
 		Update();
@@ -82,7 +83,7 @@ void System::Update()
 	auto& cameraPosition = m_Camera->GetPosition();
 	debugStream << L"Camera position: " << cameraPosition.x << L" " << cameraPosition.y << L" " << cameraPosition.z << endl;
 
-	OutputDebugStringW(debugStream.str().c_str());
+	//OutputDebugStringW(debugStream.str().c_str());
 }
 
 void System::UpdateInput()
@@ -170,7 +171,7 @@ void System::Draw()
 	m_Direct3D.TurnZBufferOn();
 	m_Direct3D.StartDrawing();
 
-	renderParameters.time = m_CurrentTime;
+	renderParameters.time = static_cast<float>(m_CurrentTime);
 	renderParameters.frameTime = m_FrameTime;
 
 	m_Camera->SetRenderParameters(renderParameters);
@@ -188,7 +189,7 @@ void System::IncrementFpsCounter()
 {
 	m_Fps++;
 	
-	if (m_CurrentTime - m_LastFpsTime > 1.0f)
+	if (m_CurrentTime - m_LastFpsTime > 1.0)
 	{
 		OutputDebugStringW((L"FPS: " + to_wstring(m_Fps) + L"\r\n").c_str());
 
