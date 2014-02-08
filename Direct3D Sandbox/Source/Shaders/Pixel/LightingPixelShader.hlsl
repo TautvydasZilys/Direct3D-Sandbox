@@ -1,5 +1,5 @@
 Texture2D Texture;
-SamplerState WrapSampler;
+SamplerState MirrorSampler;
 
 cbuffer LightingBuffer
 {
@@ -21,7 +21,7 @@ float4 main(PixelInput input) : SV_TARGET
 	float3 lightIntensity;
 	float4 color;
 	
-	color = Texture.Sample(WrapSampler, input.tex);
+	color = Texture.Sample(MirrorSampler, input.tex);
 
 	input.normal = normalize(input.normal);
     lightIntensity = saturate(dot(input.normal, lightDirection));
