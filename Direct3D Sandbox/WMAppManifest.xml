@@ -6,7 +6,7 @@
     <Capabilities>
     </Capabilities>
     <Tasks>
-      <DefaultTask Name="_default" ImagePath="Direct3D Sandbox.exe" ImageParams="" />
+      <DefaultTask Name="_default" ImagePath="Direct3D Sandbox.exe" ImageParams="" ActivationPolicy="Resume" />
     </Tasks>
     <Tokens>
       <PrimaryToken TokenID="PhoneDirect3DApp1Token" TaskName="_default">
@@ -33,5 +33,8 @@
       <ScreenResolution Name="ID_RESOLUTION_WXGA" />
       <ScreenResolution Name="ID_RESOLUTION_HD720P" />
     </ScreenResolutions>
+    <FunctionalCapabilities>
+      <FunctionalCapability Name="ID_FUNCCAP_EXTEND_MEM" />
+    </FunctionalCapabilities>
   </App>
 </Deployment>

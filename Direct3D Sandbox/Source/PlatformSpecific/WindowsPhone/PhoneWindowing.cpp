@@ -90,7 +90,6 @@ void PhoneFrameworkView::Run()
 
 void PhoneFrameworkView::Uninitialize()
 {
-	CoreApplication::Exit();
 }
 
 void PhoneFrameworkView::OnVisibilityChanged(CoreWindow^ sender, VisibilityChangedEventArgs^ args)

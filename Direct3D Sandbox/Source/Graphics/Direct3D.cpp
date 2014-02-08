@@ -320,13 +320,17 @@ void Direct3D::StartDrawing(float red, float green, float blue, float alpha)
 
 void Direct3D::SwapBuffers()
 {
+	HRESULT result;
+
 	if (Constants::VSyncEnabled)
 	{
-		Assert(m_SwapChain->Present(1, 0) == S_OK);
+		result = m_SwapChain->Present(1, 0);
+		Assert(result == S_OK || result == 0x087A0001); // The present operation was invisible to the user (happens when window is not in focus on Windows Phone)
 	}
 	else
 	{
-		Assert(m_SwapChain->Present(0, 0) == S_OK);
+		result = m_SwapChain->Present(0, 0);
+		Assert(result == S_OK || result == 0x087A0001);
 	}
 }
 
