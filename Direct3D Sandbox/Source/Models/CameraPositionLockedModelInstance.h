@@ -9,6 +9,7 @@ class CameraPositionLockedModelInstance :
 	public ModelInstance
 {
 private:
+	DirectX::XMFLOAT3 m_OriginalPosition;
 	TypedDimensions<bool> m_LockedDimensions;
 
 public:
