@@ -24,3 +24,5 @@ const float Constants::DefaultMouseSensitivity = 0.2f;
 #else
 const float Constants::DefaultMouseSensitivity = 0.5f;
 #endif
+
+const float Constants::GravityConstant = -9.81;

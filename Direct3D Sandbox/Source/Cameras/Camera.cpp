@@ -57,7 +57,7 @@ void Camera::CheckRotationBounds()
 	}
 }
 
-void Camera::SetRenderParameters(RenderParameters& renderParameters) const
+void Camera::SetRenderParameters(RenderParameters& renderParameters)
 {
 	DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixRotationRollPitchYaw(m_Rotation.x, m_Rotation.y, m_Rotation.z);
 	DirectX::XMVECTOR up = DirectX::XMVector3Transform(DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f), rotationMatrix);

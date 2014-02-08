@@ -21,5 +21,7 @@ public:
 	static const float VerticalFieldOfView;
 
 	static const float DefaultMouseSensitivity;
+
+	static const float GravityConstant;
 };
 

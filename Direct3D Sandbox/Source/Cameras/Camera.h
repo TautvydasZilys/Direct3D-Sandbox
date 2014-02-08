@@ -37,6 +37,6 @@ public:
 	void LookLeft(float value);
 	void LookRight(float value);
 
-	void SetRenderParameters(RenderParameters& renderParameters) const;
+	virtual void SetRenderParameters(RenderParameters& renderParameters);
 };
 
