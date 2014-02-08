@@ -22,48 +22,6 @@ Camera::Camera(bool usePerspective, float fovY, float aspectRatio, float orthoWi
 Camera::~Camera()
 {
 }
-
-void Camera::GoForward(float value)
-{
-	m_Position.x -= value * cos(m_Rotation.x) * sin(m_Rotation.y);
-	m_Position.y -= -value * sin(m_Rotation.x);
-	m_Position.z -= value * cos(m_Rotation.x) * cos(m_Rotation.y);
-}
-
-void Camera::GoBack(float value)
-{
-	m_Position.x += value * cos(m_Rotation.x) * sin(m_Rotation.y);
-	m_Position.y += -value * sin(m_Rotation.x);
-	m_Position.z += value * cos(m_Rotation.x) * cos(m_Rotation.y);
-}
-
-void Camera::GoUp(float value)
-{
-	m_Position.y += value;
-}
-
-void Camera::GoDown(float value)
-{
-	m_Position.y -= value;
-}
-
-// Rotation matrix for only y rotation:
-// 
-//  cos(y)      0      sin(y)
-//   0          0        0
-// -sin(y)      0      cos(y)
-//
-void Camera::GoLeft(float value)
-{
-	m_Position.x -= value * cos(m_Rotation.y);
-	m_Position.z -= -value * sin(m_Rotation.y);
-}
-
-void Camera::GoRight(float value)
-{
-	m_Position.x += value * cos(m_Rotation.y);
-	m_Position.z += -value * sin(m_Rotation.y);
-}
 	
 void Camera::LookUp(float value)
 {

@@ -1,5 +1,7 @@
 #include "PrecompiledHeader.h"
 #include "Constants.h"
+#include "Source\Cameras\FreeMovementCamera.h"
+#include "Source\Cameras\FPSControllerCamera.h"
 #include "Source\Graphics\IShader.h"
 #include "Source\Graphics\SamplerState.h"
 #include "Source\Graphics\Texture.h"
@@ -14,7 +16,7 @@ System::System() :
 	m_Fps(0), 
 	m_LastFpsTime(m_CurrentTime),
 	m_MouseSensitivity(Constants::DefaultMouseSensitivity),
-	m_Camera(true, Constants::VerticalFieldOfView, m_Windowing.GetAspectRatio(), 0, 0),
+	m_Camera(new FPSControllerCamera(true, Constants::VerticalFieldOfView, m_Windowing.GetAspectRatio(), 0, 0)),
 	m_Light(DirectX::XMFLOAT3(3.0f, -2.0f, -1.0f), DirectX::XMFLOAT3(0.7f, 0.7f, 0.6f), DirectX::XMFLOAT3(0.4f, 0.4f, 0.4f), 32)  
 {
 	// Initialize sample states
@@ -47,7 +49,7 @@ System::System() :
 	modelParameters.scale = DirectX::XMFLOAT3(4000.0f, 4000.0f, 4000.0f);
 	m_Models.emplace_back(make_shared<InfiniteGroundModelInstance>(modelParameters, L"Assets\\Textures\\Grass.dds", DirectX::XMFLOAT2(5000.0f, 5000.0f)));
 
-	m_Camera.SetPosition(0.0f, 1.0f, 0.0f);
+	m_Camera->SetPosition(0.0f, 1.0f, 0.0f);
 }
 
 System::~System()
@@ -77,7 +79,7 @@ void System::Update()
 	debugStream.setf(ios::fixed);
 	debugStream.precision(3);
 
-	auto& cameraPosition = m_Camera.GetPosition();
+	auto& cameraPosition = m_Camera->GetPosition();
 	debugStream << L"Camera position: " << cameraPosition.x << L" " << cameraPosition.y << L" " << cameraPosition.z << endl;
 
 	OutputDebugStringW(debugStream.str().c_str());
@@ -90,64 +92,64 @@ void System::UpdateInput()
 		m_Input.Quit();
 	}
 	
-	m_Camera.GoForward(m_Input.HandlePinchDisplacement() / 100.0f);
+	m_Camera->GoForward(m_Input.HandlePinchDisplacement() / 100.0f);
 
 	if (m_Input.IsKeyDown(VK_OEM_3))
 	{
-		m_Camera.GoForward(100.0f * m_DeltaTime);
+		m_Camera->GoForward(100.0f * m_DeltaTime);
 	}
 
 	if (m_Input.IsKeyDown('W'))
 	{
-		m_Camera.GoForward(5.0f * m_DeltaTime);
+		m_Camera->GoForward(5.0f * m_DeltaTime);
 	}
 	if (m_Input.IsKeyDown('S'))
 	{
-		m_Camera.GoBack(5.0f * m_DeltaTime);
+		m_Camera->GoBack(5.0f * m_DeltaTime);
 	}
 	if (m_Input.IsKeyDown('A'))
 	{
-		m_Camera.GoLeft(5.0f * m_DeltaTime);
+		m_Camera->GoLeft(5.0f * m_DeltaTime);
 	}
 	if (m_Input.IsKeyDown('D'))
 	{
-		m_Camera.GoRight(5.0f * m_DeltaTime);
+		m_Camera->GoRight(5.0f * m_DeltaTime);
 	}	
 	if (m_Input.IsKeyDown(VK_SPACE))
 	{
-		m_Camera.GoUp(5.0f * m_DeltaTime);
+		m_Camera->GoUp(5.0f * m_DeltaTime);
 	}
 	if (m_Input.IsKeyDown('X'))
 	{
-		m_Camera.GoDown(5.0f * m_DeltaTime);
+		m_Camera->GoDown(5.0f * m_DeltaTime);
 	}
 	
 	if (m_Input.IsKeyDown(VK_UP))
 	{
-		m_Camera.LookUp(m_DeltaTime / 2.0f);
+		m_Camera->LookUp(m_DeltaTime / 2.0f);
 	}
 	if (m_Input.IsKeyDown(VK_DOWN))
 	{
-		m_Camera.LookDown(m_DeltaTime / 2.0f);
+		m_Camera->LookDown(m_DeltaTime / 2.0f);
 	}
 	if (m_Input.IsKeyDown(VK_LEFT))
 	{
-		m_Camera.LookLeft(m_DeltaTime / 2.0f);
+		m_Camera->LookLeft(m_DeltaTime / 2.0f);
 	}
 	if (m_Input.IsKeyDown(VK_RIGHT))
 	{
-		m_Camera.LookRight(m_DeltaTime / 2.0f);
+		m_Camera->LookRight(m_DeltaTime / 2.0f);
 	}
 	
 	long mouseX, mouseY;
 	m_Input.HandleMouseDisplacement(mouseX, mouseY);
 	if (mouseX > 0.000001f || mouseX < -0.000001f)
 	{
-		m_Camera.LookRight(m_MouseSensitivity * mouseX / 250.0f);
+		m_Camera->LookRight(m_MouseSensitivity * mouseX / 250.0f);
 	}
 	if (mouseY > 0.000001f || mouseY < -0.000001f)
 	{
-		m_Camera.LookDown(m_MouseSensitivity * mouseY / 250.0f);
+		m_Camera->LookDown(m_MouseSensitivity * mouseY / 250.0f);
 	}
 
 	if (m_Input.IsKeyDown(VK_ADD))
@@ -169,7 +171,7 @@ void System::Draw()
 	m_Direct3D.StartDrawing();
 
 	renderParameters.time = m_CurrentTime;
-	m_Camera.SetRenderParameters(renderParameters);
+	m_Camera->SetRenderParameters(renderParameters);
 	m_Light.SetRenderParameters(renderParameters);
 	
 	for (auto& model : m_Models)

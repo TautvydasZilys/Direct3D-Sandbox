@@ -4,7 +4,7 @@ struct RenderParameters;
 
 class Camera
 {
-private:
+protected:
 	DirectX::XMFLOAT3 m_Position;
 	DirectX::XMFLOAT3 m_Rotation;
 	DirectX::XMFLOAT4X4 m_ProjectionMatrix;
@@ -15,7 +15,7 @@ private:
 
 public:
 	Camera(bool usePerspective, float fovY, float aspectRatio, float orthoWidth, float orthoHeight);
-	~Camera();
+	virtual ~Camera();
 	
 	void SetPosition(float x, float y, float z) { m_Position = DirectX::XMFLOAT3(x, y, z); }
 	void SetPosition(DirectX::XMFLOAT3 position) { m_Position = position; }
@@ -25,12 +25,12 @@ public:
 	const DirectX::XMFLOAT3& GetPosition() const { return m_Position; }
 	const DirectX::XMFLOAT3& GetRotation() const { return m_Rotation; }
 	
-	void GoForward(float value);
-	void GoBack(float value);
-	void GoUp(float value);
-	void GoDown(float value);
-	void GoLeft(float value);
-	void GoRight(float value);
+	virtual void GoForward(float value) = 0;
+	virtual void GoBack(float value) = 0;
+	virtual void GoUp(float value) = 0;
+	virtual void GoDown(float value) = 0;
+	virtual void GoLeft(float value) = 0;
+	virtual void GoRight(float value) = 0;
 	
 	void LookUp(float value);
 	void LookDown(float value);
