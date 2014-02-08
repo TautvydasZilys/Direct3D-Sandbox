@@ -17,6 +17,10 @@
 #include <Windows.h>
 #include <wrl.h>
 
+#if !WINDOWS_PHONE
+#include <psapi.h>
+#endif
+
 #include <D3D11.h>
 #include <DirectXMath.h>
 

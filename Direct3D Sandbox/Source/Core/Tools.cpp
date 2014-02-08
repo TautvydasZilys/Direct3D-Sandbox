@@ -118,6 +118,21 @@ bool Tools::DirectoryExists(const wstring& path)
 	return (attributes.dwFileAttributes != INVALID_FILE_ATTRIBUTES) && (attributes.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
 }
 
+int Tools::GetMemoryUsage()
+{
+#if !WINDOWS_PHONE
+	PROCESS_MEMORY_COUNTERS memoryInfo;
+	auto myProcess = GetCurrentProcess();
+	auto result = GetProcessMemoryInfo(myProcess, &memoryInfo, sizeof(memoryInfo));
+	
+	Assert(result != 0);
+
+	return static_cast<int>(memoryInfo.WorkingSetSize / (1024 * 1024));
+#else
+	return static_cast<int>(Windows::Phone::System::Memory::MemoryManager::ProcessCommittedBytes / (1024 * 1024));
+#endif
+}
+
 string Tools::ToLower(const string& str)
 {
 	string lowerStr;

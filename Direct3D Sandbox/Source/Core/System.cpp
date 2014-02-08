@@ -192,7 +192,12 @@ void System::IncrementFpsCounter()
 	
 	if (m_CurrentTime - m_LastFpsTime > 1.0)
 	{
-		OutputDebugStringW((L"FPS: " + to_wstring(m_Fps) + L"\r\n").c_str());
+		wstringstream debugOutput;
+
+		debugOutput << L"FPS: " << m_Fps << endl;
+		debugOutput << L"Memory usage: " << Tools::GetMemoryUsage() << " MB" << endl;
+
+		OutputDebugStringW(debugOutput.str().c_str());
 
 		m_Fps = 0;
 		m_LastFpsTime = m_CurrentTime;

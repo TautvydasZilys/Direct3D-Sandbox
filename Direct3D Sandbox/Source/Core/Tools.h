@@ -14,6 +14,8 @@ namespace Tools
 	vector<wstring> GetFilesInDirectory(wstring path, const wstring& searchPattern, bool recursive);	
 	bool DirectoryExists(const wstring& path);
 
+	int GetMemoryUsage();
+
 	string ToLower(const string& str);
 	wstring ToLower(const wstring& str);
 
