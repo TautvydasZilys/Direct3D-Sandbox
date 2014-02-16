@@ -104,6 +104,8 @@ vector<wstring> Tools::GetFilesInDirectory(wstring path, const wstring& searchPa
 	}
 	while (GetLastError() != ERROR_NO_MORE_FILES);
 
+	FindClose(searchHandle);
+	
 	SetLastError(ERROR_SUCCESS);
 	return result;
 }
