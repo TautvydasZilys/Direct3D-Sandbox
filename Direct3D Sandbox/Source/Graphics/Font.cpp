@@ -61,7 +61,7 @@ Font::Font(const wstring& path)
 		auto characterWidth = Tools::BufferReader::ReadUInt(font, position);
 		auto characterHeight = Tools::BufferReader::ReadUInt(font, position);
 
-		if (m_CharacterMetadata.size() < character + 1)
+		if (static_cast<int>(m_CharacterMetadata.size()) < character + 1)
 		{
 			m_CharacterMetadata.resize(character + 1);
 		}
