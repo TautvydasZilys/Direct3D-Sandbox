@@ -31,6 +31,10 @@ using namespace std;
 #define	DEBUG _DEBUG
 #endif
 
+#ifdef DrawText
+#undef DrawText
+#endif
+
 #define WIDE2(x) L##x
 #define WIDE1(x) WIDE2(x)
 #define __WFILE__ WIDE1(__FILE__)
