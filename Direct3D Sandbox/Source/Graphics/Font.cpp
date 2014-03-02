@@ -1,6 +1,8 @@
 #include "PrecompiledHeader.h"
 #include "Direct3D.h"
 #include "Font.h"
+#include "IShader.h"
+#include "Model.h"
 #include "Tools.h"
 
 unordered_map<wstring, Font> Font::s_FontCache;
@@ -9,25 +11,27 @@ unordered_map<wstring, Font> Font::s_FontCache;
 static unique_ptr<uint8_t[]> ParseFontPixels(const uint8_t* alphaPixels, int count)
 {
 	unique_ptr<uint8_t[]> rgbPixels(new uint8_t[4 * count]);
+	int whiteCount = 0;
 
 	for (int i = 0; i < count; i++)
 	{
-		if (alphaPixels[i] > 50)
+		if (alphaPixels[i] > 200)
 		{
-			rgbPixels[4 * i] = alphaPixels[i];
-			rgbPixels[4 * i + 1] = alphaPixels[i];
-			rgbPixels[4 * i + 2] = alphaPixels[i];
+			rgbPixels[4 * i] = 255;
+			rgbPixels[4 * i + 1] = 255;
+			rgbPixels[4 * i + 2] = 255;
 			rgbPixels[4 * i + 3] = 255;
+			whiteCount++;
 		}
 		else
 		{
 			rgbPixels[4 * i] = 0;
 			rgbPixels[4 * i + 1] = 0;
 			rgbPixels[4 * i + 2] = 0;
-			rgbPixels[4 * i + 3] = 0;
+			rgbPixels[4 * i + 3] = 255;
 		}
 	}
-
+	
 	return rgbPixels;
 }
 
@@ -42,11 +46,11 @@ Font::Font(const wstring& path)
 	unsigned int position = 0;
 	auto font = Tools::ReadFileToVector(path);
 	
-	auto fontWidth = Tools::BufferReader::ReadUInt(font, position);
-	auto fontHeight = Tools::BufferReader::ReadUInt(font, position);
+	m_FontTextureWidth = Tools::BufferReader::ReadUInt(font, position);
+	m_FontTextureHeight = Tools::BufferReader::ReadUInt(font, position);
 
-	textureDescription.Width = fontWidth;
-	textureDescription.Height = fontHeight;
+	textureDescription.Width = m_FontTextureWidth;
+	textureDescription.Height = m_FontTextureHeight;
 	textureDescription.MipLevels = 1;
 	textureDescription.ArraySize = 1;
 	textureDescription.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
@@ -73,17 +77,18 @@ Font::Font(const wstring& path)
 	result = GetD3D11Device()->CreateShaderResourceView(texture2D.Get(), &srvDescription, &m_FontTexture);
 	Assert(result == S_OK);
 
-	position = 8 + fontWidth * fontHeight;
+	position = 8 + m_FontTextureWidth * m_FontTextureHeight;
 	m_CharacterMetadata.resize(128);
 	auto numberOfCharacters = Tools::BufferReader::ReadUInt(font, position);
 
-	for (int i = 0; i < numberOfCharacters; i++)
+	for (auto i = 0u; i < numberOfCharacters; i++)
 	{
 		auto character = Tools::BufferReader::ReadChar(font, position);
 		auto aSpacing = Tools::BufferReader::ReadFloat(font, position);
 		auto bSpacing = Tools::BufferReader::ReadFloat(font, position);
 		auto cSpacing = Tools::BufferReader::ReadFloat(font, position);
 		auto yOffset = Tools::BufferReader::ReadUInt(font, position);
+		auto characterHeight = Tools::BufferReader::ReadUInt(font, position);
 		auto horizontalOffset = Tools::BufferReader::ReadUInt(font, position);
 
 		if (m_CharacterMetadata.size() < character + 1)
@@ -91,9 +96,23 @@ Font::Font(const wstring& path)
 			m_CharacterMetadata.resize(character + 1);
 		}
 
-		m_CharacterMetadata[character] = CharacterMetadata(aSpacing, bSpacing, cSpacing, yOffset, horizontalOffset);
+		m_CharacterMetadata[character] = CharacterMetadata(aSpacing, bSpacing, cSpacing, yOffset, characterHeight, horizontalOffset);
 	}
+
+	m_LineSpacing = Tools::BufferReader::ReadUInt(font, position);
 }
+
+Font::Font(Font&& other) :
+	m_FontTextureWidth(other.m_FontTextureWidth),
+	m_FontTextureHeight(other.m_FontTextureHeight),
+	m_FontTexture(other.m_FontTexture),
+	m_CharacterMetadata(std::move(other.m_CharacterMetadata)),
+	m_LineSpacing(other.m_LineSpacing),
+	m_TextCache(std::move(other.m_TextCache))
+{
+	other.m_FontTexture = nullptr;
+}
+
 
 Font::~Font()
 {
@@ -112,3 +131,173 @@ Font& Font::Get(const wstring& path)
 	Assert(font != s_FontCache.end());
 	return font->second;
 }
+
+ComPtr<ID3D11Buffer> Font::CreateTextVertexBuffer(const string& text, const IShader& shader)
+{
+	// 6 vertices per character
+	ModelData model;
+	float currentPosX = 0, currentPosY = 0;
+	
+	model.vertexCount = 6;
+	model.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[6]);
+ 	ZeroMemory(model.vertices.get(), sizeof(VertexParameters) * 6);
+
+	for (auto u = 0; u < 6; u++)
+	{
+		model.vertices[u].color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+		model.vertices[u].position.w = 1.0f;
+	}
+
+	auto height = 1920 * m_FontTextureHeight / m_FontTextureWidth;
+	
+	model.vertices[0].position.x = 0.0f;
+	model.vertices[0].position.y = 0.0f;
+	model.vertices[0].textureCoordinates.x = 0.0f;
+	model.vertices[0].textureCoordinates.y = 0.0f;
+	
+	model.vertices[1].position.x = 0.0f;
+	model.vertices[1].position.y = height;
+	model.vertices[1].textureCoordinates.x = 0.0f;
+	model.vertices[1].textureCoordinates.y = 1.0f;
+
+	model.vertices[2].position.x = 1920.0f;
+	model.vertices[2].position.y = height;
+	model.vertices[2].textureCoordinates.x = 1.0f;
+	model.vertices[2].textureCoordinates.y = 1.0f;
+	
+	model.vertices[3].position.x = 0.0f;
+	model.vertices[3].position.y = 0.0f;
+	model.vertices[3].textureCoordinates.x = 0.0f;
+	model.vertices[3].textureCoordinates.y = 0.0f;
+	
+	model.vertices[4].position.x = 1920.0f;
+	model.vertices[4].position.y = height;
+	model.vertices[4].textureCoordinates.x = 1.0f;
+	model.vertices[4].textureCoordinates.y = 1.0f;
+
+	model.vertices[5].position.x = 1920.0f;
+	model.vertices[5].position.y = 0.0f;
+	model.vertices[5].textureCoordinates.x = 1.0f;
+	model.vertices[5].textureCoordinates.y = 0.0f;
+
+	model.indexCount = 0;/*
+	model.vertexCount = 6 * text.length();
+	model.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[6 * text.length()]);
+	
+	ZeroMemory(model.vertices.get(), sizeof(VertexParameters) * 6 * text.length());
+
+	for (auto i = 0u; i < text.length(); i++)
+	{
+		for (auto u = 0; u < 6; u++)
+		{
+			model.vertices[6 * i + u].color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+			model.vertices[6 * i + u].position.w = 1.0f;
+		}
+	}
+
+	for (auto i = 0u; i < text.length(); i++)
+	{
+		float startX, startY, endX, endY;
+		float texStartX, texStartY, texEndX, texEndY;
+		
+		startX = currentPosX + m_CharacterMetadata[text[i]].aSpacing;
+		startY = static_cast<float>(currentPosY + m_CharacterMetadata[text[i]].yOffset);
+		endY = startY + m_CharacterMetadata[text[i]].characterHeight;
+		
+		texStartX = static_cast<float>(m_CharacterMetadata[text[i]].horizontalOffset + m_CharacterMetadata[text[i]].aSpacing) / static_cast<float>(m_FontTextureWidth);
+		texStartY = static_cast<float>(m_CharacterMetadata[text[i]].yOffset) / static_cast<float>(m_FontTextureHeight);
+		texEndY = static_cast<float>(m_CharacterMetadata[text[i]].yOffset + m_CharacterMetadata[i].characterHeight) / static_cast<float>(m_FontTextureHeight);
+
+		if (text[i] != ' ' || i == 0)
+		{
+			endX = startX + m_CharacterMetadata[text[i]].bSpacing;		
+			texEndX = static_cast<float>(m_CharacterMetadata[text[i]].horizontalOffset + m_CharacterMetadata[text[i]].aSpacing +
+				m_CharacterMetadata[i].bSpacing) / static_cast<float>(m_FontTextureWidth);
+		}
+		else
+		{
+			endX = startX + m_CharacterMetadata[text[i - 1]].cSpacing;
+			texEndX = static_cast<float>(m_CharacterMetadata[text[i]].horizontalOffset + m_CharacterMetadata[text[i]].aSpacing +
+				m_CharacterMetadata[i - 1].cSpacing) / static_cast<float>(m_FontTextureWidth);
+		}
+		
+		model.vertices[6 * i].position.x = startX;
+		model.vertices[6 * i].position.y = startY;
+		model.vertices[6 * i].textureCoordinates.x = texStartX;
+		model.vertices[6 * i].textureCoordinates.y = texStartY;
+
+		model.vertices[6 * i + 1].position.x = startX;
+		model.vertices[6 * i + 1].position.y = endY;
+		model.vertices[6 * i + 1].textureCoordinates.x = texStartX;
+		model.vertices[6 * i + 1].textureCoordinates.y = texEndY;
+		
+		model.vertices[6 * i + 2].position.x = endX;
+		model.vertices[6 * i + 2].position.y = startY;
+		model.vertices[6 * i + 2].textureCoordinates.x = texEndX;
+		model.vertices[6 * i + 2].textureCoordinates.y = texStartY;
+
+		model.vertices[6 * i + 3].position.x = endX;
+		model.vertices[6 * i + 3].position.y = startY;
+		model.vertices[6 * i + 3].textureCoordinates.x = texEndX;
+		model.vertices[6 * i + 3].textureCoordinates.y = texStartY;
+
+		model.vertices[6 * i + 4].position.x = startX;
+		model.vertices[6 * i + 4].position.y = endY;
+		model.vertices[6 * i + 4].textureCoordinates.x = texStartX;
+		model.vertices[6 * i + 4].textureCoordinates.y = texEndY;
+		
+		model.vertices[6 * i + 5].position.x = endX;
+		model.vertices[6 * i + 5].position.y = endY;
+		model.vertices[6 * i + 5].textureCoordinates.x = texEndX;
+		model.vertices[6 * i + 5].textureCoordinates.y = texEndY;
+
+		currentPosX = endX;
+
+		if (text[i] == '\n')
+		{
+			currentPosX = 0;
+			currentPosY += m_LineSpacing;
+		}
+	}*/
+
+	return shader.CreateVertexBuffer(model);
+}
+
+void Font::DrawText(const string& text, int posX, int posY, RenderParameters& renderParameters, bool useCaching, IShader& shader)
+{
+	ComPtr<ID3D11Buffer> vertexBuffer;
+
+	if (!useCaching)
+	{
+		vertexBuffer = CreateTextVertexBuffer(text, shader);
+	}
+	else
+	{
+		auto buffer = m_TextCache.find(TextId(text, ref(shader)));
+
+		if (buffer == m_TextCache.end())
+		{
+			m_TextCache.emplace(TextId(text, ref(shader)), CreateTextVertexBuffer(text, shader));
+			buffer = m_TextCache.find(TextId(text, ref(shader)));
+		}
+
+		Assert(buffer != m_TextCache.end());
+		vertexBuffer = buffer->second;
+	}
+	
+	auto const offset = 0u;
+	auto deviceContext = GetD3D11DeviceContext();
+	DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixTranslation(static_cast<float>(posX), static_cast<float>(posY), 0.0f);
+
+	DirectX::XMStoreFloat4x4(&renderParameters.worldMatrix, DirectX::XMMatrixTranspose(worldMatrix));
+	DirectX::XMStoreFloat4x4(&renderParameters.inversedTransposedWorldMatrix, DirectX::XMMatrixInverse(nullptr, worldMatrix));
+	renderParameters.texture = m_FontTexture.Get();
+
+	shader.SetRenderParameters(renderParameters);
+	Model::InvalidateParameterSetter();
+
+	deviceContext->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), shader.GetInputLayoutSizePtr(), &offset);
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	deviceContext->Draw(static_cast<unsigned int>(6 * text.length()), 0);
+}
+
