@@ -55,11 +55,11 @@ System::System() :
 
 	m_Models.emplace_back(make_shared<CameraPositionLockedModelInstance>(textureShader, L"Assets\\Models\\skybox.model", modelParameters, 
 		L"Assets\\Textures\\Skybox.dds", TypedDimensions<bool>(true, true, true)));
-	/*
+	
 	modelParameters.position = DirectX::XMFLOAT3(10.0f, 0.0f, 10.0f);
 	modelParameters.scale = DirectX::XMFLOAT3(4000.0f, 4000.0f, 4000.0f);
 	m_Models.emplace_back(make_shared<InfiniteGroundModelInstance>(modelParameters, L"Assets\\Textures\\Grass.dds", DirectX::XMFLOAT2(5000.0f, 5000.0f)));
-	*/
+	
 	m_Camera->SetPosition(0.0f, 1.0f, 0.0f);
 	m_OrthoCamera->SetPosition(0.0f, 0.0f, 1.0f);
 }
@@ -185,14 +185,14 @@ void System::Draw()
 
 	renderParameters.time = static_cast<float>(m_CurrentTime);
 	renderParameters.frameTime = m_FrameTime;
-	/*
+	
 	m_Camera->SetRenderParameters(renderParameters);
 	m_Light.SetRenderParameters(renderParameters);
 	
 	for (auto& model : m_Models)
 	{
 		model->Render(renderParameters);
-	}*/
+	}
 
 	m_OrthoCamera->SetRenderParameters(renderParameters);
 	m_Font->DrawText("Hello, text!", 1, 1, renderParameters, true);
