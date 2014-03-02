@@ -50,6 +50,7 @@ Font::Font(const wstring& path)
 
 	position = 8 + 4 * m_FontTextureWidth * m_FontTextureHeight;
 	m_CharacterMetadata.resize(128);
+	ZeroMemory(m_CharacterMetadata.data(), m_CharacterMetadata.size() * sizeof(CharacterMetadata));
 	auto numberOfCharacters = Tools::BufferReader::ReadUInt(font, position);
 
 	for (auto i = 0u; i < numberOfCharacters; i++)
@@ -108,50 +109,7 @@ ComPtr<ID3D11Buffer> Font::CreateTextVertexBuffer(const string& text, const ISha
 	// 6 vertices per character
 	ModelData model;
 	float currentPosX = 0, currentPosY = 0;
-	
-	model.vertexCount = 6;
-	model.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[6]);
- 	ZeroMemory(model.vertices.get(), sizeof(VertexParameters) * 6);
 
-	for (auto u = 0; u < 6; u++)
-	{
-		model.vertices[u].color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-		model.vertices[u].position.w = 1.0f;
-	}
-
-	auto width = m_FontTextureWidth;
-	auto height = m_FontTextureHeight;// * 1920.0f / m_FontTextureWidth;
-	
-	model.vertices[0].position.x = 0.0f;
-	model.vertices[0].position.y = 0.0f;
-	model.vertices[0].textureCoordinates.x = 0.0f;
-	model.vertices[0].textureCoordinates.y = 1.0f;
-	
-	model.vertices[1].position.x = 0.0f;
-	model.vertices[1].position.y = height;
-	model.vertices[1].textureCoordinates.x = 0.0f;
-	model.vertices[1].textureCoordinates.y = 0.0f;
-
-	model.vertices[2].position.x = width;
-	model.vertices[2].position.y = height;
-	model.vertices[2].textureCoordinates.x = 1.0f;
-	model.vertices[2].textureCoordinates.y = 0.0f;
-	
-	model.vertices[3].position.x = 0.0f;
-	model.vertices[3].position.y = 0.0f;
-	model.vertices[3].textureCoordinates.x = 0.0f;
-	model.vertices[3].textureCoordinates.y = 1.0f;
-	
-	model.vertices[4].position.x = width;
-	model.vertices[4].position.y = height;
-	model.vertices[4].textureCoordinates.x = 1.0f;
-	model.vertices[4].textureCoordinates.y = 0.0f;
-
-	model.vertices[5].position.x = width;
-	model.vertices[5].position.y = 0.0f;
-	model.vertices[5].textureCoordinates.x = 1.0f;
-	model.vertices[5].textureCoordinates.y = 1.0f;
-	/*
 	model.indexCount = 0;
 	model.vertexCount = 6 * text.length();
 	model.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[6 * text.length()]);
@@ -173,54 +131,44 @@ ComPtr<ID3D11Buffer> Font::CreateTextVertexBuffer(const string& text, const ISha
 		float texStartX, texStartY, texEndX, texEndY;
 		
 		startX = currentPosX;
+		endX = startX + m_CharacterMetadata[text[i]].aSpacing + m_CharacterMetadata[text[i]].bSpacing + m_CharacterMetadata[text[i]].cSpacing;
 		startY = static_cast<float>(currentPosY + m_CharacterMetadata[text[i]].yOffset);
 		endY = startY + m_CharacterMetadata[text[i]].characterHeight;
 		
 		texStartX = static_cast<float>(m_CharacterMetadata[text[i]].horizontalOffset) / static_cast<float>(m_FontTextureWidth);
 		texStartY = static_cast<float>(m_CharacterMetadata[text[i]].yOffset) / static_cast<float>(m_FontTextureHeight);
-		texEndY = static_cast<float>(m_CharacterMetadata[text[i]].yOffset + m_CharacterMetadata[i].characterHeight) / static_cast<float>(m_FontTextureHeight);
+		texEndX = static_cast<float>(m_CharacterMetadata[text[i]].horizontalOffset + m_CharacterMetadata[text[i]].aSpacing
+			+ m_CharacterMetadata[text[i]].bSpacing + m_CharacterMetadata[text[i]].cSpacing) / static_cast<float>(m_FontTextureWidth);
+		texEndY = static_cast<float>(m_CharacterMetadata[text[i]].yOffset + m_CharacterMetadata[text[i]].characterHeight) / static_cast<float>(m_FontTextureHeight);
 
-		if (text[i] != ' ' || i == 0)
-		{
-			endX = startX + m_CharacterMetadata[text[i]].bSpacing;		
-			texEndX = static_cast<float>(m_CharacterMetadata[text[i]].horizontalOffset + m_CharacterMetadata[text[i]].aSpacing +
-				m_CharacterMetadata[i].bSpacing) / static_cast<float>(m_FontTextureWidth);
-		}
-		else
-		{
-			endX = startX + m_CharacterMetadata[text[i - 1]].cSpacing;
-			texEndX = static_cast<float>(m_CharacterMetadata[text[i]].horizontalOffset + m_CharacterMetadata[text[i]].aSpacing +
-				m_CharacterMetadata[i - 1].cSpacing) / static_cast<float>(m_FontTextureWidth);
-		}
-		
 		model.vertices[6 * i].position.x = startX;
 		model.vertices[6 * i].position.y = startY;
 		model.vertices[6 * i].textureCoordinates.x = texStartX;
 		model.vertices[6 * i].textureCoordinates.y = texStartY;
-
-		model.vertices[6 * i + 1].position.x = startX;
-		model.vertices[6 * i + 1].position.y = endY;
-		model.vertices[6 * i + 1].textureCoordinates.x = texStartX;
-		model.vertices[6 * i + 1].textureCoordinates.y = texEndY;
 		
-		model.vertices[6 * i + 2].position.x = endX;
-		model.vertices[6 * i + 2].position.y = startY;
-		model.vertices[6 * i + 2].textureCoordinates.x = texEndX;
-		model.vertices[6 * i + 2].textureCoordinates.y = texStartY;
+		model.vertices[6 * i + 1].position.x = endX;
+		model.vertices[6 * i + 1].position.y = startY;
+		model.vertices[6 * i + 1].textureCoordinates.x = texEndX;
+		model.vertices[6 * i + 1].textureCoordinates.y = texStartY;
+
+		model.vertices[6 * i + 2].position.x = startX;
+		model.vertices[6 * i + 2].position.y = endY;
+		model.vertices[6 * i + 2].textureCoordinates.x = texStartX;
+		model.vertices[6 * i + 2].textureCoordinates.y = texEndY;
 
 		model.vertices[6 * i + 3].position.x = endX;
 		model.vertices[6 * i + 3].position.y = startY;
 		model.vertices[6 * i + 3].textureCoordinates.x = texEndX;
 		model.vertices[6 * i + 3].textureCoordinates.y = texStartY;
-
-		model.vertices[6 * i + 4].position.x = startX;
-		model.vertices[6 * i + 4].position.y = endY;
-		model.vertices[6 * i + 4].textureCoordinates.x = texStartX;
-		model.vertices[6 * i + 4].textureCoordinates.y = texEndY;
 		
-		model.vertices[6 * i + 5].position.x = endX;
+		model.vertices[6 * i + 4].position.x = endX;
+		model.vertices[6 * i + 4].position.y = endY;
+		model.vertices[6 * i + 4].textureCoordinates.x = texEndX;
+		model.vertices[6 * i + 4].textureCoordinates.y = texEndY;
+
+		model.vertices[6 * i + 5].position.x = startX;
 		model.vertices[6 * i + 5].position.y = endY;
-		model.vertices[6 * i + 5].textureCoordinates.x = texEndX;
+		model.vertices[6 * i + 5].textureCoordinates.x = texStartX;
 		model.vertices[6 * i + 5].textureCoordinates.y = texEndY;
 
 		currentPosX = endX;
@@ -231,7 +179,7 @@ ComPtr<ID3D11Buffer> Font::CreateTextVertexBuffer(const string& text, const ISha
 			currentPosY += m_LineSpacing;
 		}
 	}
-	*/
+
 	return shader.CreateVertexBuffer(model);
 }
 

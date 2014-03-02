@@ -16,9 +16,18 @@ namespace ManagedPostProcessor
 {
     public static class FontCreator
     {
-        static Brush ForegroundBrush = new SolidBrush(Color.White);
-        static StringFormat NoFontFallbackFormat = new StringFormat(StringFormatFlags.NoFontFallback);
         const int BitmapSize = 1024;
+        const int characterRangeFrom = 32;
+        const int characterRangeTo = 128;
+
+        static Brush ForegroundBrush = new SolidBrush(Color.White);
+        static StringFormat NoFontFallbackFormat;
+
+        static FontCreator()
+        {
+            NoFontFallbackFormat = (StringFormat)StringFormat.GenericTypographic.Clone();
+            NoFontFallbackFormat.FormatFlags |= StringFormatFlags.NoFontFallback;
+        }
 
         public static void CreateFont(string fontName, float fontSize, string outputDirectory)
         {
@@ -49,11 +58,11 @@ namespace ManagedPostProcessor
 
         private static CharacterGlyph[] ImportFont(Font font, Bitmap stagingBitmap, Graphics stagingGraphics)
         {
-            var characters = new CharacterGlyph[128];
+            var characters = new CharacterGlyph[characterRangeTo - characterRangeFrom];
 
-            for (int i = 0; i < 128; i++)
+            for (int i = characterRangeFrom; i < characterRangeTo; i++)
             {
-                characters[i] = ImportCharacter((char)i, font, stagingBitmap, stagingGraphics);
+                characters[i - characterRangeFrom] = ImportCharacter((char)i, font, stagingBitmap, stagingGraphics);
             }
 
             return characters;
@@ -62,15 +71,15 @@ namespace ManagedPostProcessor
         private static CharacterGlyph ImportCharacter(char character, Font font, Bitmap stagingBitmap, Graphics stagingGraphics)
         {
             var str = character.ToString();
-            var characterSize = stagingGraphics.MeasureString(str, font, Point.Empty, NoFontFallbackFormat);
+            var characterSize = stagingGraphics.MeasureString(str, font, Point.Empty, StringFormat.GenericTypographic);
             var abcSpacing = CalculateABCSpacing(character, font, stagingGraphics);
-            
-            int width = (int)Math.Ceiling(characterSize.Width);
+
+            int width = (int)Math.Ceiling(abcSpacing.A + abcSpacing.B + abcSpacing.C);
             int height = (int)Math.Ceiling(characterSize.Height);
             Debug.Assert(width <= BitmapSize && height < BitmapSize);
 
             stagingGraphics.Clear(Color.Black);
-            stagingGraphics.DrawString(str, font, ForegroundBrush, 0, 0, NoFontFallbackFormat);
+            stagingGraphics.DrawString(str, font, ForegroundBrush, 0, 0, StringFormat.GenericTypographic);
             stagingGraphics.Flush();
 
             var characterBitmap = stagingBitmap.Clone(new Rectangle(0, 0, width, height), PixelFormat.Format32bppArgb);
@@ -143,7 +152,7 @@ namespace ManagedPostProcessor
 
                         for (int v = 0; v < 4 * sourceBitmap.Width; v++)
                         {
-                            bitmap[4 * u * bitmapWidth + v + offset] = *sourceLine;
+                            bitmap[4 * u * bitmapWidth + v + 4 * offset] = *sourceLine;
                             sourceLine++;
                         }
                     }
@@ -152,7 +161,7 @@ namespace ManagedPostProcessor
                 characters[i].Bitmap.UnlockBits(sourceBitmapData);
 
                 characters[i].HorizontalOffset = offset;
-                offset += 4 * characters[i].Bitmap.Width;
+                offset += characters[i].Bitmap.Width;
             }
 
             SaveAsBitmap(bitmapWidth, bitmapHeight, bitmap);
