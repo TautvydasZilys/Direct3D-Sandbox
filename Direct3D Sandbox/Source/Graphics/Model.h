@@ -31,7 +31,8 @@ private:
 	IShader& m_Shader;
 	
 	static unordered_map<wstring, const ModelData> s_ModelDataCache;
-	static unordered_map<ModelId, Model, ModelIdHash> s_ModelCache;
+	static unordered_map<ModelId, Model, ModelIdHash> s_ModelCache;	
+	static const Model* s_ModelWhichLastSetParameters;
 #if DEBUG
 	wstring m_Key;
 #endif
@@ -52,4 +53,5 @@ public:
 	static Model& Get(const wstring& path, IShader& shader);
 	
 	void Render(const RenderParameters& renderParameters);
+	static void InvalidateParameterSetter() { s_ModelWhichLastSetParameters = nullptr; }
 };
