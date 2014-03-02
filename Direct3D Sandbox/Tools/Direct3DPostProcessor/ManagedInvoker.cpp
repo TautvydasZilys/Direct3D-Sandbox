@@ -20,7 +20,7 @@ ManagedInvoker::ManagedInvoker()
 
 	HRESULT result;
 	ComPtr<ICLRMetaHost> metaHost;
-    ComPtr<ICLRRuntimeInfo> runtimeInfo;
+	ComPtr<ICLRRuntimeInfo> runtimeInfo;
 	ComPtr<IUnknown> appDomainObj;
 
 	result = CLRCreateInstance(CLSID_CLRMetaHost, __uuidof(ICLRMetaHost), &metaHost);
@@ -58,7 +58,7 @@ void ManagedInvoker::Execute(const wstring& assembly, const wstring& type, const
 	bstr_t methodName(method.c_str());
 
 	auto rawAssembly = Tools::ReadFileToVector(assembly);    
-    bounds.lLbound = 0;
+	bounds.lLbound = 0;
 	bounds.cElements = static_cast<ULONG>(rawAssembly.size());
 	
 	auto rawAssemblyArray = SafeArrayCreate(VT_UI1, 1, &bounds);
