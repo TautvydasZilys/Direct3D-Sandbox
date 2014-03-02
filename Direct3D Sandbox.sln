@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Direct3D Sandbox", "Direct3
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Direct3DPostProcessor", "Direct3D Sandbox\Tools\Direct3DPostProcessor\Direct3DPostProcessor.vcxproj", "{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagedPostProcessor", "Direct3D Sandbox\Tools\ManagedPostProcessor\ManagedPostProcessor.csproj", "{F6CB9299-8F52-4148-B447-5878B0253E50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug PostProcessor|ARM = Debug PostProcessor|ARM
@@ -50,6 +52,18 @@ Global
 		{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}.Release|ARM.ActiveCfg = Release|Win32
 		{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}.Release|Win32.ActiveCfg = Release|Win32
 		{5BB9E13D-6C3E-43A4-AB11-A24C2142C456}.Release|x64.ActiveCfg = Release|x64
+		{F6CB9299-8F52-4148-B447-5878B0253E50}.Debug PostProcessor|ARM.ActiveCfg = Debug|x86
+		{F6CB9299-8F52-4148-B447-5878B0253E50}.Debug PostProcessor|ARM.Build.0 = Debug|x86
+		{F6CB9299-8F52-4148-B447-5878B0253E50}.Debug PostProcessor|Win32.ActiveCfg = Debug|x86
+		{F6CB9299-8F52-4148-B447-5878B0253E50}.Debug PostProcessor|Win32.Build.0 = Debug|x86
+		{F6CB9299-8F52-4148-B447-5878B0253E50}.Debug PostProcessor|x64.ActiveCfg = Debug|x64
+		{F6CB9299-8F52-4148-B447-5878B0253E50}.Debug PostProcessor|x64.Build.0 = Debug|x64
+		{F6CB9299-8F52-4148-B447-5878B0253E50}.Debug|ARM.ActiveCfg = Release|x86
+		{F6CB9299-8F52-4148-B447-5878B0253E50}.Debug|Win32.ActiveCfg = Release|x86
+		{F6CB9299-8F52-4148-B447-5878B0253E50}.Debug|x64.ActiveCfg = Release|x64
+		{F6CB9299-8F52-4148-B447-5878B0253E50}.Release|ARM.ActiveCfg = Release|x86
+		{F6CB9299-8F52-4148-B447-5878B0253E50}.Release|Win32.ActiveCfg = Release|x86
+		{F6CB9299-8F52-4148-B447-5878B0253E50}.Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

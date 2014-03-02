@@ -1,7 +1,73 @@
 #include "PrecompiledHeader.h"
 #include "..\..\Source\Core\Tools.h"
+#include "ManagedInvoker.h"
 #include "ModelProcessor.h"
 #include "ShaderReflector.h"
+
+#include <comutil.h>
+
+static void ProcessShaders(wstring shaderDirectory)
+{
+	for (auto& shaderPath : Tools::GetFilesInDirectory(shaderDirectory, L"*.cso", true))
+	{
+		wcout << "Reflecting on shader: " << shaderPath << endl;
+		ShaderReflector::ReflectShader(shaderPath);
+	}
+}
+
+static void ProcessModels(wstring modelInputDirectory, wstring modelOutputDirectory)
+{
+	if (!Tools::DirectoryExists(modelOutputDirectory))
+	{
+		CreateDirectory(modelOutputDirectory.c_str(), nullptr);
+	}
+	
+	wcout << endl;
+	for (auto& modelPath : Tools::GetFilesInDirectory(modelInputDirectory, L"*.obj", true))
+	{
+		wcout << L"Processing model: " << modelPath << endl;
+		ModelProcessor::ProcessModel(modelPath, modelOutputDirectory);
+	}
+}
+
+static void PutItem(SAFEARRAY* safeArray, LONG index, _variant_t item)
+{
+	auto result = SafeArrayPutElement(safeArray, &index, &item);
+	Assert(result == S_OK);
+}
+
+static wstring GetExecutableDir()
+{	
+	wchar_t pathBuffer[MAX_PATH];
+	Assert(GetModuleFileName(nullptr, pathBuffer, MAX_PATH) != 0);
+
+	wstring path = pathBuffer;
+
+	return path.substr(0, path.find_last_of(L"\\") + 1);
+}
+
+static void ProcessFont(const wstring& fontName, float fontSize, const wstring& outputDirectory)
+{	
+	HRESULT result;
+	ManagedInvoker invoker;
+
+	auto arguments = SafeArrayCreateVector(VT_VARIANT, 0, 3);
+	Assert(arguments != nullptr);
+	
+	PutItem(arguments, 0, fontName.c_str());
+	PutItem(arguments, 1, fontSize);
+	PutItem(arguments, 2, outputDirectory.c_str());
+	
+	invoker.Execute(GetExecutableDir() + L"ManagedPostProcessor.dll", L"ManagedPostProcessor.FontCreator", L"CreateFont", arguments);
+	
+	result = SafeArrayDestroy(arguments);
+	Assert(result == S_OK);
+}
+
+static void ProcessFonts(const wstring& fontOutputDirectory)
+{
+	ProcessFont(L"Segoe UI", 24, fontOutputDirectory);
+}
 
 int CALLBACK wWinMain(
   _In_  HINSTANCE hInstance,
@@ -29,25 +95,10 @@ int CALLBACK wWinMain(
 	}
 	
 	wcout << endl;
-	for (auto& shaderPath : Tools::GetFilesInDirectory(argv[0], L"*.cso", true))
-	{
-		wcout << "Reflecting on shader: " << shaderPath << endl;
-		ShaderReflector::ReflectShader(shaderPath);
-	}
-
-	const wstring modelOutputPath(argv[2]);
-	if (!Tools::DirectoryExists(modelOutputPath))
-	{
-		CreateDirectory(modelOutputPath.c_str(), nullptr);
-	}
+	ProcessShaders(argv[0]);
+	ProcessModels(argv[1], argv[2]);
+	ProcessFonts(argv[2]);
 	
-	wcout << endl;
-	for (auto& modelPath : Tools::GetFilesInDirectory(argv[1], L"*.obj", true))
-	{
-		wcout << L"Processing model: " << modelPath << endl;
-		ModelProcessor::ProcessModel(modelPath, modelOutputPath);
-	}
-
 	LocalFree(argv);
 	return 0;
 }

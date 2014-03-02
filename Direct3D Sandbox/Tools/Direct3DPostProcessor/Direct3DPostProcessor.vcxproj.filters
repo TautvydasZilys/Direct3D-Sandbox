@@ -6,10 +6,12 @@
     <ClCompile Include="ShaderReflector.cpp" />
     <ClCompile Include="..\..\Source\Core\Tools.cpp" />
     <ClCompile Include="ModelProcessor.cpp" />
+    <ClCompile Include="ManagedInvoker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ShaderReflector.h" />
     <ClInclude Include="..\..\Source\Core\Tools.h" />
     <ClInclude Include="ModelProcessor.h" />
+    <ClInclude Include="ManagedInvoker.h" />
   </ItemGroup>
 </Project>
