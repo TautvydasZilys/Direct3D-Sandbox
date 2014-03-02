@@ -153,7 +153,6 @@ wstring Tools::ToLower(const wstring& str)
 	return lowerStr;
 }
 
-
 string Tools::BufferReader::ReadString(const vector<uint8_t>& buffer, unsigned int& position)
 {
 	string str = reinterpret_cast<const char*>(&buffer[position]);
@@ -165,5 +164,19 @@ unsigned int Tools::BufferReader::ReadUInt(const vector<uint8_t>& buffer, unsign
 {
 	auto value = *reinterpret_cast<const unsigned int*>(&buffer[position]);
 	position += 4;
+	return value;
+}
+
+float Tools::BufferReader::ReadFloat(const vector<uint8_t>& buffer, unsigned int& position)
+{
+	auto value = *reinterpret_cast<const float*>(&buffer[position]);
+	position += 4;
+	return value;
+}
+
+char Tools::BufferReader::ReadChar(const vector<uint8_t>& buffer, unsigned int& position)
+{
+	auto value = *reinterpret_cast<const char*>(&buffer[position]);
+	position++;
 	return value;
 }

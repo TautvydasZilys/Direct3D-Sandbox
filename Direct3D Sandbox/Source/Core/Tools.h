@@ -23,6 +23,8 @@ namespace Tools
 	{
 		string ReadString(const vector<uint8_t>& buffer, unsigned int& position);
 		unsigned int ReadUInt(const vector<uint8_t>& buffer, unsigned int& position);
+		float ReadFloat(const vector<uint8_t>& buffer, unsigned int& position);
+		char ReadChar(const vector<uint8_t>& buffer, unsigned int& position);
 	}
 };
 

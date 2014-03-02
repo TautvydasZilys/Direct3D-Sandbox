@@ -561,6 +561,7 @@ del xcopyexclude.txt
     <ClCompile Include="Source\Graphics\ConstantBuffer.cpp" />
     <ClCompile Include="Source\Graphics\ConstantBufferField.cpp" />
     <ClCompile Include="Source\Graphics\Direct3D.cpp" />
+    <ClCompile Include="Source\Graphics\Font.cpp" />
     <ClCompile Include="Source\Graphics\InputLayoutItem.cpp" />
     <ClCompile Include="Source\Graphics\IShader.cpp" />
     <ClCompile Include="Source\Graphics\Model.cpp" />
@@ -593,6 +594,7 @@ del xcopyexclude.txt
     <ClInclude Include="Source\Graphics\ConstantBuffer.h" />
     <ClInclude Include="Source\Graphics\ConstantBufferField.h" />
     <ClInclude Include="Source\Graphics\Direct3D.h" />
+    <ClInclude Include="Source\Graphics\Font.h" />
     <ClInclude Include="Source\Graphics\InputLayoutItem.h" />
     <ClInclude Include="Source\Graphics\IShader.h" />
     <ClInclude Include="Source\Graphics\Model.h" />

@@ -132,6 +132,9 @@
     <ClCompile Include="Source\Cameras\FreeMovementCamera.cpp">
       <Filter>Source\Cameras</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphics\Font.cpp">
+      <Filter>Source\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\PrecompiledHeader.h">
@@ -223,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="Source\Cameras\FreeMovementCamera.h">
       <Filter>Source\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Font.h">
+      <Filter>Source\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
