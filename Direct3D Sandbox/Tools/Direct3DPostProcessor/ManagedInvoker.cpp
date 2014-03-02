@@ -59,7 +59,7 @@ void ManagedInvoker::Execute(const wstring& assembly, const wstring& type, const
 
 	auto rawAssembly = Tools::ReadFileToVector(assembly);    
     bounds.lLbound = 0;
-	bounds.cElements = rawAssembly.size();
+	bounds.cElements = static_cast<ULONG>(rawAssembly.size());
 	
 	auto rawAssemblyArray = SafeArrayCreate(VT_UI1, 1, &bounds);
 	Assert(rawAssemblyArray != nullptr);

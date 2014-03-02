@@ -51,6 +51,8 @@ static void ProcessFont(const wstring& fontName, float fontSize, const wstring& 
 	HRESULT result;
 	ManagedInvoker invoker;
 
+	wcout << "Processing font: " << fontName << ", size " << fontSize << "." << endl;
+
 	if (!Tools::DirectoryExists(outputDirectory))
 	{
 		CreateDirectory(outputDirectory.c_str(), nullptr);
@@ -67,6 +69,8 @@ static void ProcessFont(const wstring& fontName, float fontSize, const wstring& 
 	
 	result = SafeArrayDestroy(arguments);
 	Assert(result == S_OK);
+
+	wcout << endl;
 }
 
 static void ProcessFonts(const wstring& fontOutputDirectory)
@@ -97,6 +101,7 @@ int CALLBACK wWinMain(
 		GetModuleFileName(nullptr, exeName, MAX_PATH);
 
 		wcout << L"Invalid number of arguments! Usage: " << exeName << L" <shaderDirectory> <modelInputDirectory> <modelOutputDirectory> <fontOutputDirectory>" << endl;
+		return -1;
 	}
 	
 	wcout << endl;
