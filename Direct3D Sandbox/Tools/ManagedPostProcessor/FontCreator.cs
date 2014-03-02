@@ -71,7 +71,7 @@ namespace ManagedPostProcessor
         private static CharacterGlyph ImportCharacter(char character, Font font, Bitmap stagingBitmap, Graphics stagingGraphics)
         {
             var str = character.ToString();
-            var characterSize = stagingGraphics.MeasureString(str, font, Point.Empty, StringFormat.GenericTypographic);
+            var characterSize = stagingGraphics.MeasureString(str, font, Point.Empty, NoFontFallbackFormat);
             var abcSpacing = CalculateABCSpacing(character, font, stagingGraphics);
 
             uint width = (uint)Math.Ceiling(abcSpacing.A + abcSpacing.B + abcSpacing.C);
@@ -79,7 +79,7 @@ namespace ManagedPostProcessor
             Debug.Assert(width <= BitmapSize && height < BitmapSize);
 
             stagingGraphics.Clear(Color.Black);
-            stagingGraphics.DrawString(str, font, ForegroundBrush, 0, 0, StringFormat.GenericTypographic);
+            stagingGraphics.DrawString(str, font, ForegroundBrush, 0, 0, NoFontFallbackFormat);
             stagingGraphics.Flush();
 
             var characterBitmap = stagingBitmap.Clone(new Rectangle(0, 0, (int)width, (int)height), PixelFormat.Format32bppArgb);
