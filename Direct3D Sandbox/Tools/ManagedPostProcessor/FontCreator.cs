@@ -166,7 +166,7 @@ namespace ManagedPostProcessor
 
                         for (int v = 0; v < sourceBitmap.Width; v++)
                         {
-                            bitmap[u * bitmapHeight + v + offset] = *sourceLine;
+                            bitmap[u * bitmapWidth + v + offset] = *sourceLine;
                             sourceLine += 4;
                         }
                     }
