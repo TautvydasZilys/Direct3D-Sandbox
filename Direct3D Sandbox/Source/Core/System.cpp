@@ -2,6 +2,7 @@
 #include "Constants.h"
 #include "Source\Cameras\FreeMovementCamera.h"
 #include "Source\Cameras\FPSControllerCamera.h"
+#include "Source\Graphics\Font.h"
 #include "Source\Graphics\IShader.h"
 #include "Source\Graphics\SamplerState.h"
 #include "Source\Graphics\Texture.h"
@@ -24,11 +25,17 @@ System::System() :
 
 	// Load shaders
 	IShader::LoadShaders();
-
+	
 	// Load textures
 	for (const auto& texture : Tools::GetFilesInDirectory(L"Assets\\Textures", L"*.dds", true))
 	{
 		Texture::LoadTexture(texture);
+	}
+
+	// Load fonts
+	for (const auto& font : Tools::GetFilesInDirectory(L"Assets\\Fonts", L"*.font", true))
+	{
+		Font::LoadFont(font);
 	}
 
 	// Create scene
