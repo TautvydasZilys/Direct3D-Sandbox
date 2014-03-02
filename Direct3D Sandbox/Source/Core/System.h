@@ -8,6 +8,7 @@
 #include "Source\PlatformSpecific\WindowsPhone\PhoneWindowing.h"
 
 class Camera;
+class Font;
 
 class System
 {
@@ -22,11 +23,14 @@ private:
 	double m_CurrentTime;
 	double m_LastFpsTime;
 	int m_Fps;
-
+	
 	unique_ptr<Camera> m_Camera;
+	unique_ptr<Camera> m_OrthoCamera;
 	DirectionalLight m_Light;
 	vector<shared_ptr<ModelInstance>> m_Models;
 	
+	Font* m_Font;
+
 	void Update();
 	void Draw();
 	void IncrementFpsCounter();

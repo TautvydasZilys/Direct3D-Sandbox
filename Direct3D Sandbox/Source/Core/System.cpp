@@ -18,6 +18,7 @@ System::System() :
 	m_LastFpsTime(m_CurrentTime),
 	m_MouseSensitivity(Constants::DefaultMouseSensitivity),
 	m_Camera(new FPSControllerCamera(true, Constants::VerticalFieldOfView, m_Windowing.GetAspectRatio(), 0, 0, 2.0f)),
+	m_OrthoCamera(new Camera(false, 0.0f, 0.0f, static_cast<float>(m_Windowing.GetWidth()), static_cast<float>(m_Windowing.GetHeight()))),
 	m_Light(DirectX::XMFLOAT3(3.0f, -2.0f, -1.0f), DirectX::XMFLOAT3(0.7f, 0.7f, 0.6f), DirectX::XMFLOAT3(0.4f, 0.4f, 0.4f), 32)  
 {
 	// Initialize sample states
@@ -38,11 +39,13 @@ System::System() :
 		Font::LoadFont(font);
 	}
 
-	// Create scene
+	m_Font = &Font::Get(L"Assets\\Fonts\\Segoe UI.font");
 
+	// Create scene
+	
 	auto& playgroundShader = IShader::GetShader(ShaderType::PLAYGROUND_SHADER);
 	auto& textureShader = IShader::GetShader(ShaderType::TEXTURE_SHADER);
-
+	
 	ModelParameters modelParameters; 
 	
 	modelParameters.position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
@@ -52,12 +55,13 @@ System::System() :
 
 	m_Models.emplace_back(make_shared<CameraPositionLockedModelInstance>(textureShader, L"Assets\\Models\\skybox.model", modelParameters, 
 		L"Assets\\Textures\\Skybox.dds", TypedDimensions<bool>(true, true, true)));
-	
+	/*
 	modelParameters.position = DirectX::XMFLOAT3(10.0f, 0.0f, 10.0f);
 	modelParameters.scale = DirectX::XMFLOAT3(4000.0f, 4000.0f, 4000.0f);
 	m_Models.emplace_back(make_shared<InfiniteGroundModelInstance>(modelParameters, L"Assets\\Textures\\Grass.dds", DirectX::XMFLOAT2(5000.0f, 5000.0f)));
-
+	*/
 	m_Camera->SetPosition(0.0f, 1.0f, 0.0f);
+	m_OrthoCamera->SetPosition(0.0f, 0.0f, 1.0f);
 }
 
 System::~System()
@@ -181,14 +185,17 @@ void System::Draw()
 
 	renderParameters.time = static_cast<float>(m_CurrentTime);
 	renderParameters.frameTime = m_FrameTime;
-
+	/*
 	m_Camera->SetRenderParameters(renderParameters);
 	m_Light.SetRenderParameters(renderParameters);
 	
 	for (auto& model : m_Models)
 	{
 		model->Render(renderParameters);
-	}
+	}*/
+
+	m_OrthoCamera->SetRenderParameters(renderParameters);
+	m_Font->DrawText("Hello, text!", 1, 1, renderParameters, true);
 
 	m_Direct3D.SwapBuffers();
 }
