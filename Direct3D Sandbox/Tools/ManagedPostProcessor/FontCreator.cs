@@ -64,19 +64,18 @@ namespace ManagedPostProcessor
             var str = character.ToString();
             var characterSize = stagingGraphics.MeasureString(str, font, Point.Empty, NoFontFallbackFormat);
             var abcSpacing = CalculateABCSpacing(character, font, stagingGraphics);
-            var yOffset = (int)Math.Ceiling(characterSize.Height / 2.0f);
             
-            int width = (int)Math.Ceiling(characterSize.Width + abcSpacing.A + abcSpacing.B);
-            int height = 2 * (int)Math.Ceiling(characterSize.Height);
+            int width = (int)Math.Ceiling(characterSize.Width);
+            int height = (int)Math.Ceiling(characterSize.Height);
             Debug.Assert(width <= BitmapSize && height < BitmapSize);
 
             stagingGraphics.Clear(Color.Black);
-            stagingGraphics.DrawString(str, font, ForegroundBrush, abcSpacing.A, yOffset, NoFontFallbackFormat);
+            stagingGraphics.DrawString(str, font, ForegroundBrush, 0, 0, NoFontFallbackFormat);
             stagingGraphics.Flush();
 
             var characterBitmap = stagingBitmap.Clone(new Rectangle(0, 0, width, height), PixelFormat.Format32bppArgb);
 
-            return new CharacterGlyph(character, characterBitmap, abcSpacing, yOffset, (int)Math.Ceiling(characterSize.Height));
+            return new CharacterGlyph(character, characterBitmap, abcSpacing, 0, (int)Math.Ceiling(characterSize.Height));
         }
 
         // Calculate ABC spacing
@@ -156,7 +155,19 @@ namespace ManagedPostProcessor
                 offset += 4 * characters[i].Bitmap.Width;
             }
 
+            SaveAsBitmap(bitmapWidth, bitmapHeight, bitmap);
             return bitmap;
+        }
+
+        static unsafe void SaveAsBitmap(int width, int height, byte[] data)
+        {
+            var bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            var bitmapData = bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            
+            Marshal.Copy(data, 0, bitmapData.Scan0, 4 * width * height);
+
+            bitmap.UnlockBits(bitmapData);
+            bitmap.Save("A.png");
         }
 
         // Binary format:
