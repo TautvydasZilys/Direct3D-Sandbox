@@ -25,12 +25,12 @@ public:
 	const DirectX::XMFLOAT3& GetPosition() const { return m_Position; }
 	const DirectX::XMFLOAT3& GetRotation() const { return m_Rotation; }
 	
-	virtual void GoForward(float value) = 0;
-	virtual void GoBack(float value) = 0;
-	virtual void GoUp(float value) = 0;
-	virtual void GoDown(float value) = 0;
-	virtual void GoLeft(float value) = 0;
-	virtual void GoRight(float value) = 0;
+	virtual void GoForward(float value) {}
+	virtual void GoBack(float value) {}
+	virtual void GoUp(float value) {}
+	virtual void GoDown(float value) {}
+	virtual void GoLeft(float value) {}
+	virtual void GoRight(float value) {}
 	
 	void LookUp(float value);
 	void LookDown(float value);
