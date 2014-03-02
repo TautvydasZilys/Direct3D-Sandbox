@@ -56,19 +56,17 @@ Font::Font(const wstring& path)
 	for (auto i = 0u; i < numberOfCharacters; i++)
 	{
 		auto character = Tools::BufferReader::ReadChar(font, position);
-		auto aSpacing = Tools::BufferReader::ReadFloat(font, position);
-		auto bSpacing = Tools::BufferReader::ReadFloat(font, position);
-		auto cSpacing = Tools::BufferReader::ReadFloat(font, position);
+		auto xOffset = Tools::BufferReader::ReadUInt(font, position);
 		auto yOffset = Tools::BufferReader::ReadUInt(font, position);
+		auto characterWidth = Tools::BufferReader::ReadUInt(font, position);
 		auto characterHeight = Tools::BufferReader::ReadUInt(font, position);
-		auto horizontalOffset = Tools::BufferReader::ReadUInt(font, position);
 
 		if (m_CharacterMetadata.size() < character + 1)
 		{
 			m_CharacterMetadata.resize(character + 1);
 		}
 
-		m_CharacterMetadata[character] = CharacterMetadata(aSpacing, bSpacing, cSpacing, yOffset, characterHeight, horizontalOffset);
+		m_CharacterMetadata[character] = CharacterMetadata(xOffset, yOffset, characterWidth, characterHeight);
 	}
 
 	m_LineSpacing = Tools::BufferReader::ReadUInt(font, position);
@@ -131,14 +129,13 @@ ComPtr<ID3D11Buffer> Font::CreateTextVertexBuffer(const string& text, const ISha
 		float texStartX, texStartY, texEndX, texEndY;
 		
 		startX = currentPosX;
-		endX = startX + m_CharacterMetadata[text[i]].aSpacing + m_CharacterMetadata[text[i]].bSpacing + m_CharacterMetadata[text[i]].cSpacing;
-		startY = static_cast<float>(currentPosY + m_CharacterMetadata[text[i]].yOffset);
+		endX = startX + m_CharacterMetadata[text[i]].characterWidth;
+		startY = currentPosY;
 		endY = startY + m_CharacterMetadata[text[i]].characterHeight;
 		
-		texStartX = static_cast<float>(m_CharacterMetadata[text[i]].horizontalOffset) / static_cast<float>(m_FontTextureWidth);
+		texStartX = static_cast<float>(m_CharacterMetadata[text[i]].xOffset) / static_cast<float>(m_FontTextureWidth);
 		texStartY = static_cast<float>(m_CharacterMetadata[text[i]].yOffset) / static_cast<float>(m_FontTextureHeight);
-		texEndX = static_cast<float>(m_CharacterMetadata[text[i]].horizontalOffset + m_CharacterMetadata[text[i]].aSpacing
-			+ m_CharacterMetadata[text[i]].bSpacing + m_CharacterMetadata[text[i]].cSpacing) / static_cast<float>(m_FontTextureWidth);
+		texEndX = static_cast<float>(m_CharacterMetadata[text[i]].xOffset + m_CharacterMetadata[text[i]].characterWidth) / static_cast<float>(m_FontTextureWidth);
 		texEndY = static_cast<float>(m_CharacterMetadata[text[i]].yOffset + m_CharacterMetadata[text[i]].characterHeight) / static_cast<float>(m_FontTextureHeight);
 
 		model.vertices[6 * i].position.x = startX;

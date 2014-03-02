@@ -74,17 +74,17 @@ namespace ManagedPostProcessor
             var characterSize = stagingGraphics.MeasureString(str, font, Point.Empty, StringFormat.GenericTypographic);
             var abcSpacing = CalculateABCSpacing(character, font, stagingGraphics);
 
-            int width = (int)Math.Ceiling(abcSpacing.A + abcSpacing.B + abcSpacing.C);
-            int height = (int)Math.Ceiling(characterSize.Height);
+            uint width = (uint)Math.Ceiling(abcSpacing.A + abcSpacing.B + abcSpacing.C);
+            uint height = (uint)Math.Ceiling(characterSize.Height);
             Debug.Assert(width <= BitmapSize && height < BitmapSize);
 
             stagingGraphics.Clear(Color.Black);
             stagingGraphics.DrawString(str, font, ForegroundBrush, 0, 0, StringFormat.GenericTypographic);
             stagingGraphics.Flush();
 
-            var characterBitmap = stagingBitmap.Clone(new Rectangle(0, 0, width, height), PixelFormat.Format32bppArgb);
+            var characterBitmap = stagingBitmap.Clone(new Rectangle(0, 0, (int)width, (int)height), PixelFormat.Format32bppArgb);
 
-            return new CharacterGlyph(character, characterBitmap, abcSpacing, 0, (int)Math.Ceiling(characterSize.Height));
+            return new CharacterGlyph(character, characterBitmap, width, height);
         }
 
         // Calculate ABC spacing
@@ -131,7 +131,7 @@ namespace ManagedPostProcessor
 
         static byte[] PackCharacters(CharacterGlyph[] characters, out int bitmapWidth, out int bitmapHeight)
         {
-            var offset = 0;
+            var offset = 0u;
 
             bitmapHeight = characters.Max(x => x.Bitmap.Height);
             bitmapWidth = characters.Sum(x => x.Bitmap.Width);
@@ -160,8 +160,8 @@ namespace ManagedPostProcessor
 
                 characters[i].Bitmap.UnlockBits(sourceBitmapData);
 
-                characters[i].HorizontalOffset = offset;
-                offset += characters[i].Bitmap.Width;
+                characters[i].XOffset = offset;
+                offset += (uint)characters[i].Bitmap.Width;
             }
 
             SaveAsBitmap(bitmapWidth, bitmapHeight, bitmap);
@@ -185,10 +185,10 @@ namespace ManagedPostProcessor
         //      * - bitmap data
         // 4 bytes - number of characters
         //      1 byte - character
-        //      12 bytes - ABC spacing
+        //      4 bytes - xOffset
         //      4 bytes - yOffset
+        //      4 bytes - characterWidth
         //      4 bytes - characterHeight
-        //      4 bytes - horizontalOffset
         // 4 bytes - font line spacing
         private static void SaveFont(CharacterGlyph[] characters, float lineSpace, int bitmapWidth, int bitmapHeight, byte[] bitmapData, string outputPath)
         {
@@ -205,12 +205,10 @@ namespace ManagedPostProcessor
                     foreach (var character in characters)
                     {
                         writer.Write((byte)character.Character);
-                        writer.Write(character.ABCSpacing.A);
-                        writer.Write(character.ABCSpacing.B);
-                        writer.Write(character.ABCSpacing.C);
+                        writer.Write(character.XOffset);
                         writer.Write(character.YOffset);
+                        writer.Write(character.CharacterWidth);
                         writer.Write(character.CharacterHeight);
-                        writer.Write(character.HorizontalOffset);
                     }
 
                     writer.Write((uint)lineSpace);
