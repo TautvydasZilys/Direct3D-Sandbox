@@ -14,8 +14,11 @@ Camera::Camera(bool usePerspective, float fovY, float aspectRatio, float orthoWi
 	}
 	else
 	{
+		DirectX::XMMATRIX orthoMatrix = DirectX::XMMatrixOrthographicRH(orthoWidth, orthoHeight, Constants::CameraNear, Constants::CameraFar); 
+		DirectX::XMMATRIX fixTranslateMatrix = DirectX::XMMatrixTranslation(-orthoWidth / 2.0f, -orthoHeight / 2.0f, 0.0f);
+
 		DirectX::XMStoreFloat4x4(&m_ProjectionMatrix, 
-			DirectX::XMMatrixTranspose(DirectX::XMMatrixOrthographicRH(orthoWidth, orthoHeight, Constants::CameraNear, Constants::CameraFar)));
+			DirectX::XMMatrixTranspose(fixTranslateMatrix * orthoMatrix));
 	}
 }
 
