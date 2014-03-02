@@ -7,34 +7,6 @@
 
 unordered_map<wstring, Font> Font::s_FontCache;
 
-// Assumes BGRA format pixel format
-static unique_ptr<uint8_t[]> ParseFontPixels(const uint8_t* alphaPixels, int count)
-{
-	unique_ptr<uint8_t[]> rgbPixels(new uint8_t[4 * count]);
-	int whiteCount = 0;
-
-	for (int i = 0; i < count; i++)
-	{
-		if (alphaPixels[i] > 200)
-		{
-			rgbPixels[4 * i] = 255;
-			rgbPixels[4 * i + 1] = 255;
-			rgbPixels[4 * i + 2] = 255;
-			rgbPixels[4 * i + 3] = 255;
-			whiteCount++;
-		}
-		else
-		{
-			rgbPixels[4 * i] = 0;
-			rgbPixels[4 * i + 1] = 0;
-			rgbPixels[4 * i + 2] = 0;
-			rgbPixels[4 * i + 3] = 255;
-		}
-	}
-	
-	return rgbPixels;
-}
-
 Font::Font(const wstring& path)
 {
 	HRESULT result;
@@ -61,8 +33,7 @@ Font::Font(const wstring& path)
 	textureDescription.CPUAccessFlags = 0;
 	textureDescription.MiscFlags = 0;
 	
-	auto data = ParseFontPixels(font.data() + 8, static_cast<int>(textureDescription.Width * textureDescription.Height));
-	textureData.pSysMem = data.get();
+	textureData.pSysMem = font.data() + 8;
 	textureData.SysMemPitch = textureDescription.Width * 4;
 	textureData.SysMemSlicePitch = 0;
 
@@ -77,7 +48,7 @@ Font::Font(const wstring& path)
 	result = GetD3D11Device()->CreateShaderResourceView(texture2D.Get(), &srvDescription, &m_FontTexture);
 	Assert(result == S_OK);
 
-	position = 8 + m_FontTextureWidth * m_FontTextureHeight;
+	position = 8 + 4 * m_FontTextureWidth * m_FontTextureHeight;
 	m_CharacterMetadata.resize(128);
 	auto numberOfCharacters = Tools::BufferReader::ReadUInt(font, position);
 
@@ -148,39 +119,40 @@ ComPtr<ID3D11Buffer> Font::CreateTextVertexBuffer(const string& text, const ISha
 		model.vertices[u].position.w = 1.0f;
 	}
 
-	auto height = 1920 * m_FontTextureHeight / m_FontTextureWidth;
+	auto width = m_FontTextureWidth;
+	auto height = m_FontTextureHeight;// * 1920.0f / m_FontTextureWidth;
 	
 	model.vertices[0].position.x = 0.0f;
 	model.vertices[0].position.y = 0.0f;
 	model.vertices[0].textureCoordinates.x = 0.0f;
-	model.vertices[0].textureCoordinates.y = 0.0f;
+	model.vertices[0].textureCoordinates.y = 1.0f;
 	
 	model.vertices[1].position.x = 0.0f;
 	model.vertices[1].position.y = height;
 	model.vertices[1].textureCoordinates.x = 0.0f;
-	model.vertices[1].textureCoordinates.y = 1.0f;
+	model.vertices[1].textureCoordinates.y = 0.0f;
 
-	model.vertices[2].position.x = 1920.0f;
+	model.vertices[2].position.x = width;
 	model.vertices[2].position.y = height;
 	model.vertices[2].textureCoordinates.x = 1.0f;
-	model.vertices[2].textureCoordinates.y = 1.0f;
+	model.vertices[2].textureCoordinates.y = 0.0f;
 	
 	model.vertices[3].position.x = 0.0f;
 	model.vertices[3].position.y = 0.0f;
 	model.vertices[3].textureCoordinates.x = 0.0f;
-	model.vertices[3].textureCoordinates.y = 0.0f;
+	model.vertices[3].textureCoordinates.y = 1.0f;
 	
-	model.vertices[4].position.x = 1920.0f;
+	model.vertices[4].position.x = width;
 	model.vertices[4].position.y = height;
 	model.vertices[4].textureCoordinates.x = 1.0f;
-	model.vertices[4].textureCoordinates.y = 1.0f;
+	model.vertices[4].textureCoordinates.y = 0.0f;
 
-	model.vertices[5].position.x = 1920.0f;
+	model.vertices[5].position.x = width;
 	model.vertices[5].position.y = 0.0f;
 	model.vertices[5].textureCoordinates.x = 1.0f;
-	model.vertices[5].textureCoordinates.y = 0.0f;
-
-	model.indexCount = 0;/*
+	model.vertices[5].textureCoordinates.y = 1.0f;
+	/*
+	model.indexCount = 0;
 	model.vertexCount = 6 * text.length();
 	model.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[6 * text.length()]);
 	
@@ -200,11 +172,11 @@ ComPtr<ID3D11Buffer> Font::CreateTextVertexBuffer(const string& text, const ISha
 		float startX, startY, endX, endY;
 		float texStartX, texStartY, texEndX, texEndY;
 		
-		startX = currentPosX + m_CharacterMetadata[text[i]].aSpacing;
+		startX = currentPosX;
 		startY = static_cast<float>(currentPosY + m_CharacterMetadata[text[i]].yOffset);
 		endY = startY + m_CharacterMetadata[text[i]].characterHeight;
 		
-		texStartX = static_cast<float>(m_CharacterMetadata[text[i]].horizontalOffset + m_CharacterMetadata[text[i]].aSpacing) / static_cast<float>(m_FontTextureWidth);
+		texStartX = static_cast<float>(m_CharacterMetadata[text[i]].horizontalOffset) / static_cast<float>(m_FontTextureWidth);
 		texStartY = static_cast<float>(m_CharacterMetadata[text[i]].yOffset) / static_cast<float>(m_FontTextureHeight);
 		texEndY = static_cast<float>(m_CharacterMetadata[text[i]].yOffset + m_CharacterMetadata[i].characterHeight) / static_cast<float>(m_FontTextureHeight);
 
@@ -258,8 +230,8 @@ ComPtr<ID3D11Buffer> Font::CreateTextVertexBuffer(const string& text, const ISha
 			currentPosX = 0;
 			currentPosY += m_LineSpacing;
 		}
-	}*/
-
+	}
+	*/
 	return shader.CreateVertexBuffer(model);
 }
 

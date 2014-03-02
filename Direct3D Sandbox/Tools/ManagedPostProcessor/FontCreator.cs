@@ -75,30 +75,8 @@ namespace ManagedPostProcessor
             stagingGraphics.Flush();
 
             var characterBitmap = stagingBitmap.Clone(new Rectangle(0, 0, width, height), PixelFormat.Format32bppArgb);
-            ConvertBitmapToMonochrome(characterBitmap);
 
             return new CharacterGlyph(character, characterBitmap, abcSpacing, yOffset, (int)Math.Ceiling(characterSize.Height));
-        }
-
-        private static unsafe void ConvertBitmapToMonochrome(Bitmap bitmap)
-        {
-            uint white = unchecked((uint)-1) - 255;
-            var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-
-            for (int i = 0; i < bitmapData.Height; i++)
-            {
-                var line = (byte*)bitmapData.Scan0.ToPointer() + bitmapData.Stride * i;
-                for (int j = 0; j < bitmapData.Width; j++)
-                {
-                    var colorPtr = (uint*)line + j;
-                    var color = *colorPtr;
-
-                    uint luminosity = (uint)Math.Ceiling(0.2126 * (color >> 24) + 0.7152 * ((color >> 16) % 255) + 0.0722 * ((color >> 8) % 255));
-                    *colorPtr = white + luminosity;
-                }
-            }
-
-            bitmap.UnlockBits(bitmapData);
         }
 
         // Calculate ABC spacing
@@ -150,7 +128,7 @@ namespace ManagedPostProcessor
             bitmapHeight = characters.Max(x => x.Bitmap.Height);
             bitmapWidth = characters.Sum(x => x.Bitmap.Width);
 
-            var bitmap = new byte[bitmapHeight * bitmapWidth];
+            var bitmap = new byte[4 * bitmapHeight * bitmapWidth];
         
             for (int i = 0; i < characters.Length; i++)
             {
@@ -164,10 +142,10 @@ namespace ManagedPostProcessor
                     {
                         var sourceLine = (byte*)sourceBitmapData.Scan0.ToPointer() + sourceBitmapData.Stride * u;
 
-                        for (int v = 0; v < sourceBitmap.Width; v++)
+                        for (int v = 0; v < 4 * sourceBitmap.Width; v++)
                         {
-                            bitmap[u * bitmapWidth + v + offset] = *sourceLine;
-                            sourceLine += 4;
+                            bitmap[4 * u * bitmapWidth + v + offset] = *sourceLine;
+                            sourceLine++;
                         }
                     }
                 }
@@ -175,7 +153,7 @@ namespace ManagedPostProcessor
                 characters[i].Bitmap.UnlockBits(sourceBitmapData);
 
                 characters[i].HorizontalOffset = offset;
-                offset += characters[i].Bitmap.Width;
+                offset += 4 * characters[i].Bitmap.Width;
             }
 
             return bitmap;
