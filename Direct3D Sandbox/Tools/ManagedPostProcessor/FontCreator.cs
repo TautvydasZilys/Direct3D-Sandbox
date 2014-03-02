@@ -164,6 +164,7 @@ namespace ManagedPostProcessor
                 offset += (uint)characters[i].Bitmap.Width;
             }
 
+            GrayToAlpha(bitmap);
             SaveAsBitmap(bitmapWidth, bitmapHeight, bitmap);
             return bitmap;
         }
@@ -177,6 +178,16 @@ namespace ManagedPostProcessor
 
             bitmap.UnlockBits(bitmapData);
             bitmap.Save("A.png");
+        }
+
+        private static void GrayToAlpha(byte[] bitmapData)
+        {
+            int size = bitmapData.Length / 4;
+
+            for (int i = 0; i < size; i++)
+            {
+                bitmapData[4 * i + 3] = (byte)Math.Ceiling(0.2126 * bitmapData[4 * i + 2] + 0.7152 * bitmapData[4 * i + 1] + 0.0722 * bitmapData[4 * i]);
+            }
         }
 
         // Binary format:
