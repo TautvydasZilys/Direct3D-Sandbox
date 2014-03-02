@@ -8,24 +8,19 @@ class Font
 {
 private:
 	struct CharacterMetadata
-	{
-		float aSpacing;
-		float bSpacing;
-		float cSpacing;
-		
+	{		
+		unsigned int xOffset;
 		unsigned int yOffset;
+		unsigned int characterWidth;
 		unsigned int characterHeight;
-		unsigned int horizontalOffset;
 
 		CharacterMetadata() {}
 
-		CharacterMetadata(float aSpacing, float bSpacing, float cSpacing, unsigned int yOffset, unsigned int characterHeight, unsigned int horizontalOffset) :
-			aSpacing(aSpacing), 
-			bSpacing(bSpacing),
-			cSpacing(cSpacing),
+		CharacterMetadata(unsigned int xOffset, unsigned int yOffset, unsigned int characterWidth, unsigned int characterHeight) :
+			xOffset(xOffset),
 			yOffset(yOffset),
-			characterHeight(characterHeight),
-			horizontalOffset(horizontalOffset)
+			characterWidth(characterWidth),
+			characterHeight(characterHeight)
 		{
 		}
 	};
