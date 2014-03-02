@@ -39,8 +39,9 @@ namespace ManagedPostProcessor
                         var characters = ImportFont(font, bitmap, graphics);
                         var lineSpace = font.GetHeight();
 
-                        var fontBitmap = PackCharacters(characters);                        
-                        SaveFont(characters, fontBitmap, Path.Combine(outputDirectory, fontName + ".font"));
+                        int fontBitmapWidth, fontBitmapHeight;
+                        var fontBitmap = PackCharacters(characters, out fontBitmapWidth, out fontBitmapHeight);                        
+                        SaveFont(characters, fontBitmapWidth, fontBitmapHeight, fontBitmap, Path.Combine(outputDirectory, fontName + ".font"));
                     }
                 }
             }
@@ -142,12 +143,12 @@ namespace ManagedPostProcessor
             }
         }
 
-        static byte[] PackCharacters(CharacterGlyph[] characters)
+        static byte[] PackCharacters(CharacterGlyph[] characters, out int bitmapWidth, out int bitmapHeight)
         {
             var offset = 0;
 
-            var bitmapHeight = characters.Max(x => x.Bitmap.Height);
-            var bitmapWidth = characters.Sum(x => x.Bitmap.Width);
+            bitmapHeight = characters.Max(x => x.Bitmap.Height);
+            bitmapWidth = characters.Sum(x => x.Bitmap.Width);
 
             var bitmap = new byte[bitmapHeight * bitmapWidth];
         
@@ -181,20 +182,22 @@ namespace ManagedPostProcessor
         }
 
         // Binary format:
-        // 4 bytes - bitmap data size
+        // 4 bytes - bitmap width
+        // 4 bytes - bitmap height
         //      * - bitmap data
         // 4 bytes - number of characters
         //      1 byte - character
         //      12 bytes - ABC spacing
         //      4 bytes - yOffset
         //      4 bytes - horizontalOffset
-        private static void SaveFont(CharacterGlyph[] characters, byte[] bitmapData, string outputPath)
+        private static void SaveFont(CharacterGlyph[] characters, int bitmapWidth, int bitmapHeight, byte[] bitmapData, string outputPath)
         {
             using (var fileStream = new FileStream(outputPath, FileMode.Create))
             {
                 using (var writer = new BinaryWriter(fileStream))
                 {
-                    writer.Write(bitmapData.Length);
+                    writer.Write(bitmapWidth);
+                    writer.Write(bitmapHeight);
                     writer.Write(bitmapData);
 
                     writer.Write(characters.Length);
