@@ -22,14 +22,16 @@ namespace ManagedPostProcessor
         public Bitmap Bitmap { get; private set; }
         public ABCSpacing ABCSpacing { get; private set; }
         public int YOffset { get; private set; }
+        public int CharacterHeight { get; private set; }
         public int HorizontalOffset { get; set; }
 
-        public CharacterGlyph(char character, Bitmap bitmap, ABCSpacing abcSpacing, int yOffset)
+        public CharacterGlyph(char character, Bitmap bitmap, ABCSpacing abcSpacing, int yOffset, int characterHeight)
         {
             Character = character;
             Bitmap = bitmap;
             ABCSpacing = abcSpacing;
             YOffset = yOffset;
+            CharacterHeight = characterHeight;
         }
     }
 }

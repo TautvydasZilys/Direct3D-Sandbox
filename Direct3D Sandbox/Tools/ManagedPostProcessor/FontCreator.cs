@@ -41,7 +41,7 @@ namespace ManagedPostProcessor
 
                         int fontBitmapWidth, fontBitmapHeight;
                         var fontBitmap = PackCharacters(characters, out fontBitmapWidth, out fontBitmapHeight);                        
-                        SaveFont(characters, fontBitmapWidth, fontBitmapHeight, fontBitmap, Path.Combine(outputDirectory, fontName + ".font"));
+                        SaveFont(characters, lineSpace, fontBitmapWidth, fontBitmapHeight, fontBitmap, Path.Combine(outputDirectory, fontName + ".font"));
                     }
                 }
             }
@@ -77,7 +77,7 @@ namespace ManagedPostProcessor
             var characterBitmap = stagingBitmap.Clone(new Rectangle(0, 0, width, height), PixelFormat.Format32bppArgb);
             ConvertBitmapToMonochrome(characterBitmap);
 
-            return new CharacterGlyph(character, characterBitmap, abcSpacing, yOffset);
+            return new CharacterGlyph(character, characterBitmap, abcSpacing, yOffset, (int)Math.Ceiling(characterSize.Height));
         }
 
         private static unsafe void ConvertBitmapToMonochrome(Bitmap bitmap)
@@ -189,8 +189,10 @@ namespace ManagedPostProcessor
         //      1 byte - character
         //      12 bytes - ABC spacing
         //      4 bytes - yOffset
+        //      4 bytes - characterHeight
         //      4 bytes - horizontalOffset
-        private static void SaveFont(CharacterGlyph[] characters, int bitmapWidth, int bitmapHeight, byte[] bitmapData, string outputPath)
+        // 4 bytes - font line spacing
+        private static void SaveFont(CharacterGlyph[] characters, float lineSpace, int bitmapWidth, int bitmapHeight, byte[] bitmapData, string outputPath)
         {
             using (var fileStream = new FileStream(outputPath, FileMode.Create))
             {
@@ -209,8 +211,11 @@ namespace ManagedPostProcessor
                         writer.Write(character.ABCSpacing.B);
                         writer.Write(character.ABCSpacing.C);
                         writer.Write(character.YOffset);
+                        writer.Write(character.CharacterHeight);
                         writer.Write(character.HorizontalOffset);
                     }
+
+                    writer.Write((uint)lineSpace);
                 }
             }
         }
