@@ -39,7 +39,7 @@ System::System() :
 		Font::LoadFont(font);
 	}
 
-	m_Font = &Font::Get(L"Assets\\Fonts\\Segoe UI.font");
+	m_Font = &Font::Get(L"Assets\\Fonts\\Segoe UI Light.font");
 
 	// Create scene
 	
