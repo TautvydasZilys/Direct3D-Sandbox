@@ -27,6 +27,7 @@ class Model
 private:
 	ComPtr<ID3D11Buffer> m_VertexBuffer;
 	ComPtr<ID3D11Buffer> m_IndexBuffer;
+	unsigned int m_VertexCount;
 	unsigned int m_IndexCount;
 	IShader& m_Shader;
 	
@@ -36,10 +37,12 @@ private:
 #if DEBUG
 	wstring m_Key;
 #endif
-
+	
 	Model(IShader& shader, const wstring& modelPath);
-	Model(Model&& other);
+	Model(IShader& shader, const ModelData& modelData);
 
+	void CreateBuffers(const ModelData& modelData);
+	
 	Model(const Model& other);															// Not implemented (no copying allowed)
 	Model& operator=(const Model& other);												// Not implemented (no copying allowed)
 	
@@ -49,8 +52,11 @@ private:
 	friend struct pair;
 
 public:
+	Model(Model&& other);
 	~Model();
+
 	static Model& Get(const wstring& path, IShader& shader);
+	static Model CreateNonCachedModel(const ModelData& modelData, IShader& shader);
 	
 	void Render(const RenderParameters& renderParameters);
 	static void InvalidateParameterSetter() { s_ModelWhichLastSetParameters = nullptr; }

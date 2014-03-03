@@ -102,24 +102,24 @@ Font& Font::Get(const wstring& path)
 	return font->second;
 }
 
-ComPtr<ID3D11Buffer> Font::CreateTextVertexBuffer(const string& text, const IShader& shader)
+Model Font::CreateTextModel(const string& text, IShader& shader)
 {
 	// 6 vertices per character
-	ModelData model;
+	ModelData modelData;
 	float currentPosX = 0, currentPosY = 0;
 
-	model.indexCount = 0;
-	model.vertexCount = 6 * text.length();
-	model.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[6 * text.length()]);
+	modelData.indexCount = 0;
+	modelData.vertexCount = 6 * text.length();
+	modelData.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[6 * text.length()]);
 	
-	ZeroMemory(model.vertices.get(), sizeof(VertexParameters) * 6 * text.length());
+	ZeroMemory(modelData.vertices.get(), sizeof(VertexParameters) * 6 * text.length());
 
 	for (auto i = 0u; i < text.length(); i++)
 	{
 		for (auto u = 0; u < 6; u++)
 		{
-			model.vertices[6 * i + u].color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-			model.vertices[6 * i + u].position.w = 1.0f;
+			modelData.vertices[6 * i + u].color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+			modelData.vertices[6 * i + u].position.w = 1.0f;
 		}
 	}
 
@@ -138,35 +138,35 @@ ComPtr<ID3D11Buffer> Font::CreateTextVertexBuffer(const string& text, const ISha
 		texEndX = static_cast<float>(m_CharacterMetadata[text[i]].xOffset + m_CharacterMetadata[text[i]].characterWidth) / static_cast<float>(m_FontTextureWidth);
 		texEndY = static_cast<float>(m_CharacterMetadata[text[i]].yOffset + m_CharacterMetadata[text[i]].characterHeight) / static_cast<float>(m_FontTextureHeight);
 
-		model.vertices[6 * i].position.x = startX;
-		model.vertices[6 * i].position.y = startY;
-		model.vertices[6 * i].textureCoordinates.x = texStartX;
-		model.vertices[6 * i].textureCoordinates.y = texStartY;
+		modelData.vertices[6 * i].position.x = startX;
+		modelData.vertices[6 * i].position.y = startY;
+		modelData.vertices[6 * i].textureCoordinates.x = texStartX;
+		modelData.vertices[6 * i].textureCoordinates.y = texStartY;
 		
-		model.vertices[6 * i + 1].position.x = endX;
-		model.vertices[6 * i + 1].position.y = startY;
-		model.vertices[6 * i + 1].textureCoordinates.x = texEndX;
-		model.vertices[6 * i + 1].textureCoordinates.y = texStartY;
+		modelData.vertices[6 * i + 1].position.x = endX;
+		modelData.vertices[6 * i + 1].position.y = startY;
+		modelData.vertices[6 * i + 1].textureCoordinates.x = texEndX;
+		modelData.vertices[6 * i + 1].textureCoordinates.y = texStartY;
 
-		model.vertices[6 * i + 2].position.x = startX;
-		model.vertices[6 * i + 2].position.y = endY;
-		model.vertices[6 * i + 2].textureCoordinates.x = texStartX;
-		model.vertices[6 * i + 2].textureCoordinates.y = texEndY;
+		modelData.vertices[6 * i + 2].position.x = startX;
+		modelData.vertices[6 * i + 2].position.y = endY;
+		modelData.vertices[6 * i + 2].textureCoordinates.x = texStartX;
+		modelData.vertices[6 * i + 2].textureCoordinates.y = texEndY;
 
-		model.vertices[6 * i + 3].position.x = endX;
-		model.vertices[6 * i + 3].position.y = startY;
-		model.vertices[6 * i + 3].textureCoordinates.x = texEndX;
-		model.vertices[6 * i + 3].textureCoordinates.y = texStartY;
+		modelData.vertices[6 * i + 3].position.x = endX;
+		modelData.vertices[6 * i + 3].position.y = startY;
+		modelData.vertices[6 * i + 3].textureCoordinates.x = texEndX;
+		modelData.vertices[6 * i + 3].textureCoordinates.y = texStartY;
 		
-		model.vertices[6 * i + 4].position.x = endX;
-		model.vertices[6 * i + 4].position.y = endY;
-		model.vertices[6 * i + 4].textureCoordinates.x = texEndX;
-		model.vertices[6 * i + 4].textureCoordinates.y = texEndY;
+		modelData.vertices[6 * i + 4].position.x = endX;
+		modelData.vertices[6 * i + 4].position.y = endY;
+		modelData.vertices[6 * i + 4].textureCoordinates.x = texEndX;
+		modelData.vertices[6 * i + 4].textureCoordinates.y = texEndY;
 
-		model.vertices[6 * i + 5].position.x = startX;
-		model.vertices[6 * i + 5].position.y = endY;
-		model.vertices[6 * i + 5].textureCoordinates.x = texStartX;
-		model.vertices[6 * i + 5].textureCoordinates.y = texEndY;
+		modelData.vertices[6 * i + 5].position.x = startX;
+		modelData.vertices[6 * i + 5].position.y = endY;
+		modelData.vertices[6 * i + 5].textureCoordinates.x = texStartX;
+		modelData.vertices[6 * i + 5].textureCoordinates.y = texEndY;
 
 		currentPosX = endX;
 
@@ -177,16 +177,20 @@ ComPtr<ID3D11Buffer> Font::CreateTextVertexBuffer(const string& text, const ISha
 		}
 	}
 
-	return shader.CreateVertexBuffer(model);
+	return Model::CreateNonCachedModel(modelData, shader);
 }
 
 void Font::DrawText(const string& text, int posX, int posY, RenderParameters& renderParameters, bool useCaching, IShader& shader)
-{
-	ComPtr<ID3D11Buffer> vertexBuffer;
+{	
+	DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixTranslation(static_cast<float>(posX), static_cast<float>(posY), 0.0f);
+
+	DirectX::XMStoreFloat4x4(&renderParameters.worldMatrix, DirectX::XMMatrixTranspose(worldMatrix));
+	DirectX::XMStoreFloat4x4(&renderParameters.inversedTransposedWorldMatrix, DirectX::XMMatrixInverse(nullptr, worldMatrix));
+	renderParameters.texture = m_FontTexture.Get();
 
 	if (!useCaching)
 	{
-		vertexBuffer = CreateTextVertexBuffer(text, shader);
+		CreateTextModel(text, shader).Render(renderParameters);
 	}
 	else
 	{
@@ -194,27 +198,12 @@ void Font::DrawText(const string& text, int posX, int posY, RenderParameters& re
 
 		if (buffer == m_TextCache.end())
 		{
-			m_TextCache.emplace(TextId(text, ref(shader)), CreateTextVertexBuffer(text, shader));
+			m_TextCache.emplace(TextId(text, ref(shader)), CreateTextModel(text, shader));
 			buffer = m_TextCache.find(TextId(text, ref(shader)));
 		}
 
 		Assert(buffer != m_TextCache.end());
-		vertexBuffer = buffer->second;
+		buffer->second.Render(renderParameters);
 	}
-	
-	auto const offset = 0u;
-	auto deviceContext = GetD3D11DeviceContext();
-	DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixTranslation(static_cast<float>(posX), static_cast<float>(posY), 0.0f);
-
-	DirectX::XMStoreFloat4x4(&renderParameters.worldMatrix, DirectX::XMMatrixTranspose(worldMatrix));
-	DirectX::XMStoreFloat4x4(&renderParameters.inversedTransposedWorldMatrix, DirectX::XMMatrixInverse(nullptr, worldMatrix));
-	renderParameters.texture = m_FontTexture.Get();
-
-	shader.SetRenderParameters(renderParameters);
-	Model::InvalidateParameterSetter();
-
-	deviceContext->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), shader.GetInputLayoutSizePtr(), &offset);
-	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	deviceContext->Draw(static_cast<unsigned int>(6 * text.length()), 0);
 }
 

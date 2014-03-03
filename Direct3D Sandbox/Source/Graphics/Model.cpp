@@ -12,6 +12,7 @@ Model::Model(IShader& shader, const wstring& modelPath) :
 #if DEBUG
 	m_Key(modelPath),
 #endif
+	m_VertexCount(0),
 	m_IndexCount(0),
 	m_Shader(shader)
 {
@@ -24,27 +25,16 @@ Model::Model(IShader& shader, const wstring& modelPath) :
 	}
 
 	auto& modelData = cachedModel->second;
-	m_VertexBuffer = shader.CreateVertexBuffer(modelData);
-	
-	m_IndexCount = static_cast<unsigned int>(modelData.indexCount);
-	Assert(m_IndexCount > 0);
-	
-	D3D11_BUFFER_DESC indexBufferDescription;
-	D3D11_SUBRESOURCE_DATA indexData;
 
-	indexBufferDescription.Usage = D3D11_USAGE_IMMUTABLE;
-	indexBufferDescription.ByteWidth = sizeof(unsigned int) * m_IndexCount;
-	indexBufferDescription.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	indexBufferDescription.CPUAccessFlags = 0;
-	indexBufferDescription.MiscFlags = 0;
-	indexBufferDescription.StructureByteStride = 0;
+	CreateBuffers(modelData);
+}
 
-	indexData.pSysMem = modelData.indices.get();
-	indexData.SysMemPitch = 0;
-	indexData.SysMemSlicePitch = 0;
-	
-	auto result = GetD3D11Device()->CreateBuffer(&indexBufferDescription, &indexData, &m_IndexBuffer);
-	Assert(result == S_OK);
+Model::Model(IShader& shader, const ModelData& modelData) :
+	m_VertexCount(0),
+	m_IndexCount(0),
+	m_Shader(shader)
+{
+	CreateBuffers(modelData);
 }
 
 Model::Model(Model&& other) :
@@ -53,6 +43,7 @@ Model::Model(Model&& other) :
 #endif
 	m_VertexBuffer(other.m_VertexBuffer),
 	m_IndexBuffer(other.m_IndexBuffer),
+	m_VertexCount(other.m_VertexCount),
 	m_IndexCount(other.m_IndexCount),
 	m_Shader(other.m_Shader)
 {
@@ -64,11 +55,43 @@ Model::~Model()
 {
 }
 
+void Model::CreateBuffers(const ModelData& modelData)
+{
+	m_VertexBuffer = m_Shader.CreateVertexBuffer(modelData);
+	m_VertexCount = static_cast<unsigned int>(modelData.vertexCount);
+	m_IndexCount = static_cast<unsigned int>(modelData.indexCount);
+	
+	if (m_IndexCount > 0)
+	{
+		D3D11_BUFFER_DESC indexBufferDescription;
+		D3D11_SUBRESOURCE_DATA indexData;
+
+		indexBufferDescription.Usage = D3D11_USAGE_IMMUTABLE;
+		indexBufferDescription.ByteWidth = sizeof(unsigned int) * m_IndexCount;
+		indexBufferDescription.BindFlags = D3D11_BIND_INDEX_BUFFER;
+		indexBufferDescription.CPUAccessFlags = 0;
+		indexBufferDescription.MiscFlags = 0;
+		indexBufferDescription.StructureByteStride = 0;
+
+		indexData.pSysMem = modelData.indices.get();
+		indexData.SysMemPitch = 0;
+		indexData.SysMemSlicePitch = 0;
+	
+		auto result = GetD3D11Device()->CreateBuffer(&indexBufferDescription, &indexData, &m_IndexBuffer);
+		Assert(result == S_OK);
+	}
+}
+
 void Model::InitializeModel(IShader& shader, const wstring& modelPath)
 {
 	Assert(s_ModelCache.find(ModelId(modelPath, shader)) == s_ModelCache.end());
 
 	s_ModelCache.insert(make_pair(ModelId(modelPath, shader), Model(shader, modelPath)));
+}
+
+Model Model::CreateNonCachedModel(const ModelData& modelData, IShader& shader)
+{
+	return Model(shader, modelData);
 }
 
 Model& Model::Get(const wstring& modelPath, IShader& shader)
@@ -100,5 +123,12 @@ void Model::Render(const RenderParameters& renderParameters)
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
 
-	deviceContext->DrawIndexed(m_IndexCount, 0, 0);
+	if (m_IndexCount > 0)
+	{
+		deviceContext->DrawIndexed(m_IndexCount, 0, 0);
+	}
+	else
+	{
+		deviceContext->Draw(m_VertexCount, 0);
+	}
 }

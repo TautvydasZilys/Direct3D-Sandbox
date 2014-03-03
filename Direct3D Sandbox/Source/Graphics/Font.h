@@ -2,6 +2,7 @@
 #include "Tools.h"
 #include "IShader.h"
 
+class Model;
 struct RenderParameters;
 
 class Font
@@ -50,15 +51,16 @@ private:
 	vector<CharacterMetadata> m_CharacterMetadata;
 	unsigned int m_LineSpacing;
 	
-	unordered_map<TextId, ComPtr<ID3D11Buffer>, TextIdHash> m_TextCache;
-
+	unordered_map<TextId, Model, TextIdHash> m_TextCache;
+	
 	Font(const wstring& path);
 	~Font();
 	
-	Font(const Font& other);	// Not implemented
+	Font(const Font& other);														// Not implemented (no copying allowed)
+	Font& operator=(const Font& other);												// Not implemented (no copying allowed)
 	Font(Font&& other);
 
-	ComPtr<ID3D11Buffer> CreateTextVertexBuffer(const string& text, const IShader& shader);
+	Model CreateTextModel(const string& text, IShader& shader);
 
 	template <typename _Ty1, typename _Ty2>
 	friend struct pair;
