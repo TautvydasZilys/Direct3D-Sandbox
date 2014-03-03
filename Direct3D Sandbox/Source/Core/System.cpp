@@ -182,6 +182,7 @@ void System::Draw()
 	m_Direct3D.SetBackBufferAsRenderTarget();
 	m_Direct3D.TurnZBufferOn();
 	m_Direct3D.StartDrawing();
+	m_Direct3D.TurnZBufferOn();
 
 	renderParameters.time = static_cast<float>(m_CurrentTime);
 	renderParameters.frameTime = m_FrameTime;
@@ -193,7 +194,8 @@ void System::Draw()
 	{
 		model->Render(renderParameters);
 	}
-
+	
+	m_Direct3D.TurnZBufferOff();
 	m_OrthoCamera->SetRenderParameters(renderParameters);
 	m_Font->DrawText("Hello, text!\nHow are you?", 200, 200, renderParameters, true);
 

@@ -185,7 +185,9 @@ void Font::DrawText(const string& text, int posX, int posY, RenderParameters& re
 	DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixTranslation(static_cast<float>(posX), static_cast<float>(posY), 0.0f);
 
 	DirectX::XMStoreFloat4x4(&renderParameters.worldMatrix, DirectX::XMMatrixTranspose(worldMatrix));
-	DirectX::XMStoreFloat4x4(&renderParameters.inversedTransposedWorldMatrix, DirectX::XMMatrixInverse(nullptr, worldMatrix));
+
+	// Font normals are zero anyway
+	//DirectX::XMStoreFloat4x4(&renderParameters.inversedTransposedWorldMatrix, DirectX::XMMatrixInverse(nullptr, worldMatrix));
 	renderParameters.texture = m_FontTexture.Get();
 
 	if (!useCaching)
