@@ -195,7 +195,7 @@ void System::Draw()
 	}
 
 	m_OrthoCamera->SetRenderParameters(renderParameters);
-	m_Font->DrawText("Hello, text!", 1, 1, renderParameters, true);
+	m_Font->DrawText("Hello, text!\nHow are you?", 200, 200, renderParameters, true);
 
 	m_Direct3D.SwapBuffers();
 }
