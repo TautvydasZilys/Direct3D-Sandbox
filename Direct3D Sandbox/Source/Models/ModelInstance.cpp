@@ -51,7 +51,7 @@ void ModelInstance::SetPosition(const DirectX::XMFLOAT3& position)
 	Initialize();
 }
 
-void ModelInstance::Render(RenderParameters& renderParameters)
+void ModelInstance::UpdateAndRender(RenderParameters& renderParameters)
 {
 	memcpy(&renderParameters.worldMatrix, &m_WorldMatrix, sizeof(DirectX::XMFLOAT4X4));
 	memcpy(&renderParameters.inversedTransposedWorldMatrix, &m_InversedTransposedWorldMatrix, sizeof(DirectX::XMFLOAT4X4));

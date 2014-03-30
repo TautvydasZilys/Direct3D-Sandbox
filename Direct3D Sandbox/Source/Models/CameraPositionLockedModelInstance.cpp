@@ -22,7 +22,7 @@ CameraPositionLockedModelInstance::~CameraPositionLockedModelInstance()
 {
 }
 
-void CameraPositionLockedModelInstance::Render(RenderParameters& renderParameters)
+void CameraPositionLockedModelInstance::UpdateAndRender(RenderParameters& renderParameters)
 {
 	if (m_LockedDimensions.x)
 	{
@@ -41,5 +41,5 @@ void CameraPositionLockedModelInstance::Render(RenderParameters& renderParameter
 	
 	Initialize();
 
-	ModelInstance::Render(renderParameters);
+	ModelInstance::UpdateAndRender(renderParameters);
 }

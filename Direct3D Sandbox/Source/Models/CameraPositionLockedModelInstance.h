@@ -20,5 +20,5 @@ public:
 
 	void SetPosition(const DirectX::XMFLOAT3& position);
 
-	virtual void Render(RenderParameters& renderParameters);
+	virtual void UpdateAndRender(RenderParameters& renderParameters);
 };

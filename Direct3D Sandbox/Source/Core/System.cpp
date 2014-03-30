@@ -203,7 +203,7 @@ void System::Draw()
 	
 	for (auto& model : m_Models)
 	{
-		model->Render(renderParameters);
+		model->UpdateAndRender(renderParameters);
 	}
 	
 	m_Direct3D.TurnZBufferOff();
