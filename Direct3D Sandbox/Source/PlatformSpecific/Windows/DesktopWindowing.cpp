@@ -74,7 +74,7 @@ void DesktopWindowing::CreateDesktopWindow()
 	}
 
 	m_WindowHandle = CreateWindowEx(WS_EX_APPWINDOW, windowInfo.lpszClassName, windowInfo.lpszClassName, WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP, 
-		posX, posY, m_Width, m_Height, NULL, NULL, m_ProgramInstance, this);
+		posX, posY, m_Width, m_Height, nullptr, nullptr, m_ProgramInstance, this);
 	Assert(m_WindowHandle != nullptr);
 
 #pragma warning(suppress: 6387)

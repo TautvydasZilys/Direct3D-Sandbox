@@ -15,7 +15,6 @@ private:
 	ComPtr<ID3D11DepthStencilView> m_DepthStencilView;
 	ComPtr<ID3D11RasterizerState> m_RasterizerState;
 	ComPtr<ID3D11BlendState> m_BlendState;
-	D3D11_VIEWPORT m_Viewport;
 
 	void Direct3D::GetDXGIAdapterAndOutput(ComPtr<IDXGIAdapter1>& dxgiAdapter, ComPtr<IDXGIOutput>& dxgiOutput) const;
 	D3D_FEATURE_LEVEL CreateDeviceAndSwapChain(HWND hWnd, int width, int height, const DXGI_RATIONAL& refreshRate, bool fullscreen);
