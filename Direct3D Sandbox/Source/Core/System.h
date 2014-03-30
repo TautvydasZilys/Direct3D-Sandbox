@@ -43,7 +43,7 @@ public:
 	~System();
 
 	void Run();
-	inline System& GetInstance() { return *s_Instance; }
+	inline static System& GetInstance() { return *s_Instance; }
 
 	void AddModel(shared_ptr<IModelInstance> model);
 	void RemoveModel(const IModelInstance* model);

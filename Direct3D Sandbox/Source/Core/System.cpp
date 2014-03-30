@@ -11,6 +11,8 @@
 #include "System.h"
 #include "Tools.h"
 
+System* System::s_Instance;
+
 System::System() :
 	m_Input(Input::GetInstance()),
 	m_Direct3D(m_Windowing.GetWindowHandle(), m_Windowing.GetWidth(), m_Windowing.GetHeight(), m_Windowing.IsFullscreen()),
@@ -72,11 +74,6 @@ System::System() :
 	
 	m_Camera->SetPosition(0.0f, 1.5f, 0.0f);
 	m_OrthoCamera->SetPosition(0.0f, 0.0f, 1.0f);
-
-	for (int i = 0; i < 20; i++)
-	{
-		m_Models.push_back(ZombieInstance::Spawn(m_Camera->GetPosition()));
-	}
 }
 
 System::~System()

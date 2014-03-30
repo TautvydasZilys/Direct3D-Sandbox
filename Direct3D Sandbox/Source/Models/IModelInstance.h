@@ -1,6 +1,6 @@
 #pragma once
 
-class RenderParameters;
+struct RenderParameters;
 class IModelInstance
 {
 private:

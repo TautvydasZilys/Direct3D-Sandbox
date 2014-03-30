@@ -11,7 +11,7 @@ struct ModelParameters
 	DirectX::XMFLOAT4 color;
 };
 
-class ModelInstance : IModelInstance
+class ModelInstance : public IModelInstance
 {
 private:
 	Model& m_Model;
