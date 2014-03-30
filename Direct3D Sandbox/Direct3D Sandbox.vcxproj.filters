@@ -135,6 +135,9 @@
     <ClCompile Include="Source\Graphics\Font.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Models\ZombieInstance.cpp">
+      <Filter>Source\Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\PrecompiledHeader.h">
@@ -229,6 +232,9 @@
     </ClInclude>
     <ClInclude Include="Source\Graphics\Font.h">
       <Filter>Source\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Models\ZombieInstance.h">
+      <Filter>Source\Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

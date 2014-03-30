@@ -20,6 +20,8 @@ private:
 	ComPtr<ID3D11ShaderResourceView> m_Texture;
 	ComPtr<ID3D11ShaderResourceView> m_NormalMap;
 
+	ModelInstance(const ModelInstance& other);
+
 protected:
 	ModelParameters m_Parameters;
 
