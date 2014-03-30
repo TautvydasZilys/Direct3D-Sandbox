@@ -31,7 +31,7 @@ void PlayerInstance::UpdateAndRender(RenderParameters& renderParameters)
 		}
 	}
 
-	if (renderParameters.time - m_LastSpawnTime >= Constants::ZombieSpawnIntervalInSeconds && m_Zombies.size() < Constants::MaxZombies)
+	if (renderParameters.time - m_LastSpawnTime >= Constants::ZombieSpawnIntervalInSeconds && static_cast<int>(m_Zombies.size()) < Constants::MaxZombies)
 	{
 		SpawnZombie();
 		m_LastSpawnTime = renderParameters.time;
