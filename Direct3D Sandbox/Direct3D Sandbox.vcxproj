@@ -571,8 +571,10 @@ del xcopyexclude.txt
     <ClCompile Include="Source\Graphics\Texture.cpp" />
     <ClCompile Include="Source\Graphics\VertexShader.cpp" />
     <ClCompile Include="Source\Models\CameraPositionLockedModelInstance.cpp" />
+    <ClCompile Include="Source\Models\IModelInstance.cpp" />
     <ClCompile Include="Source\Models\InfiniteGroundModelInstance.cpp" />
     <ClCompile Include="Source\Models\ModelInstance.cpp" />
+    <ClCompile Include="Source\Models\PlayerInstance.cpp" />
     <ClCompile Include="Source\Models\ZombieInstance.cpp" />
     <ClCompile Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.cpp" />
     <ClCompile Include="Source\PlatformSpecific\Windows\DesktopWindowing.cpp" />
@@ -605,8 +607,10 @@ del xcopyexclude.txt
     <ClInclude Include="Source\Graphics\Texture.h" />
     <ClInclude Include="Source\Graphics\VertexShader.h" />
     <ClInclude Include="Source\Models\CameraPositionLockedModelInstance.h" />
+    <ClInclude Include="Source\Models\IModelInstance.h" />
     <ClInclude Include="Source\Models\InfiniteGroundModelInstance.h" />
     <ClInclude Include="Source\Models\ModelInstance.h" />
+    <ClInclude Include="Source\Models\PlayerInstance.h" />
     <ClInclude Include="Source\Models\ZombieInstance.h" />
     <ClInclude Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.h" />
     <ClInclude Include="Source\PlatformSpecific\Windows\DesktopWindowing.h" />
