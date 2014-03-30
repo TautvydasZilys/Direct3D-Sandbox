@@ -60,7 +60,11 @@ System::System() :
 	modelParameters.scale = DirectX::XMFLOAT3(4000.0f, 4000.0f, 4000.0f);
 	m_Models.emplace_back(make_shared<InfiniteGroundModelInstance>(modelParameters, L"Assets\\Textures\\Grass.dds", DirectX::XMFLOAT2(5000.0f, 5000.0f)));
 	
-	m_Camera->SetPosition(0.0f, 1.0f, 0.0f);
+	modelParameters.position = DirectX::XMFLOAT3(10.0f, 0.0f, 10.0f);
+	modelParameters.scale = DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f);
+	m_Models.emplace_back(new ModelInstance(textureShader, L"Assets\\Models\\Zombie.model", modelParameters, L"Assets\\Textures\\Zombie.dds"));
+
+	m_Camera->SetPosition(0.0f, 1.5f, 0.0f);
 	m_OrthoCamera->SetPosition(0.0f, 0.0f, 1.0f);
 }
 
