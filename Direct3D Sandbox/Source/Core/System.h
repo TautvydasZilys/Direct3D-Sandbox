@@ -28,8 +28,8 @@ private:
 	unique_ptr<Camera> m_Camera;
 	unique_ptr<Camera> m_OrthoCamera;
 	DirectionalLight m_Light;
-	vector<shared_ptr<IModelInstance>> m_Models;
-	
+	vector<shared_ptr<IModelInstance>> m_Models;	
+
 	Font* m_Font;
 
 	void Update();
@@ -37,6 +37,25 @@ private:
 	void IncrementFpsCounter();
 
 	void UpdateInput();
+
+	struct AddRemoveModelItem
+	{
+		enum class AddRemoveOperation
+		{
+			ADD,
+			REMOVE
+		};
+
+		AddRemoveOperation operation;
+		shared_ptr<IModelInstance> modelToAdd;
+		const IModelInstance* modelToRemove;
+	};
+
+	vector<AddRemoveModelItem> m_AddRemoveModelQueue;
+
+	void AddModelImpl(shared_ptr<IModelInstance> model);
+	void RemoveModelImpl(const IModelInstance* model);
+	void AddAndRemoveModels();
 
 public:
 	System();

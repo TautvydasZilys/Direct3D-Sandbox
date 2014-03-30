@@ -7,6 +7,7 @@
 #include "Source\Graphics\SamplerState.h"
 #include "Source\Graphics\Texture.h"
 #include "Source\Models\InfiniteGroundModelInstance.h"
+#include "Source\Models\PlayerInstance.h"
 #include "Source\Models\ZombieInstance.h"
 #include "System.h"
 #include "Tools.h"
@@ -74,6 +75,8 @@ System::System() :
 	
 	m_Camera->SetPosition(0.0f, 1.5f, 0.0f);
 	m_OrthoCamera->SetPosition(0.0f, 0.0f, 1.0f);
+
+	m_Models.emplace_back(make_shared<PlayerInstance>(*m_Camera));
 }
 
 System::~System()
@@ -98,6 +101,7 @@ void System::Run()
 
 void System::Update()
 {
+	AddAndRemoveModels();
 	UpdateInput();
 
 	wstringstream debugStream;
@@ -234,10 +238,30 @@ void System::IncrementFpsCounter()
 
 void System::AddModel(shared_ptr<IModelInstance> model)
 {
+	AddRemoveModelItem addModel;
+
+	addModel.operation = AddRemoveModelItem::AddRemoveOperation::ADD;
+	addModel.modelToAdd = model;
+
+	m_AddRemoveModelQueue.push_back(addModel);
+}
+
+void System::AddModelImpl(shared_ptr<IModelInstance> model)
+{
 	m_Models.push_back(model);
 }
 
 void System::RemoveModel(const IModelInstance* model)
+{	
+	AddRemoveModelItem removeModel;
+
+	removeModel.operation = AddRemoveModelItem::AddRemoveOperation::REMOVE;
+	removeModel.modelToRemove = model;
+
+	m_AddRemoveModelQueue.push_back(removeModel);
+}
+
+void System::RemoveModelImpl(const IModelInstance* model)
 {
 	for (auto i = 0u; i < m_Models.size(); i++)
 	{
@@ -248,4 +272,23 @@ void System::RemoveModel(const IModelInstance* model)
 			break;
 		}
 	}
+}
+
+void System::AddAndRemoveModels()
+{
+	for (auto& addRemoveModel : m_AddRemoveModelQueue)
+	{
+		switch (addRemoveModel.operation)
+		{
+		case AddRemoveModelItem::AddRemoveOperation::ADD:
+			AddModelImpl(addRemoveModel.modelToAdd);
+			break;
+
+		case AddRemoveModelItem::AddRemoveOperation::REMOVE:
+			RemoveModelImpl(addRemoveModel.modelToRemove);
+			break;
+		}
+	}
+
+	m_AddRemoveModelQueue.clear();
 }
