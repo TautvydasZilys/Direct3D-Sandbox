@@ -27,6 +27,7 @@ protected:
 
 	void Initialize();
 	void SetPosition(const DirectX::XMFLOAT3& position);
+	void SetRotation(const DirectX::XMFLOAT3& rotation);
 
 public:
 	ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters);

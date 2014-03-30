@@ -15,6 +15,8 @@ public:
 	ZombieInstance(const ModelParameters& modelParameters, const PlayerInstance& targetPlayer);
 	virtual ~ZombieInstance();
 
+	virtual void UpdateAndRender(RenderParameters& renderParameters);
+
 	static shared_ptr<ZombieInstance> Spawn(const PlayerInstance& targetPlayer);
 };
 

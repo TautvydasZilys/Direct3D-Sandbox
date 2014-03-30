@@ -213,7 +213,7 @@ void System::Draw()
 	
 	m_Direct3D.TurnZBufferOff();
 	m_OrthoCamera->SetRenderParameters(renderParameters);
-	m_Font->DrawText("Hello, text!\nHow are you?", 200, 200, renderParameters, true);
+	//m_Font->DrawText("Hello, text!\nHow are you?", 200, 200, renderParameters, true);
 
 	m_Direct3D.SwapBuffers();
 }

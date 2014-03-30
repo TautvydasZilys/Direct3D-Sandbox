@@ -51,6 +51,12 @@ void ModelInstance::SetPosition(const DirectX::XMFLOAT3& position)
 	Initialize();
 }
 
+void ModelInstance::SetRotation(const DirectX::XMFLOAT3& rotation)
+{
+	m_Parameters.rotation = rotation;
+	Initialize();
+}
+
 void ModelInstance::UpdateAndRender(RenderParameters& renderParameters)
 {
 	memcpy(&renderParameters.worldMatrix, &m_WorldMatrix, sizeof(DirectX::XMFLOAT4X4));
