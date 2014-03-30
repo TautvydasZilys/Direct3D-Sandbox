@@ -27,3 +27,7 @@ const float Constants::DefaultMouseSensitivity = 0.5f;
 #endif
 
 const float Constants::GravityConstant = -9.81f;
+
+const int Constants::StartingZombieCount = 10;
+const int Constants::MaxZombies = 50;
+const float Constants::SpawnIntervalInSeconds = 5.0f;
