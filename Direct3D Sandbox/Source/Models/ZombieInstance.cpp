@@ -1,14 +1,16 @@
 #include "PrecompiledHeader.h"
 #include "ZombieInstance.h"
+
+#include "PlayerInstance.h"
 #include "Source\\Graphics\\IShader.h"
 
-
-ZombieInstance::ZombieInstance(const ModelParameters& modelParameters) :
+ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, const PlayerInstance& targetPlayer) :
 	ModelInstance(IShader::GetShader(ShaderType::NORMAL_MAP_SHADER), 
 					L"Assets\\Models\\Zombie.model", 
 					modelParameters, 
 					L"Assets\\Textures\\Zombie.dds",
-					L"Assets\\Normal Maps\\Zombie.dds")
+					L"Assets\\Normal Maps\\Zombie.dds"),
+	m_TargetPlayer(targetPlayer)
 {
 }
 
@@ -16,7 +18,7 @@ ZombieInstance::~ZombieInstance()
 {
 }
 
-shared_ptr<ZombieInstance> ZombieInstance::Spawn(const DirectX::XMFLOAT3& playerPosition)
+shared_ptr<ZombieInstance> ZombieInstance::Spawn(const PlayerInstance& targetPlayer)
 {
 	static mt19937 randomEngine(static_cast<unsigned int>(Tools::GetRawTime()));
 	
@@ -26,10 +28,11 @@ shared_ptr<ZombieInstance> ZombieInstance::Spawn(const DirectX::XMFLOAT3& player
 
 	auto radius = radiusDistribution(randomEngine);
 	auto angle = angleDistribution(randomEngine);
+	auto playerPosition = targetPlayer.GetPosition();
 
 	modelParameters.position = DirectX::XMFLOAT3(playerPosition.x + radius * cos(angle), 0.0f, playerPosition.z + radius * sin(angle));
 	modelParameters.scale = DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f);
 	modelParameters.rotation = DirectX::XMFLOAT3(0.0f, -angle - DirectX::XM_PI / 2.0f, 0.0f);
 
-	return make_shared<ZombieInstance>(modelParameters);
+	return make_shared<ZombieInstance>(modelParameters, targetPlayer);
 }
