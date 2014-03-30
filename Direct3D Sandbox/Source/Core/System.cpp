@@ -22,6 +22,8 @@ System::System() :
 	m_OrthoCamera(new Camera(false, 0.0f, 0.0f, static_cast<float>(m_Windowing.GetWidth()), static_cast<float>(m_Windowing.GetHeight()))),
 	m_Light(DirectX::XMFLOAT3(3.0f, -2.0f, -1.0f), DirectX::XMFLOAT3(0.7f, 0.7f, 0.6f), DirectX::XMFLOAT3(0.4f, 0.4f, 0.4f), 32)  
 {
+	s_Instance = this;
+
 	// Initialize sample states
 	SamplerState::Initialize();
 
@@ -230,5 +232,23 @@ void System::IncrementFpsCounter()
 
 		m_Fps = 0;
 		m_LastFpsTime = m_CurrentTime;
+	}
+}
+
+void System::AddModel(shared_ptr<ModelInstance> model)
+{
+	m_Models.push_back(model);
+}
+
+void System::RemoveModel(const ModelInstance* model)
+{
+	for (auto i = 0u; i < m_Models.size(); i++)
+	{
+		if (m_Models[i].get() == model)
+		{
+			m_Models[i] = m_Models[m_Models.size() - 1];
+			m_Models.pop_back();
+			break;
+		}
 	}
 }

@@ -13,6 +13,7 @@ class Font;
 class System
 {
 private:
+	static System* s_Instance;
 	Windowing m_Windowing;
 
 	Direct3D m_Direct3D;
@@ -36,10 +37,15 @@ private:
 	void IncrementFpsCounter();
 
 	void UpdateInput();
+
 public:
 	System();
 	~System();
 
 	void Run();
+	inline System& GetInstance() { return *s_Instance; }
+
+	void AddModel(shared_ptr<ModelInstance> model);
+	void RemoveModel(const ModelInstance* model);
 };
 
