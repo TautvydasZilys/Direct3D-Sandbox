@@ -270,5 +270,11 @@
     <FxCompile Include="Source\Shaders\Pixel\LightingPixelShader.hlsl">
       <Filter>Source\Shaders\Pixel</Filter>
     </FxCompile>
+    <FxCompile Include="Source\Shaders\Vertex\NormalMapVertexShader.hlsl">
+      <Filter>Source\Shaders\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shaders\Pixel\NormalMapPixelShader.hlsl">
+      <Filter>Source\Shaders\Pixel</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

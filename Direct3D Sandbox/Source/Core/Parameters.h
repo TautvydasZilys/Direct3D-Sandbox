@@ -18,7 +18,8 @@
 			FIELD(DirectX::XMFLOAT2, uvTiling) \
 			FIELD(DirectX::XMFLOAT3, cameraPosition) \
 			FIELD(DirectX::XMFLOAT4, padding) \
-			FIELD(ID3D11ShaderResourceView*, texture)
+			FIELD(ID3D11ShaderResourceView*, texture) \
+			FIELD(ID3D11ShaderResourceView*, normalMap)
 
 
 #define VERTEX_PARAMETERS \

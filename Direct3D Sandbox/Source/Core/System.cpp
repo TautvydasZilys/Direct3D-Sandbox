@@ -33,6 +33,12 @@ System::System() :
 		Texture::LoadTexture(texture);
 	}
 
+	// Load normal maps
+	for (const auto& texture : Tools::GetFilesInDirectory(L"Assets\\Normal Maps", L"*.dds", true))
+	{
+		Texture::LoadTexture(texture);
+	}
+
 	// Load fonts
 	for (const auto& font : Tools::GetFilesInDirectory(L"Assets\\Fonts", L"*.font", true))
 	{
@@ -45,6 +51,7 @@ System::System() :
 	
 	auto& playgroundShader = IShader::GetShader(ShaderType::PLAYGROUND_SHADER);
 	auto& textureShader = IShader::GetShader(ShaderType::TEXTURE_SHADER);
+	auto& normalMapShader = IShader::GetShader(ShaderType::NORMAL_MAP_SHADER);
 	
 	ModelParameters modelParameters; 
 	
@@ -62,7 +69,7 @@ System::System() :
 	
 	modelParameters.position = DirectX::XMFLOAT3(10.0f, 0.0f, 10.0f);
 	modelParameters.scale = DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f);
-	m_Models.emplace_back(new ModelInstance(textureShader, L"Assets\\Models\\Zombie.model", modelParameters, L"Assets\\Textures\\Zombie.dds"));
+	m_Models.emplace_back(new ModelInstance(normalMapShader, L"Assets\\Models\\Zombie.model", modelParameters, L"Assets\\Textures\\Zombie.dds", L"Assets\\Normal Maps\\Zombie.dds"));
 
 	m_Camera->SetPosition(0.0f, 1.5f, 0.0f);
 	m_OrthoCamera->SetPosition(0.0f, 0.0f, 1.0f);

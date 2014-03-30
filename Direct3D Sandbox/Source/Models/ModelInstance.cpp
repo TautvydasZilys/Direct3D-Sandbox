@@ -19,6 +19,16 @@ ModelInstance::ModelInstance(IShader& shader, const wstring& modelPath, const Mo
 	Initialize();
 }
 
+ModelInstance::ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, 
+								const wstring& texturePath, const wstring& normalMapPath) :
+	m_Model(Model::Get(modelPath, shader)),
+	m_Parameters(modelParameters),
+	m_Texture(Texture::Get(texturePath)),
+	m_NormalMap(Texture::Get(normalMapPath))
+{
+	Initialize();
+}
+
 ModelInstance::~ModelInstance()
 {
 }
@@ -47,6 +57,7 @@ void ModelInstance::Render(RenderParameters& renderParameters)
 	memcpy(&renderParameters.inversedTransposedWorldMatrix, &m_InversedTransposedWorldMatrix, sizeof(DirectX::XMFLOAT4X4));
 	renderParameters.color = m_Parameters.color;
 	renderParameters.texture = m_Texture.Get();
+	renderParameters.normalMap = m_NormalMap.Get();
 
 	m_Model.Render(renderParameters);
 }

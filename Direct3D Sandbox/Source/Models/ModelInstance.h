@@ -18,6 +18,7 @@ private:
 	DirectX::XMFLOAT4X4 m_WorldMatrix;
 	DirectX::XMFLOAT4X4 m_InversedTransposedWorldMatrix;
 	ComPtr<ID3D11ShaderResourceView> m_Texture;
+	ComPtr<ID3D11ShaderResourceView> m_NormalMap;
 
 protected:
 	ModelParameters m_Parameters;
@@ -27,6 +28,7 @@ protected:
 public:
 	ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters);
 	ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, const wstring& texturePath);
+	ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, const wstring& texturePath, const wstring& normalMapPath);
 	virtual ~ModelInstance();
 
 	void SetPosition(const DirectX::XMFLOAT3& position);
