@@ -26,9 +26,6 @@ shared_ptr<ZombieInstance> ZombieInstance::Spawn(const DirectX::XMFLOAT3& player
 
 	auto radius = radiusDistribution(randomEngine);
 	auto angle = angleDistribution(randomEngine);
-	
-	OutputDebugStringW((to_wstring(radius) + L"\r\n").c_str());
-	OutputDebugStringW((to_wstring(angle) + L"\r\n").c_str());
 
 	modelParameters.position = DirectX::XMFLOAT3(playerPosition.x + radius * cos(angle), 0.0f, playerPosition.z + radius * sin(angle));
 	modelParameters.scale = DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f);
