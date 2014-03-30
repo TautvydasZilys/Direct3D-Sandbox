@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Constants.h"
+#include "IModelInstance.h"
 #include "Source\Graphics\Model.h"
 
 struct ModelParameters
@@ -11,7 +11,7 @@ struct ModelParameters
 	DirectX::XMFLOAT4 color;
 };
 
-class ModelInstance
+class ModelInstance : IModelInstance
 {
 private:
 	Model& m_Model;
@@ -26,14 +26,13 @@ protected:
 	ModelParameters m_Parameters;
 
 	void Initialize();
+	void SetPosition(const DirectX::XMFLOAT3& position);
 
 public:
 	ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters);
 	ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, const wstring& texturePath);
 	ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, const wstring& texturePath, const wstring& normalMapPath);
 	virtual ~ModelInstance();
-
-	void SetPosition(const DirectX::XMFLOAT3& position);
 
 	virtual void UpdateAndRender(RenderParameters& renderParameters);
 };

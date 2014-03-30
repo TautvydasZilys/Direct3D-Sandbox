@@ -235,12 +235,12 @@ void System::IncrementFpsCounter()
 	}
 }
 
-void System::AddModel(shared_ptr<ModelInstance> model)
+void System::AddModel(shared_ptr<IModelInstance> model)
 {
 	m_Models.push_back(model);
 }
 
-void System::RemoveModel(const ModelInstance* model)
+void System::RemoveModel(const IModelInstance* model)
 {
 	for (auto i = 0u; i < m_Models.size(); i++)
 	{

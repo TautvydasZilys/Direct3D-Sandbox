@@ -3,7 +3,7 @@
 #include "DirectionalLight.h"
 #include "Input.h"
 #include "Source\Graphics\Direct3D.h"
-#include "Source\Models\ModelInstance.h"
+#include "Source\Models\IModelInstance.h"
 #include "Source\PlatformSpecific\Windows\DesktopWindowing.h"
 #include "Source\PlatformSpecific\WindowsPhone\PhoneWindowing.h"
 
@@ -28,7 +28,7 @@ private:
 	unique_ptr<Camera> m_Camera;
 	unique_ptr<Camera> m_OrthoCamera;
 	DirectionalLight m_Light;
-	vector<shared_ptr<ModelInstance>> m_Models;
+	vector<shared_ptr<IModelInstance>> m_Models;
 	
 	Font* m_Font;
 
@@ -45,7 +45,7 @@ public:
 	void Run();
 	inline System& GetInstance() { return *s_Instance; }
 
-	void AddModel(shared_ptr<ModelInstance> model);
-	void RemoveModel(const ModelInstance* model);
+	void AddModel(shared_ptr<IModelInstance> model);
+	void RemoveModel(const IModelInstance* model);
 };
 
