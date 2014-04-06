@@ -62,12 +62,17 @@ private:
 
 	Model CreateTextModel(const string& text, IShader& shader);
 
+	static Font* s_DefaultFont;
+
 	template <typename _Ty1, typename _Ty2>
 	friend struct pair;
 
 public:	
 	static void LoadFont(const wstring& path);
 	static Font& Get(const wstring& path);
+	static Font& GetDefault();
+	
+	static void SetDefault(const wstring& path);
 
 	void DrawText(const string& text, int posX, int posY, RenderParameters& renderParameters, bool useCaching = false, IShader& shader = IShader::GetShader(ShaderType::TEXTURE_SHADER));
 };

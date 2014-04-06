@@ -51,7 +51,7 @@ System::System() :
 		Font::LoadFont(font);
 	}
 
-	m_Font = &Font::Get(L"Assets\\Fonts\\Segoe UI Light.font");
+	Font::SetDefault(L"Assets\\Fonts\\Segoe UI Light.font");
 
 	// Create scene
 	
@@ -202,6 +202,8 @@ void System::Draw()
 
 	renderParameters.time = static_cast<float>(m_CurrentTime);
 	renderParameters.frameTime = m_FrameTime;
+	renderParameters.screenWidth = m_Windowing.GetWidth();
+	renderParameters.screenHeight = m_Windowing.GetHeight();
 	
 	m_Camera->SetRenderParameters(renderParameters);
 	m_Light.SetRenderParameters(renderParameters);
@@ -213,7 +215,11 @@ void System::Draw()
 	
 	m_Direct3D.TurnZBufferOff();
 	m_OrthoCamera->SetRenderParameters(renderParameters);
-	//m_Font->DrawText("Hello, text!\nHow are you?", 200, 200, renderParameters, true);
+
+	for (auto& model : m_Models)
+	{
+		model->UpdateAndRender2D(renderParameters);
+	}
 
 	m_Direct3D.SwapBuffers();
 }

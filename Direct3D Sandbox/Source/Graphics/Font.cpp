@@ -6,6 +6,7 @@
 #include "Tools.h"
 
 unordered_map<wstring, Font> Font::s_FontCache;
+Font* Font::s_DefaultFont;
 
 Font::Font(const wstring& path)
 {
@@ -100,6 +101,16 @@ Font& Font::Get(const wstring& path)
 
 	Assert(font != s_FontCache.end());
 	return font->second;
+}
+
+Font& Font::GetDefault()
+{	
+	return *s_DefaultFont;
+}
+
+void Font::SetDefault(const wstring& path)
+{
+	s_DefaultFont = &Get(path);
 }
 
 Model Font::CreateTextModel(const string& text, IShader& shader)

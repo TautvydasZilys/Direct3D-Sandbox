@@ -19,7 +19,9 @@
 			FIELD(DirectX::XMFLOAT3, cameraPosition) \
 			FIELD(DirectX::XMFLOAT4, padding) \
 			FIELD(ID3D11ShaderResourceView*, texture) \
-			FIELD(ID3D11ShaderResourceView*, normalMap)
+			FIELD(ID3D11ShaderResourceView*, normalMap) \
+			FIELD(int, screenWidth) \
+			FIELD(int, screenHeight)
 
 
 #define VERTEX_PARAMETERS \
