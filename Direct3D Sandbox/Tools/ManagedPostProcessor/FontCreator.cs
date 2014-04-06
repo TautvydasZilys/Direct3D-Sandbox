@@ -43,7 +43,15 @@ namespace ManagedPostProcessor
                     {
                         graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
                         graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                        graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
+
+                        if (fontSize > 60.0f)
+                        {
+                            graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+                        }
+                        else
+                        {
+                            graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+                        }
                         
                         var characters = ImportFont(font, bitmap, graphics);
                         var lineSpace = font.GetHeight();

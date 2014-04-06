@@ -76,7 +76,7 @@ static void ProcessFont(const wstring& fontName, float fontSize, const wstring& 
 static void ProcessFonts(const wstring& fontOutputDirectory)
 {
 	ProcessFont(L"Segoe UI", 48, fontOutputDirectory);
-	ProcessFont(L"Segoe UI Light", 72, fontOutputDirectory);
+	ProcessFont(L"Segoe UI Light", 36, fontOutputDirectory);
 }
 
 int CALLBACK wWinMain(
