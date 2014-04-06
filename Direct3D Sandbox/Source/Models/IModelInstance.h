@@ -12,5 +12,6 @@ public:
 	virtual ~IModelInstance();
 	
 	virtual void UpdateAndRender(RenderParameters& renderParameters) = 0;
+	virtual void UpdateAndRender2D(RenderParameters& renderParameters) = 0;
 };
 

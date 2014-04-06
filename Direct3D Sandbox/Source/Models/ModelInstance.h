@@ -34,7 +34,8 @@ public:
 	ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, const wstring& texturePath);
 	ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, const wstring& texturePath, const wstring& normalMapPath);
 	virtual ~ModelInstance();
-
+	
 	virtual void UpdateAndRender(RenderParameters& renderParameters);
+	virtual void UpdateAndRender2D(RenderParameters& renderParameters) { }
 };
 
