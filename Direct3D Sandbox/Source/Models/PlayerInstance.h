@@ -10,6 +10,7 @@ class PlayerInstance :
 private:
 	const Camera& m_Camera;
 	vector<weak_ptr<ZombieInstance>> m_Zombies;
+	float m_StartTime;
 	float m_LastSpawnTime;
 
 	void SpawnZombie();
@@ -17,8 +18,9 @@ private:
 public:
 	PlayerInstance(const Camera& playerCamera);
 	virtual ~PlayerInstance();
-
+	
 	virtual void UpdateAndRender(RenderParameters& renderParameters);
+	virtual void UpdateAndRender2D(RenderParameters& renderParameters);
 
 	inline DirectX::XMFLOAT3 GetPosition() const { return m_Camera.GetPosition(); }
 };

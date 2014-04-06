@@ -2,11 +2,12 @@
 #include "PlayerInstance.h"
 
 #include "Constants.h"
+#include "Source\Graphics\Font.h"
 #include "Source\Graphics\IShader.h"
 #include "System.h"
 
 PlayerInstance::PlayerInstance(const Camera& playerCamera) :
-	m_Camera(playerCamera), m_LastSpawnTime(static_cast<float>(Tools::GetTime()))
+	m_Camera(playerCamera), m_StartTime(static_cast<float>(Tools::GetTime())), m_LastSpawnTime(m_StartTime)
 {
 	for (int i = 0; i < Constants::StartingZombieCount; i++)
 	{
@@ -36,6 +37,16 @@ void PlayerInstance::UpdateAndRender(RenderParameters& renderParameters)
 		SpawnZombie();
 		m_LastSpawnTime = renderParameters.time;
 	}
+}
+
+void PlayerInstance::UpdateAndRender2D(RenderParameters& renderParameters)
+{
+	static char buffer[20];
+	float delta = renderParameters.time - m_StartTime;
+	sprintf(buffer, "%.1f", delta);
+
+	auto text = "You have survived for " + string(buffer) + " seconds";
+	Font::GetDefault().DrawText(text, 25, renderParameters.screenHeight - 75, renderParameters);
 }
 
 void PlayerInstance::SpawnZombie()
