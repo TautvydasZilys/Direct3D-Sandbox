@@ -46,7 +46,7 @@ void PlayerInstance::UpdateAndRender2D(RenderParameters& renderParameters)
 {
 	static char buffer[20];
 	float delta = renderParameters.time - m_StartTime;
-	sprintf(buffer, "%.1f", delta);
+	sprintf_s(buffer, "%.1f", delta);
 
 	auto text = "You have survived for " + string(buffer) + " seconds";
 	Font::GetDefault().DrawText(text, 25, renderParameters.screenHeight - 75, renderParameters);
