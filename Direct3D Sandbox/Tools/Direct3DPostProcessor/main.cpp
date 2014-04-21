@@ -39,7 +39,8 @@ static void PutItem(SAFEARRAY* safeArray, LONG index, _variant_t item)
 static wstring GetExecutableDir()
 {	
 	wchar_t pathBuffer[MAX_PATH];
-	Assert(GetModuleFileName(nullptr, pathBuffer, MAX_PATH) != 0);
+	auto result = GetModuleFileName(nullptr, pathBuffer, MAX_PATH);
+	Assert(result != 0);
 
 	wstring path = pathBuffer;
 
