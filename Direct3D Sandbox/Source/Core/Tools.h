@@ -66,7 +66,7 @@ struct TypedDimensions
 };
 
 #if !DEBUG
-#define Assert(x)	(void)(x)
+#define Assert(x)
 #elif WINDOWS_PHONE
 #define Assert(x)   do \
 					{ \
