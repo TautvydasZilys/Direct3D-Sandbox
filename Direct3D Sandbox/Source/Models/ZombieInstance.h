@@ -1,13 +1,11 @@
 #pragma once
 
-#include "ModelInstance.h"
+#include "ZombieInstanceBase.h"
 
 class PlayerInstance;
 class ZombieInstance :
-	public ModelInstance
-{	
-	const PlayerInstance& m_TargetPlayer;
-
+	public ZombieInstanceBase
+{
 	ZombieInstance(const ModelInstance& other);					// Not implemented (no copying allowed)
 	ZombieInstance& operator=(const ModelInstance& other);		// Not implemented (no copying allowed)
 
@@ -17,6 +15,6 @@ public:
 
 	virtual void UpdateAndRender(RenderParameters& renderParameters);
 
-	static shared_ptr<ZombieInstance> Spawn(const PlayerInstance& targetPlayer);
+	static shared_ptr<ZombieInstanceBase> Spawn(const PlayerInstance& targetPlayer);
 };
 

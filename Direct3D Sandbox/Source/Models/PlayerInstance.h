@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IModelInstance.h"
-#include "ZombieInstance.h"
+#include "ZombieInstanceBase.h"
 #include "Source\Cameras\Camera.h"
 
 class PlayerInstance :
@@ -9,7 +9,7 @@ class PlayerInstance :
 {
 private:
 	const Camera& m_Camera;
-	vector<weak_ptr<ZombieInstance>> m_Zombies;
+	vector<weak_ptr<ZombieInstanceBase>> m_Zombies;
 	float m_StartTime;
 	float m_LastSpawnTime;
 

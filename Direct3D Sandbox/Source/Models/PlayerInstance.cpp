@@ -6,6 +6,9 @@
 #include "Source\Graphics\IShader.h"
 #include "System.h"
 
+#include "SuperZombieInstance.h"
+#include "ZombieInstance.h"
+
 PlayerInstance::PlayerInstance(const Camera& playerCamera) :
 	m_Camera(playerCamera), m_StartTime(static_cast<float>(Tools::GetTime())), m_LastSpawnTime(m_StartTime)
 {

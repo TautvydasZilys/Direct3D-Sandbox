@@ -15,6 +15,7 @@ namespace Tools
 	vector<wstring> GetFilesInDirectory(wstring path, const wstring& searchPattern, bool recursive);	
 	bool DirectoryExists(const wstring& path);
 
+	inline mt19937& GetRandomEngine() { static mt19937 engineInstance(static_cast<unsigned int>(Tools::GetRawTime())); return engineInstance; }
 	int GetMemoryUsage();
 
 	string ToLower(const string& str);
