@@ -29,7 +29,7 @@ vector<uint8_t> Tools::ReadFileToVector(const wstring& path)
 {
 	ifstream in(path, ios::binary);
 	Assert(in.is_open());
-	
+
 	in.seekg(0, ios::end);
 	int fileLength = static_cast<int>(in.tellg());
 	vector<uint8_t> fileContents(fileLength);
@@ -54,7 +54,7 @@ ModelData Tools::LoadModel(const wstring& path, bool shouldInvert)
 
 	ifstream in(modelPath, ios::binary);
 	Assert(in.is_open());
-	
+
 	in.read(reinterpret_cast<char*>(&model.vertexCount), sizeof(int));
 	model.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[model.vertexCount]);
 	in.read(reinterpret_cast<char*>(model.vertices.get()), model.vertexCount * sizeof(VertexParameters));
@@ -80,7 +80,36 @@ vector<wstring> Tools::GetFilesInDirectory(wstring path, const wstring& searchPa
 	{
 		path += L'\\';
 	}
-		
+
+	// Find folders
+	if (recursive)
+	{
+		auto fileName = path + L"*.*";
+		auto searchHandle = FindFirstFileEx(fileName.c_str(), FindExInfoStandard, &findData, FindExSearchNameMatch, nullptr, 0);
+		Assert(searchHandle != INVALID_HANDLE_VALUE);
+
+		do
+		{
+			if (_wcsicmp(findData.cFileName, L".") != 0 && _wcsicmp(findData.cFileName, L"..") != 0)
+			{
+				if(findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+				{
+					for (const auto& file : GetFilesInDirectory(path + findData.cFileName, searchPattern, recursive))
+					{
+						result.emplace_back(file);
+					}
+				}
+			}
+
+			FindNextFile(searchHandle, &findData);
+		}
+		while (GetLastError() != ERROR_NO_MORE_FILES);
+
+		FindClose(searchHandle);
+		SetLastError(ERROR_SUCCESS);
+	}
+
+	// Find files
 	auto fileName = path + searchPattern;
 	auto searchHandle = FindFirstFileEx(fileName.c_str(), FindExInfoStandard, &findData, FindExSearchNameMatch, nullptr, 0);
 	Assert(searchHandle != INVALID_HANDLE_VALUE);
@@ -89,17 +118,7 @@ vector<wstring> Tools::GetFilesInDirectory(wstring path, const wstring& searchPa
 	{
 		if (_wcsicmp(findData.cFileName, L".") != 0 && _wcsicmp(findData.cFileName, L"..") != 0)
 		{
-			if(findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-			{
-				if (recursive)
-				{
-					for (const auto& file : GetFilesInDirectory(path + findData.cFileName, searchPattern, recursive))
-					{
-						result.emplace_back(file);
-					}
-				}
-			}
-			else
+			if ((findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0)
 			{
 				result.emplace_back(path + findData.cFileName);
 			}
@@ -110,7 +129,6 @@ vector<wstring> Tools::GetFilesInDirectory(wstring path, const wstring& searchPa
 	while (GetLastError() != ERROR_NO_MORE_FILES);
 
 	FindClose(searchHandle);
-	
 	SetLastError(ERROR_SUCCESS);
 	return result;
 }
@@ -131,7 +149,7 @@ int Tools::GetMemoryUsage()
 	PROCESS_MEMORY_COUNTERS memoryInfo;
 	auto myProcess = GetCurrentProcess();
 	auto result = GetProcessMemoryInfo(myProcess, &memoryInfo, sizeof(memoryInfo));
-	
+
 	Assert(result != 0);
 
 	return static_cast<int>(memoryInfo.WorkingSetSize / (1024 * 1024));
