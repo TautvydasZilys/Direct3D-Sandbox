@@ -150,6 +150,9 @@
     <ClCompile Include="Source\Models\ZombieInstanceBase.cpp">
       <Filter>Source\Models</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphics\IModel.cpp">
+      <Filter>Source\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\PrecompiledHeader.h">
@@ -259,6 +262,9 @@
     </ClInclude>
     <ClInclude Include="Source\Models\ZombieInstanceBase.h">
       <Filter>Source\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\IModel.h">
+      <Filter>Source\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

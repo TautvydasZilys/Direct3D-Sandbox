@@ -4,7 +4,7 @@
 #include "Source\Graphics\Texture.h"
 
 ModelInstance::ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters) :
-	m_Model(Model::Get(modelPath, shader)),
+	m_Model(IModel::Get(modelPath, shader)),
 	m_Parameters(modelParameters)
 {
 	Initialize();
@@ -12,7 +12,7 @@ ModelInstance::ModelInstance(IShader& shader, const wstring& modelPath, const Mo
 
 ModelInstance::ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, 
 								const wstring& texturePath) :
-	m_Model(Model::Get(modelPath, shader)),
+	m_Model(IModel::Get(modelPath, shader)),
 	m_Parameters(modelParameters),
 	m_Texture(Texture::Get(texturePath))
 {
@@ -21,7 +21,7 @@ ModelInstance::ModelInstance(IShader& shader, const wstring& modelPath, const Mo
 
 ModelInstance::ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, 
 								const wstring& texturePath, const wstring& normalMapPath) :
-	m_Model(Model::Get(modelPath, shader)),
+	m_Model(IModel::Get(modelPath, shader)),
 	m_Parameters(modelParameters),
 	m_Texture(Texture::Get(texturePath)),
 	m_NormalMap(Texture::Get(normalMapPath))

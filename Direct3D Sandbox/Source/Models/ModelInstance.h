@@ -14,7 +14,7 @@ struct ModelParameters
 class ModelInstance : public IModelInstance
 {
 private:
-	Model& m_Model;
+	IModel& m_Model;
 	DirectX::XMFLOAT4X4 m_WorldMatrix;
 	DirectX::XMFLOAT4X4 m_InversedTransposedWorldMatrix;
 	ComPtr<ID3D11ShaderResourceView> m_Texture;

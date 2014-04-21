@@ -4,48 +4,38 @@
 #include "Model.h"
 #include "Tools.h"
 
-unordered_map<wstring, const ModelData> Model::s_ModelDataCache;
-unordered_map<ModelId, Model, ModelIdHash> Model::s_ModelCache;
-const Model* Model::s_ModelWhichLastSetParameters;
 
 Model::Model(IShader& shader, const wstring& modelPath) :
+	IModel(shader
 #if DEBUG
-	m_Key(modelPath),
+	, modelPath
 #endif
+	),
 	m_VertexCount(0),
-	m_IndexCount(0),
-	m_Shader(shader)
+	m_IndexCount(0)
 {
-	auto cachedModel = s_ModelDataCache.find(modelPath);
-
-	if (cachedModel == s_ModelDataCache.end())
-	{
-		s_ModelDataCache.insert(make_pair(modelPath, Tools::LoadModel(modelPath, false)));
-		cachedModel = s_ModelDataCache.find(modelPath);
-	}
-
-	auto& modelData = cachedModel->second;
-
+	auto& modelData = GetModelData(modelPath);
 	CreateBuffers(modelData);
 }
 
 Model::Model(IShader& shader, const ModelData& modelData) :
+	IModel(shader
+#if DEBUG
+	, L""
+#endif
+	),
 	m_VertexCount(0),
-	m_IndexCount(0),
-	m_Shader(shader)
+	m_IndexCount(0)
 {
 	CreateBuffers(modelData);
 }
 
 Model::Model(Model&& other) :
-#if DEBUG
-	m_Key(other.m_Key),
-#endif
+	IModel(std::move(other)),
 	m_VertexBuffer(other.m_VertexBuffer),
 	m_IndexBuffer(other.m_IndexBuffer),
 	m_VertexCount(other.m_VertexCount),
-	m_IndexCount(other.m_IndexCount),
-	m_Shader(other.m_Shader)
+	m_IndexCount(other.m_IndexCount)
 {
 	other.m_VertexBuffer = nullptr;
 	other.m_IndexBuffer = nullptr;
@@ -82,30 +72,9 @@ void Model::CreateBuffers(const ModelData& modelData)
 	}
 }
 
-void Model::InitializeModel(IShader& shader, const wstring& modelPath)
-{
-	Assert(s_ModelCache.find(ModelId(modelPath, shader)) == s_ModelCache.end());
-
-	s_ModelCache.insert(make_pair(ModelId(modelPath, shader), Model(shader, modelPath)));
-}
-
 Model Model::CreateNonCachedModel(const ModelData& modelData, IShader& shader)
 {
 	return Model(shader, modelData);
-}
-
-Model& Model::Get(const wstring& modelPath, IShader& shader)
-{
-	auto model = s_ModelCache.find(ModelId(modelPath, shader));
-	
-	if (model == s_ModelCache.end())
-	{
-		InitializeModel(shader, modelPath);
-	}
-
-	model = s_ModelCache.find(ModelId(modelPath, shader));
-	Assert(model != s_ModelCache.end());
-	return model->second;
 }
 
 void Model::Render(const RenderParameters& renderParameters)
