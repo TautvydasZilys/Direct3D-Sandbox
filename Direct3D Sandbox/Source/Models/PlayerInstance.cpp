@@ -14,7 +14,7 @@ PlayerInstance::PlayerInstance(const Camera& playerCamera) :
 {
 	for (int i = 0; i < Constants::StartingZombieCount; i++)
 	{
-		SpawnZombie();
+		SpawnRandomZombie();
 	}
 }
 
@@ -37,7 +37,7 @@ void PlayerInstance::UpdateAndRender(RenderParameters& renderParameters)
 
 	if (renderParameters.time - m_LastSpawnTime >= Constants::ZombieSpawnIntervalInSeconds && static_cast<int>(m_Zombies.size()) < Constants::MaxZombies)
 	{
-		SpawnZombie();
+		SpawnRandomZombie();
 		m_LastSpawnTime = renderParameters.time;
 	}
 }
@@ -52,9 +52,32 @@ void PlayerInstance::UpdateAndRender2D(RenderParameters& renderParameters)
 	Font::GetDefault().DrawText(text, 25, renderParameters.screenHeight - 75, renderParameters);
 }
 
+void PlayerInstance::SpawnRandomZombie()
+{
+	uniform_int_distribution<int> distribution(1, 10);
+	auto randomValue = distribution(Tools::GetRandomEngine());
+
+	if (randomValue > 1)
+	{
+		SpawnZombie();
+	}
+	else
+	{
+		SpawnSuperZombie();
+	}
+}
+
 void PlayerInstance::SpawnZombie()
 {
 	auto zombie = ZombieInstance::Spawn(*this);
+	
+	System::GetInstance().AddModel(zombie);
+	m_Zombies.push_back(zombie);
+}
+
+void PlayerInstance::SpawnSuperZombie()
+{
+	auto zombie = SuperZombieInstance::Spawn(*this);
 	
 	System::GetInstance().AddModel(zombie);
 	m_Zombies.push_back(zombie);

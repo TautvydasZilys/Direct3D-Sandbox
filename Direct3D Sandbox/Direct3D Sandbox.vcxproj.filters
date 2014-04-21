@@ -306,5 +306,8 @@
     <FxCompile Include="Source\Shaders\Pixel\NormalMapPixelShader.hlsl">
       <Filter>Source\Shaders\Pixel</Filter>
     </FxCompile>
+    <FxCompile Include="Source\Shaders\Vertex\LightingVertexShader.hlsl">
+      <Filter>Source\Shaders\Vertex</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

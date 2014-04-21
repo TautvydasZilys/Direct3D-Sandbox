@@ -12,8 +12,10 @@ private:
 	vector<weak_ptr<ZombieInstanceBase>> m_Zombies;
 	float m_StartTime;
 	float m_LastSpawnTime;
-
+	
+	void SpawnRandomZombie();
 	void SpawnZombie();
+	void SpawnSuperZombie();
 
 public:
 	PlayerInstance(const Camera& playerCamera);

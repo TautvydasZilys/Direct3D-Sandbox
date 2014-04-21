@@ -6,10 +6,10 @@
 
 
 SuperZombieInstance::SuperZombieInstance(const ModelParameters& modelParameters, const PlayerInstance& targetPlayer) :
-	ZombieInstanceBase(IShader::GetShader(ShaderType::NORMAL_MAP_SHADER), 
-						L"Assets\\Models\\Zombie.model",
-						L"Assets\\Textures\\Zombie.dds",
-						L"Assets\\Normal Maps\\Zombie.dds", 
+	ZombieInstanceBase(IShader::GetShader(ShaderType::LIGHTING_SHADER), 
+						L"Assets\\Models\\SuperZombie.model",
+						L"Assets\\Textures\\SuperZombie.dds",
+						L"Assets\\Normal Maps\\SuperZombie.dds", 
 						modelParameters, 
 						targetPlayer)
 {

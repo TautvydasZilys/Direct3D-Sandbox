@@ -50,7 +50,7 @@ ModelParameters ZombieInstanceBase::GetRandomZombieParameters(const PlayerInstan
 	auto playerPosition = targetPlayer.GetPosition();
 
 	modelParameters.position = DirectX::XMFLOAT3(playerPosition.x + radius * cos(angle), 0.0f, playerPosition.z + radius * sin(angle));
-	modelParameters.scale = DirectX::XMFLOAT3(0.01f, 0.01f, 0.01f);
+	modelParameters.scale = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);
 	modelParameters.rotation = DirectX::XMFLOAT3(0.0f, -angle - DirectX::XM_PI / 2.0f, 0.0f);
 
 	return modelParameters;

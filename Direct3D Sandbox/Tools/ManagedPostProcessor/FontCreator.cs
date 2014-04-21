@@ -173,7 +173,7 @@ namespace ManagedPostProcessor
             }
 
             GrayToAlpha(bitmap);
-            SaveAsBitmap(bitmapWidth, bitmapHeight, bitmap);
+            //SaveAsBitmap(bitmapWidth, bitmapHeight, bitmap);
             return bitmap;
         }
 
