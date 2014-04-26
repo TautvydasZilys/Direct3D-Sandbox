@@ -32,10 +32,10 @@
 			FIELD(DirectX::XMFLOAT3, normal) \
 			FIELD(DirectX::XMFLOAT3, tangent) \
 			FIELD(DirectX::XMFLOAT3, binormal) \
-			FIELD(DirectX::XMFLOAT4, position2) \
-			FIELD(DirectX::XMFLOAT3, normal2) \
-			FIELD(DirectX::XMFLOAT3, tangent2) \
-			FIELD(DirectX::XMFLOAT3, binormal2)
+			FIELD(DirectX::XMFLOAT4, positionSecondary) \
+			FIELD(DirectX::XMFLOAT3, normalSecondary) \
+			FIELD(DirectX::XMFLOAT3, tangentSecondary) \
+			FIELD(DirectX::XMFLOAT3, binormalSecondary)
 
 
 struct RenderParameters

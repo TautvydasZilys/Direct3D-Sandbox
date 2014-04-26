@@ -321,5 +321,8 @@
     <FxCompile Include="Source\Shaders\Vertex\LightingVertexShader.hlsl">
       <Filter>Source\Shaders\Vertex</Filter>
     </FxCompile>
+    <FxCompile Include="Source\Shaders\Vertex\AnimationNormalMapVertexShader.hlsl">
+      <Filter>Source\Shaders\Vertex</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

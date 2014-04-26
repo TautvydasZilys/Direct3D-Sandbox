@@ -281,7 +281,7 @@ void ModelProcessor::ProcessAnimatedModel(const wstring& rootPath, const wstring
 	}
 
 	AnimatedModelData animatedModelData;
-	animatedModelData.frameCount = frames.size() - 1;
+	animatedModelData.frameCount = frames.size();
 	animatedModelData.indexCount = modelFrames[0].indexCount;
 	animatedModelData.vertexCount = modelFrames[0].vertexCount;
 
@@ -345,10 +345,10 @@ void ModelProcessor::ProcessAnimatedModel(const wstring& rootPath, const wstring
 			targetVertex.tangent = modelFrames[i].vertices[j].tangent;
 			targetVertex.binormal = modelFrames[i].vertices[j].binormal;
 
-			targetVertex.position2 = modelFrames[i + 1].vertices[j].position;
-			targetVertex.normal = modelFrames[i + 1].vertices[j].normal;
-			targetVertex.tangent = modelFrames[i + 1].vertices[j].tangent;
-			targetVertex.binormal = modelFrames[i + 1].vertices[j].binormal;
+			targetVertex.positionSecondary = modelFrames[(i + 1) % modelFrames.size()].vertices[j].position;
+			targetVertex.normalSecondary = modelFrames[(i + 1) % modelFrames.size()].vertices[j].normal;
+			targetVertex.tangentSecondary = modelFrames[(i + 1) % modelFrames.size()].vertices[j].tangent;
+			targetVertex.binormalSecondary = modelFrames[(i + 1) % modelFrames.size()].vertices[j].binormal;
 		}
 	}
 

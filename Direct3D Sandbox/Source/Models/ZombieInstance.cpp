@@ -7,7 +7,7 @@
 const float ZombieInstance::s_AnimationPeriod = 3.0f;
 
 ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, const PlayerInstance& targetPlayer) :
-	ZombieInstanceBase(IShader::GetShader(ShaderType::NORMAL_MAP_SHADER), 
+	ZombieInstanceBase(IShader::GetShader(ShaderType::ANIMATION_NORMAL_MAP_SHADER), 
 						L"Assets\\Animated Models\\Zombie.animatedModel", 
 						L"Assets\\Textures\\Zombie.dds",
 						L"Assets\\Normal Maps\\Zombie.dds",
