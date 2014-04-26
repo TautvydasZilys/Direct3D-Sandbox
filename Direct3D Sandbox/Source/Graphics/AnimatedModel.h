@@ -11,7 +11,7 @@ class AnimatedModel :
 	AnimatedModel(IShader& shader, const wstring& modelPath);
 
 	void CreateBuffers(const AnimatedModelData& modelData);
-	virtual void SetBuffersInD3DContext();
+	virtual void SetRenderParametersAndApplyBuffers(RenderParameters& renderParameters);
 
 	AnimatedModel(const AnimatedModel& other);												// Not implemented (no copying allowed)
 	AnimatedModel& operator=(const AnimatedModel& other);									// Not implemented (no copying allowed)

@@ -46,7 +46,8 @@ protected:
 	);
 
 	void InitializeIndexBuffer(const ModelData& modelData);
-	virtual void SetBuffersInD3DContext() = 0;
+	void SetBuffersToDeviceContext(ID3D11Buffer* vertexBuffer, bool forceReset = false);
+	virtual void SetRenderParametersAndApplyBuffers(RenderParameters& renderParameters) = 0;
 
 	static void InitializeModel(IShader& shader, const wstring& modelPath);
 	static const ModelData& GetModelData(const wstring& key);
@@ -63,6 +64,6 @@ public:
 	static IModel& Get(const wstring& path, IShader& shader);
 	static void InvalidateParameterSetter() { s_ModelWhichLastSetParameters = nullptr; }
 
-	void Render(const RenderParameters& renderParameters);
+	void Render(RenderParameters& renderParameters);
 };
 

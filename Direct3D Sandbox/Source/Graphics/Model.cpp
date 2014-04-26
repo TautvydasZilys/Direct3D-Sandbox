@@ -52,16 +52,7 @@ Model Model::CreateNonCachedModel(const ModelData& modelData, IShader& shader)
 	return Model(shader, modelData);
 }
 
-void Model::SetBuffersInD3DContext()
+void Model::SetRenderParametersAndApplyBuffers(RenderParameters& renderParameters)
 {
-	auto const offset = 0u;
-	auto deviceContext = GetD3D11DeviceContext();
-
-	if (s_ModelWhichLastSetParameters != this)
-	{
-		s_ModelWhichLastSetParameters = this;
-		deviceContext->IASetVertexBuffers(0, 1, m_VertexBuffer.GetAddressOf(), m_Shader.GetInputLayoutSizePtr(), &offset);
-		deviceContext->IASetIndexBuffer(m_IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	}
+	SetBuffersToDeviceContext(m_VertexBuffer.Get());
 }

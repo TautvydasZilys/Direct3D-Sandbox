@@ -12,7 +12,7 @@ private:
 	Model(IShader& shader, const ModelData& modelData);
 
 	void CreateBuffers(const ModelData& modelData);
-	virtual void SetBuffersInD3DContext();
+	virtual void SetRenderParametersAndApplyBuffers(RenderParameters& renderParameters);
 	
 	Model(const Model& other);															// Not implemented (no copying allowed)
 	Model& operator=(const Model& other);												// Not implemented (no copying allowed)

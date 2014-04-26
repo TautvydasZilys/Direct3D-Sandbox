@@ -21,7 +21,9 @@
 			FIELD(ID3D11ShaderResourceView*, texture) \
 			FIELD(ID3D11ShaderResourceView*, normalMap) \
 			FIELD(int, screenWidth) \
-			FIELD(int, screenHeight)
+			FIELD(int, screenHeight) \
+			FIELD(float, currentFrameProgress) \
+			FIELD(float, animationProgress)
 
 
 #define VERTEX_PARAMETERS \
