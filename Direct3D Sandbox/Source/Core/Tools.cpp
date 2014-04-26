@@ -151,6 +151,38 @@ vector<wstring> Tools::GetFilesInDirectory(wstring path, const wstring& searchPa
 	return result;
 }
 
+vector<wstring> Tools::GetDirectories(wstring path, bool recursive)
+{
+	vector<wstring> result;
+
+	if (path[path.length() - 1] != L'\\')
+	{
+		path += L'\\';
+	}
+	
+	// Find directories in root
+	for (const auto& fileName : FindFiles(path + L"*.*", FILE_ATTRIBUTE_DIRECTORY, 0))
+	{
+		result.emplace_back(path + fileName);
+	}
+
+	// Find subdirectories
+	if (recursive)
+	{
+		auto directoryCount = result.size();
+
+		for (auto i = 0; i < directoryCount; i++)
+		{
+			for (const auto& subDirectory : GetDirectories(result[i], recursive))
+			{
+				result.emplace_back(subDirectory);
+			}
+		}
+	}
+
+	return result;
+}
+
 bool Tools::DirectoryExists(const wstring& path)
 {
 	WIN32_FILE_ATTRIBUTE_DATA attributes;

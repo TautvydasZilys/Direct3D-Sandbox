@@ -11,8 +11,9 @@ namespace Tools
 	double GetTime();
 	vector<uint8_t> ReadFileToVector(const wstring& path);
 	ModelData LoadModel(const wstring& path, bool shouldInvert);
-
-	vector<wstring> GetFilesInDirectory(wstring path, const wstring& searchPattern, bool recursive);	
+	
+	vector<wstring> GetFilesInDirectory(wstring path, const wstring& searchPattern, bool recursive);
+	vector<wstring> GetDirectories(wstring path, bool recursive);
 	bool DirectoryExists(const wstring& path);
 
 	inline mt19937& GetRandomEngine() { static mt19937 engineInstance(static_cast<unsigned int>(Tools::GetRawTime())); return engineInstance; }
