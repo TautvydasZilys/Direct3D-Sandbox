@@ -174,7 +174,7 @@ vector<wstring> Tools::GetDirectories(wstring path, bool recursive)
 	{
 		auto directoryCount = result.size();
 
-		for (auto i = 0; i < directoryCount; i++)
+		for (auto i = 0u; i < directoryCount; i++)
 		{
 			for (const auto& subDirectory : GetDirectories(result[i], recursive))
 			{

@@ -181,11 +181,10 @@ namespace ManagedPostProcessor
         {
             var bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
             var bitmapData = bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-            
+
             Marshal.Copy(data, 0, bitmapData.Scan0, 4 * width * height);
 
             bitmap.UnlockBits(bitmapData);
-            bitmap.Save("A.png");
         }
 
         private static void GrayToAlpha(byte[] bitmapData)
