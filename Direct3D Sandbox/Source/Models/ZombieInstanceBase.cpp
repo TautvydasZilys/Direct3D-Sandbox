@@ -18,6 +18,7 @@ ZombieInstanceBase::~ZombieInstanceBase()
 
 void ZombieInstanceBase::UpdateAndRender(RenderParameters& renderParameters)
 {
+#if !DISABLE_ZOMBIE_MOVEMENT
 	auto playerPosition = m_TargetPlayer.GetPosition();
 	auto angleY = -atan2(m_Parameters.position.z - playerPosition.z, m_Parameters.position.x - playerPosition.x) - DirectX::XM_PI / 2.0f;
 
@@ -34,19 +35,17 @@ void ZombieInstanceBase::UpdateAndRender(RenderParameters& renderParameters)
 	}
 
 	SetRotation(DirectX::XMFLOAT3(0.0f, angleY, 0.0f));
+#endif
+
 	ModelInstance::UpdateAndRender(renderParameters);
 }
 
 ModelParameters ZombieInstanceBase::GetRandomZombieParameters(const PlayerInstance& targetPlayer)
-{	
-	auto& randomEngine = Tools::GetRandomEngine();
-
-	uniform_real_distribution<float> radiusDistribution(5.0f, 20.0f);
-	uniform_real_distribution<float> angleDistribution(0.0f, 2 * DirectX::XM_PI);
+{
 	ModelParameters modelParameters;
 
-	auto radius = radiusDistribution(randomEngine);
-	auto angle = angleDistribution(randomEngine);
+	auto radius = Tools::Random::GetNextReal(5.0f, 20.0f);
+	auto angle = Tools::Random::GetNextReal(0.0f, 2 * DirectX::XM_PI);
 	auto playerPosition = targetPlayer.GetPosition();
 
 	modelParameters.position = DirectX::XMFLOAT3(playerPosition.x + radius * cos(angle), 0.0f, playerPosition.z + radius * sin(angle));

@@ -54,8 +54,7 @@ void PlayerInstance::UpdateAndRender2D(RenderParameters& renderParameters)
 
 void PlayerInstance::SpawnRandomZombie()
 {
-	uniform_int_distribution<int> distribution(1, 10);
-	auto randomValue = distribution(Tools::GetRandomEngine());
+	auto randomValue = Tools::Random::GetNextInteger(1, 10);
 
 	if (randomValue > 1)
 	{
