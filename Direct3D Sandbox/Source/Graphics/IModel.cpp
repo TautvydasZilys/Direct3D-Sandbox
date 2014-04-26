@@ -92,6 +92,7 @@ const ModelData& IModel::GetModelData(const wstring& modelPath)
 
 void IModel::InitializeIndexBuffer(const ModelData& modelData)
 {
+	m_Radius = modelData.radius;
 	m_IndexCount = static_cast<unsigned int>(modelData.indexCount);
 	
 	if (m_IndexCount > 0)

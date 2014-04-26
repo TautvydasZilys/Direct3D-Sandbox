@@ -43,6 +43,21 @@ static void CalculateTangentsAndBinormals(ModelData& model)
 	}
 }
 
+static void CalculateRadius(ModelData& model)
+{
+	model.radius = 0.0f;
+
+	for_each (model.vertices.get(), model.vertices.get() + model.vertexCount, [&model](const VertexParameters& vertex)
+	{
+		auto radius = sqrt(vertex.position.x * vertex.position.x + vertex.position.y * vertex.position.y + vertex.position.z * vertex.position.z);
+		
+		if (radius > model.radius)
+		{
+			model.radius = radius;
+		}
+	});
+}
+
 static void OptimizeModel(ModelData& model)
 {
 	auto vertexPtrHash = [](const VertexParameters* value) -> size_t
@@ -200,6 +215,7 @@ static ModelData LoadModel(const wstring& path)
 
 	OptimizeModel(model);
 	CalculateTangentsAndBinormals(model);
+	CalculateRadius(model);
 
 	return model;
 }
@@ -219,6 +235,9 @@ static void SaveModel(const wstring& path, const ModelData& model)
 	// Indices
 	out.write(reinterpret_cast<const char*>(&model.indexCount), sizeof(int));
 	out.write(reinterpret_cast<const char*>(model.indices.get()), model.indexCount * sizeof(unsigned int));
+	
+	// Radius
+	out.write(reinterpret_cast<const char*>(&model.radius), sizeof(float));
 
 	out.close();
 }
@@ -239,6 +258,9 @@ static void SaveAnimatedModel(const wstring& path, const AnimatedModelData& mode
 	// Indices
 	out.write(reinterpret_cast<const char*>(&model.indexCount), sizeof(int));
 	out.write(reinterpret_cast<const char*>(model.indices.get()), model.indexCount * sizeof(unsigned int));
+
+	// Radius
+	out.write(reinterpret_cast<const char*>(&model.radius), sizeof(float));
 
 	out.close();
 }
@@ -330,6 +352,7 @@ void ModelProcessor::ProcessAnimatedModel(const wstring& rootPath, const wstring
 
 	animatedModelData.indices = std::move(modelFrames[0].indices);
 	animatedModelData.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[modelFrames[0].vertexCount * animatedModelData.frameCount]);
+	animatedModelData.radius = 0.0f;
 
 	for (auto i = 0u; i < animatedModelData.frameCount; i++)
 	{
@@ -349,6 +372,11 @@ void ModelProcessor::ProcessAnimatedModel(const wstring& rootPath, const wstring
 			targetVertex.normalSecondary = modelFrames[(i + 1) % modelFrames.size()].vertices[j].normal;
 			targetVertex.tangentSecondary = modelFrames[(i + 1) % modelFrames.size()].vertices[j].tangent;
 			targetVertex.binormalSecondary = modelFrames[(i + 1) % modelFrames.size()].vertices[j].binormal;
+		}
+
+		if (animatedModelData.radius < modelFrames[i].radius)
+		{
+			animatedModelData.radius = modelFrames[i].radius;
 		}
 	}
 

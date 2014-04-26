@@ -50,9 +50,12 @@ static void ReadModelData(istream& inputStream, ModelData& model, size_t frameCo
 	inputStream.read(reinterpret_cast<char*>(&model.indexCount), sizeof(int));
 	model.indices = unique_ptr<unsigned int[]>(new unsigned int[model.indexCount]);
 	inputStream.read(reinterpret_cast<char*>(model.indices.get()), model.indexCount * sizeof(unsigned int));
+	
+	inputStream.read(reinterpret_cast<char*>(&model.radius), sizeof(float));
 
 	OutputDebugString((L"\tNumber of vertices: " + to_wstring(model.vertexCount) + L"\r\n").c_str());
 	OutputDebugString((L"\tNumber of indices: " + to_wstring(model.indexCount) + L"\r\n").c_str());
+	OutputDebugString((L"\tModel radius: " + to_wstring(model.radius) + L"\r\n").c_str());
 }
 
 unique_ptr<ModelData> Tools::LoadModel(const wstring& path)

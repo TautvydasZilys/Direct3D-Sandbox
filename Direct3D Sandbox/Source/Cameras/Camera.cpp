@@ -68,6 +68,24 @@ void Camera::CheckRotationBounds()
 	}
 }
 
+void Camera::RecalculateFrustumPlanes()
+{
+	DirectX::XMFLOAT4X4A vpm; // view projection matrix
+	DirectX::XMStoreFloat4x4A(&vpm, m_ViewProjectionMatrix);
+
+	m_FrustumPlanes[0] = DirectX::XMVectorSet(vpm._41 + vpm._11, vpm._42 + vpm._12, vpm._43 + vpm._13, vpm._44 + vpm._14); // Left plane
+    m_FrustumPlanes[1] = DirectX::XMVectorSet(vpm._41 - vpm._11, vpm._42 - vpm._12, vpm._43 - vpm._13, vpm._44 - vpm._14); // Right plane
+    m_FrustumPlanes[2] = DirectX::XMVectorSet(vpm._41 - vpm._21, vpm._42 - vpm._22, vpm._43 - vpm._23, vpm._44 - vpm._24); // Top plane
+    m_FrustumPlanes[3] = DirectX::XMVectorSet(vpm._41 + vpm._21, vpm._42 + vpm._22, vpm._43 + vpm._23, vpm._44 + vpm._24); // Bottom plane
+	m_FrustumPlanes[4] = DirectX::XMVectorSet(vpm._31, vpm._32, vpm._33, vpm._34); // Near plane
+	m_FrustumPlanes[5] = DirectX::XMVectorSet(vpm._41 - vpm._31, vpm._42 - vpm._32, vpm._43 - vpm._33, vpm._44 - vpm._34); // Far plane
+
+	for (int i = 0; i < 6; i++)
+	{
+		m_FrustumPlanes[i] = DirectX::XMVector3Normalize(m_FrustumPlanes[i]);
+	}
+}
+
 const DirectX::XMMATRIX& Camera::GetViewMatrix()
 {
 	if (m_DirtyViewMatrix)
@@ -93,6 +111,8 @@ const DirectX::XMMATRIX& Camera::GetViewProjectionMatrix()
 	{
 		m_ViewProjectionMatrix = m_ProjectionMatrix * GetViewMatrix();
 		m_DirtyViewProjectionMatrix = false;
+		
+		RecalculateFrustumPlanes();
 	}
 
 	return m_ViewProjectionMatrix;
@@ -103,6 +123,7 @@ void Camera::SetRenderParameters(RenderParameters& renderParameters)
 	memcpy(&renderParameters.viewMatrix, &GetViewMatrix(), sizeof(DirectX::XMMATRIX));
 	memcpy(&renderParameters.projectionMatrix, &m_ProjectionMatrix, sizeof(DirectX::XMMATRIX));
 	memcpy(&renderParameters.viewProjectionMatrix, &GetViewProjectionMatrix(), sizeof(DirectX::XMMATRIX));
+	memcpy(renderParameters.frustumPlanes, m_FrustumPlanes, 6 * sizeof(DirectX::XMVECTOR));
 
 	renderParameters.cameraPosition = m_Position;
 }

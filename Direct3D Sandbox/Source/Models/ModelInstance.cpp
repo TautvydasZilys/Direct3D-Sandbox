@@ -76,8 +76,32 @@ void ModelInstance::SetRotation(const DirectX::XMFLOAT3& rotation)
 	m_DirtyWorldMatrix = true;
 }
 
+bool ModelInstance::IsInCameraFrustum(const RenderParameters& renderParameters) const
+{
+	auto radius = m_Model.GetRadius() * max(max(m_Parameters.scale.x, m_Parameters.scale.y), m_Parameters.scale.z);
+	auto radiusSqr = radius * radius;
+	auto positionVector = DirectX::XMVectorSet(m_Parameters.position.x, m_Parameters.position.y, m_Parameters.position.z, 1.0f);
+
+	for (int i = 0; i < 6; i++)
+	{
+		auto dotResult = DirectX::XMVector4Dot(renderParameters.frustumPlanes[i], positionVector);
+
+		if (DirectX::XMVectorGetX(dotResult) + radius < 0.0f)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 void ModelInstance::UpdateAndRender(RenderParameters& renderParameters)
 {
+	if (!IsInCameraFrustum(renderParameters))
+	{
+		return;
+	}
+
 	auto& worldMatrix = GetWorldMatrix();
 
 	memcpy(&renderParameters.worldMatrix, &worldMatrix, sizeof(DirectX::XMMATRIX));

@@ -70,7 +70,8 @@ struct ModelData
 
 	ModelData(ModelData&& other) : 
 		vertices(std::move(other.vertices)), vertexCount(other.vertexCount), 
-		indices(std::move(other.indices)), indexCount(other.indexCount)
+		indices(std::move(other.indices)), indexCount(other.indexCount),
+		radius(other.radius)
 	{
 	}
 

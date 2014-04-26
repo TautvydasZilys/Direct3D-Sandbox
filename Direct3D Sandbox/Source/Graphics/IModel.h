@@ -26,6 +26,7 @@ class IModel
 {
 protected:	
 	IShader& m_Shader;
+	float m_Radius;
 	
 	ComPtr<ID3D11Buffer> m_IndexBuffer;
 	unsigned int m_IndexCount;
@@ -63,7 +64,8 @@ public:
 
 	static IModel& Get(const wstring& path, IShader& shader);
 	static void InvalidateParameterSetter() { s_ModelWhichLastSetParameters = nullptr; }
-
+	
+	inline float GetRadius() { return m_Radius; }
 	void Render(RenderParameters& renderParameters);
 };
 

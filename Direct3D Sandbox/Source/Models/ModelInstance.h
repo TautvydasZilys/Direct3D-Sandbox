@@ -22,6 +22,7 @@ private:
 	ComPtr<ID3D11ShaderResourceView> m_Texture;
 	ComPtr<ID3D11ShaderResourceView> m_NormalMap;
 
+	bool IsInCameraFrustum(const RenderParameters& renderParameters) const;
 	void RecalculateWorldMatrix();
 	const DirectX::XMMATRIX& GetWorldMatrix();
 	const DirectX::XMMATRIX& GetInversedTransposedWorldMatrix();

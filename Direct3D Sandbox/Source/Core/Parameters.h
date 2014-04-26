@@ -9,6 +9,7 @@
 			FIELD(DirectX::XMMATRIX, inversedTransposedWorldMatrix) \
 			FIELD(DirectX::XMMATRIX, worldViewProjectionMatrix) \
 			FIELD(DirectX::XMMATRIX, viewProjectionMatrix) \
+			FIELD(DirectX::XMVECTOR, frustumPlanes[6]) \
 			FIELD(float, time) \
 			FIELD(float, frameTime) \
 			FIELD(DirectX::XMFLOAT4, color) \
@@ -59,7 +60,7 @@ struct RenderParameters
 
 	inline static unsigned int GetFieldByteOffset(const string& fieldName)
 	{
-#define FIELD(type, name) if (_stricmp(fieldName.c_str(), #name) == 0) return offsetof(RenderParameters, name);
+#define FIELD(type, name) if (_stricmp(fieldName.c_str(), #name) == 0) return static_cast<unsigned int>(offsetof(RenderParameters, name));
 		RENDER_PARAMETERS
 #undef FIELD
 

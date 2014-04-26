@@ -8,6 +8,7 @@ protected:
 	DirectX::XMMATRIX m_ViewMatrix;
 	DirectX::XMMATRIX m_ProjectionMatrix;
 	DirectX::XMMATRIX m_ViewProjectionMatrix;
+	DirectX::XMVECTOR m_FrustumPlanes[6];
 	DirectX::XMFLOAT3 m_Position;
 	DirectX::XMFLOAT3 m_Rotation;
 	
@@ -15,6 +16,7 @@ protected:
 	bool m_DirtyViewProjectionMatrix;
 
 	void CheckRotationBounds();
+	void RecalculateFrustumPlanes();
 	const DirectX::XMMATRIX& GetViewMatrix();
 	const DirectX::XMMATRIX& GetViewProjectionMatrix();
 
