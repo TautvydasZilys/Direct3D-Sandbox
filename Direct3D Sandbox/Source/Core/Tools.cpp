@@ -93,56 +93,21 @@ ModelData Tools::LoadModel(const wstring& path, bool shouldInvert)
 	}
 }
 
-vector<wstring> Tools::GetFilesInDirectory(wstring path, const wstring& searchPattern, bool recursive)
+static vector<wstring> FindFiles(const wstring& searchPath, DWORD fileAttributeMask, DWORD fileAttributeNotMask)
 {
 	vector<wstring> result;
 	WIN32_FIND_DATA findData;
 
-	if (path[path.length() - 1] != L'\\')
-	{
-		path += L'\\';
-	}
-
-	// Find folders
-	if (recursive)
-	{
-		auto fileName = path + L"*.*";
-		auto searchHandle = FindFirstFileEx(fileName.c_str(), FindExInfoStandard, &findData, FindExSearchNameMatch, nullptr, 0);
-		Assert(searchHandle != INVALID_HANDLE_VALUE);
-
-		do
-		{
-			if (_wcsicmp(findData.cFileName, L".") != 0 && _wcsicmp(findData.cFileName, L"..") != 0)
-			{
-				if(findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-				{
-					for (const auto& file : GetFilesInDirectory(path + findData.cFileName, searchPattern, recursive))
-					{
-						result.emplace_back(file);
-					}
-				}
-			}
-
-			FindNextFile(searchHandle, &findData);
-		}
-		while (GetLastError() != ERROR_NO_MORE_FILES);
-
-		FindClose(searchHandle);
-		SetLastError(ERROR_SUCCESS);
-	}
-
-	// Find files
-	auto fileName = path + searchPattern;
-	auto searchHandle = FindFirstFileEx(fileName.c_str(), FindExInfoStandard, &findData, FindExSearchNameMatch, nullptr, 0);
+	auto searchHandle = FindFirstFileEx(searchPath.c_str(), FindExInfoStandard, &findData, FindExSearchNameMatch, nullptr, 0);
 	Assert(searchHandle != INVALID_HANDLE_VALUE);
 
 	do
 	{
 		if (_wcsicmp(findData.cFileName, L".") != 0 && _wcsicmp(findData.cFileName, L"..") != 0)
 		{
-			if ((findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0)
+			if ((findData.dwFileAttributes & fileAttributeMask) && (findData.dwFileAttributes & fileAttributeNotMask) == 0)
 			{
-				result.emplace_back(path + findData.cFileName);
+				result.push_back(findData.cFileName);
 			}
 		}
 
@@ -152,6 +117,37 @@ vector<wstring> Tools::GetFilesInDirectory(wstring path, const wstring& searchPa
 
 	FindClose(searchHandle);
 	SetLastError(ERROR_SUCCESS);
+
+	return result;
+}
+
+vector<wstring> Tools::GetFilesInDirectory(wstring path, const wstring& searchPattern, bool recursive)
+{
+	vector<wstring> result;
+
+	if (path[path.length() - 1] != L'\\')
+	{
+		path += L'\\';
+	}
+
+	// Find folders
+	if (recursive)
+	{
+		for (const auto& directory : FindFiles(path + L"*.*", FILE_ATTRIBUTE_DIRECTORY, 0))
+		{
+			for (const auto& file : GetFilesInDirectory(path + directory, searchPattern, recursive))
+			{
+				result.emplace_back(file);
+			}
+		}
+	}
+
+	// Find files
+	for (const auto& fileName : FindFiles(path + searchPattern, 0xFFFFFFFF, FILE_ATTRIBUTE_DIRECTORY))
+	{
+		result.emplace_back(path + fileName);
+	}
+
 	return result;
 }
 
