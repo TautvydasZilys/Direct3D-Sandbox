@@ -2,6 +2,7 @@
 
 #include "IModel.h"
 #include "AnimatedModel.h"
+#include "Direct3D.h"
 #include "Model.h"
 
 unordered_map<wstring, unique_ptr<const ModelData>> IModel::s_ModelDataCache;
@@ -21,11 +22,14 @@ IModel::IModel(IShader& shader
 }
 
 IModel::IModel(IModel&& other) :
-	m_Shader(other.m_Shader)
+	m_Shader(other.m_Shader),
+	m_IndexBuffer(other.m_IndexBuffer),
+	m_IndexCount(other.m_IndexCount)
 #if DEBUG
 	, m_Key(std::move(other.m_Key))
 #endif
 {
+	other.m_IndexBuffer = nullptr;
 }
 
 IModel::~IModel()
@@ -80,4 +84,37 @@ const ModelData& IModel::GetModelData(const wstring& modelPath)
 	}
 
 	return *cachedModel->second;
+}
+
+void IModel::InitializeIndexBuffer(const ModelData& modelData)
+{
+	m_IndexCount = static_cast<unsigned int>(modelData.indexCount);
+	
+	if (m_IndexCount > 0)
+	{
+		m_IndexBuffer = CreateIndexBuffer(m_IndexCount, modelData.indices.get());
+	}
+}
+
+ComPtr<ID3D11Buffer> IModel::CreateIndexBuffer(unsigned int indexCount, unsigned int indices[])
+{
+	D3D11_BUFFER_DESC indexBufferDescription;
+	D3D11_SUBRESOURCE_DATA indexData;
+	ComPtr<ID3D11Buffer> indexBuffer;
+
+	indexBufferDescription.Usage = D3D11_USAGE_IMMUTABLE;
+	indexBufferDescription.ByteWidth = sizeof(unsigned int) * indexCount;
+	indexBufferDescription.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexBufferDescription.CPUAccessFlags = 0;
+	indexBufferDescription.MiscFlags = 0;
+	indexBufferDescription.StructureByteStride = 0;
+
+	indexData.pSysMem = indices;
+	indexData.SysMemPitch = 0;
+	indexData.SysMemSlicePitch = 0;
+	
+	auto result = GetD3D11Device()->CreateBuffer(&indexBufferDescription, &indexData, &indexBuffer);
+	Assert(result == S_OK);
+
+	return indexBuffer;
 }
