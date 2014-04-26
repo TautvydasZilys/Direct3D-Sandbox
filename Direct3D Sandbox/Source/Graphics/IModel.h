@@ -27,7 +27,7 @@ class IModel
 protected:	
 	IShader& m_Shader;
 
-	static unordered_map<wstring, const ModelData> s_ModelDataCache;
+	static unordered_map<wstring, unique_ptr<const ModelData>> s_ModelDataCache;
 	static unordered_map<ModelId, shared_ptr<IModel>, ModelIdHash> s_ModelCache;	
 	static const IModel* s_ModelWhichLastSetParameters;
 
@@ -42,7 +42,7 @@ protected:
 	);
 
 	static void InitializeModel(IShader& shader, const wstring& modelPath);
-	const ModelData& GetModelData(const wstring& key);
+	static const ModelData& GetModelData(const wstring& key);
 
 private:
 	IModel(const IModel& other);														// Not implemented (no copying allowed)

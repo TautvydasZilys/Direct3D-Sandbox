@@ -10,7 +10,7 @@ namespace Tools
 	long long int GetRawTime();
 	double GetTime();
 	vector<uint8_t> ReadFileToVector(const wstring& path);
-	ModelData LoadModel(const wstring& path);
+	unique_ptr<ModelData> LoadModel(const wstring& path);
 	
 	vector<wstring> GetFilesInDirectory(wstring path, const wstring& searchPattern, bool recursive);
 	vector<wstring> GetDirectories(wstring path, bool recursive);
@@ -39,8 +39,16 @@ struct Point2D
 	Point2D(float x, float y) : x(x), y(y) {}
 };
 
+enum ModelType
+{
+	Still = 0,
+	Animated,
+	ModelTypeCount
+};
+
 struct ModelData
 {
+	ModelType modelType;
 	unique_ptr<VertexParameters[]> vertices;
 	size_t vertexCount;
 	unique_ptr<unsigned int[]> indices;
@@ -74,13 +82,6 @@ struct AnimatedModelData : public ModelData
 private:
 	AnimatedModelData(const AnimatedModelData& other);
 	AnimatedModelData& operator=(const AnimatedModelData& other);
-};
-
-enum ModelType
-{
-	StillModel = 0,
-	AnimatedModel,
-	ModelTypeCount
 };
 
 template <typename T>

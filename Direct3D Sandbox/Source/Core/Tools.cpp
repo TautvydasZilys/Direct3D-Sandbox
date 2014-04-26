@@ -41,51 +41,59 @@ vector<uint8_t> Tools::ReadFileToVector(const wstring& path)
 	return fileContents;
 }
 
+static void ReadModelData(istream& inputStream, ModelData& model)
+{
+	inputStream.read(reinterpret_cast<char*>(&model.vertexCount), sizeof(int));
+	model.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[model.vertexCount]);
+	inputStream.read(reinterpret_cast<char*>(model.vertices.get()), model.vertexCount * sizeof(VertexParameters));
 
-ModelData Tools::LoadModel(const wstring& path)
+	inputStream.read(reinterpret_cast<char*>(&model.indexCount), sizeof(int));
+	model.indices = unique_ptr<unsigned int[]>(new unsigned int[model.indexCount]);
+	inputStream.read(reinterpret_cast<char*>(model.indices.get()), model.indexCount * sizeof(unsigned int));
+
+	OutputDebugString((L"\tNumber of vertices: " + to_wstring(model.vertexCount) + L"\r\n").c_str());
+	OutputDebugString((L"\tNumber of indices: " + to_wstring(model.indexCount) + L"\r\n").c_str());
+}
+
+unique_ptr<ModelData> Tools::LoadModel(const wstring& path)
 {
 	ModelType modelType;
+	unique_ptr<ModelData> model;
 	auto modelPath = path;
 
 	ifstream in(modelPath, ios::binary);
 	Assert(in.is_open());
-	
+
 	in.read(reinterpret_cast<char*>(&modelType), sizeof(ModelType));
 	Assert(modelType < ModelType::ModelTypeCount);
 
 	switch (modelType)
 	{
-	case ModelType::StillModel:
+	case ModelType::Still:
 		{
-			ModelData model;
-			in.read(reinterpret_cast<char*>(&model.vertexCount), sizeof(int));
-			model.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[model.vertexCount]);
-			in.read(reinterpret_cast<char*>(model.vertices.get()), model.vertexCount * sizeof(VertexParameters));
-
-			in.read(reinterpret_cast<char*>(&model.indexCount), sizeof(int));
-			model.indices = unique_ptr<unsigned int[]>(new unsigned int[model.indexCount]);
-			in.read(reinterpret_cast<char*>(model.indices.get()), model.indexCount * sizeof(unsigned int));
-
 			OutputDebugString((L"Loading model from " + path + L":\r\n").c_str());
-			OutputDebugString((L"\tNumber of vertices: " + to_wstring(model.vertexCount) + L"\r\n").c_str());
-			OutputDebugString((L"\tNumber of indices: " + to_wstring(model.indexCount) + L"\r\n").c_str());
+			model = unique_ptr<ModelData>(new ModelData);
 
-			return model;
+			ReadModelData(in, *model.get());
 		}
 		break;
 
-	case ModelType::AnimatedModel:
+	case ModelType::Animated:
 		{
-			throw exception("not implemented");
-		}
-		break;
+			OutputDebugString((L"Loading animated model from " + path + L":\r\n").c_str());
+			model = unique_ptr<ModelData>(new AnimatedModelData);
 
-	default:
-		{
-			throw exception("unknown model type");
+			auto animatedModel = reinterpret_cast<AnimatedModelData*>(model.get());
+			in.read(reinterpret_cast<char*>(&animatedModel->frameCount), sizeof(int));
+			OutputDebugString((L"\tNumber of frames: " + to_wstring(animatedModel->frameCount) + L"\r\n").c_str());
+
+			ReadModelData(in, *model.get());
 		}
 		break;
 	}
+	
+	model->modelType = modelType;
+	return model;
 }
 
 static vector<wstring> FindFiles(const wstring& searchPath, DWORD fileAttributeMask, DWORD fileAttributeNotMask)
@@ -154,7 +162,7 @@ vector<wstring> Tools::GetDirectories(wstring path, bool recursive)
 	{
 		path += L'\\';
 	}
-	
+
 	// Find directories in root
 	for (const auto& fileName : FindFiles(path + L"*.*", FILE_ATTRIBUTE_DIRECTORY, 0))
 	{

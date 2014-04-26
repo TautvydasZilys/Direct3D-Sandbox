@@ -575,6 +575,7 @@ del xcopyexclude.txt
     <ClCompile Include="Source\Core\Parameters.cpp" />
     <ClCompile Include="Source\Core\Tools.cpp" />
     <ClCompile Include="Source\External\DirectXTK\DDSTextureLoader.cpp" />
+    <ClCompile Include="Source\Graphics\AnimatedModel.cpp" />
     <ClCompile Include="Source\Graphics\AutoShader.cpp" />
     <ClCompile Include="Source\Graphics\ConstantBuffer.cpp" />
     <ClCompile Include="Source\Graphics\ConstantBufferField.cpp" />
@@ -614,6 +615,7 @@ del xcopyexclude.txt
     <ClInclude Include="Source\External\DirectXTK\dds.h" />
     <ClInclude Include="Source\External\DirectXTK\DDSTextureLoader.h" />
     <ClInclude Include="Source\External\DirectXTK\PlatformHelpers.h" />
+    <ClInclude Include="Source\Graphics\AnimatedModel.h" />
     <ClInclude Include="Source\Graphics\AutoShader.h" />
     <ClInclude Include="Source\Graphics\ConstantBuffer.h" />
     <ClInclude Include="Source\Graphics\ConstantBufferField.h" />

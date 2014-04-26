@@ -209,7 +209,7 @@ static void SaveModel(const wstring& path, const ModelData& model)
 	ofstream out(path, ios::binary);
 
 	// Model type
-	auto modelType = ModelType::StillModel;
+	auto modelType = ModelType::Still;
 	out.write(reinterpret_cast<const char*>(&modelType), sizeof(ModelType));
 
 	// Vertices
@@ -228,7 +228,7 @@ static void SaveAnimatedModel(const wstring& path, const AnimatedModelData& mode
 	ofstream out(path, ios::binary);
 	
 	// Model type
-	auto modelType = ModelType::AnimatedModel;
+	auto modelType = ModelType::Animated;
 	out.write(reinterpret_cast<const char*>(&modelType), sizeof(ModelType));
 	out.write(reinterpret_cast<const char*>(&model.frameCount), sizeof(int));
 
