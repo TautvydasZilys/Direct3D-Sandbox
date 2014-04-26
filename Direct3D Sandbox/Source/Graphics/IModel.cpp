@@ -60,7 +60,7 @@ void IModel::InitializeModel(IShader& shader, const wstring& modelPath)
 		break;
 	}
 
-	s_ModelCache.insert(make_pair(ModelId(modelPath, shader), make_shared<Model>(shader, modelPath)));
+	s_ModelCache.insert(make_pair(ModelId(modelPath, shader), model));
 }
 
 IModel& IModel::Get(const wstring& modelPath, IShader& shader)

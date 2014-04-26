@@ -41,11 +41,11 @@ vector<uint8_t> Tools::ReadFileToVector(const wstring& path)
 	return fileContents;
 }
 
-static void ReadModelData(istream& inputStream, ModelData& model)
+static void ReadModelData(istream& inputStream, ModelData& model, size_t frameCount = 1)
 {
 	inputStream.read(reinterpret_cast<char*>(&model.vertexCount), sizeof(int));
-	model.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[model.vertexCount]);
-	inputStream.read(reinterpret_cast<char*>(model.vertices.get()), model.vertexCount * sizeof(VertexParameters));
+	model.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[frameCount * model.vertexCount]);
+	inputStream.read(reinterpret_cast<char*>(model.vertices.get()), frameCount * model.vertexCount * sizeof(VertexParameters));
 
 	inputStream.read(reinterpret_cast<char*>(&model.indexCount), sizeof(int));
 	model.indices = unique_ptr<unsigned int[]>(new unsigned int[model.indexCount]);
@@ -87,7 +87,7 @@ unique_ptr<ModelData> Tools::LoadModel(const wstring& path)
 			in.read(reinterpret_cast<char*>(&animatedModel->frameCount), sizeof(int));
 			OutputDebugString((L"\tNumber of frames: " + to_wstring(animatedModel->frameCount) + L"\r\n").c_str());
 
-			ReadModelData(in, *model.get());
+			ReadModelData(in, *model.get(), animatedModel->frameCount);
 		}
 		break;
 	}

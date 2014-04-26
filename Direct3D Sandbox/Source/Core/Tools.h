@@ -11,12 +11,11 @@ namespace Tools
 	double GetTime();
 	vector<uint8_t> ReadFileToVector(const wstring& path);
 	unique_ptr<ModelData> LoadModel(const wstring& path);
-	
+
 	vector<wstring> GetFilesInDirectory(wstring path, const wstring& searchPattern, bool recursive);
 	vector<wstring> GetDirectories(wstring path, bool recursive);
 	bool DirectoryExists(const wstring& path);
 
-	inline mt19937& GetRandomEngine() { static mt19937 engineInstance(static_cast<unsigned int>(Tools::GetRawTime())); return engineInstance; }
 	int GetMemoryUsage();
 
 	string ToLower(const string& str);
@@ -28,6 +27,17 @@ namespace Tools
 		unsigned int ReadUInt(const vector<uint8_t>& buffer, unsigned int& position);
 		float ReadFloat(const vector<uint8_t>& buffer, unsigned int& position);
 		char ReadChar(const vector<uint8_t>& buffer, unsigned int& position);
+	}
+
+	namespace Random
+	{
+		inline mt19937& GetRandomEngine() { static mt19937 engineInstance(static_cast<unsigned int>(Tools::GetRawTime())); return engineInstance; }
+
+		template <typename T>
+		inline T GetNextReal(T lowerBound, T higherBound) { return uniform_real_distribution<T>(lowerBound, higherBound)(GetRandomEngine()); }
+
+		template <typename T>
+		inline T GetNextInteger(T lowerBound, T higherBound) { return uniform_int_distribution<T>(lowerBound, higherBound)(GetRandomEngine()); }
 	}
 };
 
@@ -96,14 +106,14 @@ struct TypedDimensions
 #define Assert(x)
 #else
 #define Assert(x)   do \
-					{ \
-						if (!(x)) \
-						{ \
-							OutputDebugStringW(L"Assertion fail!\r\n"); \
-							OutputDebugStringW((__WFILE__ + wstring(L": ") + to_wstring(__LINE__) + L"\r\n").c_str()); \
-							__debugbreak(); \
-						} \
-					} \
-					while (false)
+{ \
+	if (!(x)) \
+{ \
+	OutputDebugStringW(L"Assertion fail!\r\n"); \
+	OutputDebugStringW((__WFILE__ + wstring(L": ") + to_wstring(__LINE__) + L"\r\n").c_str()); \
+	__debugbreak(); \
+} \
+} \
+	while (false)
 #endif
 
