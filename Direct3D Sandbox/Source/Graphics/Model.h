@@ -7,12 +7,12 @@ class Model :
 {
 private:
 	ComPtr<ID3D11Buffer> m_VertexBuffer;
-	unsigned int m_VertexCount;
 	
 	Model(IShader& shader, const wstring& modelPath);
 	Model(IShader& shader, const ModelData& modelData);
 
 	void CreateBuffers(const ModelData& modelData);
+	virtual void SetBuffersInD3DContext();
 	
 	Model(const Model& other);															// Not implemented (no copying allowed)
 	Model& operator=(const Model& other);												// Not implemented (no copying allowed)
@@ -24,5 +24,4 @@ public:
 	virtual ~Model();
 	
 	static Model CreateNonCachedModel(const ModelData& modelData, IShader& shader);
-	virtual void Render(const RenderParameters& renderParameters);
 };

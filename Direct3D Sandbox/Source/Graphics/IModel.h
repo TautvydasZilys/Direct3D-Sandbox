@@ -29,6 +29,7 @@ protected:
 	
 	ComPtr<ID3D11Buffer> m_IndexBuffer;
 	unsigned int m_IndexCount;
+	unsigned int m_VertexCount;
 
 	static unordered_map<wstring, unique_ptr<const ModelData>> s_ModelDataCache;
 	static unordered_map<ModelId, shared_ptr<IModel>, ModelIdHash> s_ModelCache;	
@@ -45,6 +46,7 @@ protected:
 	);
 
 	void InitializeIndexBuffer(const ModelData& modelData);
+	virtual void SetBuffersInD3DContext() = 0;
 
 	static void InitializeModel(IShader& shader, const wstring& modelPath);
 	static const ModelData& GetModelData(const wstring& key);
@@ -61,6 +63,6 @@ public:
 	static IModel& Get(const wstring& path, IShader& shader);
 	static void InvalidateParameterSetter() { s_ModelWhichLastSetParameters = nullptr; }
 
-	virtual void Render(const RenderParameters& renderParameters) = 0;
+	void Render(const RenderParameters& renderParameters);
 };
 

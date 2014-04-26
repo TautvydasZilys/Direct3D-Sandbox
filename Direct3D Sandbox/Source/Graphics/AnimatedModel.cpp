@@ -28,7 +28,7 @@ void AnimatedModel::CreateBuffers(const AnimatedModelData& modelData)
 	throw exception("not implemented");
 }
 
-void AnimatedModel::Render(const RenderParameters& renderParameters)
+void AnimatedModel::SetBuffersInD3DContext()
 {
 	throw exception("not implemented");
 }

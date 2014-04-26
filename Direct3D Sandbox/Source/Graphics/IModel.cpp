@@ -3,6 +3,7 @@
 #include "IModel.h"
 #include "AnimatedModel.h"
 #include "Direct3D.h"
+#include "IShader.h"
 #include "Model.h"
 
 unordered_map<wstring, unique_ptr<const ModelData>> IModel::s_ModelDataCache;
@@ -14,7 +15,9 @@ IModel::IModel(IShader& shader
 		, const wstring& modelPath
 #endif
 		) :
-	m_Shader(shader)
+	m_Shader(shader),
+	m_VertexCount(0),
+	m_IndexCount(0)
 #if DEBUG
 	, m_Key(modelPath)
 #endif
@@ -24,6 +27,7 @@ IModel::IModel(IShader& shader
 IModel::IModel(IModel&& other) :
 	m_Shader(other.m_Shader),
 	m_IndexBuffer(other.m_IndexBuffer),
+	m_VertexCount(other.m_VertexCount),
 	m_IndexCount(other.m_IndexCount)
 #if DEBUG
 	, m_Key(std::move(other.m_Key))
@@ -117,4 +121,21 @@ ComPtr<ID3D11Buffer> IModel::CreateIndexBuffer(unsigned int indexCount, unsigned
 	Assert(result == S_OK);
 
 	return indexBuffer;
+}
+
+void IModel::Render(const RenderParameters& renderParameters)
+{
+	auto deviceContext = GetD3D11DeviceContext();
+
+	m_Shader.SetRenderParameters(renderParameters);	
+	SetBuffersInD3DContext();
+
+	if (m_IndexCount > 0)
+	{
+		deviceContext->DrawIndexed(m_IndexCount, 0, 0);
+	}
+	else
+	{
+		deviceContext->Draw(m_VertexCount, 0);
+	}
 }
