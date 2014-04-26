@@ -68,17 +68,6 @@ struct TypedDimensions
 
 #if !DEBUG
 #define Assert(x)
-#elif WINDOWS_PHONE
-#define Assert(x)   do \
-					{ \
-						if (!(x)) \
-						{ \
-							OutputDebugStringW(L"Assertion fail!\r\n"); \
-							OutputDebugStringW((__WFILE__ + wstring(L": ") + to_wstring(__LINE__) + L"\r\n").c_str()); \
-							__debugbreak(); \
-						} \
-					} \
-					while (false)
 #else
 #define Assert(x)   do \
 					{ \
@@ -86,7 +75,7 @@ struct TypedDimensions
 						{ \
 							OutputDebugStringW(L"Assertion fail!\r\n"); \
 							OutputDebugStringW((__WFILE__ + wstring(L": ") + to_wstring(__LINE__) + L"\r\n").c_str()); \
-							DebugBreak(); \
+							__debugbreak(); \
 						} \
 					} \
 					while (false)
