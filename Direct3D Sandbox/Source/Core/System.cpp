@@ -198,7 +198,6 @@ void System::Draw()
 	m_Direct3D.SetBackBufferAsRenderTarget();
 	m_Direct3D.TurnZBufferOn();
 	m_Direct3D.StartDrawing();
-	m_Direct3D.TurnZBufferOn();
 
 	renderParameters.time = static_cast<float>(m_CurrentTime);
 	renderParameters.frameTime = m_FrameTime;
