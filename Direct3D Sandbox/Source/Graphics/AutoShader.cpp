@@ -11,9 +11,9 @@ AutoShader::~AutoShader()
 {
 }
 
-ComPtr<ID3D11Buffer> AutoShader::CreateVertexBuffer(const ModelData& model) const
+ComPtr<ID3D11Buffer> AutoShader::CreateVertexBuffer(unsigned int vertexCount, const VertexParameters vertices[]) const
 {
-	return m_VertexShader.CreateVertexBuffer(model);
+	return m_VertexShader.CreateVertexBuffer(vertexCount, vertices);
 }
 
 void AutoShader::SetRenderParameters(const RenderParameters& renderParameters)

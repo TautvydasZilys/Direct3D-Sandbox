@@ -44,8 +44,8 @@ Model::~Model()
 
 void Model::CreateBuffers(const ModelData& modelData)
 {
-	m_VertexBuffer = m_Shader.CreateVertexBuffer(modelData);
 	m_VertexCount = static_cast<unsigned int>(modelData.vertexCount);
+	m_VertexBuffer = m_Shader.CreateVertexBuffer(m_VertexCount, modelData.vertices.get());
 
 	InitializeIndexBuffer(modelData);
 }

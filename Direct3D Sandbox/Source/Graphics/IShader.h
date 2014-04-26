@@ -1,6 +1,6 @@
 #pragma once
 
-struct ModelData;
+struct VertexParameters;
 struct RenderParameters;
 
 enum ShaderType
@@ -28,7 +28,7 @@ private:
 public:
 	virtual ~IShader();
 	
-	virtual ComPtr<ID3D11Buffer> CreateVertexBuffer(unsigned int vertexCount, const VertexParameters vertexData[]) const = 0;
+	virtual ComPtr<ID3D11Buffer> CreateVertexBuffer(unsigned int vertexCount, const VertexParameters vertices[]) const = 0;
 	virtual void SetRenderParameters(const RenderParameters& renderParameters) = 0;
 	virtual const unsigned int* GetInputLayoutSizePtr() const = 0;
 	
