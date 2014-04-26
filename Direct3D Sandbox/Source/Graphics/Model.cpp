@@ -11,10 +11,11 @@ Model::Model(IShader& shader, const wstring& modelPath) :
 	, modelPath
 #endif
 	),
-	m_VertexCount(0),
-	m_IndexCount(0)
+	m_VertexCount(0)
 {
 	auto& modelData = GetModelData(modelPath);
+	Assert(modelData.modelType == ModelType::Still);
+
 	CreateBuffers(modelData);
 }
 
@@ -24,8 +25,7 @@ Model::Model(IShader& shader, const ModelData& modelData) :
 	, L""
 #endif
 	),
-	m_VertexCount(0),
-	m_IndexCount(0)
+	m_VertexCount(0)
 {
 	CreateBuffers(modelData);
 }
@@ -33,12 +33,9 @@ Model::Model(IShader& shader, const ModelData& modelData) :
 Model::Model(Model&& other) :
 	IModel(std::move(other)),
 	m_VertexBuffer(other.m_VertexBuffer),
-	m_IndexBuffer(other.m_IndexBuffer),
-	m_VertexCount(other.m_VertexCount),
-	m_IndexCount(other.m_IndexCount)
+	m_VertexCount(other.m_VertexCount)
 {
 	other.m_VertexBuffer = nullptr;
-	other.m_IndexBuffer = nullptr;
 }
 
 Model::~Model()
@@ -49,27 +46,8 @@ void Model::CreateBuffers(const ModelData& modelData)
 {
 	m_VertexBuffer = m_Shader.CreateVertexBuffer(modelData);
 	m_VertexCount = static_cast<unsigned int>(modelData.vertexCount);
-	m_IndexCount = static_cast<unsigned int>(modelData.indexCount);
-	
-	if (m_IndexCount > 0)
-	{
-		D3D11_BUFFER_DESC indexBufferDescription;
-		D3D11_SUBRESOURCE_DATA indexData;
 
-		indexBufferDescription.Usage = D3D11_USAGE_IMMUTABLE;
-		indexBufferDescription.ByteWidth = sizeof(unsigned int) * m_IndexCount;
-		indexBufferDescription.BindFlags = D3D11_BIND_INDEX_BUFFER;
-		indexBufferDescription.CPUAccessFlags = 0;
-		indexBufferDescription.MiscFlags = 0;
-		indexBufferDescription.StructureByteStride = 0;
-
-		indexData.pSysMem = modelData.indices.get();
-		indexData.SysMemPitch = 0;
-		indexData.SysMemSlicePitch = 0;
-	
-		auto result = GetD3D11Device()->CreateBuffer(&indexBufferDescription, &indexData, &m_IndexBuffer);
-		Assert(result == S_OK);
-	}
+	InitializeIndexBuffer(modelData);
 }
 
 Model Model::CreateNonCachedModel(const ModelData& modelData, IShader& shader)

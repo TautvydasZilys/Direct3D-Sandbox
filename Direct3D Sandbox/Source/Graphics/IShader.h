@@ -28,7 +28,7 @@ private:
 public:
 	virtual ~IShader();
 	
-	virtual ComPtr<ID3D11Buffer> CreateVertexBuffer(const ModelData& model) const = 0;
+	virtual ComPtr<ID3D11Buffer> CreateVertexBuffer(unsigned int vertexCount, const VertexParameters vertexData[]) const = 0;
 	virtual void SetRenderParameters(const RenderParameters& renderParameters) = 0;
 	virtual const unsigned int* GetInputLayoutSizePtr() const = 0;
 	

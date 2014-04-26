@@ -26,6 +26,9 @@ class IModel
 {
 protected:	
 	IShader& m_Shader;
+	
+	ComPtr<ID3D11Buffer> m_IndexBuffer;
+	unsigned int m_IndexCount;
 
 	static unordered_map<wstring, unique_ptr<const ModelData>> s_ModelDataCache;
 	static unordered_map<ModelId, shared_ptr<IModel>, ModelIdHash> s_ModelCache;	
@@ -41,8 +44,11 @@ protected:
 #endif
 	);
 
+	void InitializeIndexBuffer(const ModelData& modelData);
+
 	static void InitializeModel(IShader& shader, const wstring& modelPath);
 	static const ModelData& GetModelData(const wstring& key);
+	static ComPtr<ID3D11Buffer> CreateIndexBuffer(unsigned int indexCount, unsigned int indices[]);
 
 private:
 	IModel(const IModel& other);														// Not implemented (no copying allowed)

@@ -7,9 +7,7 @@ class Model :
 {
 private:
 	ComPtr<ID3D11Buffer> m_VertexBuffer;
-	ComPtr<ID3D11Buffer> m_IndexBuffer;
 	unsigned int m_VertexCount;
-	unsigned int m_IndexCount;
 	
 	Model(IShader& shader, const wstring& modelPath);
 	Model(IShader& shader, const ModelData& modelData);
@@ -18,10 +16,7 @@ private:
 	
 	Model(const Model& other);															// Not implemented (no copying allowed)
 	Model& operator=(const Model& other);												// Not implemented (no copying allowed)
-
-	template <typename _Ty1, typename _Ty2>
-	friend struct pair;
-	
+		
 	friend class std::_Ref_count_obj<Model>;
 
 public:
