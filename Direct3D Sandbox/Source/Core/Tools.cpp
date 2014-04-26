@@ -44,7 +44,7 @@ vector<uint8_t> Tools::ReadFileToVector(const wstring& path)
 
 ModelData Tools::LoadModel(const wstring& path, bool shouldInvert)
 {
-	ModelData model;
+	ModelType modelType;
 	auto modelPath = path;
 
 	if (shouldInvert)
@@ -54,21 +54,43 @@ ModelData Tools::LoadModel(const wstring& path, bool shouldInvert)
 
 	ifstream in(modelPath, ios::binary);
 	Assert(in.is_open());
+	
+	in.read(reinterpret_cast<char*>(&modelType), sizeof(ModelType));
+	Assert(modelType < ModelType::ModelTypeCount);
 
-	in.read(reinterpret_cast<char*>(&model.vertexCount), sizeof(int));
-	model.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[model.vertexCount]);
-	in.read(reinterpret_cast<char*>(model.vertices.get()), model.vertexCount * sizeof(VertexParameters));
+	switch (modelType)
+	{
+	case ModelType::StillModel:
+		{
+			ModelData model;
+			in.read(reinterpret_cast<char*>(&model.vertexCount), sizeof(int));
+			model.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[model.vertexCount]);
+			in.read(reinterpret_cast<char*>(model.vertices.get()), model.vertexCount * sizeof(VertexParameters));
 
-	in.read(reinterpret_cast<char*>(&model.indexCount), sizeof(int));
-	model.indices = unique_ptr<unsigned int[]>(new unsigned int[model.indexCount]);
-	in.read(reinterpret_cast<char*>(model.indices.get()), model.indexCount * sizeof(unsigned int));
+			in.read(reinterpret_cast<char*>(&model.indexCount), sizeof(int));
+			model.indices = unique_ptr<unsigned int[]>(new unsigned int[model.indexCount]);
+			in.read(reinterpret_cast<char*>(model.indices.get()), model.indexCount * sizeof(unsigned int));
 
-	OutputDebugString((L"Loading model from " + path + L":\r\n").c_str());
-	OutputDebugString((L"\tNumber of vertices: " + to_wstring(model.vertexCount) + L"\r\n").c_str());
-	OutputDebugString((L"\tNumber of indices: " + to_wstring(model.indexCount) + L"\r\n").c_str());
+			OutputDebugString((L"Loading model from " + path + L":\r\n").c_str());
+			OutputDebugString((L"\tNumber of vertices: " + to_wstring(model.vertexCount) + L"\r\n").c_str());
+			OutputDebugString((L"\tNumber of indices: " + to_wstring(model.indexCount) + L"\r\n").c_str());
 
-	in.close();
-	return model;
+			return model;
+		}
+		break;
+
+	case ModelType::AnimatedModel:
+		{
+			throw exception("not implemented");
+		}
+		break;
+
+	default:
+		{
+			throw exception("unknown model type");
+		}
+		break;
+	}
 }
 
 vector<wstring> Tools::GetFilesInDirectory(wstring path, const wstring& searchPattern, bool recursive)

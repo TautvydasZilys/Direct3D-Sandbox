@@ -58,6 +58,30 @@ private:
 	ModelData& operator=(const ModelData& other);
 };
 
+struct AnimatedModelData : public ModelData
+{
+	size_t frameCount;
+
+	AnimatedModelData() : frameCount(0) {}
+
+	AnimatedModelData(AnimatedModelData&& other) :
+		ModelData(std::move(other)),
+		frameCount(other.frameCount)
+	{
+	}
+
+private:
+	AnimatedModelData(const AnimatedModelData& other);
+	AnimatedModelData& operator=(const AnimatedModelData& other);
+};
+
+enum ModelType
+{
+	StillModel = 0,
+	AnimatedModel,
+	ModelTypeCount
+};
+
 template <typename T>
 struct TypedDimensions
 {

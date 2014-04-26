@@ -203,6 +203,10 @@ static void SaveModel(const wstring& path, const ModelData& model)
 {	
 	ofstream out(path, ios::binary);
 
+	// Model type
+	auto modelType = ModelType::StillModel;
+	out.write(reinterpret_cast<const char*>(&modelType), sizeof(ModelType));
+
 	// Vertices
 	out.write(reinterpret_cast<const char*>(&model.vertexCount), sizeof(int));
 	out.write(reinterpret_cast<const char*>(model.vertices.get()), model.vertexCount * sizeof(VertexParameters));
