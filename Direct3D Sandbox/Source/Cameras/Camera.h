@@ -5,11 +5,18 @@ struct RenderParameters;
 class Camera
 {
 protected:
+	DirectX::XMMATRIX m_ViewMatrix;
+	DirectX::XMMATRIX m_ProjectionMatrix;
+	DirectX::XMMATRIX m_ViewProjectionMatrix;
 	DirectX::XMFLOAT3 m_Position;
 	DirectX::XMFLOAT3 m_Rotation;
-	DirectX::XMFLOAT4X4 m_ProjectionMatrix;
+	
+	bool m_DirtyViewMatrix;
+	bool m_DirtyViewProjectionMatrix;
 
 	void CheckRotationBounds();
+	const DirectX::XMMATRIX& GetViewMatrix();
+	const DirectX::XMMATRIX& GetViewProjectionMatrix();
 
 	Camera(const Camera&);
 

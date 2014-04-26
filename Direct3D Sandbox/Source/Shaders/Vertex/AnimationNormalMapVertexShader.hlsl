@@ -1,8 +1,6 @@
 cbuffer MatrixBuffer
 {
-	matrix worldMatrix;
-    matrix viewMatrix;
-    matrix projectionMatrix;
+    matrix worldViewProjectionMatrix;
 	matrix inversedTransposedWorldMatrix;
 	float currentFrameProgress;
 	float3 padding;
@@ -35,9 +33,7 @@ PixelInput main(VertexInput input)
 {
     PixelInput output;
 
-	output.position = mul(lerp(input.position, input.position2, currentFrameProgress), worldMatrix);
-	output.position = mul(output.position, viewMatrix);
-	output.position = mul(output.position, projectionMatrix);
+	output.position = mul(lerp(input.position, input.position2, currentFrameProgress), worldViewProjectionMatrix);
 
     output.tex = input.tex;
     output.normal = -mul(lerp(input.normal, input.normal2, currentFrameProgress), (float3x3)inversedTransposedWorldMatrix);

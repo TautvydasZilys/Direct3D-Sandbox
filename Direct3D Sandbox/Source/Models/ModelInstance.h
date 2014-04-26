@@ -14,20 +14,26 @@ struct ModelParameters
 class ModelInstance : public IModelInstance
 {
 private:
+	DirectX::XMMATRIX m_WorldMatrix;
+	DirectX::XMMATRIX m_InversedTransposedWorldMatrix;
+	bool m_DirtyWorldMatrix;
+
 	IModel& m_Model;
-	DirectX::XMFLOAT4X4 m_WorldMatrix;
-	DirectX::XMFLOAT4X4 m_InversedTransposedWorldMatrix;
 	ComPtr<ID3D11ShaderResourceView> m_Texture;
 	ComPtr<ID3D11ShaderResourceView> m_NormalMap;
+
+	void RecalculateWorldMatrix();
+	const DirectX::XMMATRIX& GetWorldMatrix();
+	const DirectX::XMMATRIX& GetInversedTransposedWorldMatrix();
 
 	ModelInstance(const ModelInstance& other);
 
 protected:
 	ModelParameters m_Parameters;
 
-	void Initialize();
 	void SetPosition(const DirectX::XMFLOAT3& position);
 	void SetRotation(const DirectX::XMFLOAT3& rotation);
+	void DirtyWorldMatrix() { m_DirtyWorldMatrix = true; }
 
 public:
 	ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters);
@@ -37,5 +43,8 @@ public:
 	
 	virtual void UpdateAndRender(RenderParameters& renderParameters);
 	virtual void UpdateAndRender2D(RenderParameters& renderParameters) { }
+	
+	void* operator new(size_t size);
+	void operator delete(void* p);
 };
 

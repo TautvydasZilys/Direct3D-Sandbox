@@ -1,8 +1,6 @@
 cbuffer MatrixBuffer
 {
-	matrix worldMatrix;
-    matrix viewMatrix;
-    matrix projectionMatrix;
+	matrix worldViewProjectionMatrix;
 };
 
 struct VertexInput
@@ -21,10 +19,7 @@ PixelInput main(VertexInput input)
 {
 	PixelInput output;
 
-	output.position = mul(input.position, worldMatrix);
-	output.position = mul(output.position, viewMatrix);
-	output.position = mul(output.position, projectionMatrix);
-
+	output.position = mul(input.position, worldViewProjectionMatrix);
 	output.tex = input.tex;
 
 	return output;

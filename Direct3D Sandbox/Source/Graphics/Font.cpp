@@ -193,8 +193,8 @@ Model Font::CreateTextModel(const string& text, IShader& shader)
 void Font::DrawText(const string& text, int posX, int posY, RenderParameters& renderParameters, bool useCaching, IShader& shader)
 {	
 	DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixTranslation(static_cast<float>(posX), static_cast<float>(posY), 0.0f);
-
-	DirectX::XMStoreFloat4x4(&renderParameters.worldMatrix, DirectX::XMMatrixTranspose(worldMatrix));
+	renderParameters.worldMatrix = DirectX::XMMatrixTranspose(worldMatrix);
+	renderParameters.worldViewProjectionMatrix = renderParameters.viewProjectionMatrix * renderParameters.worldMatrix;
 
 	// Font normals are zero anyway
 	//DirectX::XMStoreFloat4x4(&renderParameters.inversedTransposedWorldMatrix, DirectX::XMMatrixInverse(nullptr, worldMatrix));

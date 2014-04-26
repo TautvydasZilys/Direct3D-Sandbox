@@ -3,12 +3,14 @@
 #include "PrecompiledHeader.h"
 
 #define RENDER_PARAMETERS \
+			FIELD(DirectX::XMMATRIX, projectionMatrix) \
+			FIELD(DirectX::XMMATRIX, viewMatrix) \
+			FIELD(DirectX::XMMATRIX, worldMatrix) \
+			FIELD(DirectX::XMMATRIX, inversedTransposedWorldMatrix) \
+			FIELD(DirectX::XMMATRIX, worldViewProjectionMatrix) \
+			FIELD(DirectX::XMMATRIX, viewProjectionMatrix) \
 			FIELD(float, time) \
 			FIELD(float, frameTime) \
-			FIELD(DirectX::XMFLOAT4X4, projectionMatrix) \
-			FIELD(DirectX::XMFLOAT4X4, viewMatrix) \
-			FIELD(DirectX::XMFLOAT4X4, worldMatrix) \
-			FIELD(DirectX::XMFLOAT4X4, inversedTransposedWorldMatrix) \
 			FIELD(DirectX::XMFLOAT4, color) \
 			FIELD(DirectX::XMFLOAT3, lightDirection) \
 			FIELD(DirectX::XMFLOAT3, lightColor) \

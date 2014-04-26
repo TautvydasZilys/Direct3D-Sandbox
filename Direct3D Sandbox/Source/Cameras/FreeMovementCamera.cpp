@@ -16,6 +16,7 @@ void FreeMovementCamera::GoForward(float value)
 	m_Position.x -= value * cos(m_Rotation.x) * sin(m_Rotation.y);
 	m_Position.y -= -value * sin(m_Rotation.x);
 	m_Position.z -= value * cos(m_Rotation.x) * cos(m_Rotation.y);
+	m_DirtyViewMatrix = true;
 }
 
 void FreeMovementCamera::GoBack(float value)
@@ -23,16 +24,19 @@ void FreeMovementCamera::GoBack(float value)
 	m_Position.x += value * cos(m_Rotation.x) * sin(m_Rotation.y);
 	m_Position.y += -value * sin(m_Rotation.x);
 	m_Position.z += value * cos(m_Rotation.x) * cos(m_Rotation.y);
+	m_DirtyViewMatrix = true;
 }
 
 void FreeMovementCamera::GoUp(float value)
 {
 	m_Position.y += value;
+	m_DirtyViewMatrix = true;
 }
 
 void FreeMovementCamera::GoDown(float value)
 {
 	m_Position.y -= value;
+	m_DirtyViewMatrix = true;
 }
 
 // Rotation matrix for only y rotation:
@@ -45,10 +49,12 @@ void FreeMovementCamera::GoLeft(float value)
 {
 	m_Position.x -= value * cos(m_Rotation.y);
 	m_Position.z -= -value * sin(m_Rotation.y);
+	m_DirtyViewMatrix = true;
 }
 
 void FreeMovementCamera::GoRight(float value)
 {
 	m_Position.x += value * cos(m_Rotation.y);
 	m_Position.z += -value * sin(m_Rotation.y);
+	m_DirtyViewMatrix = true;
 }

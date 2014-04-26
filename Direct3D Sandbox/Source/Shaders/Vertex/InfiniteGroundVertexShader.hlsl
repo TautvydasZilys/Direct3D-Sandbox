@@ -1,8 +1,6 @@
 cbuffer MatrixBuffer
 {
-	matrix worldMatrix;
-    matrix viewMatrix;
-    matrix projectionMatrix;
+	matrix worldViewProjectionMatrix;
 	matrix inversedTransposedWorldMatrix;
 	float3 cameraPosition;
 	float padding;
@@ -32,9 +30,7 @@ PixelInput main(VertexInput input)
 {
 	PixelInput output;
 	
-	output.position = mul(input.position, worldMatrix);
-	output.position = mul(output.position, viewMatrix);
-	output.position = mul(output.position, projectionMatrix);
+	output.position = mul(input.position, worldViewProjectionMatrix);
 	
 	output.tex = uvTiling * (input.tex + cameraPosition.xz / groundScale);
     output.normal = -mul(input.normal, (float3x3)inversedTransposedWorldMatrix);

@@ -64,6 +64,8 @@ struct ModelData
 	unique_ptr<unsigned int[]> indices;
 	size_t indexCount;
 
+	float radius;
+
 	ModelData() : vertexCount(0), indexCount(0) {}
 
 	ModelData(ModelData&& other) : 

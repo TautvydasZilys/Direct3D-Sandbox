@@ -38,8 +38,7 @@ void CameraPositionLockedModelInstance::UpdateAndRender(RenderParameters& render
 	{
 		m_Parameters.position.z = renderParameters.cameraPosition.z + m_OriginalPosition.z;
 	}
-	
-	Initialize();
 
+	DirtyWorldMatrix();
 	ModelInstance::UpdateAndRender(renderParameters);
 }

@@ -26,5 +26,5 @@ void SuperZombieInstance::UpdateAndRender(RenderParameters& renderParameters)
 
 shared_ptr<ZombieInstanceBase> SuperZombieInstance::Spawn(const PlayerInstance& targetPlayer)
 {
-	return make_shared<SuperZombieInstance>(GetRandomZombieParameters(targetPlayer), targetPlayer);
+	return shared_ptr<ZombieInstanceBase>(new SuperZombieInstance(GetRandomZombieParameters(targetPlayer), targetPlayer));
 }

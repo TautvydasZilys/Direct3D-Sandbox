@@ -31,5 +31,5 @@ void ZombieInstance::UpdateAndRender(RenderParameters& renderParameters)
 
 shared_ptr<ZombieInstanceBase> ZombieInstance::Spawn(const PlayerInstance& targetPlayer)
 {
-	return make_shared<ZombieInstance>(GetRandomZombieParameters(targetPlayer), targetPlayer);
+	return shared_ptr<ZombieInstanceBase>(new ZombieInstance(GetRandomZombieParameters(targetPlayer), targetPlayer));
 }

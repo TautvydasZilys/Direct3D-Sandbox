@@ -8,8 +8,7 @@ cbuffer PerFrameBuffer
 {
 	float time;
 	float3 padding;
-    matrix viewMatrix;
-    matrix projectionMatrix;
+    matrix viewProjectionMatrix;
 };
 
 struct VertexInput
@@ -34,8 +33,7 @@ PixelInput main(VertexInput input)
 
 	output.position.w *= 2.0f + sin(time);
 
-	output.position = mul(output.position, viewMatrix);
-	output.position = mul(output.position, projectionMatrix);
+	output.position = mul(output.position, viewProjectionMatrix);
 
 	output.tex = 4.0f * input.tex;
 	output.tex.x += time;

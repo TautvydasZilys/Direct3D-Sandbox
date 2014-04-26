@@ -66,17 +66,17 @@ System::System() :
 	modelParameters.scale = DirectX::XMFLOAT3(5000.0f, 5000.0f, 5000.0f);
 	modelParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	m_Models.emplace_back(make_shared<CameraPositionLockedModelInstance>(textureShader, L"Assets\\Models\\skybox.model", modelParameters, 
+	m_Models.emplace_back(new CameraPositionLockedModelInstance(textureShader, L"Assets\\Models\\skybox.model", modelParameters, 
 		L"Assets\\Textures\\Skybox.dds", TypedDimensions<bool>(true, true, true)));
 	
 	modelParameters.position = DirectX::XMFLOAT3(10.0f, 0.0f, 10.0f);
 	modelParameters.scale = DirectX::XMFLOAT3(4000.0f, 4000.0f, 4000.0f);
-	m_Models.emplace_back(make_shared<InfiniteGroundModelInstance>(modelParameters, L"Assets\\Textures\\Grass.dds", DirectX::XMFLOAT2(5000.0f, 5000.0f)));
+	m_Models.emplace_back(new InfiniteGroundModelInstance(modelParameters, L"Assets\\Textures\\Grass.dds", DirectX::XMFLOAT2(5000.0f, 5000.0f)));
 	
 	m_Camera->SetPosition(0.0f, 1.5f, 0.0f);
 	m_OrthoCamera->SetPosition(0.0f, 0.0f, 1.0f);
 
-	m_Models.emplace_back(make_shared<PlayerInstance>(*m_Camera));
+	m_Models.emplace_back(new PlayerInstance(*m_Camera));
 }
 
 System::~System()
