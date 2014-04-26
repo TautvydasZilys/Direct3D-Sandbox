@@ -70,9 +70,16 @@ static void OptimizeModel(ModelData& model)
 	cout << "\tVertex count before: " << model.vertexCount << endl;
 	cout << "\tVertex count after:  " << vertexMap.size() << endl << endl;
 
+	// Preserve original order by sorting by index
+	vector<pair<const VertexParameters*, int>> vertexVector(begin(vertexMap), end(vertexMap));
+	sort(begin(vertexVector), end(vertexVector), [](const pair<const VertexParameters*, int>& left, const pair<const VertexParameters*, int>& right) -> bool
+	{
+		return left.second < right.second;
+	});
+
 	unique_ptr<VertexParameters[]> optimizedVertices(new VertexParameters[vertexMap.size()]);
 
-	for (auto& vertex : vertexMap)
+	for (auto& vertex : vertexVector)
 	{
 		memcpy(&optimizedVertices[i], &*vertex.first, sizeof(VertexParameters));
 		indexChanges[vertex.second] = i;
@@ -92,7 +99,6 @@ static void OptimizeModel(ModelData& model)
 static ModelData ParseFaces(const vector<DirectX::XMFLOAT4>& coordinates, const vector<DirectX::XMFLOAT2>& textures,
 							const vector<DirectX::XMFLOAT3>& normals, vector<string>& faces)
 {
-	DirectX::XMFLOAT4 color(1.0f, 1.0f, 1.0f, 1.0f);
 	auto const facesCount = faces.size();
 	ModelData model;
 
@@ -121,7 +127,6 @@ static ModelData ParseFaces(const vector<DirectX::XMFLOAT4>& coordinates, const 
 
 			model.vertices[i].position = coordinates[v - 1];
 			model.vertices[i].normal = normals[n - 1];
-			model.vertices[i].color = color;
 
 			if (hasTexture)
 			{
@@ -218,10 +223,30 @@ static void SaveModel(const wstring& path, const ModelData& model)
 	out.close();
 }
 
+static void SaveAnimatedModel(const wstring& path, const AnimatedModelData& model)
+{
+	ofstream out(path, ios::binary);
+	
+	// Model type
+	auto modelType = ModelType::AnimatedModel;
+	out.write(reinterpret_cast<const char*>(&modelType), sizeof(ModelType));
+	out.write(reinterpret_cast<const char*>(&model.frameCount), sizeof(int));
+
+	// Vertices
+	out.write(reinterpret_cast<const char*>(&model.vertexCount), sizeof(int));
+	out.write(reinterpret_cast<const char*>(model.vertices.get()), model.frameCount * model.vertexCount * sizeof(VertexParameters));
+
+	// Indices
+	out.write(reinterpret_cast<const char*>(&model.indexCount), sizeof(int));
+	out.write(reinterpret_cast<const char*>(model.indices.get()), model.indexCount * sizeof(unsigned int));
+
+	out.close();
+}
+
 void ModelProcessor::ProcessModel(const wstring& path, const wstring& outputPath)
 {
 	auto modelName = path.substr(path.find_last_of(L'\\') + 1);		// Remove folder
-	modelName = modelName.substr(0, modelName.length() - 4);	// Remove extension
+	modelName = modelName.substr(0, modelName.length() - 4);		// Remove extension
 
 	if (outputPath[outputPath.length() - 1] != L'\\')
 	{
@@ -234,14 +259,102 @@ void ModelProcessor::ProcessModel(const wstring& path, const wstring& outputPath
 	
 	auto model = LoadModel(path);
 
-	SaveModel(modelName + L".model", model);		
-	
-	// Invert model
-	modelName += L"_inverted";
-	for (auto i = 0u; i < model.indexCount; i += 3)
+	SaveModel(modelName + L".model", model);
+}
+
+void ModelProcessor::ProcessAnimatedModel(const wstring& rootPath, const wstring& outputPath)
+{
+	auto frames = Tools::GetFilesInDirectory(rootPath, L"*.obj", false);
+	if (frames.size() == 0)
 	{
-		swap(model.indices[i], model.indices[i + 1]);
+		return;
 	}
 
-	SaveModel(modelName + L".model", model);
+	sort(begin(frames), end(frames));
+
+	vector<ModelData> modelFrames;
+
+	for (auto i = 0u; i < frames.size(); i++)
+	{
+		wcout << "Loading frame " << i << "..." << endl;
+		modelFrames.push_back(LoadModel(frames[i]));
+	}
+
+	AnimatedModelData animatedModelData;
+	animatedModelData.frameCount = frames.size() - 1;
+	animatedModelData.indexCount = modelFrames[0].indexCount;
+	animatedModelData.vertexCount = modelFrames[0].vertexCount;
+
+	bool allFramesMatch = true;
+	vector<string> errors;
+
+	// Check whether all models actually match
+	for (auto i = 1u; i < animatedModelData.frameCount; i++)
+	{
+		// Validate vertices
+		if (modelFrames[i].vertexCount != modelFrames[0].vertexCount)
+		{
+			allFramesMatch = false;
+			errors.push_back("ERROR: Frame " + to_string(i) + " index count doesn't match frame 0 index count!\r\n");
+		}
+
+		// Validate indices
+		if (modelFrames[i].indexCount != modelFrames[0].indexCount)
+		{
+			allFramesMatch = false;
+			errors.push_back("ERROR: Frame " + to_string(i) + " index count doesn't match frame 0 index count!\r\n");
+		}
+		else
+		{
+			for (auto j = 0u; j < animatedModelData.indexCount; j++)
+			{
+				if (modelFrames[i].indices[j] != modelFrames[0].indices[j])
+				{
+					allFramesMatch = false;
+					errors.push_back("ERROR: Frame " + to_string(i) + " index " + to_string(j) + 
+						" doesn't match frame 0 index " + to_string(j) + "!\r\n");
+				}
+			}
+		}
+	}
+
+	if (!allFramesMatch)
+	{
+		int errorCount = static_cast<int>(min(1000, errors.size()));
+		for (int i = 0; i < errorCount; i++)
+		{
+			cout << errors[i];
+		}
+		exit(1);
+	}
+
+	animatedModelData.indices = std::move(modelFrames[0].indices);
+	animatedModelData.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[modelFrames[0].vertexCount * animatedModelData.frameCount]);
+
+	for (auto i = 0u; i < animatedModelData.frameCount; i++)
+	{
+		auto vertexOffset = animatedModelData.vertexCount * i;
+
+		for (auto j = 0u; j < animatedModelData.vertexCount; j++)
+		{
+			auto& targetVertex = animatedModelData.vertices[vertexOffset + j];
+			
+			targetVertex.position = modelFrames[i].vertices[j].position;
+			targetVertex.textureCoordinates = modelFrames[i].vertices[j].textureCoordinates;
+			targetVertex.normal = modelFrames[i].vertices[j].normal;
+			targetVertex.tangent = modelFrames[i].vertices[j].tangent;
+			targetVertex.binormal = modelFrames[i].vertices[j].binormal;
+
+			targetVertex.position2 = modelFrames[i + 1].vertices[j].position;
+			targetVertex.normal = modelFrames[i + 1].vertices[j].normal;
+			targetVertex.tangent = modelFrames[i + 1].vertices[j].tangent;
+			targetVertex.binormal = modelFrames[i + 1].vertices[j].binormal;
+		}
+	}
+
+	auto modelName = rootPath.substr(rootPath.find_last_of('\\') + 1) + L".animatedModel";
+	auto modelPath = outputPath + L"\\" + modelName;
+	wcout << L"Saving animated model to \"" << modelPath << "\"...";
+	SaveAnimatedModel(modelPath, animatedModelData);
+	wcout << " Done!" << endl << endl;
 }

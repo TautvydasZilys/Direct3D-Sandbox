@@ -26,11 +26,14 @@
 
 #define VERTEX_PARAMETERS \
 			FIELD(DirectX::XMFLOAT4, position) \
-			FIELD(DirectX::XMFLOAT4, color) \
 			FIELD(DirectX::XMFLOAT2, textureCoordinates) \
 			FIELD(DirectX::XMFLOAT3, normal) \
 			FIELD(DirectX::XMFLOAT3, tangent) \
-			FIELD(DirectX::XMFLOAT3, binormal)
+			FIELD(DirectX::XMFLOAT3, binormal) \
+			FIELD(DirectX::XMFLOAT4, position2) \
+			FIELD(DirectX::XMFLOAT3, normal2) \
+			FIELD(DirectX::XMFLOAT3, tangent2) \
+			FIELD(DirectX::XMFLOAT3, binormal2)
 
 
 struct RenderParameters

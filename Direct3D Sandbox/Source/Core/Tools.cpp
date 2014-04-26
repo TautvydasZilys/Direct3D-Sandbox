@@ -42,15 +42,10 @@ vector<uint8_t> Tools::ReadFileToVector(const wstring& path)
 }
 
 
-ModelData Tools::LoadModel(const wstring& path, bool shouldInvert)
+ModelData Tools::LoadModel(const wstring& path)
 {
 	ModelType modelType;
 	auto modelPath = path;
-
-	if (shouldInvert)
-	{
-		modelPath = modelPath.insert(modelPath.find_last_of(L'.'), L"_inverted");
-	}
 
 	ifstream in(modelPath, ios::binary);
 	Assert(in.is_open());
@@ -190,7 +185,7 @@ bool Tools::DirectoryExists(const wstring& path)
 	auto result = GetFileAttributesEx(path.c_str(), GetFileExInfoStandard, &attributes);
 	Assert(result != 0 || GetLastError() == ERROR_FILE_NOT_FOUND);
 
-	return (attributes.dwFileAttributes != INVALID_FILE_ATTRIBUTES) && (attributes.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
+	return result != 0 && (attributes.dwFileAttributes != INVALID_FILE_ATTRIBUTES) && (attributes.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
 }
 
 int Tools::GetMemoryUsage()

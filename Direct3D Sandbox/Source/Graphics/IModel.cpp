@@ -58,7 +58,7 @@ const ModelData& IModel::GetModelData(const wstring& modelPath)
 
 	if (cachedModel == s_ModelDataCache.end())
 	{
-		s_ModelDataCache.insert(make_pair(modelPath, Tools::LoadModel(modelPath, false)));
+		s_ModelDataCache.insert(make_pair(modelPath, Tools::LoadModel(modelPath)));
 		cachedModel = s_ModelDataCache.find(modelPath);
 	}
 

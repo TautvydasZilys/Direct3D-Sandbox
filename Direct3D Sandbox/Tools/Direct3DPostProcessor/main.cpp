@@ -17,6 +17,12 @@ static void ProcessShaders(wstring shaderDirectory)
 
 static void ProcessModels(wstring modelInputDirectory, wstring modelOutputDirectory)
 {
+	if (!Tools::DirectoryExists(modelInputDirectory))
+	{
+		wcout << "ERROR: Could not find animated models input directory: \"" << modelInputDirectory << "\"." << endl;
+		exit(-1);
+	}
+
 	if (!Tools::DirectoryExists(modelOutputDirectory))
 	{
 		CreateDirectory(modelOutputDirectory.c_str(), nullptr);
@@ -27,6 +33,27 @@ static void ProcessModels(wstring modelInputDirectory, wstring modelOutputDirect
 	{
 		wcout << L"Processing model: " << modelPath << endl;
 		ModelProcessor::ProcessModel(modelPath, modelOutputDirectory);
+	}
+}
+
+static void ProcessAnimatedModels(wstring modelInputDirectory, wstring modelOutputDirectory)
+{
+	if (!Tools::DirectoryExists(modelInputDirectory))
+	{
+		wcout << "ERROR: Could not find animated models input directory: \"" << modelInputDirectory << "\"." << endl;
+		exit(-1);
+	}
+
+	if (!Tools::DirectoryExists(modelOutputDirectory))
+	{
+		CreateDirectory(modelOutputDirectory.c_str(), nullptr);
+	}
+
+	wcout << endl;
+	for (auto& animatedModelDirectory : Tools::GetDirectories(modelInputDirectory, false))
+	{
+		wcout << L"Processing animated model: " << animatedModelDirectory << endl << endl;
+		ModelProcessor::ProcessAnimatedModel(animatedModelDirectory, modelOutputDirectory);
 	}
 }
 
@@ -97,19 +124,21 @@ int CALLBACK wWinMain(
 	}
 	wcout << endl;
 
-	if (argc != 4)
+	if (argc != 6)
 	{
 		wchar_t exeName[MAX_PATH];
 		GetModuleFileName(nullptr, exeName, MAX_PATH);
 
-		wcout << L"Invalid number of arguments! Usage: " << exeName << L" <shaderDirectory> <modelInputDirectory> <modelOutputDirectory> <fontOutputDirectory>" << endl;
+		wcout << L"Invalid number of arguments! Usage: " << exeName << L" <shaderDirectory> <modelInputDirectory> <modelOutputDirectory>" 
+			<< L" <animatedModelInputDirectory> <animatedModelOutputDirectory> <fontOutputDirectory>" << endl;
 		return -1;
 	}
 	
 	wcout << endl;
 	ProcessShaders(argv[0]);
 	ProcessModels(argv[1], argv[2]);
-	ProcessFonts(argv[3]);
+	ProcessAnimatedModels(argv[3], argv[4]);
+	ProcessFonts(argv[5]);
 	
 	LocalFree(argv);
 	return 0;

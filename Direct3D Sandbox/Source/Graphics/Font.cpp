@@ -129,7 +129,6 @@ Model Font::CreateTextModel(const string& text, IShader& shader)
 	{
 		for (auto u = 0; u < 6; u++)
 		{
-			modelData.vertices[6 * i + u].color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 			modelData.vertices[6 * i + u].position.w = 1.0f;
 		}
 	}

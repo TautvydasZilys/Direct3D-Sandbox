@@ -201,10 +201,12 @@ del "$(OutDir)*.cso"
 
 if not exist "$(OutDir)Assets" mkdir "$(OutDir)Assets"
 echo \Models\ &gt; xcopyexclude.txt
+echo. &gt;&gt; xcopyexclude.txt
+echo \Animated Models\ &gt;&gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt
 
-"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Win32\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(OutDir)Assets\Fonts"</Command>
+"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Win32\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(ProjectDir)Assets\Animated Models" "$(OutDir)Assets\Animated Models" "$(OutDir)Assets\Fonts"</Command>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>del "$(OutDir)$(ProjectName)_$(Configuration)_$(Platform).xap"
@@ -254,6 +256,8 @@ del "$(OutDir)*.cso"
 
 if not exist "$(OutDir)Assets" mkdir "$(OutDir)Assets"
 echo \Models\ &gt; xcopyexclude.txt
+echo. &gt;&gt; xcopyexclude.txt
+echo \Animated Models\ &gt;&gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt</Command>
     </PostBuildEvent>
@@ -301,10 +305,12 @@ del "$(OutDir)*.cso"
 
 if not exist "$(OutDir)Assets" mkdir "$(OutDir)Assets"
 echo \Models\ &gt; xcopyexclude.txt
+echo. &gt;&gt; xcopyexclude.txt
+echo \Animated Models\ &gt;&gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt
 
-"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Win32\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(OutDir)Assets\Fonts"</Command>
+"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Win32\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(ProjectDir)Assets\Animated Models" "$(OutDir)Assets\Animated Models" "$(OutDir)Assets\Fonts"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|Win32'">
@@ -332,6 +338,8 @@ del "$(OutDir)*.cso"
 
 if not exist "$(OutDir)Assets" mkdir "$(OutDir)Assets"
 echo \Models\ &gt; xcopyexclude.txt
+echo. &gt;&gt; xcopyexclude.txt
+echo \Animated Models\ &gt;&gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt</Command>
     </PostBuildEvent>
@@ -361,10 +369,12 @@ del "$(OutDir)*.cso"
 
 if not exist "$(OutDir)Assets" mkdir "$(OutDir)Assets"
 echo \Models\ &gt; xcopyexclude.txt
+echo. &gt;&gt; xcopyexclude.txt
+echo \Animated Models\ &gt;&gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt
 
-"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\x64\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(OutDir)Assets\Fonts"</Command>
+"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\x64\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(ProjectDir)Assets\Animated Models" "$(OutDir)Assets\Animated Models" "$(OutDir)Assets\Fonts"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|x64'">
@@ -392,6 +402,8 @@ del "$(OutDir)*.cso"
 
 if not exist "$(OutDir)Assets" mkdir "$(OutDir)Assets"
 echo \Models\ &gt; xcopyexclude.txt
+echo. &gt;&gt; xcopyexclude.txt
+echo \Animated Models\ &gt;&gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt</Command>
     </PostBuildEvent>
@@ -433,10 +445,12 @@ del "$(OutDir)*.cso"
 
 if not exist "$(OutDir)Assets" mkdir "$(OutDir)Assets"
 echo \Models\ &gt; xcopyexclude.txt
+echo. &gt;&gt; xcopyexclude.txt
+echo \Animated Models\ &gt;&gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt
 
-"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Win32\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(OutDir)Assets\Fonts"</Command>
+"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Win32\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(ProjectDir)Assets\Animated Models" "$(OutDir)Assets\Animated Models" "$(OutDir)Assets\Fonts"</Command>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>del "$(OutDir)$(ProjectName)_$(Configuration)_$(Platform).xap"
@@ -490,10 +504,12 @@ del "$(OutDir)*.cso"
 
 if not exist "$(OutDir)Assets" mkdir "$(OutDir)Assets"
 echo \Models\ &gt; xcopyexclude.txt
+echo. &gt;&gt; xcopyexclude.txt
+echo \Animated Models\ &gt;&gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt
 
-"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Win32\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(OutDir)Assets\Fonts"</Command>
+"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Win32\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(ProjectDir)Assets\Animated Models" "$(OutDir)Assets\Animated Models" "$(OutDir)Assets\Fonts"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -529,10 +545,12 @@ del "$(OutDir)*.cso"
 
 if not exist "$(OutDir)Assets" mkdir "$(OutDir)Assets"
 echo \Models\ &gt; xcopyexclude.txt
+echo. &gt;&gt; xcopyexclude.txt
+echo \Animated Models\ &gt;&gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt
 
-"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\x64\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(OutDir)Assets\Fonts"</Command>
+"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\x64\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(ProjectDir)Assets\Animated Models" "$(OutDir)Assets\Animated Models" "$(OutDir)Assets\Fonts"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup Condition="'$(Platform)'=='ARM'">
