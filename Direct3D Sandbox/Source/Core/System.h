@@ -23,6 +23,7 @@ private:
 	double m_CurrentTime;
 	double m_LastFpsTime;
 	int m_Fps;
+	int m_LastFrameFps;
 	
 	unique_ptr<Camera> m_Camera;
 	unique_ptr<Camera> m_OrthoCamera;

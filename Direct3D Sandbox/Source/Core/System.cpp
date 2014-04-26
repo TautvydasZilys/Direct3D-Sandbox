@@ -19,11 +19,12 @@ System::System() :
 	m_Direct3D(m_Windowing.GetWindowHandle(), m_Windowing.GetWidth(), m_Windowing.GetHeight(), m_Windowing.IsFullscreen()),
 	m_CurrentTime(Tools::GetTime()),
 	m_Fps(0), 
+	m_LastFrameFps(0),
 	m_LastFpsTime(m_CurrentTime),
 	m_MouseSensitivity(Constants::DefaultMouseSensitivity),
 	m_Camera(new FPSControllerCamera(true, Constants::VerticalFieldOfView, m_Windowing.GetAspectRatio(), 0, 0, 2.0f)),
 	m_OrthoCamera(new Camera(false, 0.0f, 0.0f, static_cast<float>(m_Windowing.GetWidth()), static_cast<float>(m_Windowing.GetHeight()))),
-	m_Light(DirectX::XMFLOAT3(3.0f, -2.0f, -1.0f), DirectX::XMFLOAT3(0.7f, 0.7f, 0.6f), DirectX::XMFLOAT3(0.4f, 0.4f, 0.4f), 32)  
+	m_Light(DirectX::XMFLOAT3(3.0f, -2.0f, -1.0f), DirectX::XMFLOAT3(0.7f, 0.7f, 0.6f), DirectX::XMFLOAT3(0.4f, 0.4f, 0.4f), 32)
 {
 	s_Instance = this;
 
@@ -215,6 +216,8 @@ void System::Draw()
 	m_Direct3D.TurnZBufferOff();
 	m_OrthoCamera->SetRenderParameters(renderParameters);
 
+	Font::GetDefault().DrawText("FPS: " + to_string(m_LastFrameFps), 25, 25, renderParameters);
+
 	for (auto& model : m_Models)
 	{
 		model->UpdateAndRender2D(renderParameters);
@@ -236,6 +239,7 @@ void System::IncrementFpsCounter()
 
 		OutputDebugStringW(debugOutput.str().c_str());
 
+		m_LastFrameFps = m_Fps;
 		m_Fps = 0;
 		m_LastFpsTime = m_CurrentTime;
 	}
