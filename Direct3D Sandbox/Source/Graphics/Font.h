@@ -60,6 +60,7 @@ private:
 	Font& operator=(const Font& other);												// Not implemented (no copying allowed)
 	Font(Font&& other);
 
+	ModelData CreateModelData(const string& text);
 	Model CreateTextModel(const string& text, IShader& shader);
 
 	static Font* s_DefaultFont;

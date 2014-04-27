@@ -113,7 +113,7 @@ void Font::SetDefault(const wstring& path)
 	s_DefaultFont = &Get(path);
 }
 
-Model Font::CreateTextModel(const string& text, IShader& shader)
+ModelData Font::CreateModelData(const string& text)
 {
 	// 6 vertices per character
 	ModelData modelData;
@@ -186,6 +186,13 @@ Model Font::CreateTextModel(const string& text, IShader& shader)
 			currentPosY += m_LineSpacing;
 		}
 	}
+
+	return modelData;
+}
+
+Model Font::CreateTextModel(const string& text, IShader& shader)
+{
+	auto modelData = CreateModelData(text);
 
 	return Model::CreateNonCachedModel(modelData, shader);
 }
