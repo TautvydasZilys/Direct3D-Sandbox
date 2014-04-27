@@ -6,9 +6,10 @@
 
 
 ZombieInstanceBase::ZombieInstanceBase(IShader& shader, const wstring& modelPath, const wstring& texturePath, const wstring& normalMapPath,
-		const ModelParameters& modelParameters, const PlayerInstance& targetPlayer) :
+		const ModelParameters& modelParameters, const PlayerInstance& targetPlayer, float speed) :
 	ModelInstance(shader, modelPath, modelParameters, texturePath, normalMapPath),
-	m_TargetPlayer(targetPlayer)
+	m_TargetPlayer(targetPlayer),
+	m_Speed(speed)
 {
 }
 
@@ -28,7 +29,7 @@ void ZombieInstanceBase::UpdateAndRender(RenderParameters& renderParameters)
 	
 	if (distanceToPlayerSqr > 0.25f)
 	{
-		auto vectorMultiplier = Constants::ZombieSpeed * renderParameters.frameTime / sqrt(distanceToPlayerSqr);
+		auto vectorMultiplier = m_Speed * renderParameters.frameTime / sqrt(distanceToPlayerSqr);
 
 		m_Parameters.position.x += vectorMultiplier * vectorToPlayer.x;
 		m_Parameters.position.z += vectorMultiplier * vectorToPlayer.y;

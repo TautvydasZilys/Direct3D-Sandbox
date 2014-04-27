@@ -4,7 +4,8 @@
 #include "Source\\Graphics\\IShader.h"
 #include "ZombieInstance.h"
 
-const float ZombieInstance::s_AnimationPeriod = 3.0f;
+const float ZombieInstance::kAnimationPeriod = 3.0f;
+const float ZombieInstance::kZombieDistancePerAnimationTime = 1.5f;
 
 ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, const PlayerInstance& targetPlayer) :
 	ZombieInstanceBase(IShader::GetShader(ShaderType::ANIMATION_NORMAL_MAP_SHADER), 
@@ -12,7 +13,8 @@ ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, const Pla
 						L"Assets\\Textures\\Zombie.dds",
 						L"Assets\\Normal Maps\\Zombie.dds",
 						modelParameters,
-						targetPlayer),
+						targetPlayer,
+						kZombieDistancePerAnimationTime / kAnimationPeriod),
 	m_StartingAnimationProgress(Tools::Random::GetNextReal(0.0f, 1.0f))
 {
 }
@@ -23,7 +25,7 @@ ZombieInstance::~ZombieInstance()
 
 void ZombieInstance::UpdateAndRender(RenderParameters& renderParameters)
 {
-	renderParameters.animationProgress = renderParameters.time / s_AnimationPeriod + m_StartingAnimationProgress;
+	renderParameters.animationProgress = renderParameters.time / kAnimationPeriod + m_StartingAnimationProgress;
 	renderParameters.animationProgress = renderParameters.animationProgress - floor(renderParameters.animationProgress);
 
 	ZombieInstanceBase::UpdateAndRender(renderParameters);

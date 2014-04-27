@@ -27,6 +27,5 @@ public:
 	static const int StartingZombieCount;
 	static const int MaxZombies;
 	static const float ZombieSpawnIntervalInSeconds;
-	static const float ZombieSpeed;
 };
 

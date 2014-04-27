@@ -31,4 +31,3 @@ const float Constants::GravityConstant = -9.81f;
 const int Constants::StartingZombieCount = 10;
 const int Constants::MaxZombies = 50;
 const float Constants::ZombieSpawnIntervalInSeconds = 2.0f;
-const float Constants::ZombieSpeed = 5.0f;

@@ -11,7 +11,8 @@ SuperZombieInstance::SuperZombieInstance(const ModelParameters& modelParameters,
 						L"Assets\\Textures\\SuperZombie.dds",
 						L"Assets\\Normal Maps\\SuperZombie.dds", 
 						modelParameters, 
-						targetPlayer)
+						targetPlayer,
+						0.0f)
 {
 }
 

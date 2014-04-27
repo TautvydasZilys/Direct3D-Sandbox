@@ -8,9 +8,10 @@ class ZombieInstanceBase :
 {	
 protected:
 	const PlayerInstance& m_TargetPlayer;
+	const float m_Speed;
 
 	ZombieInstanceBase(IShader& shader, const wstring& modelPath, const wstring& texturePath, const wstring& normalMapPath,
-		const ModelParameters& modelParameters, const PlayerInstance& targetPlayer);
+		const ModelParameters& modelParameters, const PlayerInstance& targetPlayer, float speed);
 
 	static ModelParameters GetRandomZombieParameters(const PlayerInstance& targetPlayer);
 
