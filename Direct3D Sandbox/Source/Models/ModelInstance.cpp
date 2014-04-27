@@ -5,7 +5,8 @@
 
 ModelInstance::ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters) :
 	m_Model(IModel::Get(modelPath, shader)),
-	m_Parameters(modelParameters)
+	m_Parameters(modelParameters),
+	m_DirtyWorldMatrix(true)
 {
 }
 
@@ -22,7 +23,8 @@ ModelInstance::ModelInstance(IShader& shader, const wstring& modelPath, const Mo
 	m_Model(IModel::Get(modelPath, shader)),
 	m_Parameters(modelParameters),
 	m_Texture(Texture::Get(texturePath)),
-	m_NormalMap(Texture::Get(normalMapPath))
+	m_NormalMap(Texture::Get(normalMapPath)),
+	m_DirtyWorldMatrix(true)
 {
 }
 
