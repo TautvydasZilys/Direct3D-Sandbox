@@ -7,6 +7,7 @@ class MutableModel :
 {
 	ComPtr<ID3D11Buffer> m_VertexBuffer;
 	unsigned int m_Capacity;
+	bool m_DirtyVertexBuffer;
 
 	MutableModel(IShader& shader);
 

@@ -11,14 +11,16 @@ MutableModel::MutableModel(IShader& shader) :
 	, L"MutableModel"
 #endif
 	),
-	m_Capacity(0)
+	m_Capacity(0),
+	m_DirtyVertexBuffer(false)
 {
 }
 
 MutableModel::MutableModel(MutableModel&& other) :
 	IModel(std::move(other)),
 	m_VertexBuffer(other.m_VertexBuffer),
-	m_Capacity(other.m_Capacity)
+	m_Capacity(other.m_Capacity),
+	m_DirtyVertexBuffer(true)
 {
 	other.m_VertexBuffer = nullptr;
 	other.m_Capacity = 0;
@@ -30,7 +32,8 @@ MutableModel::~MutableModel()
 
 void MutableModel::SetRenderParametersAndApplyBuffers(RenderParameters& renderParameters)
 {
-	SetBuffersToDeviceContext(m_VertexBuffer.Get());
+	SetBuffersToDeviceContext(m_VertexBuffer.Get(), m_DirtyVertexBuffer);
+	m_DirtyVertexBuffer = false;
 }
 
 void MutableModel::UploadModelData(const ModelData& modelData)
@@ -43,6 +46,7 @@ void MutableModel::UploadModelData(const ModelData& modelData)
 		}
 
 		m_VertexBuffer = m_Shader.CreateVertexBuffer(m_Capacity, D3D11_USAGE::D3D11_USAGE_DYNAMIC);
+		m_DirtyVertexBuffer = true;
 	}
 	
 	m_Shader.UploadVertexData(m_VertexBuffer.Get(), static_cast<unsigned int>(modelData.vertexCount), modelData.vertices.get());
