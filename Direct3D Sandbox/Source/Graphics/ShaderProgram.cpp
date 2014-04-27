@@ -109,10 +109,10 @@ void ShaderProgram::SetTextures(const RenderParameters& renderParameters)
 
 		for (auto i = 0u; i < textureCount; i++)
 		{
-			if (memcmp(&m_Textures[i], reinterpret_cast<const uint8_t*>(&renderParameters) + m_TextureOffsets[i], sizeof(ID3D11ShaderResourceView)) != 0)
+			if (memcmp(&m_Textures[i], reinterpret_cast<const uint8_t*>(&renderParameters) + m_TextureOffsets[i], sizeof(ID3D11ShaderResourceView*)) != 0)
 			{
 				textureChanged = true;
-				memcpy(&m_Textures[i], reinterpret_cast<const uint8_t*>(&renderParameters) + m_TextureOffsets[i], sizeof(ID3D11ShaderResourceView));
+				memcpy(&m_Textures[i], reinterpret_cast<const uint8_t*>(&renderParameters) + m_TextureOffsets[i], sizeof(ID3D11ShaderResourceView*));
 			}
 		}
 
