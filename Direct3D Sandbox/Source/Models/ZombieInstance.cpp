@@ -4,7 +4,7 @@
 #include "Source\\Graphics\\IShader.h"
 #include "ZombieInstance.h"
 
-const float ZombieInstance::kAnimationPeriod = 3.0f;
+const float ZombieInstance::kAnimationPeriod = 0.75f;
 const float ZombieInstance::kZombieDistancePerAnimationTime = 1.5f;
 
 ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, const PlayerInstance& targetPlayer, 
