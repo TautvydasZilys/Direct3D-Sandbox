@@ -117,7 +117,7 @@ ModelData Font::CreateModelData(const string& text)
 {
 	// 6 vertices per character
 	ModelData modelData;
-	float currentPosX = 0, currentPosY = 0;
+	float currentPosX = 0, currentPosY = 0, maxX = 0;
 
 	modelData.indexCount = 0;
 	modelData.vertexCount = 6 * text.length();
@@ -179,14 +179,25 @@ ModelData Font::CreateModelData(const string& text)
 		modelData.vertices[6 * i + 5].textureCoordinates.y = texEndY;
 
 		currentPosX = endX;
-
+		
 		if (text[i] == '\n')
 		{
+			if (maxX < currentPosX)
+			{
+				maxX = currentPosX;
+			}
+
 			currentPosX = 0;
 			currentPosY += m_LineSpacing;
 		}
 	}
+	
+	if (maxX < currentPosX)
+	{
+		maxX = currentPosX;
+	}
 
+	modelData.radius = sqrt(currentPosY * currentPosY + maxX * maxX);
 	return modelData;
 }
 
