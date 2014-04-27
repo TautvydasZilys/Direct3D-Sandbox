@@ -156,6 +156,9 @@
     <ClCompile Include="Source\Graphics\AnimatedModel.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Core\AlignedClass.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\PrecompiledHeader.h">
@@ -271,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="Source\Graphics\AnimatedModel.h">
       <Filter>Source\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\AlignedClass.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

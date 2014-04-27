@@ -1,8 +1,11 @@
 #pragma once
 
+#include "AlignedClass.h"
+
 struct RenderParameters;
 
-class Camera
+class Camera :
+	public AlignedClass
 {
 protected:
 	DirectX::XMMATRIX m_ViewMatrix;

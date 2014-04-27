@@ -97,10 +97,12 @@ bool ModelInstance::IsInCameraFrustum(const RenderParameters& renderParameters) 
 
 void ModelInstance::UpdateAndRender(RenderParameters& renderParameters)
 {
+#if ENABLE_FRUSTUM_CULLING
 	if (!IsInCameraFrustum(renderParameters))
 	{
 		return;
 	}
+#endif
 
 	auto& worldMatrix = GetWorldMatrix();
 
@@ -113,21 +115,4 @@ void ModelInstance::UpdateAndRender(RenderParameters& renderParameters)
 	renderParameters.normalMap = m_NormalMap.Get();
 
 	m_Model.Render(renderParameters);
-}
-
-void* ModelInstance::operator new(size_t size)
-{
-	void* ptr = _aligned_malloc(size, 16);
-
-	if (ptr == nullptr)
-	{
-		throw bad_alloc();
-	}
-
-	return ptr;
-}
-
-void ModelInstance::operator delete(void* p)
-{
-	_aligned_free(p);
 }

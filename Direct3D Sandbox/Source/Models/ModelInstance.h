@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AlignedClass.h"
 #include "IModelInstance.h"
 #include "Source\Graphics\Model.h"
 
@@ -11,7 +12,8 @@ struct ModelParameters
 	DirectX::XMFLOAT4 color;
 };
 
-class ModelInstance : public IModelInstance
+class ModelInstance : 
+	public IModelInstance, public AlignedClass
 {
 private:
 	DirectX::XMMATRIX m_WorldMatrix;
@@ -44,8 +46,5 @@ public:
 	
 	virtual void UpdateAndRender(RenderParameters& renderParameters);
 	virtual void UpdateAndRender2D(RenderParameters& renderParameters) { }
-	
-	void* operator new(size_t size);
-	void operator delete(void* p);
 };
 
