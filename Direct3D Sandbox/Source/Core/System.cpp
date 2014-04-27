@@ -104,15 +104,6 @@ void System::Update()
 {
 	AddAndRemoveModels();
 	UpdateInput();
-
-	wstringstream debugStream;
-	debugStream.setf(ios::fixed);
-	debugStream.precision(3);
-
-	auto& cameraPosition = m_Camera->GetPosition();
-	debugStream << L"Camera position: " << cameraPosition.x << L" " << cameraPosition.y << L" " << cameraPosition.z << endl;
-
-	//OutputDebugStringW(debugStream.str().c_str());
 }
 
 void System::UpdateInput()
