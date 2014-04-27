@@ -46,5 +46,7 @@ public:
 	
 	virtual void UpdateAndRender(RenderParameters& renderParameters);
 	virtual void UpdateAndRender2D(RenderParameters& renderParameters) { }
+
+	float HorizontalDistanceSqrTo(const DirectX::XMFLOAT2& position);
 };
 

@@ -78,6 +78,14 @@ void ModelInstance::SetRotation(const DirectX::XMFLOAT3& rotation)
 	m_DirtyWorldMatrix = true;
 }
 
+float ModelInstance::HorizontalDistanceSqrTo(const DirectX::XMFLOAT2& position)
+{
+	auto deltaX = position.x - m_Parameters.position.x;
+	auto deltaY = position.y - m_Parameters.position.z;
+
+	return deltaX * deltaX + deltaY * deltaY;
+}
+
 bool ModelInstance::IsInCameraFrustum(const RenderParameters& renderParameters) const
 {
 	auto radius = m_Model.GetRadius() * max(max(m_Parameters.scale.x, m_Parameters.scale.y), m_Parameters.scale.z);

@@ -19,25 +19,6 @@ ZombieInstanceBase::~ZombieInstanceBase()
 
 void ZombieInstanceBase::UpdateAndRender(RenderParameters& renderParameters)
 {
-#if !DISABLE_ZOMBIE_MOVEMENT
-	auto playerPosition = m_TargetPlayer.GetPosition();
-	auto angleY = -atan2(m_Parameters.position.z - playerPosition.z, m_Parameters.position.x - playerPosition.x) - DirectX::XM_PI / 2.0f;
-
-	DirectX::XMFLOAT2 vectorToPlayer(playerPosition.x - m_Parameters.position.x, playerPosition.z - m_Parameters.position.z);
-	DirectX::XMFLOAT2 zombieMovementThisTurn;
-	auto distanceToPlayerSqr = vectorToPlayer.x * vectorToPlayer.x + vectorToPlayer.y * vectorToPlayer.y;
-	
-	if (distanceToPlayerSqr > 0.25f)
-	{
-		auto vectorMultiplier = m_Speed * renderParameters.frameTime / sqrt(distanceToPlayerSqr);
-
-		m_Parameters.position.x += vectorMultiplier * vectorToPlayer.x;
-		m_Parameters.position.z += vectorMultiplier * vectorToPlayer.y;
-	}
-
-	SetRotation(DirectX::XMFLOAT3(0.0f, angleY, 0.0f));
-#endif
-
 	ModelInstance::UpdateAndRender(renderParameters);
 }
 

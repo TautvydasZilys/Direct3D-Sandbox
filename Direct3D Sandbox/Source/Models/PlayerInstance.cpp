@@ -68,7 +68,7 @@ void PlayerInstance::SpawnRandomZombie()
 
 void PlayerInstance::SpawnZombie()
 {
-	auto zombie = ZombieInstance::Spawn(*this);
+	auto zombie = ZombieInstance::Spawn(*this, m_Zombies);
 	
 	System::GetInstance().AddModel(zombie);
 	m_Zombies.push_back(zombie);
