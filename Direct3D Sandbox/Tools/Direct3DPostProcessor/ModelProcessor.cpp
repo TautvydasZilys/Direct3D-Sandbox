@@ -77,7 +77,7 @@ static void OptimizeModel(ModelData& model)
 
 	for (auto i = 0u; i < model.vertexCount; i++)
 	{
-		vertexMap.insert(make_pair(&model.vertices[i], i));
+		vertexMap.emplace(&model.vertices[i], i);
 	}
 
 	int i = 0;

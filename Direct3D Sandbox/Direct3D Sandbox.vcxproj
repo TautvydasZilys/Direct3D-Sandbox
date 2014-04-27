@@ -586,6 +586,7 @@ del xcopyexclude.txt
     <ClCompile Include="Source\Graphics\InputLayoutItem.cpp" />
     <ClCompile Include="Source\Graphics\IShader.cpp" />
     <ClCompile Include="Source\Graphics\Model.cpp" />
+    <ClCompile Include="Source\Graphics\MutableModel.cpp" />
     <ClCompile Include="Source\Graphics\PixelShader.cpp" />
     <ClCompile Include="Source\Graphics\SamplerState.cpp" />
     <ClCompile Include="Source\Graphics\ShaderProgram.cpp" />
@@ -627,6 +628,7 @@ del xcopyexclude.txt
     <ClInclude Include="Source\Graphics\InputLayoutItem.h" />
     <ClInclude Include="Source\Graphics\IShader.h" />
     <ClInclude Include="Source\Graphics\Model.h" />
+    <ClInclude Include="Source\Graphics\MutableModel.h" />
     <ClInclude Include="Source\Graphics\PixelShader.h" />
     <ClInclude Include="Source\Graphics\SamplerState.h" />
     <ClInclude Include="Source\Graphics\ShaderProgram.h" />

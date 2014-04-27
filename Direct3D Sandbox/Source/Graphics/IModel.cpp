@@ -60,7 +60,7 @@ void IModel::InitializeModel(IShader& shader, const wstring& modelPath)
 		break;
 	}
 
-	s_ModelCache.insert(make_pair(ModelId(modelPath, shader), model));
+	s_ModelCache.emplace(ModelId(modelPath, shader), model);
 }
 
 IModel& IModel::Get(const wstring& modelPath, IShader& shader)
@@ -83,7 +83,7 @@ const ModelData& IModel::GetModelData(const wstring& modelPath)
 
 	if (cachedModel == s_ModelDataCache.end())
 	{
-		s_ModelDataCache.insert(make_pair(modelPath, Tools::LoadModel(modelPath)));
+		s_ModelDataCache.emplace(modelPath, Tools::LoadModel(modelPath));
 		cachedModel = s_ModelDataCache.find(modelPath);
 	}
 

@@ -14,7 +14,7 @@ void Texture::LoadTexture(const wstring& path)
 	result = DirectX::CreateDDSTextureFromFile(GetD3D11Device(), path.c_str(), nullptr, &texture);
 	Assert(result == S_OK);
 
-	s_Textures.insert(make_pair(Tools::ToLower(path), texture));
+	s_Textures.emplace(Tools::ToLower(path), texture);
 }
 
 ComPtr<ID3D11ShaderResourceView> Texture::Get(const wstring& path)

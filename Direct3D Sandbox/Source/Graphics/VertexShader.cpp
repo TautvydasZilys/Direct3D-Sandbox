@@ -61,15 +61,9 @@ void VertexShader::ReflectInputLayout(const vector<uint8_t>& shaderBuffer, const
 	Assert(result == S_OK);
 }
 
-ComPtr<ID3D11Buffer> VertexShader::CreateVertexBuffer(unsigned int vertexCount, const VertexParameters vertices[]) const
+unique_ptr<uint8_t[]> VertexShader::ArrangeVertexBufferData(unsigned int vertexCount, const VertexParameters vertices[]) const
 {
-	HRESULT result;
-	D3D11_BUFFER_DESC bufferDescription;
-	D3D11_SUBRESOURCE_DATA vertexData;
-	ComPtr<ID3D11Buffer> vertexBuffer;
-	VertexParameters dummyParameter;
-
-	unique_ptr<uint8_t> vertexInput(new uint8_t[m_InputLayoutSize * vertexCount]);
+	unique_ptr<uint8_t[]> vertexInput(new uint8_t[m_InputLayoutSize * vertexCount]);
 	vector<unsigned int> destinationFieldOffsets(m_InputLayoutItems.size());
 	
 	destinationFieldOffsets[0] = 0;
@@ -87,21 +81,60 @@ ComPtr<ID3D11Buffer> VertexShader::CreateVertexBuffer(unsigned int vertexCount, 
 		}
 	}
 	
-	bufferDescription.Usage = D3D11_USAGE_IMMUTABLE;
+	return vertexInput;
+}
+
+ComPtr<ID3D11Buffer> VertexShader::CreateVertexBuffer(unsigned int vertexCount, D3D11_USAGE usage, const D3D11_SUBRESOURCE_DATA* vertexData) const
+{
+	HRESULT result;
+	D3D11_BUFFER_DESC bufferDescription;
+	ComPtr<ID3D11Buffer> vertexBuffer;
+		
+	bufferDescription.Usage = usage;
 	bufferDescription.ByteWidth = static_cast<UINT>(m_InputLayoutSize * vertexCount);
 	bufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bufferDescription.CPUAccessFlags = 0;
 	bufferDescription.MiscFlags = 0;
 	bufferDescription.StructureByteStride = 0;
 
-	vertexData.pSysMem = vertexInput.get();
-	vertexData.SysMemPitch = 0;
-	vertexData.SysMemSlicePitch = 0;
-
-	result = GetD3D11Device()->CreateBuffer(&bufferDescription, &vertexData, &vertexBuffer);
+	result = GetD3D11Device()->CreateBuffer(&bufferDescription, vertexData, &vertexBuffer);
 	Assert(result == S_OK);
 
 	return vertexBuffer;
+}
+
+ComPtr<ID3D11Buffer> VertexShader::CreateVertexBufferAndUploadData(unsigned int vertexCount, 
+	const VertexParameters vertices[], D3D11_USAGE usage) const
+{
+	D3D11_SUBRESOURCE_DATA vertexData;
+	auto verterBufferData = ArrangeVertexBufferData(vertexCount, vertices);
+
+	vertexData.pSysMem = verterBufferData.get();
+	vertexData.SysMemPitch = 0;
+	vertexData.SysMemSlicePitch = 0;
+
+	return CreateVertexBuffer(vertexCount, usage, &vertexData);
+}
+
+void VertexShader::UploadVertexData(ID3D11Buffer* vertexBuffer, unsigned int vertexCount, const VertexParameters vertices[]) const
+{
+	HRESULT result;
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	auto deviceContext = GetD3D11DeviceContext();
+	auto vertexBufferData = ArrangeVertexBufferData(vertexCount, vertices);
+
+	result = deviceContext->Map(vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	Assert(result == S_OK);
+
+	memcpy(&mappedResource.pData, vertexBufferData.get(), m_InputLayoutSize * vertexCount);
+	deviceContext->Unmap(vertexBuffer, 0);
+}
+
+ComPtr<ID3D11Buffer> VertexShader::CreateVertexBuffer(unsigned int vertexCount, D3D11_USAGE usage) const
+{
+	Assert(usage != D3D11_USAGE::D3D11_USAGE_IMMUTABLE);
+
+	return CreateVertexBuffer(vertexCount, usage, nullptr);
 }
 
 void VertexShader::SetRenderParameters(const RenderParameters& renderParameters)

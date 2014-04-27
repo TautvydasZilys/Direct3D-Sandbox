@@ -29,7 +29,11 @@ private:
 public:
 	virtual ~IShader();
 	
-	virtual ComPtr<ID3D11Buffer> CreateVertexBuffer(unsigned int vertexCount, const VertexParameters vertices[]) const = 0;
+	virtual ComPtr<ID3D11Buffer> CreateVertexBuffer(unsigned int vertexCount, D3D11_USAGE usage) const = 0;
+	virtual ComPtr<ID3D11Buffer> CreateVertexBuffer(unsigned int vertexCount, const VertexParameters vertices[], 
+		D3D11_USAGE usage = D3D11_USAGE::D3D11_USAGE_IMMUTABLE) const = 0;
+	virtual void UploadVertexData(ID3D11Buffer* vertexBuffer, unsigned int vertexCount, const VertexParameters vertices[]) const = 0;
+
 	virtual void SetRenderParameters(const RenderParameters& renderParameters) = 0;
 	virtual const unsigned int* GetInputLayoutSizePtr() const = 0;
 	
