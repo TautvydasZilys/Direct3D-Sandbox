@@ -3,6 +3,7 @@
 #include "Font.h"
 #include "IShader.h"
 #include "Model.h"
+#include "MutableModel.h"
 #include "Tools.h"
 
 unordered_map<wstring, Font> Font::s_FontCache;
@@ -220,7 +221,12 @@ void Font::DrawText(const string& text, int posX, int posY, RenderParameters& re
 
 	if (!useCaching)
 	{
-		CreateTextModel(text, shader).Render(renderParameters);
+		//CreateTextModel(text, shader).Render(renderParameters);
+
+		auto modelData = CreateModelData(text);
+		auto& mutableModel = MutableModel::GetMutableModel(shader);
+		mutableModel.UploadModelData(modelData);
+		mutableModel.Render(renderParameters);
 	}
 	else
 	{

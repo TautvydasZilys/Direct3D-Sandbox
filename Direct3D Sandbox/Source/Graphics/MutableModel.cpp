@@ -39,13 +39,14 @@ void MutableModel::UploadModelData(const ModelData& modelData)
 	{
 		while (m_Capacity < modelData.vertexCount)
 		{
-			m_Capacity *= 2;
+			m_Capacity = m_Capacity * 2 + 1;
 		}
 
 		m_VertexBuffer = m_Shader.CreateVertexBuffer(m_Capacity, D3D11_USAGE::D3D11_USAGE_DYNAMIC);
 	}
 	
 	m_Shader.UploadVertexData(m_VertexBuffer.Get(), static_cast<unsigned int>(modelData.vertexCount), modelData.vertices.get());
+	m_VertexCount = static_cast<unsigned int>(modelData.vertexCount);
 }
 
 MutableModel& MutableModel::GetMutableModel(IShader& shader)

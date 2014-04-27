@@ -93,7 +93,7 @@ ComPtr<ID3D11Buffer> VertexShader::CreateVertexBuffer(unsigned int vertexCount, 
 	bufferDescription.Usage = usage;
 	bufferDescription.ByteWidth = static_cast<UINT>(m_InputLayoutSize * vertexCount);
 	bufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bufferDescription.CPUAccessFlags = 0;
+	bufferDescription.CPUAccessFlags = (usage == D3D11_USAGE::D3D11_USAGE_DYNAMIC) ? D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_WRITE : 0;
 	bufferDescription.MiscFlags = 0;
 	bufferDescription.StructureByteStride = 0;
 
@@ -126,7 +126,7 @@ void VertexShader::UploadVertexData(ID3D11Buffer* vertexBuffer, unsigned int ver
 	result = deviceContext->Map(vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	Assert(result == S_OK);
 
-	memcpy(&mappedResource.pData, vertexBufferData.get(), m_InputLayoutSize * vertexCount);
+	memcpy(mappedResource.pData, vertexBufferData.get(), m_InputLayoutSize * vertexCount);
 	deviceContext->Unmap(vertexBuffer, 0);
 }
 
