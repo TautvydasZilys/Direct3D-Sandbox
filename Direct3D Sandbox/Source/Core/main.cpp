@@ -10,6 +10,9 @@ int CALLBACK WinMain(
   _In_ int nCmdShow
 )
 {
+#if DEBUG
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF );
+#endif
 	System system;
 	system.Run();
 
@@ -23,6 +26,9 @@ int CALLBACK WinMain(
 [Platform::MTAThread]
 int main(Platform::Array<Platform::String^>^ args)
 {
+#if DEBUG
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF );
+#endif
 	auto direct3DApplicationSource = ref new Direct3DApplicationSource();
 	Windows::ApplicationModel::Core::CoreApplication::Run(direct3DApplicationSource);
 
