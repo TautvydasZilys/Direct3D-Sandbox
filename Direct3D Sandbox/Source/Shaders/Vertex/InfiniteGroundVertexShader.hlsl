@@ -3,7 +3,6 @@ cbuffer MatrixBuffer
 	matrix worldViewProjectionMatrix;
 	matrix inversedTransposedWorldMatrix;
 	float3 cameraPosition;
-	float padding;
 };
 
 cbuffer GroundInfoBuffer

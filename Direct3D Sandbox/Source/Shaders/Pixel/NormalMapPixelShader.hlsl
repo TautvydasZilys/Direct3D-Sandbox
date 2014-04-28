@@ -7,7 +7,6 @@ cbuffer LightingBuffer
     float3 lightDirection;
     float3 lightColor;
 	float3 ambientColor;
-	float3 padding;
 };
 
 struct PixelInput

@@ -3,7 +3,6 @@ cbuffer MatrixBuffer
     matrix worldViewProjectionMatrix;
 	matrix inversedTransposedWorldMatrix;
 	float currentFrameProgress;
-	float3 padding;
 };
 
 struct VertexInput
