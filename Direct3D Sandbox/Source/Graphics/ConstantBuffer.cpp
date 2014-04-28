@@ -10,6 +10,7 @@ ConstantBuffer::ConstantBuffer(const vector<uint8_t>& metadataBuffer, unsigned i
 	using namespace Tools::BufferReader;
 
 	auto numberOfFields = ReadUInt(metadataBuffer, byteOffset);
+	m_Size = ReadUInt(metadataBuffer, byteOffset);
 	m_Fields.reserve(numberOfFields);
 
 	for (auto i = 0u; i < numberOfFields; i++)
@@ -17,8 +18,7 @@ ConstantBuffer::ConstantBuffer(const vector<uint8_t>& metadataBuffer, unsigned i
 		auto parameterOffset = ReadUInt(metadataBuffer, byteOffset);
 		auto startOffset = ReadUInt(metadataBuffer, byteOffset);
 		auto size = ReadUInt(metadataBuffer, byteOffset);
-
-		m_Size += size;
+		
 		m_Fields.emplace_back(parameterOffset, startOffset, size);
 	}
 	

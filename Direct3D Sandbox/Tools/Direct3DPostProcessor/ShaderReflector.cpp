@@ -99,8 +99,9 @@ static void ReflectOnConstantBuffer(vector<uint8_t>& metadataBuffer, ID3D11Shade
 	Assert(result == S_OK);
 
 	auto byteOffset = metadataBuffer.size();
-	metadataBuffer.resize(byteOffset + 4 + 12 * bufferDescription.Variables);
+	metadataBuffer.resize(byteOffset + 8 + 12 * bufferDescription.Variables);
 	AddUInt(metadataBuffer, byteOffset, bufferDescription.Variables);
+	AddUInt(metadataBuffer, byteOffset, bufferDescription.Size);
 
 	for (auto i = 0u; i < bufferDescription.Variables; i++)
 	{
@@ -233,6 +234,7 @@ vector<uint8_t> ReflectShaderImpl(const vector<uint8_t>& shaderBuffer)
 // 4 bytes - number of constant buffers
 // n Constants buffer data:
 //		4 bytes - number of constant buffer variables
+//		4 bytes - size of the constant buffer
 //		m constant buffer variable data:
 //			4 bytes - paramater offset
 //			4 bytes - start offset
