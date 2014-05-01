@@ -4,10 +4,10 @@
 
 inline static long long int InitPerformanceCounterFrequency()
 {
-	long long int frequency;
+	LARGE_INTEGER frequency;
 
-	QueryPerformanceFrequency(reinterpret_cast<LARGE_INTEGER*>(&frequency));
-	return frequency;
+	QueryPerformanceFrequency(&frequency);
+	return frequency.QuadPart;
 }
 
 long long int s_PerformanceCounterFrequency = InitPerformanceCounterFrequency();
