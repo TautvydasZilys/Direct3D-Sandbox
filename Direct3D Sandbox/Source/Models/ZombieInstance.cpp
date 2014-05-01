@@ -4,7 +4,8 @@
 #include "Source\\Graphics\\IShader.h"
 #include "ZombieInstance.h"
 
-const float ZombieInstance::kAnimationPeriod = 0.75f;
+const float ZombieInstance::kIdleAnimationPeriod = 2.0f;
+const float ZombieInstance::kRunningAnimationPeriod = 0.75f;
 const float ZombieInstance::kZombieDistancePerAnimationTime = 1.5f;
 
 ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, const PlayerInstance& targetPlayer, 
@@ -15,7 +16,7 @@ ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, const Pla
 						L"Assets\\Normal Maps\\Zombie.dds",
 						modelParameters,
 						targetPlayer,
-						kZombieDistancePerAnimationTime / kAnimationPeriod),
+						kZombieDistancePerAnimationTime / kRunningAnimationPeriod),
 	m_AnimationProgress(Tools::Random::GetNextReal(0.0f, 1.0f)),
 	m_Zombies(zombies)
 {
@@ -69,17 +70,22 @@ void ZombieInstance::UpdateAndRender(RenderParameters& renderParameters)
 									  m_Parameters.position.z + vectorMultiplier * vectorToPlayer.y);
 
 		if (CanMoveTo(newPosition, m_Zombies, this))
-		{			
-			m_AnimationProgress += renderParameters.frameTime / kAnimationPeriod;
+		{
+			m_AnimationProgress += renderParameters.frameTime / kRunningAnimationPeriod;
+			renderParameters.currentAnimationState = ZombieStates::Running;
 
 			m_Parameters.position.x = newPosition.x;
 			m_Parameters.position.z = newPosition.y;
+		}
+		else
+		{
+			m_AnimationProgress += renderParameters.frameTime / kIdleAnimationPeriod;
+			renderParameters.currentAnimationState = ZombieStates::Idle;
 		}
 	}
 	
 	SetRotation(DirectX::XMFLOAT3(0.0f, angleY, 0.0f));
 	renderParameters.animationProgress = m_AnimationProgress - floor(m_AnimationProgress);
-	renderParameters.currentAnimationState = ZombieStates::Running;
 #endif
 
 	ZombieInstanceBase::UpdateAndRender(renderParameters);

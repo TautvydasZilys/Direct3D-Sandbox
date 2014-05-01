@@ -9,7 +9,8 @@ class ZombieInstance :
 	float m_AnimationProgress;
 	const vector<weak_ptr<ZombieInstanceBase>>& m_Zombies;
 	
-	static const float kAnimationPeriod;
+	static const float kIdleAnimationPeriod;
+	static const float kRunningAnimationPeriod;
 	static const float kZombieDistancePerAnimationTime;
 
 	static bool CanMoveTo(const DirectX::XMFLOAT2& position, const vector<weak_ptr<ZombieInstanceBase>>& zombies,
@@ -20,7 +21,8 @@ class ZombieInstance :
 
 	enum ZombieStates
 	{
-		Running,
+		Idle,
+		Running
 	};
 
 public:
