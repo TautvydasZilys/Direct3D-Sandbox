@@ -27,7 +27,11 @@
 			FIELD(int, screenHeight) \
 			FIELD(int, currentAnimationState) \
 			FIELD(float, currentFrameProgress) \
-			FIELD(float, animationProgress)
+			FIELD(float, animationProgress) \
+			FIELD(bool, isTransitioningAnimationStates) \
+			FIELD(int, targetAnimationState) \
+			FIELD(float, targetStateFrameProgress) \
+			FIELD(float, transitionProgress)
 
 
 #define VERTEX_PARAMETERS \

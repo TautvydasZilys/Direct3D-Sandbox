@@ -4,9 +4,8 @@
 #include "Source\\Graphics\\IShader.h"
 #include "ZombieInstance.h"
 
-const float ZombieInstance::kIdleAnimationPeriod = 2.0f;
-const float ZombieInstance::kRunningAnimationPeriod = 0.75f;
-const float ZombieInstance::kZombieDistancePerAnimationTime = 1.5f;
+const float ZombieInstance::kAnimationPeriods[ZombieStates::StateCount] = { 2.0f, 0.75f };
+const float ZombieInstance::kZombieDistancePerRunningAnimationTime = 1.5f;
 
 ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, const PlayerInstance& targetPlayer, 
 							   const vector<weak_ptr<ZombieInstanceBase>>& zombies) :
@@ -16,10 +15,15 @@ ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, const Pla
 						L"Assets\\Normal Maps\\Zombie.dds",
 						modelParameters,
 						targetPlayer,
-						kZombieDistancePerAnimationTime / kRunningAnimationPeriod),
-	m_AnimationProgress(Tools::Random::GetNextReal(0.0f, 1.0f)),
+						kZombieDistancePerRunningAnimationTime / kAnimationPeriods[ZombieStates::Running]),
+	m_CurrentState(ZombieStates::Idle),
+	m_IsTransitioningAnimationStates(false),
 	m_Zombies(zombies)
 {
+	for (int i = 0; i < ZombieStates::StateCount; i++)
+	{
+		m_AnimationProgress[i] = Tools::Random::GetNextReal(0.0f, 1.0f);
+	}
 }
 
 ZombieInstance::~ZombieInstance()
@@ -52,6 +56,46 @@ bool ZombieInstance::CanMoveTo(const DirectX::XMFLOAT2& position, const vector<w
 	return true;
 }
 
+float ZombieInstance::GetAnimationTransitionLength(ZombieStates from, ZombieStates to)
+{
+	return 0.5f;
+}
+
+void ZombieInstance::SetAnimationParameters(RenderParameters& renderParameters, ZombieStates targetState)
+{
+	if (m_CurrentState != targetState)
+	{
+		if (!m_IsTransitioningAnimationStates)
+		{
+			m_IsTransitioningAnimationStates = true;
+			m_TransitionProgress = 0.0f;
+		}
+		else
+		{
+			m_TransitionProgress += renderParameters.frameTime / GetAnimationTransitionLength(m_CurrentState, targetState);
+
+			if (m_TransitionProgress >= 1.0f)
+			{
+				m_IsTransitioningAnimationStates = false;
+				m_TransitionProgress = 1.0f;
+				m_CurrentState = targetState;
+			}
+		}
+		
+		m_AnimationProgress[targetState] += renderParameters.frameTime / kAnimationPeriods[m_CurrentState];
+
+		renderParameters.targetAnimationState = targetState;
+		renderParameters.targetStateFrameProgress =  m_AnimationProgress[targetState] - floor(m_AnimationProgress[targetState]);
+		renderParameters.transitionProgress = m_TransitionProgress;
+	}
+
+	m_AnimationProgress[m_CurrentState] += renderParameters.frameTime / kAnimationPeriods[m_CurrentState];
+
+	renderParameters.isTransitioningAnimationStates = m_IsTransitioningAnimationStates;
+	renderParameters.animationProgress = m_AnimationProgress[m_CurrentState] - floor(m_AnimationProgress[m_CurrentState]);
+	renderParameters.currentAnimationState = m_CurrentState;
+}
+
 void ZombieInstance::UpdateAndRender(RenderParameters& renderParameters)
 {	
 #if !DISABLE_ZOMBIE_MOVEMENT
@@ -59,9 +103,9 @@ void ZombieInstance::UpdateAndRender(RenderParameters& renderParameters)
 	auto angleY = -atan2(m_Parameters.position.z - playerPosition.z, m_Parameters.position.x - playerPosition.x) - DirectX::XM_PI / 2.0f;
 
 	DirectX::XMFLOAT2 vectorToPlayer(playerPosition.x - m_Parameters.position.x, playerPosition.z - m_Parameters.position.z);
-	DirectX::XMFLOAT2 zombieMovementThisTurn;
-	auto distanceToPlayerSqr = vectorToPlayer.x * vectorToPlayer.x + vectorToPlayer.y * vectorToPlayer.y;
-	
+	auto distanceToPlayerSqr = vectorToPlayer.x * vectorToPlayer.x + vectorToPlayer.y * vectorToPlayer.y;	
+	bool moving = false;
+
 	if (distanceToPlayerSqr > 0.25f)
 	{
 		auto vectorMultiplier = m_Speed * renderParameters.frameTime / sqrt(distanceToPlayerSqr);
@@ -71,21 +115,16 @@ void ZombieInstance::UpdateAndRender(RenderParameters& renderParameters)
 
 		if (CanMoveTo(newPosition, m_Zombies, this))
 		{
-			m_AnimationProgress += renderParameters.frameTime / kRunningAnimationPeriod;
-			renderParameters.currentAnimationState = ZombieStates::Running;
+			moving = true;
 
 			m_Parameters.position.x = newPosition.x;
 			m_Parameters.position.z = newPosition.y;
 		}
-		else
-		{
-			m_AnimationProgress += renderParameters.frameTime / kIdleAnimationPeriod;
-			renderParameters.currentAnimationState = ZombieStates::Idle;
-		}
 	}
-	
+
 	SetRotation(DirectX::XMFLOAT3(0.0f, angleY, 0.0f));
-	renderParameters.animationProgress = m_AnimationProgress - floor(m_AnimationProgress);
+
+	SetAnimationParameters(renderParameters, moving ? ZombieStates::Running : ZombieStates::Idle);
 #endif
 
 	ZombieInstanceBase::UpdateAndRender(renderParameters);

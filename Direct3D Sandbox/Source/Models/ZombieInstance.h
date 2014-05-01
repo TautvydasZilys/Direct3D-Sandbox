@@ -6,24 +6,31 @@ class PlayerInstance;
 class ZombieInstance :
 	public ZombieInstanceBase
 {
-	float m_AnimationProgress;
 	const vector<weak_ptr<ZombieInstanceBase>>& m_Zombies;
 	
-	static const float kIdleAnimationPeriod;
-	static const float kRunningAnimationPeriod;
-	static const float kZombieDistancePerAnimationTime;
+	enum ZombieStates
+	{
+		Idle = 0,
+		Running,
+		StateCount
+	};
 
+	static const float kAnimationPeriods[ZombieStates::StateCount];
+	static const float kZombieDistancePerRunningAnimationTime;
+	
+	ZombieStates m_CurrentState;
+	float m_AnimationProgress[ZombieStates::StateCount];
+	bool m_IsTransitioningAnimationStates;
+	float m_TransitionProgress;
+
+	static float GetAnimationTransitionLength(ZombieStates from, ZombieStates to);
 	static bool CanMoveTo(const DirectX::XMFLOAT2& position, const vector<weak_ptr<ZombieInstanceBase>>& zombies,
 		const ZombieInstanceBase* thisPtr);
 
+	void SetAnimationParameters(RenderParameters& renderParameters, ZombieStates targetState);
+
 	ZombieInstance(const ModelInstance& other);					// Not implemented (no copying allowed)
 	ZombieInstance& operator=(const ModelInstance& other);		// Not implemented (no copying allowed)
-
-	enum ZombieStates
-	{
-		Idle,
-		Running
-	};
 
 public:
 	ZombieInstance(const ModelParameters& modelParameters, const PlayerInstance& targetPlayer, 
