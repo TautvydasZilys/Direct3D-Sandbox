@@ -79,6 +79,7 @@ void ZombieInstance::UpdateAndRender(RenderParameters& renderParameters)
 	
 	SetRotation(DirectX::XMFLOAT3(0.0f, angleY, 0.0f));
 	renderParameters.animationProgress = m_AnimationProgress - floor(m_AnimationProgress);
+	renderParameters.currentAnimationState = ZombieStates::Running;
 #endif
 
 	ZombieInstanceBase::UpdateAndRender(renderParameters);

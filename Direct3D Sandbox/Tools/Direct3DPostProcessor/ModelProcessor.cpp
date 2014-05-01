@@ -249,11 +249,15 @@ static void SaveAnimatedModel(const wstring& path, const AnimatedModelData& mode
 	// Model type
 	auto modelType = ModelType::Animated;
 	out.write(reinterpret_cast<const char*>(&modelType), sizeof(ModelType));
-	out.write(reinterpret_cast<const char*>(&model.frameCount), sizeof(int));
+	out.write(reinterpret_cast<const char*>(&model.totalFrameCount), sizeof(int));
+	out.write(reinterpret_cast<const char*>(&model.stateCount), sizeof(int));
+
+	// Frame data for each state
+	out.write(reinterpret_cast<const char*>(model.stateData.get()), model.stateCount * sizeof(AnimatedModelState));
 
 	// Vertices
 	out.write(reinterpret_cast<const char*>(&model.vertexCount), sizeof(int));
-	out.write(reinterpret_cast<const char*>(model.vertices.get()), model.frameCount * model.vertexCount * sizeof(VertexParameters));
+	out.write(reinterpret_cast<const char*>(model.vertices.get()), model.totalFrameCount * model.vertexCount * sizeof(VertexParameters));
 
 	// Indices
 	out.write(reinterpret_cast<const char*>(&model.indexCount), sizeof(int));
@@ -284,57 +288,77 @@ void ModelProcessor::ProcessModel(const wstring& path, const wstring& outputPath
 	SaveModel(modelName + L".model", model);
 }
 
-void ModelProcessor::ProcessAnimatedModel(const wstring& rootPath, const wstring& outputPath)
+static vector<vector<ModelData>> LoadModelStates(const wstring& rootPath)
 {
-	auto frames = Tools::GetFilesInDirectory(rootPath, L"*.obj", false);
-	if (frames.size() == 0)
+	vector<vector<ModelData>> modelStates;
+
+	auto stateDirectories = Tools::GetDirectories(rootPath, false);
+	sort(begin(stateDirectories), end(stateDirectories));	
+
+	for (const auto& stateDirectory : stateDirectories)
 	{
-		return;
+		auto frames = Tools::GetFilesInDirectory(stateDirectory, L"*.obj", false);
+		if (frames.size() == 0)
+		{
+			continue;
+		}
+
+		sort(begin(frames), end(frames));
+		vector<ModelData> modelFrames;
+
+		for (auto i = 0u; i < frames.size(); i++)
+		{
+			wcout << L"Loading frame " << i << L" of state " << modelStates.size() << L"..." << endl;
+			modelFrames.push_back(LoadModel(frames[i]));
+		}
+		
+		modelStates.push_back(std::move(modelFrames));
 	}
 
-	sort(begin(frames), end(frames));
+	return modelStates;
+}
 
-	vector<ModelData> modelFrames;
-
-	for (auto i = 0u; i < frames.size(); i++)
-	{
-		wcout << "Loading frame " << i << "..." << endl;
-		modelFrames.push_back(LoadModel(frames[i]));
-	}
-
-	AnimatedModelData animatedModelData;
-	animatedModelData.frameCount = frames.size();
-	animatedModelData.indexCount = modelFrames[0].indexCount;
-	animatedModelData.vertexCount = modelFrames[0].vertexCount;
-
-	bool allFramesMatch = true;
+static void ValidateModel(const vector<vector<ModelData>>& modelStates, size_t indexCount)
+{
 	vector<string> errors;
+	bool allFramesMatch = true;
+	
+	auto stateCount = modelStates.size();
 
-	// Check whether all models actually match
-	for (auto i = 1u; i < animatedModelData.frameCount; i++)
+	for (auto i = 0u; i < stateCount; i++)
 	{
-		// Validate vertices
-		if (modelFrames[i].vertexCount != modelFrames[0].vertexCount)
-		{
-			allFramesMatch = false;
-			errors.push_back("ERROR: Frame " + to_string(i) + " index count doesn't match frame 0 index count!\r\n");
-		}
+		auto frameCount = modelStates[i].size();
 
-		// Validate indices
-		if (modelFrames[i].indexCount != modelFrames[0].indexCount)
+		for (auto j = 0u; j < frameCount; j++)
 		{
-			allFramesMatch = false;
-			errors.push_back("ERROR: Frame " + to_string(i) + " index count doesn't match frame 0 index count!\r\n");
-		}
-		else
-		{
-			for (auto j = 0u; j < animatedModelData.indexCount; j++)
+			if (i == j && i == 0)
 			{
-				if (modelFrames[i].indices[j] != modelFrames[0].indices[j])
+				continue;
+			}
+
+			// Validate vertices
+			if (modelStates[i][j].vertexCount != modelStates[0][0].vertexCount)
+			{
+				allFramesMatch = false;
+				errors.push_back("ERROR: Frame " + to_string(j) + " of state " + to_string(i) + " vertex count doesn't match frame 0 index count!\r\n");
+			}
+
+			// Validate indices
+			if (modelStates[i][j].indexCount != modelStates[0][0].indexCount)
+			{
+				allFramesMatch = false;
+				errors.push_back("ERROR: Frame " + to_string(j) + " of state " + to_string(i) + " index count doesn't match frame 0 index count!\r\n");
+			}
+			else
+			{
+				for (auto u = 0u; u < indexCount; u++)
 				{
-					allFramesMatch = false;
-					errors.push_back("ERROR: Frame " + to_string(i) + " index " + to_string(j) + 
-						" doesn't match frame 0 index " + to_string(j) + "!\r\n");
+					if (modelStates[i][j].indices[u] != modelStates[0][0].indices[u])
+					{
+						allFramesMatch = false;
+						errors.push_back("ERROR: Frame " + to_string(i) + " index " + to_string(j) + 
+							" doesn't match frame 0 index " + to_string(u) + "!\r\n");
+					}
 				}
 			}
 		}
@@ -342,46 +366,99 @@ void ModelProcessor::ProcessAnimatedModel(const wstring& rootPath, const wstring
 
 	if (!allFramesMatch)
 	{
-		int errorCount = static_cast<int>(min(1000, errors.size()));
+		auto errorCount = errors.size();
+
+		if (errorCount > 1000)
+		{
+			errorCount = 1000; // VS hung for 15 minutes last time when error count was around 200k
+			cout << "WARNING: error count exceeded 1000. Will stop printing." << endl;
+		}
+
 		for (int i = 0; i < errorCount; i++)
 		{
 			cout << errors[i];
 		}
+
 		exit(1);
 	}
+}
 
-	animatedModelData.indices = std::move(modelFrames[0].indices);
-	animatedModelData.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[modelFrames[0].vertexCount * animatedModelData.frameCount]);
-	animatedModelData.radius = 0.0f;
+static void SerializeAnimatedModel(const vector<vector<ModelData>>& modelStates, float& radius, unique_ptr<VertexParameters[]>& modelVertices)
+{	
+	size_t vertexOffset = 0u;
+	auto stateCount = modelStates.size();
+	auto vertexCount = modelStates[0][0].vertexCount;
 
-	for (auto i = 0u; i < animatedModelData.frameCount; i++)
+	for (auto i = 0u; i < stateCount; i++)
 	{
-		auto vertexOffset = animatedModelData.vertexCount * i;
+		const auto& modelFrames = modelStates[i];
+		auto frameCount = modelStates[i].size();
 
-		for (auto j = 0u; j < animatedModelData.vertexCount; j++)
+		for (auto j = 0u; j < frameCount; j++)
 		{
-			auto& targetVertex = animatedModelData.vertices[vertexOffset + j];
+			for (auto u = 0u; u < vertexCount; u++)
+			{
+				auto& targetVertex = modelVertices[vertexOffset + u];
 			
-			targetVertex.position = modelFrames[i].vertices[j].position;
-			targetVertex.textureCoordinates = modelFrames[i].vertices[j].textureCoordinates;
-			targetVertex.normal = modelFrames[i].vertices[j].normal;
-			targetVertex.tangent = modelFrames[i].vertices[j].tangent;
-			targetVertex.binormal = modelFrames[i].vertices[j].binormal;
+				targetVertex.position = modelFrames[j].vertices[u].position;
+				targetVertex.textureCoordinates = modelFrames[j].vertices[u].textureCoordinates;
+				targetVertex.normal = modelFrames[j].vertices[u].normal;
+				targetVertex.tangent = modelFrames[j].vertices[u].tangent;
+				targetVertex.binormal = modelFrames[j].vertices[u].binormal;
 
-			targetVertex.positionSecondary = modelFrames[(i + 1) % modelFrames.size()].vertices[j].position;
-			targetVertex.normalSecondary = modelFrames[(i + 1) % modelFrames.size()].vertices[j].normal;
-			targetVertex.tangentSecondary = modelFrames[(i + 1) % modelFrames.size()].vertices[j].tangent;
-			targetVertex.binormalSecondary = modelFrames[(i + 1) % modelFrames.size()].vertices[j].binormal;
-		}
+				targetVertex.positionSecondary = modelFrames[(j + 1) % modelFrames.size()].vertices[u].position;
+				targetVertex.normalSecondary = modelFrames[(j + 1) % modelFrames.size()].vertices[u].normal;
+				targetVertex.tangentSecondary = modelFrames[(j + 1) % modelFrames.size()].vertices[u].tangent;
+				targetVertex.binormalSecondary = modelFrames[(j + 1) % modelFrames.size()].vertices[u].binormal;
+			}
 
-		if (animatedModelData.radius < modelFrames[i].radius)
-		{
-			animatedModelData.radius = modelFrames[i].radius;
+			vertexOffset += vertexCount;
+
+			if (radius < modelFrames[j].radius)
+			{
+				radius = modelFrames[j].radius;
+			}
 		}
 	}
+}
+
+void ModelProcessor::ProcessAnimatedModel(const wstring& rootPath, const wstring& outputPath)
+{
+	auto modelStates = LoadModelStates(rootPath);
+
+	if (modelStates.empty())
+	{
+		return;
+	}
+	
+	AnimatedModelData animatedModelData;
+	animatedModelData.indexCount = modelStates[0][0].indexCount;
+	animatedModelData.vertexCount = modelStates[0][0].vertexCount;
+	animatedModelData.stateCount = modelStates.size();
+	animatedModelData.stateData = unique_ptr<AnimatedModelState[]>(new AnimatedModelState[animatedModelData.stateCount]);
+
+	for (auto i = 0u; i < animatedModelData.stateCount; i++)
+	{
+		animatedModelData.stateData[i].frameCount = modelStates[i].size();		
+		animatedModelData.totalFrameCount += modelStates[i].size();
+
+		if (i > 0)
+		{
+			animatedModelData.stateData[i].frameOffset = animatedModelData.stateData[i - 1].frameOffset + animatedModelData.stateData[i - 1].frameCount;
+		}
+	}
+
+	// Check all frames actually match
+	ValidateModel(modelStates, animatedModelData.indexCount);
+
+	animatedModelData.indices = std::move(modelStates[0][0].indices);
+	animatedModelData.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[modelStates[0][0].vertexCount * animatedModelData.totalFrameCount]);
+
+	SerializeAnimatedModel(modelStates, animatedModelData.radius, animatedModelData.vertices);
 
 	auto modelName = rootPath.substr(rootPath.find_last_of('\\') + 1) + L".animatedModel";
 	auto modelPath = outputPath + L"\\" + modelName;
+
 	wcout << L"Saving animated model to \"" << modelPath << "\"...";
 	SaveAnimatedModel(modelPath, animatedModelData);
 	wcout << " Done!" << endl << endl;

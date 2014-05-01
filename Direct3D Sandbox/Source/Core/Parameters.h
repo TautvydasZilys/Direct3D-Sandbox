@@ -25,6 +25,7 @@
 			FIELD(ID3D11ShaderResourceView*, normalMap) \
 			FIELD(int, screenWidth) \
 			FIELD(int, screenHeight) \
+			FIELD(int, currentAnimationState) \
 			FIELD(float, currentFrameProgress) \
 			FIELD(float, animationProgress)
 

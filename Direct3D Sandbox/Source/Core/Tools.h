@@ -66,7 +66,7 @@ struct ModelData
 
 	float radius;
 
-	ModelData() : vertexCount(0), indexCount(0) {}
+	ModelData() : vertexCount(0), indexCount(0), radius(0.0f) {}
 
 	ModelData(ModelData&& other) : 
 		vertices(std::move(other.vertices)), vertexCount(other.vertexCount), 
@@ -80,15 +80,27 @@ private:
 	ModelData& operator=(const ModelData& other);
 };
 
-struct AnimatedModelData : public ModelData
+struct AnimatedModelState
 {
 	size_t frameCount;
+	size_t frameOffset;
 
-	AnimatedModelData() : frameCount(0) {}
+	AnimatedModelState() : frameCount(0), frameOffset(0) {}
+};
+
+struct AnimatedModelData : public ModelData
+{
+	size_t totalFrameCount;
+	size_t stateCount;
+	unique_ptr<AnimatedModelState[]> stateData;
+
+	AnimatedModelData() : totalFrameCount(0), stateCount(0) {}
 
 	AnimatedModelData(AnimatedModelData&& other) :
 		ModelData(std::move(other)),
-		frameCount(other.frameCount)
+		totalFrameCount(other.totalFrameCount),
+		stateCount(other.stateCount),
+		stateData(std::move(other.stateData))
 	{
 	}
 

@@ -87,10 +87,16 @@ unique_ptr<ModelData> Tools::LoadModel(const wstring& path)
 			model = unique_ptr<ModelData>(new AnimatedModelData);
 
 			auto animatedModel = reinterpret_cast<AnimatedModelData*>(model.get());
-			in.read(reinterpret_cast<char*>(&animatedModel->frameCount), sizeof(int));
-			OutputDebugString((L"\tNumber of frames: " + to_wstring(animatedModel->frameCount) + L"\r\n").c_str());
+			in.read(reinterpret_cast<char*>(&animatedModel->totalFrameCount), sizeof(int));
+			in.read(reinterpret_cast<char*>(&animatedModel->stateCount), sizeof(int));
+			
+			animatedModel->stateData = unique_ptr<AnimatedModelState[]>(new AnimatedModelState[animatedModel->stateCount]);
+			in.read(reinterpret_cast<char*>(animatedModel->stateData.get()), animatedModel->stateCount * sizeof(AnimatedModelState));
 
-			ReadModelData(in, *model.get(), animatedModel->frameCount);
+			OutputDebugString((L"\tTotal number of frames: " + to_wstring(animatedModel->totalFrameCount) + L"\r\n").c_str());
+			OutputDebugString((L"\tNumber of states: " + to_wstring(animatedModel->stateCount) + L"\r\n").c_str());
+
+			ReadModelData(in, *model.get(), animatedModel->totalFrameCount);
 		}
 		break;
 	}

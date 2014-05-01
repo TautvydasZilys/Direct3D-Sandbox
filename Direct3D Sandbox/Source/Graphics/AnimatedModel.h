@@ -6,7 +6,10 @@ class AnimatedModel :
 	public IModel
 {
 	vector<ComPtr<ID3D11Buffer>> m_VertexBuffers;
-	unsigned int m_FrameCount;
+	unsigned int m_TotalFrameCount;
+
+	unsigned int m_StateCount;	
+	unique_ptr<AnimatedModelState[]> m_StateData;
 
 	AnimatedModel(IShader& shader, const wstring& modelPath);
 

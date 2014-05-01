@@ -18,6 +18,11 @@ class ZombieInstance :
 	ZombieInstance(const ModelInstance& other);					// Not implemented (no copying allowed)
 	ZombieInstance& operator=(const ModelInstance& other);		// Not implemented (no copying allowed)
 
+	enum ZombieStates
+	{
+		Running,
+	};
+
 public:
 	ZombieInstance(const ModelParameters& modelParameters, const PlayerInstance& targetPlayer, 
 		const vector<weak_ptr<ZombieInstanceBase>>& zombies);
