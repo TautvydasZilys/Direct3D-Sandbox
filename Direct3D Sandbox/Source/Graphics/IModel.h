@@ -47,7 +47,8 @@ protected:
 	);
 
 	void InitializeIndexBuffer(const ModelData& modelData);
-	void SetBuffersToDeviceContext(ID3D11Buffer* vertexBuffer, bool forceReset = false);
+	inline bool DidThisLastSet() const { return this == s_ModelWhichLastSetParameters; }
+	void SetIndexBufferToDeviceContext(bool forceReset = false);
 	virtual void SetRenderParametersAndApplyBuffers(RenderParameters& renderParameters) = 0;
 
 	static void InitializeModel(IShader& shader, const wstring& modelPath);

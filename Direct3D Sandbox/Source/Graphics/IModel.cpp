@@ -124,17 +124,16 @@ ComPtr<ID3D11Buffer> IModel::CreateIndexBuffer(unsigned int indexCount, unsigned
 	return indexBuffer;
 }
 
-void IModel::SetBuffersToDeviceContext(ID3D11Buffer* vertexBuffer, bool forceReset)
+void IModel::SetIndexBufferToDeviceContext(bool forceReset)
 {
-	auto const offset = 0u;
-	auto deviceContext = GetD3D11DeviceContext();
-
 	if (s_ModelWhichLastSetParameters != this || forceReset)
 	{
-		s_ModelWhichLastSetParameters = this;
-		deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, m_Shader.GetInputLayoutSizePtr(), &offset);
+		auto deviceContext = GetD3D11DeviceContext();
+
 		deviceContext->IASetIndexBuffer(m_IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		
+		s_ModelWhichLastSetParameters = this;
 	}
 }
 

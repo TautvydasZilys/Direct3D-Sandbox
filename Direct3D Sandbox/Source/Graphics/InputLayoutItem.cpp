@@ -22,7 +22,8 @@ InputLayoutItem::InputLayoutItem(InputLayoutItem&& other) :
 	m_Name(std::move(other.m_Name)),
 	m_SemanticIndex(other.m_SemanticIndex),
 	m_Format(other.m_Format),
-	m_Size(other.m_Size)
+	m_Size(other.m_Size),
+	m_ParameterOffset(other.m_ParameterOffset)
 {
 }
 

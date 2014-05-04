@@ -238,6 +238,17 @@ wstring Tools::ToLower(const wstring& str)
 	return lowerStr;
 }
 
+void Tools::FatalError(const wstring& msg)
+{
+#if !WINDOWS_PHONE
+	MessageBoxW(nullptr, msg.c_str(), L"Fatal error!", MB_OK | MB_ICONERROR);
+#endif
+
+	OutputDebugStringW(L"Fatal error:\r\n");
+	OutputDebugStringW((msg + L"\r\n").c_str());
+	exit(-1);
+}
+
 string Tools::BufferReader::ReadString(const vector<uint8_t>& buffer, unsigned int& position)
 {
 	string str = reinterpret_cast<const char*>(&buffer[position]);

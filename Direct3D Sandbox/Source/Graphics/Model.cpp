@@ -42,7 +42,8 @@ Model::~Model()
 void Model::CreateBuffers(const ModelData& modelData)
 {
 	m_VertexCount = static_cast<unsigned int>(modelData.vertexCount);
-	m_VertexBuffer = m_Shader.CreateVertexBuffer(m_VertexCount, modelData.vertices.get());
+	m_VertexBuffer = m_Shader.CreateVertexBuffer(m_VertexCount, modelData.vertices.get(), 0);
+	Assert(m_VertexBuffer != nullptr);
 
 	InitializeIndexBuffer(modelData);
 }
@@ -54,5 +55,11 @@ Model Model::CreateNonCachedModel(const ModelData& modelData, IShader& shader)
 
 void Model::SetRenderParametersAndApplyBuffers(RenderParameters& renderParameters)
 {
-	SetBuffersToDeviceContext(m_VertexBuffer.Get());
+	if (!DidThisLastSet())
+	{
+		auto deviceContext = GetD3D11DeviceContext();
+
+		deviceContext->IASetVertexBuffers(0, 1, m_VertexBuffer.GetAddressOf(), m_Shader.GetInputLayoutStrides(), m_Shader.GetInputLayoutOffsets());
+		SetIndexBufferToDeviceContext();
+	}
 }

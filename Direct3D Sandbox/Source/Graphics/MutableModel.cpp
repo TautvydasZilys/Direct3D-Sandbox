@@ -1,4 +1,5 @@
 #include "PrecompiledHeader.h"
+#include "Direct3D.h"
 #include "IShader.h"
 #include "MutableModel.h"
 
@@ -32,8 +33,19 @@ MutableModel::~MutableModel()
 
 void MutableModel::SetRenderParametersAndApplyBuffers(RenderParameters& renderParameters)
 {
-	SetBuffersToDeviceContext(m_VertexBuffer.Get(), m_DirtyVertexBuffer);
-	m_DirtyVertexBuffer = false;
+	if (m_DirtyVertexBuffer)
+	{
+		auto const offset = 0u;
+		auto deviceContext = GetD3D11DeviceContext();
+
+		deviceContext->IASetVertexBuffers(0, 1, m_VertexBuffer.GetAddressOf(), m_Shader.GetInputLayoutStrides(), m_Shader.GetInputLayoutOffsets());
+		m_DirtyVertexBuffer = false;
+	}
+
+	if (!DidThisLastSet())
+	{
+		SetIndexBufferToDeviceContext();
+	}
 }
 
 void MutableModel::UploadModelData(const ModelData& modelData)
@@ -45,11 +57,13 @@ void MutableModel::UploadModelData(const ModelData& modelData)
 			m_Capacity = m_Capacity * 2 + 1;
 		}
 
-		m_VertexBuffer = m_Shader.CreateVertexBuffer(m_Capacity, D3D11_USAGE::D3D11_USAGE_DYNAMIC);
+		m_VertexBuffer = m_Shader.CreateVertexBuffer(m_Capacity, 0, D3D11_USAGE::D3D11_USAGE_DYNAMIC);
+		Assert(m_VertexBuffer != nullptr);
+
 		m_DirtyVertexBuffer = true;
 	}
-	
-	m_Shader.UploadVertexData(m_VertexBuffer.Get(), static_cast<unsigned int>(modelData.vertexCount), modelData.vertices.get());
+
+	m_Shader.UploadVertexData(m_VertexBuffer.Get(), static_cast<unsigned int>(modelData.vertexCount), modelData.vertices.get(), 0);
 	m_VertexCount = static_cast<unsigned int>(modelData.vertexCount);
 }
 

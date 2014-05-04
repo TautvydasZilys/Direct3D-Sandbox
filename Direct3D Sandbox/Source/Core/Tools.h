@@ -21,6 +21,8 @@ namespace Tools
 	string ToLower(const string& str);
 	wstring ToLower(const wstring& str);
 
+	void FatalError(const wstring& msg);
+
 	namespace BufferReader
 	{
 		string ReadString(const vector<uint8_t>& buffer, unsigned int& position);
