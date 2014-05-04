@@ -57,9 +57,10 @@ void Model::SetRenderParametersAndApplyBuffers(RenderParameters& renderParameter
 {
 	if (!DidThisLastSet())
 	{
+		const UINT offset = 0;
 		auto deviceContext = GetD3D11DeviceContext();
 
-		deviceContext->IASetVertexBuffers(0, 1, m_VertexBuffer.GetAddressOf(), m_Shader.GetInputLayoutStrides(), m_Shader.GetInputLayoutOffsets());
+		deviceContext->IASetVertexBuffers(0, 1, m_VertexBuffer.GetAddressOf(), m_Shader.GetInputLayoutStrides(), &offset);
 		SetIndexBufferToDeviceContext();
 	}
 }

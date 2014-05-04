@@ -76,8 +76,10 @@ void AnimatedModel::SetRenderParametersAndApplyBuffers(RenderParameters& renderP
 
 	if (shouldSetVertexBuffer)
 	{
+		const UINT offsets[] = { 0u, 0u };
 		auto deviceContext = GetD3D11DeviceContext();
-		deviceContext->IASetVertexBuffers(0, 2, buffers, m_Shader.GetInputLayoutStrides(), m_Shader.GetInputLayoutOffsets());
+
+		deviceContext->IASetVertexBuffers(0, 2, buffers, m_Shader.GetInputLayoutStrides(), offsets);
 	}
 	
 	SetIndexBufferToDeviceContext();

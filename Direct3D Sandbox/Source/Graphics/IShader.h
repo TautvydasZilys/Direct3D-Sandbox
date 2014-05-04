@@ -36,7 +36,6 @@ public:
 
 	virtual void SetRenderParameters(const RenderParameters& renderParameters) = 0;
 	virtual const unsigned int* GetInputLayoutStrides() const = 0;
-	virtual const unsigned int* GetInputLayoutOffsets() const = 0;
 	
 	static void LoadShaders();
 	static IShader& GetShader(ShaderType shaderType) { return *s_Shaders[shaderType]; }

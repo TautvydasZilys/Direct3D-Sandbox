@@ -85,15 +85,6 @@ void VertexShader::ReflectInputLayout(const vector<uint8_t>& shaderBuffer, const
 		}
 	}
 
-	// Calculate offsets
-	m_InputLayoutOffsets.reserve(m_InputLayoutStrides.size());
-	m_InputLayoutOffsets.push_back(0);
-
-	for (auto i = 0u; i < m_InputLayoutStrides.size() - 1; i++)
-	{
-		m_InputLayoutOffsets.push_back(m_InputLayoutStrides[i]);
-	}
-
 	result = GetD3D11Device()->CreateInputLayout(inputLayoutDescription.get(), numberOfInputLayoutItems, 
 		shaderBuffer.data(), shaderBuffer.size(), &m_InputLayout);
 	Assert(result == S_OK);

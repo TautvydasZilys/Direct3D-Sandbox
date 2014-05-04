@@ -35,10 +35,10 @@ void MutableModel::SetRenderParametersAndApplyBuffers(RenderParameters& renderPa
 {
 	if (m_DirtyVertexBuffer || !DidThisLastSet())
 	{
-		auto const offset = 0u;
+		const UINT offset = 0u;
 		auto deviceContext = GetD3D11DeviceContext();
 
-		deviceContext->IASetVertexBuffers(0, 1, m_VertexBuffer.GetAddressOf(), m_Shader.GetInputLayoutStrides(), m_Shader.GetInputLayoutOffsets());
+		deviceContext->IASetVertexBuffers(0, 1, m_VertexBuffer.GetAddressOf(), m_Shader.GetInputLayoutStrides(), &offset);
 		m_DirtyVertexBuffer = false;
 	}
 

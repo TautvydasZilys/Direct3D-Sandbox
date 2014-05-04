@@ -22,5 +22,4 @@ public:
 
 	virtual void SetRenderParameters(const RenderParameters& renderParameters);
 	virtual const unsigned int* GetInputLayoutStrides() const { return m_VertexShader.GetInputLayoutStrides(); }
-	virtual const unsigned int* GetInputLayoutOffsets() const { return m_VertexShader.GetInputLayoutOffsets(); }
 };

@@ -32,7 +32,7 @@ void InputLayoutItem::FillInputElementDescription(D3D11_INPUT_ELEMENT_DESC& elem
 	elementDescription.SemanticName = m_Name.c_str();
 	elementDescription.SemanticIndex = m_SemanticIndex;
 	elementDescription.Format = m_Format;
-	elementDescription.InputSlot = 0;
+	elementDescription.InputSlot = m_SemanticIndex;
 	elementDescription.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
 	elementDescription.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 	elementDescription.InstanceDataStepRate = 0;

@@ -15,7 +15,6 @@ private:
 
 	vector<vector<InputLayoutItem>> m_InputLayoutItems;
 	vector<unsigned int> m_InputLayoutStrides;
-	vector<unsigned int> m_InputLayoutOffsets;
 	
 	void ReflectInputLayout(const vector<uint8_t>& shaderBuffer, const vector<uint8_t>& metadataBuffer);
 	
@@ -40,7 +39,6 @@ public:
 	void UploadVertexData(ID3D11Buffer* vertexBuffer, unsigned int vertexCount, const VertexParameters vertices[], unsigned int semanticIndex) const;
 	
 	inline const unsigned int* GetInputLayoutStrides() const { return m_InputLayoutStrides.data(); }
-	inline const unsigned int* GetInputLayoutOffsets() const { return m_InputLayoutOffsets.data(); }
 
 	virtual void SetRenderParameters(const RenderParameters& renderParameters);
 };
