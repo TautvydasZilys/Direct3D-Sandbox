@@ -405,11 +405,6 @@ static void SerializeAnimatedModel(const vector<vector<ModelData>>& modelStates,
 				targetVertex.normal = modelFrames[j].vertices[u].normal;
 				targetVertex.tangent = modelFrames[j].vertices[u].tangent;
 				targetVertex.binormal = modelFrames[j].vertices[u].binormal;
-
-				targetVertex.positionSecondary = modelFrames[(j + 1) % modelFrames.size()].vertices[u].position;
-				targetVertex.normalSecondary = modelFrames[(j + 1) % modelFrames.size()].vertices[u].normal;
-				targetVertex.tangentSecondary = modelFrames[(j + 1) % modelFrames.size()].vertices[u].tangent;
-				targetVertex.binormalSecondary = modelFrames[(j + 1) % modelFrames.size()].vertices[u].binormal;
 			}
 
 			vertexOffset += vertexCount;

@@ -39,11 +39,7 @@
 			FIELD(DirectX::XMFLOAT2, textureCoordinates) \
 			FIELD(DirectX::XMFLOAT3, normal) \
 			FIELD(DirectX::XMFLOAT3, tangent) \
-			FIELD(DirectX::XMFLOAT3, binormal) \
-			FIELD(DirectX::XMFLOAT4, positionSecondary) \
-			FIELD(DirectX::XMFLOAT3, normalSecondary) \
-			FIELD(DirectX::XMFLOAT3, tangentSecondary) \
-			FIELD(DirectX::XMFLOAT3, binormalSecondary)
+			FIELD(DirectX::XMFLOAT3, binormal)
 
 
 struct RenderParameters
