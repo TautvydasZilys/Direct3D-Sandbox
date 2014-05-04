@@ -58,7 +58,7 @@ bool ZombieInstance::CanMoveTo(const DirectX::XMFLOAT2& position, const vector<w
 
 float ZombieInstance::GetAnimationTransitionLength(ZombieStates from, ZombieStates to)
 {
-	return 0.5f;
+	return 1.5f;
 }
 
 void ZombieInstance::SetAnimationParameters(RenderParameters& renderParameters, ZombieStates targetState)
@@ -95,7 +95,7 @@ void ZombieInstance::SetAnimationParameters(RenderParameters& renderParameters, 
 	}
 	else
 	{
-		Assert(!m_IsTransitioningAnimationStates);
+		m_IsTransitioningAnimationStates = false;
 		m_AnimationProgress[m_CurrentState] += renderParameters.frameTime / kAnimationPeriods[m_CurrentState];
 	}
 
