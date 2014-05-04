@@ -58,15 +58,16 @@ void AnimatedModel::SetRenderParametersAndApplyBuffers(RenderParameters& renderP
 		auto currentFrameFloat = renderParameters.animationProgress * m_StateData[renderParameters.currentAnimationState].frameCount;
 		currentFrame = static_cast<int>(currentFrameFloat);
 
-		renderParameters.currentFrameProgress = currentFrameFloat - currentFrame;
+		auto nextFrame = (currentFrame + 1) % m_StateData[renderParameters.currentAnimationState].frameCount;
 	
+		renderParameters.currentFrameProgress = currentFrameFloat - currentFrame;
 		currentFrame += static_cast<int>(m_StateData[renderParameters.currentAnimationState].frameOffset);
-
+		nextFrame += static_cast<int>(m_StateData[renderParameters.currentAnimationState].frameOffset);
 
 		if (!DidThisLastSet() || s_LastFrameSet != currentFrame)
 		{
 			buffers[0] = m_FromFrameVertexBuffers[currentFrame].Get();
-			buffers[1] = m_ToFrameVertexBuffers[(currentFrame + 1) % m_ToFrameVertexBuffers.size()].Get();
+			buffers[1] = m_ToFrameVertexBuffers[nextFrame].Get();
 			
 			shouldSetVertexBuffer = true;
 		}
