@@ -77,6 +77,8 @@ struct ModelData
 	{
 	}
 
+	virtual ~ModelData() {}
+
 private:
 	ModelData(const ModelData& other);
 	ModelData& operator=(const ModelData& other);
@@ -105,6 +107,8 @@ struct AnimatedModelData : public ModelData
 		stateData(std::move(other.stateData))
 	{
 	}
+
+	virtual ~AnimatedModelData() {}
 
 private:
 	AnimatedModelData(const AnimatedModelData& other);
