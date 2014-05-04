@@ -33,7 +33,7 @@ MutableModel::~MutableModel()
 
 void MutableModel::SetRenderParametersAndApplyBuffers(RenderParameters& renderParameters)
 {
-	if (m_DirtyVertexBuffer)
+	if (m_DirtyVertexBuffer || !DidThisLastSet())
 	{
 		auto const offset = 0u;
 		auto deviceContext = GetD3D11DeviceContext();
