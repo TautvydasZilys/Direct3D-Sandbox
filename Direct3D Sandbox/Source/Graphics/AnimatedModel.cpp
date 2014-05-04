@@ -46,39 +46,49 @@ void AnimatedModel::CreateBuffers(const AnimatedModelData& modelData)
 void AnimatedModel::SetRenderParametersAndApplyBuffers(RenderParameters& renderParameters)
 {
 	static int s_LastFrameSet = -1;
-	int currentFrame;
+	int currentFrame, nextFrame;
 
-	Assert(renderParameters.animationProgress >= 0.0f && renderParameters.animationProgress <= 1.0f);
+	Assert(renderParameters.currentStateAnimationProgress >= 0.0f && renderParameters.currentStateAnimationProgress <= 1.0f);
 	
 	bool shouldSetVertexBuffer = false;
-	ID3D11Buffer* buffers[2];
+	
+	auto currentFrameFloat = renderParameters.currentStateAnimationProgress * m_StateData[renderParameters.currentAnimationState].frameCount;
+	currentFrame = static_cast<int>(currentFrameFloat);
 
-//	if (!renderParameters.isTransitioningAnimationStates)
-//	{	
-		auto currentFrameFloat = renderParameters.animationProgress * m_StateData[renderParameters.currentAnimationState].frameCount;
-		currentFrame = static_cast<int>(currentFrameFloat);
-
-		auto nextFrame = (currentFrame + 1) % m_StateData[renderParameters.currentAnimationState].frameCount;
+	if (!renderParameters.isTransitioningAnimationStates)
+	{	
+		nextFrame = (currentFrame + 1) % m_StateData[renderParameters.currentAnimationState].frameCount;
 	
 		renderParameters.currentFrameProgress = currentFrameFloat - currentFrame;
 		currentFrame += static_cast<int>(m_StateData[renderParameters.currentAnimationState].frameOffset);
 		nextFrame += static_cast<int>(m_StateData[renderParameters.currentAnimationState].frameOffset);
 
-		if (!DidThisLastSet() || s_LastFrameSet != currentFrame)
-		{
-			buffers[0] = m_FromFrameVertexBuffers[currentFrame].Get();
-			buffers[1] = m_ToFrameVertexBuffers[nextFrame].Get();
-			
-			shouldSetVertexBuffer = true;
-		}
-		
+		shouldSetVertexBuffer = !DidThisLastSet() || s_LastFrameSet != currentFrame;		
 		s_LastFrameSet = currentFrame;
-//	}
+	}
+	else
+	{
+		auto targetFrameFloat = renderParameters.targetStateAnimationProgress * m_StateData[renderParameters.targetAnimationState].frameCount;
+		nextFrame = static_cast<int>(targetFrameFloat);
+		
+		renderParameters.currentFrameProgress = renderParameters.transitionProgress;
+		currentFrame += static_cast<int>(m_StateData[renderParameters.currentAnimationState].frameOffset);
+		nextFrame += static_cast<int>(m_StateData[renderParameters.targetAnimationState].frameOffset);		
+
+		shouldSetVertexBuffer = true;
+		s_LastFrameSet = -1;
+	}
 
 	if (shouldSetVertexBuffer)
 	{
 		const UINT offsets[] = { 0u, 0u };
 		auto deviceContext = GetD3D11DeviceContext();
+
+		ID3D11Buffer* buffers[] = 
+		{
+			m_FromFrameVertexBuffers[currentFrame].Get(),
+			m_ToFrameVertexBuffers[nextFrame].Get()
+		};
 
 		deviceContext->IASetVertexBuffers(0, 2, buffers, m_Shader.GetInputLayoutStrides(), offsets);
 	}

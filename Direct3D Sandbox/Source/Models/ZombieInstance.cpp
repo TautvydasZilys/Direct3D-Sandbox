@@ -63,7 +63,7 @@ float ZombieInstance::GetAnimationTransitionLength(ZombieStates from, ZombieStat
 
 void ZombieInstance::SetAnimationParameters(RenderParameters& renderParameters, ZombieStates targetState)
 {
-	if (m_CurrentState != targetState)
+	if (m_CurrentState != targetState || m_TransitionProgress > 0.0f)
 	{
 		if (!m_IsTransitioningAnimationStates)
 		{
@@ -72,27 +72,35 @@ void ZombieInstance::SetAnimationParameters(RenderParameters& renderParameters, 
 		}
 		else
 		{
+			if (m_CurrentState == targetState)
+			{
+				targetState = m_CurrentState;
+				m_CurrentState = static_cast<ZombieStates>(abs(m_CurrentState - 1));
+				m_TransitionProgress = 1.0f - m_TransitionProgress;
+			}
+
 			m_TransitionProgress += renderParameters.frameTime / GetAnimationTransitionLength(m_CurrentState, targetState);
 
 			if (m_TransitionProgress >= 1.0f)
 			{
 				m_IsTransitioningAnimationStates = false;
-				m_TransitionProgress = 1.0f;
+				m_TransitionProgress = 0.0f;
 				m_CurrentState = targetState;
 			}
 		}
 		
-		m_AnimationProgress[targetState] += renderParameters.frameTime / kAnimationPeriods[m_CurrentState];
-
 		renderParameters.targetAnimationState = targetState;
-		renderParameters.targetStateFrameProgress =  m_AnimationProgress[targetState] - floor(m_AnimationProgress[targetState]);
+		renderParameters.targetStateAnimationProgress = m_AnimationProgress[targetState] - floor(m_AnimationProgress[targetState]);
 		renderParameters.transitionProgress = m_TransitionProgress;
 	}
-
-	m_AnimationProgress[m_CurrentState] += renderParameters.frameTime / kAnimationPeriods[m_CurrentState];
+	else
+	{
+		Assert(!m_IsTransitioningAnimationStates);
+		m_AnimationProgress[m_CurrentState] += renderParameters.frameTime / kAnimationPeriods[m_CurrentState];
+	}
 
 	renderParameters.isTransitioningAnimationStates = m_IsTransitioningAnimationStates;
-	renderParameters.animationProgress = m_AnimationProgress[m_CurrentState] - floor(m_AnimationProgress[m_CurrentState]);
+	renderParameters.currentStateAnimationProgress = m_AnimationProgress[m_CurrentState] - floor(m_AnimationProgress[m_CurrentState]);
 	renderParameters.currentAnimationState = m_CurrentState;
 }
 

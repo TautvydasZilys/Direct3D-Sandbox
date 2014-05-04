@@ -25,12 +25,12 @@
 			FIELD(ID3D11ShaderResourceView*, normalMap) \
 			FIELD(int, screenWidth) \
 			FIELD(int, screenHeight) \
-			FIELD(int, currentAnimationState) \
-			FIELD(float, currentFrameProgress) \
-			FIELD(float, animationProgress) \
 			FIELD(bool, isTransitioningAnimationStates) \
+			FIELD(float, currentFrameProgress) \
+			FIELD(int, currentAnimationState) \
 			FIELD(int, targetAnimationState) \
-			FIELD(float, targetStateFrameProgress) \
+			FIELD(float, currentStateAnimationProgress) \
+			FIELD(float, targetStateAnimationProgress) \
 			FIELD(float, transitionProgress)
 
 

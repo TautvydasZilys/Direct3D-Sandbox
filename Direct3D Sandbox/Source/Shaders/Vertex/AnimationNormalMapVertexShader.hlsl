@@ -13,10 +13,10 @@ struct VertexInput
     float3 tangent : TANGENT;
     float3 binormal : BINORMAL;
 	
-	float4 position2 : POSITIONSECONDARY;
-	float3 normal2 : NORMALSECONDARY;
-	float3 tangent2 : TANGENTSECONDARY;
-	float3 binormal2 : BINORMALSECONDARY;
+	float4 position2 : POSITION1;
+	float3 normal2 : NORMAL1;
+	float3 tangent2 : TANGENT1;
+	float3 binormal2 : BINORMAL1;
 };
 
 struct PixelInput
