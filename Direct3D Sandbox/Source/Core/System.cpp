@@ -56,7 +56,6 @@ System::System() :
 
 	// Create scene
 	
-	auto& playgroundShader = IShader::GetShader(ShaderType::PLAYGROUND_SHADER);
 	auto& textureShader = IShader::GetShader(ShaderType::TEXTURE_SHADER);
 	auto& normalMapShader = IShader::GetShader(ShaderType::NORMAL_MAP_SHADER);
 	
