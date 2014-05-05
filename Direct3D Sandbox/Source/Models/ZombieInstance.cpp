@@ -4,7 +4,7 @@
 #include "Source\\Graphics\\IShader.h"
 #include "ZombieInstance.h"
 
-const float ZombieInstance::kAnimationPeriods[ZombieStates::StateCount] = { 2.0f, 0.75f };
+const float ZombieInstance::kAnimationPeriods[ZombieStates::StateCount] = { 2.0f, 0.8f, 1.167f };
 const float ZombieInstance::kZombieDistancePerRunningAnimationTime = 1.5f;
 
 ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, const PlayerInstance& targetPlayer, 
@@ -58,7 +58,7 @@ bool ZombieInstance::CanMoveTo(const DirectX::XMFLOAT2& position, const vector<w
 
 float ZombieInstance::GetAnimationTransitionLength(ZombieStates from, ZombieStates to)
 {
-	return 1.5f;
+	return 0.5f;
 }
 
 void ZombieInstance::SetAnimationParameters(RenderParameters& renderParameters, ZombieStates targetState)
@@ -109,12 +109,13 @@ void ZombieInstance::UpdateAndRender(RenderParameters& renderParameters)
 #if !DISABLE_ZOMBIE_MOVEMENT
 	auto playerPosition = m_TargetPlayer.GetPosition();
 	auto angleY = -atan2(m_Parameters.position.z - playerPosition.z, m_Parameters.position.x - playerPosition.x) - DirectX::XM_PI / 2.0f;
+	
+	ZombieStates targetState;
 
 	DirectX::XMFLOAT2 vectorToPlayer(playerPosition.x - m_Parameters.position.x, playerPosition.z - m_Parameters.position.z);
 	auto distanceToPlayerSqr = vectorToPlayer.x * vectorToPlayer.x + vectorToPlayer.y * vectorToPlayer.y;	
-	bool moving = false;
 
-	if (distanceToPlayerSqr > 0.25f)
+	if (distanceToPlayerSqr > 1.5f)
 	{
 		auto vectorMultiplier = m_Speed * renderParameters.frameTime / sqrt(distanceToPlayerSqr);
 
@@ -123,16 +124,24 @@ void ZombieInstance::UpdateAndRender(RenderParameters& renderParameters)
 
 		if (CanMoveTo(newPosition, m_Zombies, this))
 		{
-			moving = true;
+			targetState = ZombieStates::Running;
 
 			m_Parameters.position.x = newPosition.x;
 			m_Parameters.position.z = newPosition.y;
 		}
+		else
+		{
+			targetState = ZombieStates::Idle;
+		}
+	}
+	else
+	{
+		targetState = ZombieStates::Hitting;
 	}
 
 	SetRotation(DirectX::XMFLOAT3(0.0f, angleY, 0.0f));
 
-	SetAnimationParameters(renderParameters, moving ? ZombieStates::Running : ZombieStates::Idle);
+	SetAnimationParameters(renderParameters, targetState);
 #endif
 
 	ZombieInstanceBase::UpdateAndRender(renderParameters);

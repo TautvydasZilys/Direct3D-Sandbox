@@ -12,6 +12,7 @@ class ZombieInstance :
 	{
 		Idle = 0,
 		Running,
+		Hitting,
 		StateCount
 	};
 
