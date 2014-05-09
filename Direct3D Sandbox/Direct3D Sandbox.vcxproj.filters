@@ -284,7 +284,9 @@
     <ClInclude Include="Source\Graphics\MutableModel.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Core\AnimationStateMachine.h" />
+    <ClInclude Include="Source\Core\AnimationStateMachine.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\ApplicationIcon.png">
