@@ -608,6 +608,7 @@ del xcopyexclude.txt
     <ClInclude Include="Source\Cameras\FPSControllerCamera.h" />
     <ClInclude Include="Source\Cameras\FreeMovementCamera.h" />
     <ClInclude Include="Source\Core\AlignedClass.h" />
+    <ClInclude Include="Source\Core\AnimationStateMachine.h" />
     <ClInclude Include="Source\Core\Constants.h" />
     <ClInclude Include="Source\Core\DirectionalLight.h" />
     <ClInclude Include="Source\Core\Input.h" />
