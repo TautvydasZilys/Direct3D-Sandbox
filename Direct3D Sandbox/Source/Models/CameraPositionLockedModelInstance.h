@@ -2,9 +2,6 @@
 
 #include "ModelInstance.h"
 
-template <typename T>
-struct TypedDimensions;
-
 class CameraPositionLockedModelInstance :
 	public ModelInstance
 {
