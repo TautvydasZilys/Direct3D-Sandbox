@@ -10,6 +10,9 @@ protected:
 	const PlayerInstance& m_TargetPlayer;
 	const float m_Speed;
 
+	bool m_IsDead;
+	float m_SpawnTime;
+
 	ZombieInstanceBase(IShader& shader, const wstring& modelPath, const wstring& texturePath, const wstring& normalMapPath,
 		const ModelParameters& modelParameters, const PlayerInstance& targetPlayer, float speed);
 
@@ -22,5 +25,7 @@ private:
 public:
 	virtual ~ZombieInstanceBase();
 	virtual void UpdateAndRender(RenderParameters& renderParameters);
+
+	bool IsDead() const { return m_IsDead; }
 };
 

@@ -36,7 +36,6 @@ using namespace std;
 #undef DrawText
 #endif
 
-#define DISABLE_ZOMBIE_MOVEMENT 0
 #define ENABLE_FRUSTUM_CULLING 1
 
 #define WIDE2(x) L##x

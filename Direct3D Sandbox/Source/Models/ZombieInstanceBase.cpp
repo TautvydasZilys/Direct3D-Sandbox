@@ -9,7 +9,9 @@ ZombieInstanceBase::ZombieInstanceBase(IShader& shader, const wstring& modelPath
 		const ModelParameters& modelParameters, const PlayerInstance& targetPlayer, float speed) :
 	ModelInstance(shader, modelPath, modelParameters, texturePath, normalMapPath),
 	m_TargetPlayer(targetPlayer),
-	m_Speed(speed)
+	m_Speed(speed),
+	m_IsDead(false),
+	m_SpawnTime(static_cast<float>(Tools::GetTime()))
 {
 }
 

@@ -13,16 +13,21 @@ class ZombieInstance :
 		Idle = 0,
 		Running,
 		Hitting,
+		Death,
 		StateCount
 	};
-
+	
 	static const float kAnimationPeriods[ZombieStates::StateCount];
+	static const bool kDoesAnimationLoop[ZombieStates::StateCount];
 	static const float kZombieDistancePerRunningAnimationTime;
+	static const float kZombieBodyLastingTime;
 	
 	ZombieStates m_CurrentState;
 	float m_AnimationProgress[ZombieStates::StateCount];
 	bool m_IsTransitioningAnimationStates;
 	float m_TransitionProgress;
+
+	float m_GonnaLiveFor;
 
 	static float GetAnimationTransitionLength(ZombieStates from, ZombieStates to);
 	static bool CanMoveTo(const DirectX::XMFLOAT2& position, const vector<weak_ptr<ZombieInstanceBase>>& zombies,
