@@ -28,7 +28,6 @@ private:
 	unique_ptr<Camera> m_Camera;
 	unique_ptr<Camera> m_OrthoCamera;
 	DirectionalLight m_Light;
-	vector<shared_ptr<IModelInstance>> m_Models;	
 	
 	void Update();
 	void Draw();
@@ -50,6 +49,7 @@ private:
 	};
 
 	vector<AddRemoveModelItem> m_AddRemoveModelQueue;
+	vector<shared_ptr<IModelInstance>> m_Models;
 
 	void AddModelImpl(shared_ptr<IModelInstance> model);
 	void RemoveModelImpl(const IModelInstance* model);
