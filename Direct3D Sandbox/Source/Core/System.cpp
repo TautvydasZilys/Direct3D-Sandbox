@@ -92,7 +92,7 @@ void System::Run()
 		Draw();
 
 		IncrementFpsCounter();
-		return;
+
 #if DEBUG
 		Assert(_CrtCheckMemory() == TRUE);
 #endif
