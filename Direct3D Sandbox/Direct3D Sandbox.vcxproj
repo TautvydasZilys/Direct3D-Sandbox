@@ -595,6 +595,7 @@ del xcopyexclude.txt
     <ClCompile Include="Source\Models\CameraPositionLockedModelInstance.cpp" />
     <ClCompile Include="Source\Models\IModelInstance.cpp" />
     <ClCompile Include="Source\Models\InfiniteGroundModelInstance.cpp" />
+    <ClCompile Include="Source\Models\LaserProjectileInstance.cpp" />
     <ClCompile Include="Source\Models\ModelInstance.cpp" />
     <ClCompile Include="Source\Models\ModelInstance2D.cpp" />
     <ClCompile Include="Source\Models\ModelInstance3D.cpp" />
@@ -641,6 +642,7 @@ del xcopyexclude.txt
     <ClInclude Include="Source\Models\CameraPositionLockedModelInstance.h" />
     <ClInclude Include="Source\Models\IModelInstance.h" />
     <ClInclude Include="Source\Models\InfiniteGroundModelInstance.h" />
+    <ClInclude Include="Source\Models\LaserProjectileInstance.h" />
     <ClInclude Include="Source\Models\ModelInstance.h" />
     <ClInclude Include="Source\Models\ModelInstance2D.h" />
     <ClInclude Include="Source\Models\ModelInstance3D.h" />

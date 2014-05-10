@@ -6,8 +6,10 @@
 // edge2 = u2 * tangent + v2 * binormal
 static void CalculateTangentsAndBinormals(ModelData& model)
 {
-	DirectX::XMVECTOR edges[2];
-	DirectX::XMVECTOR tangent, binormal;
+	using namespace DirectX;
+
+	XMVECTOR edges[2];
+	XMVECTOR tangent, binormal;
 	float u1, u2, v1, v2;
 
 	auto& vertices = model.vertices;
@@ -31,8 +33,8 @@ static void CalculateTangentsAndBinormals(ModelData& model)
 		v1 = vertices[indices[i + 1]].textureCoordinates.y - vertices[indices[i]].textureCoordinates.y;
 		v2 = vertices[indices[i + 2]].textureCoordinates.y - vertices[indices[i]].textureCoordinates.y;
 		
-		tangent = DirectX::XMVectorScale(DirectX::XMVectorSubtract(DirectX::XMVectorScale(edges[1], v1), DirectX::XMVectorScale(edges[0], v2)), 1.0f / (u2 * v1 - u1 * v2));
-		binormal = DirectX::XMVectorScale(DirectX::XMVectorSubtract(DirectX::XMVectorScale(edges[1], u1), DirectX::XMVectorScale(edges[0], u2)), 1.0f / (u1 * v2 - u2 * v1));
+		tangent = (edges[1] * v1 - edges[0] * v2) / (u2 * v1 - u1 * v2);
+		binormal = (edges[1] * u1 - edges[0] * u2) / (u1 * v2 - u2 * v1);
 		
 		DirectX::XMStoreFloat3(&vertices[indices[i]].tangent, tangent);
 		DirectX::XMStoreFloat3(&vertices[indices[i]].binormal, binormal);

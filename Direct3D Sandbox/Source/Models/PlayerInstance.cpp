@@ -10,8 +10,6 @@
 #include "WeaponInstance.h"
 #include "ZombieInstance.h"
 
-const DirectX::XMFLOAT3 weaponPositionOffset(0.15f, -0.2f, -0.5f);
-
 PlayerInstance::PlayerInstance(const Camera& playerCamera) :
 	m_Camera(playerCamera), m_Weapon(*new WeaponInstance), m_StartTime(static_cast<float>(Tools::GetTime())), m_LastSpawnTime(m_StartTime)
 {
@@ -109,6 +107,8 @@ void PlayerInstance::UpdateWeapon()
 	auto yRotationSin = sin(weaponRotation.y);
 	auto yRotationCos = cos(weaponRotation.y);
 
+	const auto& weaponPositionOffset = WeaponInstance::kWeaponPositionOffset;
+
 	auto offsetZ = weaponPositionOffset.y * xRotationSin + weaponPositionOffset.z * xRotationCos;
 	
 	weaponPosition.x += weaponPositionOffset.x * yRotationCos + offsetZ * yRotationSin;
@@ -117,4 +117,12 @@ void PlayerInstance::UpdateWeapon()
 
 	m_Weapon.SetPosition(weaponPosition);
 	m_Weapon.SetRotation(weaponRotation);
+
+	auto& input = Input::GetInstance();
+
+	if (input.IsMouseButtonDown(1))
+	{
+		m_Weapon.Fire();
+		input.MouseButtonUp(1);
+	}
 }

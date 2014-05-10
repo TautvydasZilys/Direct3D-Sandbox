@@ -11,5 +11,9 @@ private:
 public:
 	WeaponInstance();
 	virtual ~WeaponInstance();
+
+	void Fire();
+
+	static const DirectX::XMFLOAT3 kWeaponPositionOffset;
 };
 

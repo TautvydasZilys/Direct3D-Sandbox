@@ -171,6 +171,7 @@
     <ClCompile Include="Source\Models\ModelInstance3D.cpp">
       <Filter>Source\Models</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Models\LaserProjectileInstance.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\PrecompiledHeader.h">
@@ -305,6 +306,7 @@
     <ClInclude Include="Source\Models\ModelInstance3D.h">
       <Filter>Source\Models</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Models\LaserProjectileInstance.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\ApplicationIcon.png">
