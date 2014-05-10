@@ -162,6 +162,9 @@
     <ClCompile Include="Source\Graphics\MutableModel.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Models\WeaponInstance.cpp">
+      <Filter>Source\Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\PrecompiledHeader.h">
@@ -286,6 +289,9 @@
     </ClInclude>
     <ClInclude Include="Source\Core\AnimationStateMachine.h">
       <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Models\WeaponInstance.h">
+      <Filter>Source\Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

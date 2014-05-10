@@ -10,6 +10,10 @@ struct ModelParameters
 	DirectX::XMFLOAT3 rotation;
 	DirectX::XMFLOAT3 scale;
 	DirectX::XMFLOAT4 color;
+
+	ModelParameters() : position(0.0f, 0.0f, 0.0f), rotation(0.0f, 0.0f, 0.0f), scale(1.0f, 1.0f, 1.0f), color(1.0f, 1.0f, 1.0f, 1.0f)
+	{
+	}
 };
 
 class ModelInstance : 
@@ -34,8 +38,6 @@ private:
 protected:
 	ModelParameters m_Parameters;
 
-	void SetPosition(const DirectX::XMFLOAT3& position);
-	void SetRotation(const DirectX::XMFLOAT3& rotation);
 	void DirtyWorldMatrix() { m_DirtyWorldMatrix = true; }
 
 public:
@@ -46,6 +48,9 @@ public:
 	
 	virtual void UpdateAndRender(RenderParameters& renderParameters);
 	virtual void UpdateAndRender2D(RenderParameters& renderParameters) { }
+
+	void SetPosition(const DirectX::XMFLOAT3& position);
+	void SetRotation(const DirectX::XMFLOAT3& rotation);
 
 	float HorizontalDistanceSqrTo(const DirectX::XMFLOAT2& position);
 };

@@ -7,15 +7,20 @@
 #include "System.h"
 
 #include "SuperZombieInstance.h"
+#include "WeaponInstance.h"
 #include "ZombieInstance.h"
 
+const DirectX::XMFLOAT3 weaponPositionOffset(0.15f, -0.2f, -0.5f);
+
 PlayerInstance::PlayerInstance(const Camera& playerCamera) :
-	m_Camera(playerCamera), m_StartTime(static_cast<float>(Tools::GetTime())), m_LastSpawnTime(m_StartTime)
+	m_Camera(playerCamera), m_Weapon(*new WeaponInstance), m_StartTime(static_cast<float>(Tools::GetTime())), m_LastSpawnTime(m_StartTime)
 {
 	for (int i = 0; i < Constants::StartingZombieCount; i++)
 	{
 		SpawnRandomZombie();
 	}
+
+	System::GetInstance().AddModel(shared_ptr<WeaponInstance>(&m_Weapon));
 }
 
 PlayerInstance::~PlayerInstance()
@@ -40,6 +45,8 @@ void PlayerInstance::UpdateAndRender(RenderParameters& renderParameters)
 		SpawnRandomZombie();
 		m_LastSpawnTime = renderParameters.time;
 	}
+	
+	UpdateWeapon();
 }
 
 void PlayerInstance::UpdateAndRender2D(RenderParameters& renderParameters)
@@ -80,4 +87,25 @@ void PlayerInstance::SpawnSuperZombie()
 	
 	System::GetInstance().AddModel(zombie);
 	m_Zombies.push_back(zombie);
+}
+
+void PlayerInstance::UpdateWeapon()
+{
+	auto weaponPosition = m_Camera.GetPosition();
+	auto weaponRotation = m_Camera.GetRotation();
+	
+	auto xRotationSin = sin(weaponRotation.x);
+	auto xRotationCos = cos(weaponRotation.x);
+
+	auto yRotationSin = sin(weaponRotation.y);
+	auto yRotationCos = cos(weaponRotation.y);
+
+	auto offsetZ = weaponPositionOffset.y * xRotationSin + weaponPositionOffset.z * xRotationCos;
+	
+	weaponPosition.x += weaponPositionOffset.x * yRotationCos + offsetZ * yRotationSin;
+	weaponPosition.y += weaponPositionOffset.y * xRotationCos - weaponPositionOffset.z * xRotationSin;
+	weaponPosition.z += -weaponPositionOffset.x * yRotationSin + offsetZ * yRotationCos;	
+
+	m_Weapon.SetPosition(weaponPosition);
+	m_Weapon.SetRotation(weaponRotation);
 }

@@ -59,12 +59,8 @@ System::System() :
 	auto& textureShader = IShader::GetShader(ShaderType::TEXTURE_SHADER);
 	auto& normalMapShader = IShader::GetShader(ShaderType::NORMAL_MAP_SHADER);
 	
-	ModelParameters modelParameters; 
-	
-	modelParameters.position = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
-	modelParameters.rotation = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+	ModelParameters modelParameters;	
 	modelParameters.scale = DirectX::XMFLOAT3(5000.0f, 5000.0f, 5000.0f);
-	modelParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	m_Models.emplace_back(new CameraPositionLockedModelInstance(textureShader, L"Assets\\Models\\skybox.model", modelParameters, 
 		L"Assets\\Textures\\Skybox.dds", TypedDimensions<bool>(true, true, true)));
