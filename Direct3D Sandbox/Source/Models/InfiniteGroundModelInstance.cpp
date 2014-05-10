@@ -15,10 +15,10 @@ InfiniteGroundModelInstance::~InfiniteGroundModelInstance()
 {
 }
 
-void InfiniteGroundModelInstance::UpdateAndRender(RenderParameters& renderParameters)
+void InfiniteGroundModelInstance::UpdateAndRender3D(RenderParameters& renderParameters)
 {
 	renderParameters.groundScale = m_Scale;
 	renderParameters.uvTiling = m_uvTiling;
 
-	CameraPositionLockedModelInstance::UpdateAndRender(renderParameters);
+	CameraPositionLockedModelInstance::UpdateAndRender3D(renderParameters);
 }

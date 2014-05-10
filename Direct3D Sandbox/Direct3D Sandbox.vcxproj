@@ -596,6 +596,8 @@ del xcopyexclude.txt
     <ClCompile Include="Source\Models\IModelInstance.cpp" />
     <ClCompile Include="Source\Models\InfiniteGroundModelInstance.cpp" />
     <ClCompile Include="Source\Models\ModelInstance.cpp" />
+    <ClCompile Include="Source\Models\ModelInstance2D.cpp" />
+    <ClCompile Include="Source\Models\ModelInstance3D.cpp" />
     <ClCompile Include="Source\Models\PlayerInstance.cpp" />
     <ClCompile Include="Source\Models\SuperZombieInstance.cpp" />
     <ClCompile Include="Source\Models\WeaponInstance.cpp" />
@@ -640,6 +642,8 @@ del xcopyexclude.txt
     <ClInclude Include="Source\Models\IModelInstance.h" />
     <ClInclude Include="Source\Models\InfiniteGroundModelInstance.h" />
     <ClInclude Include="Source\Models\ModelInstance.h" />
+    <ClInclude Include="Source\Models\ModelInstance2D.h" />
+    <ClInclude Include="Source\Models\ModelInstance3D.h" />
     <ClInclude Include="Source\Models\PlayerInstance.h" />
     <ClInclude Include="Source\Models\SuperZombieInstance.h" />
     <ClInclude Include="Source\Models\WeaponInstance.h" />

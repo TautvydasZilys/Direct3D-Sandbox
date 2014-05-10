@@ -25,9 +25,18 @@ PlayerInstance::PlayerInstance(const Camera& playerCamera) :
 
 PlayerInstance::~PlayerInstance()
 {
+	for (auto& zombie : m_Zombies)
+	{
+		if (!zombie.expired())
+		{
+			System::GetInstance().RemoveModel(zombie.lock().get());
+		}
+	}
+
+	System::GetInstance().RemoveModel(&m_Weapon);
 }
 
-void PlayerInstance::UpdateAndRender(RenderParameters& renderParameters)
+void PlayerInstance::UpdateAndRender3D(RenderParameters& renderParameters)
 {
 	// Remove destroyed zombies
 	for (auto i = 0u; i < m_Zombies.size(); i++)

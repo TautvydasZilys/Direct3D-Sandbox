@@ -26,7 +26,7 @@ public:
 	PlayerInstance(const Camera& playerCamera);
 	virtual ~PlayerInstance();
 	
-	virtual void UpdateAndRender(RenderParameters& renderParameters);
+	virtual void UpdateAndRender3D(RenderParameters& renderParameters);
 	virtual void UpdateAndRender2D(RenderParameters& renderParameters);
 
 	inline DirectX::XMFLOAT3 GetPosition() const { return m_Camera.GetPosition(); }

@@ -165,6 +165,12 @@
     <ClCompile Include="Source\Models\WeaponInstance.cpp">
       <Filter>Source\Models</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Models\ModelInstance2D.cpp">
+      <Filter>Source\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Models\ModelInstance3D.cpp">
+      <Filter>Source\Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\PrecompiledHeader.h">
@@ -291,6 +297,12 @@
       <Filter>Source\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Models\WeaponInstance.h">
+      <Filter>Source\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Models\ModelInstance2D.h">
+      <Filter>Source\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Models\ModelInstance3D.h">
       <Filter>Source\Models</Filter>
     </ClInclude>
   </ItemGroup>

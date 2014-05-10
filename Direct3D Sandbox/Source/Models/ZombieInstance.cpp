@@ -62,7 +62,7 @@ bool ZombieInstance::CanMoveTo(const DirectX::XMFLOAT2& position, const vector<w
 	return true;
 }
 
-void ZombieInstance::UpdateAndRender(RenderParameters& renderParameters)
+void ZombieInstance::UpdateAndRender3D(RenderParameters& renderParameters)
 {	
 	ZombieStates targetState;
 
@@ -117,7 +117,7 @@ void ZombieInstance::UpdateAndRender(RenderParameters& renderParameters)
 
 	m_AnimationStateMachine.Update(renderParameters, targetState);
 
-	ZombieInstanceBase::UpdateAndRender(renderParameters);
+	ZombieInstanceBase::UpdateAndRender3D(renderParameters);
 }
 
 shared_ptr<ZombieInstanceBase> ZombieInstance::Spawn(const PlayerInstance& targetPlayer, const vector<weak_ptr<ZombieInstanceBase>>& zombies)

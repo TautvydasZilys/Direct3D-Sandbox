@@ -38,7 +38,7 @@ public:
 		const vector<weak_ptr<ZombieInstanceBase>>& zombies);
 	virtual ~ZombieInstance();
 
-	virtual void UpdateAndRender(RenderParameters& renderParameters);
+	virtual void UpdateAndRender3D(RenderParameters& renderParameters);
 
 	static shared_ptr<ZombieInstanceBase> Spawn(const PlayerInstance& targetPlayer, const vector<weak_ptr<ZombieInstanceBase>>& zombies);
 };

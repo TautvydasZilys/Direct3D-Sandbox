@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ModelInstance.h"
+#include "ModelInstance3D.h"
 
 class CameraPositionLockedModelInstance :
-	public ModelInstance
+	public ModelInstance3D
 {
 private:
 	DirectX::XMFLOAT3 m_OriginalPosition;
@@ -17,5 +17,5 @@ public:
 
 	void SetPosition(const DirectX::XMFLOAT3& position);
 
-	virtual void UpdateAndRender(RenderParameters& renderParameters);
+	virtual void UpdateAndRender3D(RenderParameters& renderParameters);
 };

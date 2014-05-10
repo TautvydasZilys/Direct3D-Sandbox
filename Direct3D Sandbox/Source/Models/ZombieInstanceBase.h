@@ -1,10 +1,10 @@
 #pragma once
 
-#include "ModelInstance.h"
+#include "ModelInstance3D.h"
 
 class PlayerInstance;
 class ZombieInstanceBase :
-	public ModelInstance
+	public ModelInstance3D
 {	
 protected:
 	const PlayerInstance& m_TargetPlayer;
@@ -24,7 +24,7 @@ private:
 
 public:
 	virtual ~ZombieInstanceBase();
-	virtual void UpdateAndRender(RenderParameters& renderParameters);
+	virtual void UpdateAndRender3D(RenderParameters& renderParameters);
 
 	bool IsDead() const { return m_IsDead; }
 };

@@ -92,6 +92,10 @@ void System::Run()
 		Draw();
 
 		IncrementFpsCounter();
+		return;
+#if DEBUG
+		Assert(_CrtCheckMemory() == TRUE);
+#endif
 	}
 }
 
@@ -196,7 +200,7 @@ void System::Draw()
 	
 	for (auto& model : m_Models)
 	{
-		model->UpdateAndRender(renderParameters);
+		model->UpdateAndRender3D(renderParameters);
 	}
 	
 	m_Direct3D.TurnZBufferOff();

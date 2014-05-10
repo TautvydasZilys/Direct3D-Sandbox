@@ -211,6 +211,9 @@ Model Font::CreateTextModel(const string& text, IShader& shader)
 
 void Font::DrawText(const string& text, int posX, int posY, RenderParameters& renderParameters, bool useCaching, IShader& shader)
 {	
+	posX -= renderParameters.screenWidth / 2;
+	posY -= renderParameters.screenHeight / 2;
+
 	DirectX::XMMATRIX worldMatrix = DirectX::XMMatrixTranslation(static_cast<float>(posX), static_cast<float>(posY), 0.0f);
 	renderParameters.worldMatrix = DirectX::XMMatrixTranspose(worldMatrix);
 	renderParameters.worldViewProjectionMatrix = renderParameters.viewProjectionMatrix * renderParameters.worldMatrix;

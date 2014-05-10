@@ -7,7 +7,7 @@
 
 ZombieInstanceBase::ZombieInstanceBase(IShader& shader, const wstring& modelPath, const wstring& texturePath, const wstring& normalMapPath,
 		const ModelParameters& modelParameters, const PlayerInstance& targetPlayer, float speed) :
-	ModelInstance(shader, modelPath, modelParameters, texturePath, normalMapPath),
+	ModelInstance3D(shader, modelPath, modelParameters, texturePath, normalMapPath),
 	m_TargetPlayer(targetPlayer),
 	m_Speed(speed),
 	m_IsDead(false),
@@ -19,9 +19,9 @@ ZombieInstanceBase::~ZombieInstanceBase()
 {
 }
 
-void ZombieInstanceBase::UpdateAndRender(RenderParameters& renderParameters)
+void ZombieInstanceBase::UpdateAndRender3D(RenderParameters& renderParameters)
 {
-	ModelInstance::UpdateAndRender(renderParameters);
+	ModelInstance3D::UpdateAndRender3D(renderParameters);
 }
 
 ModelParameters ZombieInstanceBase::GetRandomZombieParameters(const PlayerInstance& targetPlayer)

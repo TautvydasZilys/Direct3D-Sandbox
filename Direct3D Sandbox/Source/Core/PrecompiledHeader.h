@@ -1,5 +1,13 @@
 #pragma once
 
+#ifndef DEBUG
+#define	DEBUG _DEBUG
+#endif
+
+#if DEBUG
+#define _CRTDBG_MAP_ALLOC
+#endif
+
 #include <algorithm>
 #include <fstream>
 #include <functional>
@@ -27,10 +35,6 @@
 
 using namespace Microsoft::WRL;
 using namespace std;
-
-#ifndef DEBUG
-#define	DEBUG _DEBUG
-#endif
 
 #ifdef DrawText
 #undef DrawText

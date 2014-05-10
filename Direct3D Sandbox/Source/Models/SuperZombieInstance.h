@@ -13,7 +13,7 @@ public:
 	SuperZombieInstance(const ModelParameters& modelParameters, const PlayerInstance& targetPlayer);
 	virtual ~SuperZombieInstance();
 
-	virtual void UpdateAndRender(RenderParameters& renderParameters);
+	virtual void UpdateAndRender3D(RenderParameters& renderParameters);
 
 	static shared_ptr<ZombieInstanceBase> Spawn(const PlayerInstance& targetPlayer);
 };

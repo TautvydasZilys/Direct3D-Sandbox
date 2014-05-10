@@ -26,31 +26,31 @@ private:
 
 	IModel& m_Model;
 	ComPtr<ID3D11ShaderResourceView> m_Texture;
-	ComPtr<ID3D11ShaderResourceView> m_NormalMap;
 
-	bool IsInCameraFrustum(const RenderParameters& renderParameters) const;
 	void RecalculateWorldMatrix();
-	const DirectX::XMMATRIX& GetWorldMatrix();
-	const DirectX::XMMATRIX& GetInversedTransposedWorldMatrix();
 
 	ModelInstance(const ModelInstance& other);
 
 protected:
 	ModelParameters m_Parameters;
 
-	void DirtyWorldMatrix() { m_DirtyWorldMatrix = true; }
+	const DirectX::XMMATRIX& GetWorldMatrix();
+	const DirectX::XMMATRIX& GetInversedTransposedWorldMatrix();
+	float GetModelRadius() const { return m_Model.GetRadius(); }
+	
+	virtual void SetRenderParameters(RenderParameters& renderParameters);
+	inline void RenderModel(RenderParameters& renderParameters) { m_Model.Render(renderParameters); }
 
+	void DirtyWorldMatrix() { m_DirtyWorldMatrix = true; }
+	
 public:
 	ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters);
 	ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, const wstring& texturePath);
-	ModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, const wstring& texturePath, const wstring& normalMapPath);
 	virtual ~ModelInstance();
-	
-	virtual void UpdateAndRender(RenderParameters& renderParameters);
-	virtual void UpdateAndRender2D(RenderParameters& renderParameters) { }
 
 	void SetPosition(const DirectX::XMFLOAT3& position);
 	void SetRotation(const DirectX::XMFLOAT3& rotation);
+	void SetScale(const DirectX::XMFLOAT3& scale);
 
 	float HorizontalDistanceSqrTo(const DirectX::XMFLOAT2& position);
 };

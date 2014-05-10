@@ -4,7 +4,7 @@
 
 CameraPositionLockedModelInstance::CameraPositionLockedModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, 
 																		TypedDimensions<bool> lockedDimentions) :
-	ModelInstance(shader, modelPath, modelParameters),
+	ModelInstance3D(shader, modelPath, modelParameters),
 	m_OriginalPosition(modelParameters.position),
 	m_LockedDimensions(lockedDimentions)
 {
@@ -12,7 +12,7 @@ CameraPositionLockedModelInstance::CameraPositionLockedModelInstance(IShader& sh
 
 CameraPositionLockedModelInstance::CameraPositionLockedModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, 
 																		const wstring& texturePath, TypedDimensions<bool> lockedDimentions) :
-	ModelInstance(shader, modelPath, modelParameters, texturePath),
+	ModelInstance3D(shader, modelPath, modelParameters, texturePath),
 	m_OriginalPosition(modelParameters.position),
 	m_LockedDimensions(lockedDimentions)
 {
@@ -22,7 +22,7 @@ CameraPositionLockedModelInstance::~CameraPositionLockedModelInstance()
 {
 }
 
-void CameraPositionLockedModelInstance::UpdateAndRender(RenderParameters& renderParameters)
+void CameraPositionLockedModelInstance::UpdateAndRender3D(RenderParameters& renderParameters)
 {
 	if (m_LockedDimensions.x)
 	{
@@ -40,5 +40,5 @@ void CameraPositionLockedModelInstance::UpdateAndRender(RenderParameters& render
 	}
 
 	DirtyWorldMatrix();
-	ModelInstance::UpdateAndRender(renderParameters);
+	ModelInstance3D::UpdateAndRender3D(renderParameters);
 }

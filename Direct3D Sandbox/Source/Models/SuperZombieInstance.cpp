@@ -20,9 +20,9 @@ SuperZombieInstance::~SuperZombieInstance()
 {
 }
 
-void SuperZombieInstance::UpdateAndRender(RenderParameters& renderParameters)
+void SuperZombieInstance::UpdateAndRender3D(RenderParameters& renderParameters)
 {
-	ZombieInstanceBase::UpdateAndRender(renderParameters);
+	ZombieInstanceBase::UpdateAndRender3D(renderParameters);
 }
 
 shared_ptr<ZombieInstanceBase> SuperZombieInstance::Spawn(const PlayerInstance& targetPlayer)
