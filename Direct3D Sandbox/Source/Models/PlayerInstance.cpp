@@ -74,7 +74,7 @@ void PlayerInstance::UpdateStateNotStarted3D(RenderParameters& renderParameters)
 	auto& input = Input::GetInstance();
 	input.IgnoreDisplacements();
 
-	if (input.IsKeyDown(VK_SPACE))
+	if (input.IsKeyDown(VK_RETURN))
 	{
 		StartGame();
 	}
@@ -87,8 +87,8 @@ void PlayerInstance::UpdateStateNotStarted2D(RenderParameters& renderParameters)
 	m_BoldFont.DrawText("  Welcome to\nZombie Siege!", renderParameters.screenWidth / 2 - 385, 
 		renderParameters.screenHeight / 2 - 200, renderParameters);
 	
-	auto text = "Press space bar to begin";
-	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 245, renderParameters.screenHeight / 2 + 300, renderParameters);
+	auto text = "Press enter to begin";
+	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 200, renderParameters.screenHeight / 2 + 300, renderParameters);
 }
 
 void PlayerInstance::UpdateStatePlaying3D(RenderParameters& renderParameters)
@@ -150,7 +150,7 @@ void PlayerInstance::UpdateStateGameOver3D(RenderParameters& renderParameters)
 	auto& input = Input::GetInstance();
 	input.IgnoreDisplacements();
 
-	if (input.IsKeyDown(VK_SPACE))
+	if (input.IsKeyDown(VK_RETURN))
 	{
 		auto& systemInstance = System::GetInstance();
 
@@ -179,8 +179,8 @@ void PlayerInstance::UpdateStateGameOver2D(RenderParameters& renderParameters)
 	text = to_string(m_ZombiesKilled) + " zombies have fallen beneath you";
 	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 360, renderParameters.screenHeight / 2 + 112, renderParameters);
 
-	text = "Press spacebar to play again";
-	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 290, renderParameters.screenHeight / 2 + 300, renderParameters);
+	text = "Press enter to play again";
+	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 245, renderParameters.screenHeight / 2 + 300, renderParameters);
 }
 
 void PlayerInstance::StartGame()
