@@ -14,19 +14,9 @@ static const float kSmallestSpawnInterval = 0.5f;
 
 PlayerInstance::PlayerInstance(Camera& playerCamera) :
 	m_Camera(playerCamera),
-	m_Weapon(*new WeaponInstance), 
-	m_StartTime(static_cast<float>(Tools::GetTime())), 
-	m_LastSpawnTime(m_StartTime),
-	m_SpawnInterval(Constants::ZombieSpawnIntervalInSeconds),
-	m_SpawnCount(1),
-	m_ZombiesKilled(0)
+	m_GameState(GameState::NotStarted),
+	m_BoldFont(Font::Get(L"Assets\\Fonts\\Segoe UI.font"))
 {
-	for (int i = 0; i < Constants::StartingZombieCount; i++)
-	{
-		SpawnRandomZombie();
-	}
-
-	System::GetInstance().AddModel(shared_ptr<WeaponInstance>(&m_Weapon));
 }
 
 PlayerInstance::~PlayerInstance()
@@ -36,10 +26,69 @@ PlayerInstance::~PlayerInstance()
 		System::GetInstance().RemoveModel(zombie.get());
 	}
 
-	System::GetInstance().RemoveModel(&m_Weapon);
+	if (m_GameState == GameState::Playing)
+	{
+		System::GetInstance().RemoveModel(m_Weapon.get());
+	}
 }
 
 void PlayerInstance::UpdateAndRender3D(RenderParameters& renderParameters)
+{
+	switch (m_GameState)
+	{
+	case GameState::NotStarted:
+		UpdateStateNotStarted3D(renderParameters);
+		break;
+
+	case GameState::Playing:
+		UpdateStatePlaying3D(renderParameters);
+		break;
+
+	case GameState::GameOver:
+		UpdateStateGameOver3D(renderParameters);
+		break;
+	}
+}
+
+void PlayerInstance::UpdateAndRender2D(RenderParameters& renderParameters)
+{
+	switch (m_GameState)
+	{
+	case GameState::NotStarted:
+		UpdateStateNotStarted2D(renderParameters);
+		break;
+
+	case GameState::Playing:
+		UpdateStatePlaying2D(renderParameters);
+		break;
+
+	case GameState::GameOver:
+		UpdateStateGameOver2D(renderParameters);
+		break;
+	}
+}
+
+void PlayerInstance::UpdateStateNotStarted3D(RenderParameters& renderParameters)
+{
+	auto& input = Input::GetInstance();
+	input.IgnoreDisplacements();
+
+	if (input.IsKeyDown(VK_SPACE))
+	{
+		StartGame();
+	}
+}
+
+void PlayerInstance::UpdateStateNotStarted2D(RenderParameters& renderParameters)
+{
+	m_BoldFont.DrawText("  Welcome to\nZombie Siege!", renderParameters.screenWidth / 2 - 385, 
+		renderParameters.screenHeight / 2 - 200, renderParameters);
+	
+	auto text = "Press space bar to begin";
+	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 245, renderParameters.screenHeight / 2 + 300, renderParameters);
+}
+
+void PlayerInstance::UpdateStatePlaying3D(RenderParameters& renderParameters)
 {
 	// Remove destroyed/dead zombies
 	for (auto i = 0u; i < m_Zombies.size(); i++)
@@ -73,16 +122,72 @@ void PlayerInstance::UpdateAndRender3D(RenderParameters& renderParameters)
 	UpdateWeapon();
 }
 
-void PlayerInstance::UpdateAndRender2D(RenderParameters& renderParameters)
+void PlayerInstance::UpdateStatePlaying2D(RenderParameters& renderParameters)
 {
-	static char buffer[20];
 	float delta = renderParameters.time - m_StartTime;
-	sprintf_s(buffer, "%.1f", delta);
 	
 	auto text = "Kill count: " + to_string(m_ZombiesKilled) + "\n"
 		"Number of alive zombies: " + to_string(m_Zombies.size()) + "\n"
-		"You have survived for " + string(buffer) + " seconds";
+		"You have survived for " + Tools::FloatToString(delta) + " seconds";
 	Font::GetDefault().DrawText(text, 25, renderParameters.screenHeight - 200, renderParameters);
+}
+
+void PlayerInstance::UpdateStateGameOver3D(RenderParameters& renderParameters)
+{
+	auto& input = Input::GetInstance();
+	input.IgnoreDisplacements();
+
+	if (input.IsKeyDown(VK_SPACE))
+	{
+		auto& systemInstance = System::GetInstance();
+
+		for (auto& zombie : m_Zombies)
+		{
+			systemInstance.RemoveModel(zombie.get());
+		}
+
+		m_Zombies.clear();
+		StartGame();
+	}
+}
+
+void PlayerInstance::UpdateStateGameOver2D(RenderParameters& renderParameters)
+{
+	m_BoldFont.DrawText("GAME OVER!", renderParameters.screenWidth / 2 - 50, renderParameters.screenHeight / 2 - 50, renderParameters);
+	
+	auto text = "You have survived for " + Tools::FloatToString(m_DeathTime - m_StartTime) +
+		" seconds and you have killed " + to_string(m_ZombiesKilled) + " zombies";
+	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 200, renderParameters.screenHeight / 2 + 50, renderParameters);
+
+	text = "Press spacebar to try again";
+	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 100, renderParameters.screenHeight / 2 + 100, renderParameters);
+}
+
+void PlayerInstance::StartGame()
+{
+	for (int i = 0; i < Constants::StartingZombieCount; i++)
+	{
+		SpawnRandomZombie();
+	}
+
+	m_Weapon = shared_ptr<WeaponInstance>(new WeaponInstance);
+	System::GetInstance().AddModel(m_Weapon);
+
+	m_GameState = GameState::Playing;
+	m_LastSpawnTime = m_StartTime = static_cast<float>(Tools::GetTime());
+	m_SpawnInterval = Constants::ZombieSpawnIntervalInSeconds;
+	m_SpawnCount = 1;
+	m_Health = 1.0f;
+	m_ZombiesKilled = 0;
+}
+
+void PlayerInstance::GameOver()
+{
+	System::GetInstance().RemoveModel(m_Weapon.get());
+	m_Weapon = nullptr;
+
+	m_GameState = GameState::GameOver;
+	m_DeathTime = static_cast<float>(Tools::GetTime());
 }
 
 void PlayerInstance::SpawnRandomZombie()
@@ -222,14 +327,24 @@ void PlayerInstance::UpdateWeapon()
 	weaponPosition.y += weaponPositionOffset.y * xRotationCos - weaponPositionOffset.z * xRotationSin;
 	weaponPosition.z += -weaponPositionOffset.x * yRotationSin + offsetZ * yRotationCos;	
 
-	m_Weapon.SetPosition(weaponPosition);
-	m_Weapon.SetRotation(weaponRotation);
+	m_Weapon->SetPosition(weaponPosition);
+	m_Weapon->SetRotation(weaponRotation);
 
 	auto& input = Input::GetInstance();
 
 	if (input.IsMouseButtonDown(1))
 	{
-		m_ZombiesKilled += m_Weapon.Fire(m_Zombies, m_Camera.GetPosition());
+		m_ZombiesKilled += m_Weapon->Fire(m_Zombies, m_Camera.GetPosition());
 		input.MouseButtonUp(1);
+	}
+}
+
+void PlayerInstance::TakeDamage(float damage)
+{
+	m_Health -= damage;
+
+	if (m_Health <= 0.0f && m_GameState == GameState::Playing)
+	{
+		GameOver();
 	}
 }

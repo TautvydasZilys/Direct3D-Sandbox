@@ -63,3 +63,11 @@ long Input::HandleMouseWheelDisplacement()
 	m_MouseWheelDisplacement = 0;
 	return returnValue;
 }
+
+void Input::IgnoreDisplacements()
+{
+	m_MouseX = 0;
+	m_MouseY = 0;
+	m_PinchDisplacement = 0;
+	m_MouseWheelDisplacement = 0;
+}

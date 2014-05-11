@@ -35,6 +35,8 @@ public:
 	long HandlePinchDisplacement();
 	long HandleMouseWheelDisplacement();
 
+	void IgnoreDisplacements();
+
 	inline void Quit() { m_Quit = true;}
 	inline bool ShouldQuit() const { return m_Quit; }
 

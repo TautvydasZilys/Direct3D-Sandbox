@@ -20,6 +20,15 @@ namespace Tools
 
 	string ToLower(const string& str);
 	wstring ToLower(const wstring& str);
+	
+	inline string FloatToString(float value)
+	{
+		static char buffer[20];
+		sprintf_s(buffer, "%.1f", value);
+
+		return buffer;
+	}
+
 
 	void FatalError(const wstring& msg);
 
