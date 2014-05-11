@@ -11,6 +11,7 @@
 #include "ZombieInstance.h"
 
 static const float kSmallestSpawnInterval = 0.5f;
+static const float kHealthRegenerationRate = 0.02f;
 
 PlayerInstance::PlayerInstance(Camera& playerCamera) :
 	m_Camera(playerCamera),
@@ -118,6 +119,11 @@ void PlayerInstance::UpdateStatePlaying3D(RenderParameters& renderParameters)
 			m_SpawnInterval *= 2;
 			m_SpawnCount *= 2;
 		}
+	}
+
+	if (m_Health < 1.0f)
+	{
+		m_Health += kHealthRegenerationRate * renderParameters.frameTime;
 	}
 
 	UpdateInput(renderParameters.frameTime);
