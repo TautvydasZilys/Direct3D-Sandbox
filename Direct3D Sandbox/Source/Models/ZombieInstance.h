@@ -26,9 +26,6 @@ class ZombieInstance :
 
 	AnimationStateMachine<ZombieStates, ZombieStates::StateCount, kAnimationPeriods, kDoesAnimationLoop, kAnimationTransitionLength> m_AnimationStateMachine;
 
-	static bool CanMoveTo(const DirectX::XMFLOAT2& position, const vector<shared_ptr<ZombieInstanceBase>>& zombies,
-		const ZombieInstanceBase* thisPtr);
-
 	ZombieInstance(const ModelInstance& other);					// Not implemented (no copying allowed)
 	ZombieInstance& operator=(const ModelInstance& other);		// Not implemented (no copying allowed)
 
@@ -38,7 +35,9 @@ public:
 	virtual ~ZombieInstance();
 
 	virtual void UpdateAndRender3D(RenderParameters& renderParameters);
-
+	
+	static bool CanMoveTo(const DirectX::XMFLOAT2& position, const vector<shared_ptr<ZombieInstanceBase>>& zombies,
+		const ZombieInstanceBase* thisPtr);
 	static shared_ptr<ZombieInstanceBase> Spawn(const PlayerInstance& targetPlayer, const vector<shared_ptr<ZombieInstanceBase>>& zombies);
 };
 

@@ -111,66 +111,6 @@ void System::UpdateInput()
 	{
 		m_Input.Quit();
 	}
-	
-	m_Camera->GoForward(m_Input.HandlePinchDisplacement() / 100.0f);
-
-	if (m_Input.IsKeyDown(VK_OEM_3))
-	{
-		m_Camera->GoForward(100.0f * m_FrameTime);
-	}
-
-	if (m_Input.IsKeyDown('W'))
-	{
-		m_Camera->GoForward(5.0f * m_FrameTime);
-	}
-	if (m_Input.IsKeyDown('S'))
-	{
-		m_Camera->GoBack(5.0f * m_FrameTime);
-	}
-	if (m_Input.IsKeyDown('A'))
-	{
-		m_Camera->GoLeft(5.0f * m_FrameTime);
-	}
-	if (m_Input.IsKeyDown('D'))
-	{
-		m_Camera->GoRight(5.0f * m_FrameTime);
-	}	
-	if (m_Input.IsKeyDown(VK_SPACE))
-	{
-		m_Camera->GoUp(5.0f * m_FrameTime);
-	}
-	if (m_Input.IsKeyDown('X'))
-	{
-		m_Camera->GoDown(5.0f * m_FrameTime);
-	}
-	
-	if (m_Input.IsKeyDown(VK_UP))
-	{
-		m_Camera->LookUp(m_FrameTime / 2.0f);
-	}
-	if (m_Input.IsKeyDown(VK_DOWN))
-	{
-		m_Camera->LookDown(m_FrameTime / 2.0f);
-	}
-	if (m_Input.IsKeyDown(VK_LEFT))
-	{
-		m_Camera->LookLeft(m_FrameTime / 2.0f);
-	}
-	if (m_Input.IsKeyDown(VK_RIGHT))
-	{
-		m_Camera->LookRight(m_FrameTime / 2.0f);
-	}
-	
-	long mouseX, mouseY;
-	m_Input.HandleMouseDisplacement(mouseX, mouseY);
-	if (mouseX > 0.000001f || mouseX < -0.000001f)
-	{
-		m_Camera->LookRight(m_MouseSensitivity * mouseX / 250.0f);
-	}
-	if (mouseY > 0.000001f || mouseY < -0.000001f)
-	{
-		m_Camera->LookDown(m_MouseSensitivity * mouseY / 250.0f);
-	}
 
 	if (m_Input.IsKeyDown(VK_ADD))
 	{

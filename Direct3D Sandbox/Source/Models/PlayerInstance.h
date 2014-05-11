@@ -10,7 +10,7 @@ class PlayerInstance :
 	public IModelInstance
 {
 private:
-	const Camera& m_Camera;
+	Camera& m_Camera;
 	WeaponInstance& m_Weapon;
 	vector<shared_ptr<ZombieInstanceBase>> m_Zombies;
 	float m_StartTime;
@@ -19,6 +19,7 @@ private:
 	float m_SpawnCount;
 	int m_ZombiesKilled;
 	
+	void UpdateInput(float frameTime);
 	void UpdateWeapon();
 
 	void SpawnRandomZombie();
@@ -26,7 +27,7 @@ private:
 	void SpawnSuperZombie();
 
 public:
-	PlayerInstance(const Camera& playerCamera);
+	PlayerInstance(Camera& playerCamera);
 	virtual ~PlayerInstance();
 	
 	virtual void UpdateAndRender3D(RenderParameters& renderParameters);

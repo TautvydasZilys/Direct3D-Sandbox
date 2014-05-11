@@ -12,7 +12,7 @@
 
 static const float kSmallestSpawnInterval = 0.5f;
 
-PlayerInstance::PlayerInstance(const Camera& playerCamera) :
+PlayerInstance::PlayerInstance(Camera& playerCamera) :
 	m_Camera(playerCamera),
 	m_Weapon(*new WeaponInstance), 
 	m_StartTime(static_cast<float>(Tools::GetTime())), 
@@ -52,7 +52,7 @@ void PlayerInstance::UpdateAndRender3D(RenderParameters& renderParameters)
 		}
 	}
 
-	if (renderParameters.time - m_LastSpawnTime >= m_SpawnInterval) && static_cast<int>(m_Zombies.size()) < Constants::MaxZombies)
+	if (renderParameters.time - m_LastSpawnTime >= m_SpawnInterval && static_cast<int>(m_Zombies.size()) < Constants::MaxZombies)
 	{
 		for (int i = 0; i < m_SpawnCount; i++)
 		{
@@ -68,7 +68,8 @@ void PlayerInstance::UpdateAndRender3D(RenderParameters& renderParameters)
 			m_SpawnCount *= 2;
 		}
 	}
-	
+
+	UpdateInput(renderParameters.frameTime);
 	UpdateWeapon();
 }
 
@@ -112,6 +113,94 @@ void PlayerInstance::SpawnSuperZombie()
 	
 	System::GetInstance().AddModel(zombie);
 	m_Zombies.push_back(zombie);
+}
+
+void PlayerInstance::UpdateInput(float frameTime)
+{
+	float forward = 0.0f, right = 0.0f;
+	auto& input = Input::GetInstance();
+
+	forward += input.HandlePinchDisplacement() / 100.0f;
+
+	if (input.IsKeyDown(VK_OEM_3))
+	{
+		forward += 100.0f * frameTime;
+	}
+
+	if (input.IsKeyDown('W'))
+	{
+		forward += 5.0f * frameTime;
+	}
+	if (input.IsKeyDown('S'))
+	{
+		forward -= 5.0f * frameTime;
+	}
+	if (input.IsKeyDown('A'))
+	{
+		right -= 5.0f * frameTime;
+	}
+	if (input.IsKeyDown('D'))
+	{
+		right += 5.0f * frameTime;
+	}
+
+	if (forward != 0.0f && right != 0.0f)
+	{
+		forward /= sqrt(2.0f);
+		right /= sqrt(2.0f);
+	}
+	
+	auto& rotation = m_Camera.GetRotation();
+	auto position = m_Camera.GetPosition();
+	
+	position.x += -forward * sin(rotation.y) + right * cos(rotation.y);
+	position.z -= forward * cos(rotation.y) + right * sin(rotation.y);
+
+	if (ZombieInstance::CanMoveTo(DirectX::XMFLOAT2(position.x, position.z), m_Zombies, nullptr))
+	{
+		m_Camera.SetPosition(position);
+	}
+
+	if (input.IsKeyDown(VK_SPACE))
+	{
+		m_Camera.GoUp(5.0f * frameTime);
+	}
+	if (input.IsKeyDown('X'))
+	{
+		m_Camera.GoDown(5.0f * frameTime);
+	}
+	
+	if (input.IsKeyDown(VK_UP))
+	{
+		m_Camera.LookUp(frameTime / 2.0f);
+	}
+	if (input.IsKeyDown(VK_DOWN))
+	{
+		m_Camera.LookDown(frameTime / 2.0f);
+	}
+	if (input.IsKeyDown(VK_LEFT))
+	{
+		m_Camera.LookLeft(frameTime / 2.0f);
+	}
+	if (input.IsKeyDown(VK_RIGHT))
+	{
+		m_Camera.LookRight(frameTime / 2.0f);
+	}
+	
+	long mouseX, mouseY;
+	auto mouseSensitivity = System::GetInstance().GetMouseSensitivity();
+
+	input.HandleMouseDisplacement(mouseX, mouseY);
+
+	if (mouseX > 0.000001f || mouseX < -0.000001f)
+	{
+		m_Camera.LookRight(mouseSensitivity * mouseX / 250.0f);
+	}
+
+	if (mouseY > 0.000001f || mouseY < -0.000001f)
+	{
+		m_Camera.LookDown(mouseSensitivity * mouseY / 250.0f);
+	}
 }
 
 void PlayerInstance::UpdateWeapon()

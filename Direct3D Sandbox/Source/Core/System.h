@@ -61,6 +61,7 @@ public:
 
 	void Run();
 	inline static System& GetInstance() { return *s_Instance; }
+	inline float GetMouseSensitivity() const { return m_MouseSensitivity; }
 
 	void AddModel(shared_ptr<IModelInstance> model);
 	void RemoveModel(const IModelInstance* model);
