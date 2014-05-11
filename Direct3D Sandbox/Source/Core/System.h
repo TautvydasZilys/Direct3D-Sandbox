@@ -55,6 +55,8 @@ private:
 	void RemoveModelImpl(const IModelInstance* model);
 	void AddAndRemoveModels();
 
+	System(const System& other);
+
 public:
 	System();
 	~System();
