@@ -26,7 +26,7 @@ private:
 
 public:
 	virtual ~ZombieInstanceBase();
-	virtual void UpdateAndRender3D(RenderParameters& renderParameters);
+	virtual void Render3D(RenderParameters& renderParameters);
 
 	bool IsDead() const { return m_IsDead; }
 	bool TakeDamage(float damage);

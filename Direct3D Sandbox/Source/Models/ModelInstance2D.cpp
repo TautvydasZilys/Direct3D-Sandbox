@@ -11,7 +11,7 @@ ModelInstance2D::~ModelInstance2D()
 {
 }
 
-void ModelInstance2D::UpdateAndRender2D(RenderParameters& renderParameters)
+void ModelInstance2D::Render2D(RenderParameters& renderParameters)
 {
 	SetRenderParameters(renderParameters);
 	RenderModel(renderParameters);

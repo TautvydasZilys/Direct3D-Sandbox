@@ -13,6 +13,7 @@ public:
 	InfiniteGroundModelInstance(const ModelParameters& modelParameters, const wstring& texturePath, DirectX::XMFLOAT2 uvTiling);
 	virtual ~InfiniteGroundModelInstance();
 
-	virtual void UpdateAndRender3D(RenderParameters& renderParameters);
+	virtual void Update(const RenderParameters& renderParameters) { }
+	virtual void Render3D(RenderParameters& renderParameters);
 };
 

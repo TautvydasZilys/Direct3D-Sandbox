@@ -29,8 +29,9 @@ private:
 	unique_ptr<Camera> m_OrthoCamera;
 	DirectionalLight m_Light;
 	
-	void Update();
-	void Draw();
+	void UpdateAndDraw();
+	void Update(const RenderParameters& renderParameters);
+	void Draw(RenderParameters& renderParameters);
 	void IncrementFpsCounter();
 
 	void UpdateInput();

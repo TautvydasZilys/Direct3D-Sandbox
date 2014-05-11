@@ -22,7 +22,7 @@ CameraPositionLockedModelInstance::~CameraPositionLockedModelInstance()
 {
 }
 
-void CameraPositionLockedModelInstance::UpdateAndRender3D(RenderParameters& renderParameters)
+void CameraPositionLockedModelInstance::Render3D(RenderParameters& renderParameters)
 {
 	if (m_LockedDimensions.x)
 	{
@@ -40,5 +40,5 @@ void CameraPositionLockedModelInstance::UpdateAndRender3D(RenderParameters& rend
 	}
 
 	DirtyWorldMatrix();
-	ModelInstance3D::UpdateAndRender3D(renderParameters);
+	ModelInstance3D::Render3D(renderParameters);
 }

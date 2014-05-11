@@ -14,8 +14,7 @@ public:
 	CameraPositionLockedModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, const wstring& texturePath, 
 		TypedDimensions<bool> lockedDimentions);
 	virtual ~CameraPositionLockedModelInstance();
-
-	void SetPosition(const DirectX::XMFLOAT3& position);
-
-	virtual void UpdateAndRender3D(RenderParameters& renderParameters);
+	
+	virtual void Update(const RenderParameters& renderParameters) { }
+	virtual void Render3D(RenderParameters& renderParameters);
 };

@@ -52,7 +52,7 @@ void ModelInstance3D::SetRenderParameters(RenderParameters& renderParameters)
 	ModelInstance::SetRenderParameters(renderParameters);
 }
 
-void ModelInstance3D::UpdateAndRender3D(RenderParameters& renderParameters)
+void ModelInstance3D::Render3D(RenderParameters& renderParameters)
 {
 #if ENABLE_FRUSTUM_CULLING
 	if (!IsInCameraFrustum(renderParameters))

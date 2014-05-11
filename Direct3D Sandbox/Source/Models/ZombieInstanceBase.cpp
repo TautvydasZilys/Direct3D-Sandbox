@@ -20,9 +20,9 @@ ZombieInstanceBase::~ZombieInstanceBase()
 {
 }
 
-void ZombieInstanceBase::UpdateAndRender3D(RenderParameters& renderParameters)
+void ZombieInstanceBase::Render3D(RenderParameters& renderParameters)
 {
-	ModelInstance3D::UpdateAndRender3D(renderParameters);
+	ModelInstance3D::Render3D(renderParameters);
 }
 
 // Returns whether the zombie is dead after taking damage

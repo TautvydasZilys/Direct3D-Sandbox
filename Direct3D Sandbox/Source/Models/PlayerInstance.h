@@ -41,13 +41,13 @@ private:
 	void SpawnZombie();
 	void SpawnSuperZombie();
 	
-	void UpdateStateNotStarted3D(RenderParameters& renderParameters);
-	void UpdateStatePlaying3D(RenderParameters& renderParameters);
-	void UpdateStateGameOver3D(RenderParameters& renderParameters);
+	void UpdateStateNotStarted(const RenderParameters& renderParameters);
+	void UpdateStatePlaying(const RenderParameters& renderParameters);
+	void UpdateStateGameOver(const RenderParameters& renderParameters);
 
-	void UpdateStateNotStarted2D(RenderParameters& renderParameters);
-	void UpdateStatePlaying2D(RenderParameters& renderParameters);
-	void UpdateStateGameOver2D(RenderParameters& renderParameters);
+	void RenderStateNotStarted2D(RenderParameters& renderParameters);
+	void RenderStatePlaying2D(RenderParameters& renderParameters);
+	void RenderStateGameOver2D(RenderParameters& renderParameters);
 
 	void StartGame();
 	void GameOver();
@@ -56,8 +56,9 @@ public:
 	PlayerInstance(Camera& playerCamera);
 	virtual ~PlayerInstance();
 	
-	virtual void UpdateAndRender3D(RenderParameters& renderParameters);
-	virtual void UpdateAndRender2D(RenderParameters& renderParameters);
+	virtual void Update(const RenderParameters& renderParameters);
+	virtual void Render3D(RenderParameters& renderParameters) { }
+	virtual void Render2D(RenderParameters& renderParameters);
 
 	inline GameState GetGameState() const { return m_GameState; }
 	inline DirectX::XMFLOAT3 GetPosition() const { return m_Camera.GetPosition(); }

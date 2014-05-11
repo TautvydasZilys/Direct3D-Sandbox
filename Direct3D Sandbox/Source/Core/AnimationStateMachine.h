@@ -10,6 +10,7 @@ class AnimationStateMachine
 {
 	States m_CurrentState;
 	States m_NextState;
+	States m_TargetState;
 	float m_AnimationProgress[StateCount];
 	bool m_IsTransitioningAnimationStates;
 	float m_TransitionProgress;
@@ -31,24 +32,26 @@ public:
 	{
 	}
 
-	void SetAnimationProgress(int i, float progress)
+	inline void SetAnimationProgress(int i, float progress)
 	{
 		m_AnimationProgress[i] = progress;
 	}
 
-	void Update(RenderParameters& renderParameters, States targetState)
+	inline void Update(const RenderParameters& renderParameters, States targetState)
 	{
-		if (m_CurrentState != targetState || m_TransitionProgress > 0.0f)
+		m_TargetState = targetState;
+
+		if (m_CurrentState != m_TargetState || m_TransitionProgress > 0.0f)
 		{
 			if (!m_IsTransitioningAnimationStates)
 			{
 				m_IsTransitioningAnimationStates = true;
 				m_TransitionProgress = 0.0f;
-				m_NextState = targetState;
+				m_NextState = m_TargetState;
 			}
 			else
 			{
-				if (m_CurrentState == targetState)
+				if (m_CurrentState == m_TargetState)
 				{
 					std::swap(m_CurrentState, m_NextState);
 					m_TransitionProgress = 1.0f - m_TransitionProgress;
@@ -60,13 +63,9 @@ public:
 				{
 					m_IsTransitioningAnimationStates = false;
 					m_TransitionProgress = 0.0f;
-					m_CurrentState = targetState;
+					m_CurrentState = m_TargetState;
 				}
 			}
-
-			renderParameters.targetAnimationState = targetState;
-			renderParameters.targetStateAnimationProgress = m_AnimationProgress[targetState] - floor(m_AnimationProgress[targetState]);
-			renderParameters.transitionProgress = m_TransitionProgress;
 		}
 		else
 		{
@@ -86,11 +85,22 @@ public:
 				}
 			}
 		}
+	}
 
+	inline void SetRenderParameters(RenderParameters& renderParameters)
+	{
+		renderParameters.targetAnimationState = m_TargetState;
+		renderParameters.targetStateAnimationProgress = m_AnimationProgress[m_TargetState] - floor(m_AnimationProgress[m_TargetState]);
+		renderParameters.transitionProgress = m_TransitionProgress;
+		
 		renderParameters.isTransitioningAnimationStates = m_IsTransitioningAnimationStates;
 		renderParameters.currentStateAnimationProgress = m_AnimationProgress[m_CurrentState] - floor(m_AnimationProgress[m_CurrentState]);
 		renderParameters.currentAnimationState = m_CurrentState;
 	}
+
+	inline bool IsTransitioningAnimationStates() const { return m_IsTransitioningAnimationStates; }
+	inline States GetCurrentAnimationState() const { return m_CurrentState; }
+	inline float GetCurrentStateAnimationProgress() const { return m_AnimationProgress[m_CurrentState] - floor(m_AnimationProgress[m_CurrentState]); }
 };
 
 #undef ANIMATION_STATE_MACHINE_TEMPLATE_PARAMETERS

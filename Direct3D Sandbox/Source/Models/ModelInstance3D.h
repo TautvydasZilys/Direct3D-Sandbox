@@ -17,7 +17,8 @@ public:
 	ModelInstance3D(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, const wstring& texturePath, const wstring& normalMapPath);
 	virtual ~ModelInstance3D();
 
-	virtual void UpdateAndRender3D(RenderParameters& renderParameters);
-	virtual void UpdateAndRender2D(RenderParameters& renderParameters) { }
+	virtual void Update(const RenderParameters& RenderParameters) { }
+	virtual void Render3D(RenderParameters& renderParameters);
+	virtual void Render2D(RenderParameters& renderParameters) { }
 };
 

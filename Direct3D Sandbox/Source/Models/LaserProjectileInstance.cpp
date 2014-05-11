@@ -20,16 +20,19 @@ LaserProjectileInstance::~LaserProjectileInstance()
 {
 }
 
-void LaserProjectileInstance::UpdateAndRender3D(RenderParameters& renderParameters)
+void LaserProjectileInstance::Update(const RenderParameters& renderParameters)
 {
-	renderParameters.transitionProgress = (renderParameters.time - m_SpawnedAt) / kRayLifetime;
+	m_TransitionProgress = (renderParameters.time - m_SpawnedAt) / kRayLifetime;
 
-	if (renderParameters.transitionProgress > 1.0f)
+	if (m_TransitionProgress > 1.0f)
 	{
+		m_TransitionProgress = 1.0f;
 		System::GetInstance().RemoveModel(this);
-		return;
 	}
-	
+}
+
+void LaserProjectileInstance::Render3D(RenderParameters& renderParameters)
+{	
 	using namespace DirectX;
 	
 	XMVECTOR rayDirection = XMLoadFloat3(&m_RayDirectionNormalized);
@@ -38,7 +41,9 @@ void LaserProjectileInstance::UpdateAndRender3D(RenderParameters& renderParamete
 	XMVECTOR rayViewDirection = XMVector3Cross(rayDirection, XMVector3Cross(rayDirection, viewDirection));
 
 	XMStoreFloat3(&renderParameters.rayViewDirection, XMVector3Normalize(rayViewDirection));
-	ModelInstance3D::UpdateAndRender3D(renderParameters);
+	
+	renderParameters.transitionProgress = m_TransitionProgress;
+	ModelInstance3D::Render3D(renderParameters);
 }
 
 void LaserProjectileInstance::Spawn(const DirectX::XMVECTOR& source, const DirectX::XMVECTOR& target)

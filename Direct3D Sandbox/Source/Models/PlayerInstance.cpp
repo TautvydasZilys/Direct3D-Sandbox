@@ -33,43 +33,43 @@ PlayerInstance::~PlayerInstance()
 	}
 }
 
-void PlayerInstance::UpdateAndRender3D(RenderParameters& renderParameters)
+void PlayerInstance::Update(const RenderParameters& renderParameters)
 {
 	switch (m_GameState)
 	{
 	case GameState::NotStarted:
-		UpdateStateNotStarted3D(renderParameters);
+		UpdateStateNotStarted(renderParameters);
 		break;
 
 	case GameState::Playing:
-		UpdateStatePlaying3D(renderParameters);
+		UpdateStatePlaying(renderParameters);
 		break;
 
 	case GameState::GameOver:
-		UpdateStateGameOver3D(renderParameters);
+		UpdateStateGameOver(renderParameters);
 		break;
 	}
 }
 
-void PlayerInstance::UpdateAndRender2D(RenderParameters& renderParameters)
+void PlayerInstance::Render2D(RenderParameters& renderParameters)
 {
 	switch (m_GameState)
 	{
 	case GameState::NotStarted:
-		UpdateStateNotStarted2D(renderParameters);
+		RenderStateNotStarted2D(renderParameters);
 		break;
 
 	case GameState::Playing:
-		UpdateStatePlaying2D(renderParameters);
+		RenderStatePlaying2D(renderParameters);
 		break;
 
 	case GameState::GameOver:
-		UpdateStateGameOver2D(renderParameters);
+		RenderStateGameOver2D(renderParameters);
 		break;
 	}
 }
 
-void PlayerInstance::UpdateStateNotStarted3D(RenderParameters& renderParameters)
+void PlayerInstance::UpdateStateNotStarted(const RenderParameters& renderParameters)
 {
 	auto& input = Input::GetInstance();
 	input.IgnoreDisplacements();
@@ -80,7 +80,7 @@ void PlayerInstance::UpdateStateNotStarted3D(RenderParameters& renderParameters)
 	}
 }
 
-void PlayerInstance::UpdateStateNotStarted2D(RenderParameters& renderParameters)
+void PlayerInstance::RenderStateNotStarted2D(RenderParameters& renderParameters)
 {
 	renderParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -91,7 +91,7 @@ void PlayerInstance::UpdateStateNotStarted2D(RenderParameters& renderParameters)
 	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 200, renderParameters.screenHeight / 2 + 300, renderParameters);
 }
 
-void PlayerInstance::UpdateStatePlaying3D(RenderParameters& renderParameters)
+void PlayerInstance::UpdateStatePlaying(const RenderParameters& renderParameters)
 {
 	// Remove destroyed/dead zombies
 	for (auto i = 0u; i < m_Zombies.size(); i++)
@@ -130,7 +130,7 @@ void PlayerInstance::UpdateStatePlaying3D(RenderParameters& renderParameters)
 	UpdateWeapon();
 }
 
-void PlayerInstance::UpdateStatePlaying2D(RenderParameters& renderParameters)
+void PlayerInstance::RenderStatePlaying2D(RenderParameters& renderParameters)
 {
 	float delta = renderParameters.time - m_StartTime;
 	
@@ -145,7 +145,7 @@ void PlayerInstance::UpdateStatePlaying2D(RenderParameters& renderParameters)
 	Font::GetDefault().DrawText(text, renderParameters.screenWidth - 250, renderParameters.screenHeight - 74, renderParameters);
 }
 
-void PlayerInstance::UpdateStateGameOver3D(RenderParameters& renderParameters)
+void PlayerInstance::UpdateStateGameOver(const RenderParameters& renderParameters)
 {
 	auto& input = Input::GetInstance();
 	input.IgnoreDisplacements();
@@ -164,7 +164,7 @@ void PlayerInstance::UpdateStateGameOver3D(RenderParameters& renderParameters)
 	}
 }
 
-void PlayerInstance::UpdateStateGameOver2D(RenderParameters& renderParameters)
+void PlayerInstance::RenderStateGameOver2D(RenderParameters& renderParameters)
 {
 	renderParameters.color = DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
 

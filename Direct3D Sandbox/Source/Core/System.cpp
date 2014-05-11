@@ -88,8 +88,7 @@ void System::Run()
 		m_CurrentTime = currentTime;
 		m_Windowing.DispatchMessages();
 
-		Update();
-		Draw();
+		UpdateAndDraw();
 
 		IncrementFpsCounter();
 
@@ -99,10 +98,28 @@ void System::Run()
 	}
 }
 
-void System::Update()
+void System::UpdateAndDraw()
+{
+	RenderParameters renderParameters;
+
+	renderParameters.time = static_cast<float>(m_CurrentTime);
+	renderParameters.frameTime = m_FrameTime;
+	renderParameters.screenWidth = m_Windowing.GetWidth();
+	renderParameters.screenHeight = m_Windowing.GetHeight();
+
+	Update(renderParameters);
+	Draw(renderParameters);
+}
+
+void System::Update(const RenderParameters& renderParameters)
 {
 	AddAndRemoveModels();
 	UpdateInput();
+
+	for (auto& model : m_Models)
+	{
+		model->Update(renderParameters);
+	}
 }
 
 void System::UpdateInput()
@@ -122,25 +139,18 @@ void System::UpdateInput()
 	}
 }
 
-void System::Draw()
+void System::Draw(RenderParameters& renderParameters)
 {
-	RenderParameters renderParameters;
-
 	m_Direct3D.SetBackBufferAsRenderTarget();
 	m_Direct3D.TurnZBufferOn();
 	m_Direct3D.StartDrawing();
-
-	renderParameters.time = static_cast<float>(m_CurrentTime);
-	renderParameters.frameTime = m_FrameTime;
-	renderParameters.screenWidth = m_Windowing.GetWidth();
-	renderParameters.screenHeight = m_Windowing.GetHeight();
 	
 	m_Camera->SetRenderParameters(renderParameters);
 	m_Light.SetRenderParameters(renderParameters);
 	
 	for (auto& model : m_Models)
 	{
-		model->UpdateAndRender3D(renderParameters);
+		model->Render3D(renderParameters);
 	}
 	
 	m_Direct3D.TurnZBufferOff();
@@ -151,7 +161,7 @@ void System::Draw()
 
 	for (auto& model : m_Models)
 	{
-		model->UpdateAndRender2D(renderParameters);
+		model->Render2D(renderParameters);
 	}
 
 	m_Direct3D.SwapBuffers();

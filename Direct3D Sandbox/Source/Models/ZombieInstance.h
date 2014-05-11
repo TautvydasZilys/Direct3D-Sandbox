@@ -36,8 +36,9 @@ class ZombieInstance :
 
 public:
 	virtual ~ZombieInstance();
-
-	virtual void UpdateAndRender3D(RenderParameters& renderParameters);
+	
+	virtual void Update(const RenderParameters& renderParameters);
+	virtual void Render3D(RenderParameters& renderParameters);
 	
 	static bool CanMoveTo(const DirectX::XMFLOAT2& position, const vector<shared_ptr<ZombieInstanceBase>>& zombies,
 		const ZombieInstanceBase* thisPtr);
