@@ -41,6 +41,17 @@ namespace Tools
 		template <typename T>
 		inline T GetNextInteger(T lowerBound, T higherBound) { return uniform_int_distribution<T>(lowerBound, higherBound)(GetRandomEngine()); }
 	}
+
+	namespace Math
+	{
+		inline void Normalize(DirectX::XMFLOAT3& float3)
+		{
+			auto length = sqrt(float3.x * float3.x + float3.y * float3.y + float3.z * float3.z);
+			float3.x /= length;
+			float3.y /= length;
+			float3.z /= length;
+		}
+	}
 };
 
 struct Point2D

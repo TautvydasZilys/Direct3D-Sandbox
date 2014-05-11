@@ -23,7 +23,8 @@ void IShader::LoadShaders()
 	s_Shaders[ShaderType::NORMAL_MAP_SHADER] = make_shared<AutoShader>(L"Shaders\\NormalMapVertexShader.cso", L"Shaders\\NormalMapPixelShader.cso");
 	s_Shaders[ShaderType::ANIMATION_NORMAL_MAP_SHADER] = make_shared<AutoShader>(L"Shaders\\AnimationNormalMapVertexShader.cso", L"Shaders\\NormalMapPixelShader.cso");
 	s_Shaders[ShaderType::PLAYGROUND_SHADER] = make_shared<AutoShader>(L"Shaders\\PlaygroundVertexShader.cso", L"Shaders\\PlaygroundPixelShader.cso");
-	s_Shaders[ShaderType::INFINITE_GROUND_SHADER] = make_shared<AutoShader>(L"Shaders\\InfiniteGroundVertexShader.cso", L"Shaders\\LightingPixelShader.cso");	
+	s_Shaders[ShaderType::INFINITE_GROUND_SHADER] = make_shared<AutoShader>(L"Shaders\\InfiniteGroundVertexShader.cso", L"Shaders\\LightingPixelShader.cso");
+	s_Shaders[ShaderType::LASER_SHADER] = make_shared<AutoShader>(L"Shaders\\LaserVertexShader.cso", L"Shaders\\LaserPixelShader.cso");
 
 	Assert(s_Shaders.size() == ShaderType::SHADER_COUNT);
 }

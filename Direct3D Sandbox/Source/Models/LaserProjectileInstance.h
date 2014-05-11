@@ -7,8 +7,9 @@ class LaserProjectileInstance :
 {
 private:
 	float m_SpawnedAt;
+	DirectX::XMFLOAT3 m_RayDirectionNormalized;
 
-	LaserProjectileInstance(const ModelParameters& modelParameters);
+	LaserProjectileInstance(const ModelParameters& modelParameters, const DirectX::XMVECTOR& rayDirection);
 
 public:
 	virtual ~LaserProjectileInstance();

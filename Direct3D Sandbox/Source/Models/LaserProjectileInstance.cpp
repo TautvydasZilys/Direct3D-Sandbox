@@ -7,11 +7,13 @@
 static const float kRayWidth = 0.1f;
 static const float kRayLifetime = 0.2f;
 
-LaserProjectileInstance::LaserProjectileInstance(const ModelParameters& modelParameters) :
-	ModelInstance3D(IShader::GetShader(ShaderType::COLOR_SHADER), L"Assets\\Models\\Cylinder.model", modelParameters),
+LaserProjectileInstance::LaserProjectileInstance(const ModelParameters& modelParameters, const DirectX::XMVECTOR& rayDirection) :
+	ModelInstance3D(IShader::GetShader(ShaderType::LASER_SHADER), L"Assets\\Models\\Laser.model", modelParameters),
 	m_SpawnedAt(static_cast<float>(Tools::GetTime()))
 {
 	m_Parameters.color = DirectX::XMFLOAT4(0.8f, 0.0f, 0.0f, 1.0f);
+
+	DirectX::XMStoreFloat3(&m_RayDirectionNormalized, DirectX::XMVector3Normalize(rayDirection));
 }
 
 LaserProjectileInstance::~LaserProjectileInstance()
@@ -25,10 +27,16 @@ void LaserProjectileInstance::UpdateAndRender3D(RenderParameters& renderParamete
 		System::GetInstance().RemoveModel(this);
 		return;
 	}
-	else
-	{
-		ModelInstance3D::UpdateAndRender3D(renderParameters);
-	}
+	
+	using namespace DirectX;
+	
+	XMVECTOR rayDirection = XMLoadFloat3(&m_RayDirectionNormalized);
+
+	XMVECTOR viewDirection = XMLoadFloat3(&renderParameters.cameraPosition) - XMLoadFloat3(&m_Parameters.position);
+	XMVECTOR rayViewDirection = XMVector3Cross(rayDirection, XMVector3Cross(rayDirection, viewDirection));
+
+	XMStoreFloat3(&renderParameters.rayViewDirection, XMVector3Normalize(rayViewDirection));
+	ModelInstance3D::UpdateAndRender3D(renderParameters);
 }
 
 void LaserProjectileInstance::Spawn(const DirectX::XMVECTOR& source, const DirectX::XMVECTOR& target)
@@ -49,6 +57,6 @@ void LaserProjectileInstance::Spawn(const DirectX::XMVECTOR& source, const Direc
 	
 	XMStoreFloat3(&rayParameters.position, (source + target) / 2.0f);
 	
-	shared_ptr<IModelInstance> projectile(new LaserProjectileInstance(rayParameters));
+	shared_ptr<IModelInstance> projectile(new LaserProjectileInstance(rayParameters, rayVector));
 	System::GetInstance().AddModel(projectile);
 }

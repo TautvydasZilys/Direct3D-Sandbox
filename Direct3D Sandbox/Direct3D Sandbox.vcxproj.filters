@@ -171,7 +171,9 @@
     <ClCompile Include="Source\Models\ModelInstance3D.cpp">
       <Filter>Source\Models</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Models\LaserProjectileInstance.cpp" />
+    <ClCompile Include="Source\Models\LaserProjectileInstance.cpp">
+      <Filter>Source\Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\PrecompiledHeader.h">
@@ -306,7 +308,9 @@
     <ClInclude Include="Source\Models\ModelInstance3D.h">
       <Filter>Source\Models</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Models\LaserProjectileInstance.h" />
+    <ClInclude Include="Source\Models\LaserProjectileInstance.h">
+      <Filter>Source\Models</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\ApplicationIcon.png">
@@ -357,6 +361,12 @@
       <Filter>Source\Shaders\Vertex</Filter>
     </FxCompile>
     <FxCompile Include="Source\Shaders\Vertex\AnimationNormalMapVertexShader.hlsl">
+      <Filter>Source\Shaders\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shaders\Pixel\LaserPixelShader.hlsl">
+      <Filter>Source\Shaders\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="Source\Shaders\Vertex\LaserVertexShader.hlsl">
       <Filter>Source\Shaders\Vertex</Filter>
     </FxCompile>
   </ItemGroup>

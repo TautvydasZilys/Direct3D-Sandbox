@@ -20,6 +20,7 @@
 			FIELD(DirectX::XMFLOAT2, groundScale) \
 			FIELD(DirectX::XMFLOAT2, uvTiling) \
 			FIELD(DirectX::XMFLOAT3, cameraPosition) \
+			FIELD(DirectX::XMFLOAT3, rayViewDirection) \
 			FIELD(DirectX::XMFLOAT4, padding) \
 			FIELD(ID3D11ShaderResourceView*, texture) \
 			FIELD(ID3D11ShaderResourceView*, normalMap) \
