@@ -29,6 +29,6 @@ public:
 	virtual void UpdateAndRender3D(RenderParameters& renderParameters);
 
 	bool IsDead() const { return m_IsDead; }
-	void TakeDamage(float damage);
+	bool TakeDamage(float damage);
 };
 

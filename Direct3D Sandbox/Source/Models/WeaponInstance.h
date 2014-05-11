@@ -8,12 +8,13 @@ class WeaponInstance :
 {
 private:
 	ModelInstance& m_Crosshair;
+	float m_LastShot;
 
 public:
 	WeaponInstance();
 	virtual ~WeaponInstance();
 
-	void Fire(const vector<weak_ptr<ZombieInstanceBase>>& zombies, const DirectX::XMFLOAT3& playerPosition);
+	int Fire(const vector<weak_ptr<ZombieInstanceBase>>& zombies, const DirectX::XMFLOAT3& playerPosition);
 
 	static const DirectX::XMFLOAT3 kWeaponPositionOffset;
 };

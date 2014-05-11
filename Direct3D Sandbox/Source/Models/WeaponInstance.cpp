@@ -9,13 +9,15 @@
 #include "ZombieInstanceBase.h"
 
 const DirectX::XMFLOAT3 WeaponInstance::kWeaponPositionOffset(0.15f, -0.2f, -0.5f);
+static const float kShootingInterval = 0.5f;
 
 WeaponInstance::WeaponInstance() :	
 	ModelInstance3D(IShader::GetShader(ShaderType::LIGHTING_SHADER), L"Assets\\Models\\Weapon.model", ModelParameters(), L"Assets\\Textures\\Weapon.dds"),
 	m_Crosshair(*new ModelInstance2D(IShader::GetShader(ShaderType::TEXTURE_SHADER),
 									L"Assets\\Models\\Square.model", 
 									ModelParameters(), 
-									L"Assets\\Textures\\Crosshair.dds"))
+									L"Assets\\Textures\\Crosshair.dds")),
+	m_LastShot(-kShootingInterval)
 {
 	m_Crosshair.SetScale(DirectX::XMFLOAT3(50.0f, 50.0f, 50.0f));
 	System::GetInstance().AddModel(shared_ptr<IModelInstance>(&m_Crosshair));
@@ -26,9 +28,19 @@ WeaponInstance::~WeaponInstance()
 	System::GetInstance().RemoveModel(&m_Crosshair);
 }
 
-void WeaponInstance::Fire(const vector<weak_ptr<ZombieInstanceBase>>& zombies, const DirectX::XMFLOAT3& playerPosition)
+// Returns number of zombies killed
+int WeaponInstance::Fire(const vector<weak_ptr<ZombieInstanceBase>>& zombies, const DirectX::XMFLOAT3& playerPosition)
 {
 	using namespace DirectX;
+	
+	auto time = static_cast<float>(Tools::GetTime());
+
+	if (time - m_LastShot < kShootingInterval)
+	{
+		return 0;
+	}
+
+	m_LastShot = time;
 
 	XMMATRIX rotationMatrix = DirectX::XMMatrixRotationRollPitchYaw(m_Parameters.rotation.x, m_Parameters.rotation.y, m_Parameters.rotation.z);
 
@@ -64,6 +76,7 @@ void WeaponInstance::Fire(const vector<weak_ptr<ZombieInstanceBase>>& zombies, c
 	*/
 
 	XMVECTOR delta = target - source;
+	auto zombiesKilled = 0;
 
 	for (auto& zombieWeakRef : zombies)
 	{
@@ -94,8 +107,12 @@ void WeaponInstance::Fire(const vector<weak_ptr<ZombieInstanceBase>>& zombies, c
 		
 		if (deltaX < 0.5f && collisionPoint.y >= 0.0f && collisionPoint.y < 1.5f)
 		{
-			// Hit
-			zombie->TakeDamage(collisionPoint.y / 1.2f);
+			if (zombie->TakeDamage(collisionPoint.y / 1.2f))
+			{
+				zombiesKilled++;
+			}
 		}
 	}
+
+	return zombiesKilled;
 }

@@ -25,7 +25,8 @@ void ZombieInstanceBase::UpdateAndRender3D(RenderParameters& renderParameters)
 	ModelInstance3D::UpdateAndRender3D(renderParameters);
 }
 
-void ZombieInstanceBase::TakeDamage(float damage)
+// Returns whether the zombie is dead after taking damage
+bool ZombieInstanceBase::TakeDamage(float damage)
 {
 	m_Health -= damage;
 
@@ -34,6 +35,8 @@ void ZombieInstanceBase::TakeDamage(float damage)
 		m_DeathTime = static_cast<float>(Tools::GetTime());
 		m_IsDead = true;
 	}
+
+	return m_IsDead;
 }
 
 ModelParameters ZombieInstanceBase::GetRandomZombieParameters(const PlayerInstance& targetPlayer)

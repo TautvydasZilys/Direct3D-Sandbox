@@ -15,6 +15,9 @@ private:
 	vector<weak_ptr<ZombieInstanceBase>> m_Zombies;
 	float m_StartTime;
 	float m_LastSpawnTime;
+	float m_SpawnInterval;
+	float m_SpawnCount;
+	int m_ZombiesKilled;
 	
 	void UpdateWeapon();
 

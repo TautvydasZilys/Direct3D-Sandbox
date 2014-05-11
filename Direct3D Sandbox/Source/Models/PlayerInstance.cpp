@@ -10,8 +10,16 @@
 #include "WeaponInstance.h"
 #include "ZombieInstance.h"
 
+static const float kSmallestSpawnInterval = 0.5f;
+
 PlayerInstance::PlayerInstance(const Camera& playerCamera) :
-	m_Camera(playerCamera), m_Weapon(*new WeaponInstance), m_StartTime(static_cast<float>(Tools::GetTime())), m_LastSpawnTime(m_StartTime)
+	m_Camera(playerCamera),
+	m_Weapon(*new WeaponInstance), 
+	m_StartTime(static_cast<float>(Tools::GetTime())), 
+	m_LastSpawnTime(m_StartTime),
+	m_SpawnInterval(Constants::ZombieSpawnIntervalInSeconds),
+	m_SpawnCount(1),
+	m_ZombiesKilled(0)
 {
 	for (int i = 0; i < Constants::StartingZombieCount; i++)
 	{
@@ -36,10 +44,10 @@ PlayerInstance::~PlayerInstance()
 
 void PlayerInstance::UpdateAndRender3D(RenderParameters& renderParameters)
 {
-	// Remove destroyed zombies
+	// Remove destroyed/dead zombies
 	for (auto i = 0u; i < m_Zombies.size(); i++)
 	{
-		if (m_Zombies[i].expired())
+		if (m_Zombies[i].expired() || m_Zombies[i].lock()->IsDead())
 		{
 			m_Zombies[i] = m_Zombies[m_Zombies.size() - 1];
 			m_Zombies.pop_back();
@@ -47,10 +55,21 @@ void PlayerInstance::UpdateAndRender3D(RenderParameters& renderParameters)
 		}
 	}
 
-	if (renderParameters.time - m_LastSpawnTime >= Constants::ZombieSpawnIntervalInSeconds && static_cast<int>(m_Zombies.size()) < Constants::MaxZombies)
+	if (renderParameters.time - m_LastSpawnTime >= m_SpawnInterval)// && static_cast<int>(m_Zombies.size()) < Constants::MaxZombies)
 	{
-		SpawnRandomZombie();
+		for (int i = 0; i < m_SpawnCount; i++)
+		{
+			SpawnRandomZombie();
+		}
+
 		m_LastSpawnTime = renderParameters.time;
+		m_SpawnInterval -= 0.1f / m_SpawnCount;
+
+		if (m_SpawnInterval < kSmallestSpawnInterval)
+		{
+			m_SpawnInterval *= 2;
+			m_SpawnCount++;
+		}
 	}
 	
 	UpdateWeapon();
@@ -64,13 +83,17 @@ void PlayerInstance::UpdateAndRender2D(RenderParameters& renderParameters)
 
 	auto text = "You have survived for " + string(buffer) + " seconds";
 	Font::GetDefault().DrawText(text, 25, renderParameters.screenHeight - 75, renderParameters);
+	
+	text = "                         Kill count: " + to_string(m_ZombiesKilled) + "\n"
+		"Number of alive zombies: " + to_string(m_Zombies.size());
+	Font::GetDefault().DrawText(text, renderParameters.screenWidth - 637, 25, renderParameters);
 }
 
 void PlayerInstance::SpawnRandomZombie()
 {
 	auto randomValue = Tools::Random::GetNextInteger(1, 10);
 
-	if (randomValue > 1)
+	if (randomValue > 0)
 	{
 		SpawnZombie();
 	}
@@ -122,7 +145,7 @@ void PlayerInstance::UpdateWeapon()
 
 	if (input.IsMouseButtonDown(1))
 	{
-		m_Weapon.Fire(m_Zombies, m_Camera.GetPosition());
+		m_ZombiesKilled += m_Weapon.Fire(m_Zombies, m_Camera.GetPosition());
 		input.MouseButtonUp(1);
 	}
 }
