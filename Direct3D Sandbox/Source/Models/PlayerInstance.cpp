@@ -80,13 +80,11 @@ void PlayerInstance::UpdateAndRender2D(RenderParameters& renderParameters)
 	static char buffer[20];
 	float delta = renderParameters.time - m_StartTime;
 	sprintf_s(buffer, "%.1f", delta);
-
-	auto text = "You have survived for " + string(buffer) + " seconds";
-	Font::GetDefault().DrawText(text, 25, renderParameters.screenHeight - 75, renderParameters);
 	
-	text = "                         Kill count: " + to_string(m_ZombiesKilled) + "\n"
-		"Number of alive zombies: " + to_string(m_Zombies.size());
-	Font::GetDefault().DrawText(text, renderParameters.screenWidth - 637, 25, renderParameters);
+	auto text = "Kill count: " + to_string(m_ZombiesKilled) + "\n"
+		"Number of alive zombies: " + to_string(m_Zombies.size()) + "\n"
+		"You have survived for " + string(buffer) + " seconds";
+	Font::GetDefault().DrawText(text, 25, renderParameters.screenHeight - 200, renderParameters);
 }
 
 void PlayerInstance::SpawnRandomZombie()
