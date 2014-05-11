@@ -6,6 +6,7 @@
 #include "ModelInstance2D.h"
 #include "System.h"
 #include "WeaponInstance.h"
+#include "ZombieInstanceBase.h"
 
 const DirectX::XMFLOAT3 WeaponInstance::kWeaponPositionOffset(0.15f, -0.2f, -0.5f);
 
@@ -25,7 +26,7 @@ WeaponInstance::~WeaponInstance()
 	System::GetInstance().RemoveModel(&m_Crosshair);
 }
 
-void WeaponInstance::Fire()
+void WeaponInstance::Fire(const vector<weak_ptr<ZombieInstanceBase>>& zombies, const DirectX::XMFLOAT3& playerPosition)
 {
 	using namespace DirectX;
 
@@ -35,6 +36,66 @@ void WeaponInstance::Fire()
 	XMVECTOR targetDelta = XMVector3Transform(XMVectorSet(0.0f, -2 * kWeaponPositionOffset.y, -100.0f, 1.0f), rotationMatrix);
 
 	XMVECTOR source = XMLoadFloat3(&m_Parameters.position) + sourceDelta;
+	XMVECTOR target = source + targetDelta;
 
-	LaserProjectileInstance::Spawn(source, source + targetDelta);
+	LaserProjectileInstance::Spawn(source, target);
+
+	/*
+	Does it hit the zombie?
+
+	Assume zombie is a plane facing directly to us. It's equation: Ax + By + Cz = D
+	Our projectile equation 
+	S_x, S_y, S_z are laser source coordinates,
+	T_x, T_y, T_z are laser target coordinates,
+	D_x, D_y, D_z are laser delta coordinates:
+	x = S_x + (T_x - S_x) * t = S_x + D_x * t
+	y = S_y + (T_y - S_y) * t = S_y + D_y * t
+	z = S_z + (T_z - S_z) * t = S_z + D_z * t
+
+	Then, we compute at what coordinates laser intersects with the plane:
+
+	A * (S_x + D_x * t) + B * (S_y + D_y * t) + C * (S_z + D_z * t) = D
+	A * S_x + A * t * D_x + B * S_y + B * t * D_y + C* S_z + C * t * D_z = D
+	t * (A * D_x + B * D_y + C * D_z) = (D - A * S_x - B * S_y - C * S_z)
+
+	t = (D - A * S_x - B * S_y - C * S_z) / (A * D_x + B * D_y + C * D_z)
+	t = (D - dot(normal, source)) / dot(normal, delta)
+
+	*/
+
+	XMVECTOR delta = target - source;
+
+	for (auto& zombieWeakRef : zombies)
+	{
+		if (zombieWeakRef.expired())
+		{
+			continue;
+		}
+
+		auto zombie = zombieWeakRef.lock().get();
+
+		if (zombie->IsDead())
+		{
+			continue;
+		}
+
+		auto playerPosFixed = playerPosition;
+		playerPosFixed.y = 0.0f;
+		
+		XMVECTOR zombiePosition = XMLoadFloat3(&zombie->GetPosition());
+		XMVECTOR zombieNormal = XMLoadFloat3(&playerPosFixed) - zombiePosition;
+		XMVECTOR zombieD = XMVector3Dot(zombiePosition, zombieNormal);		
+		XMVECTOR t = (zombieD - XMVector3Dot(zombieNormal, source)) / XMVector3Dot(zombieNormal, delta);
+
+		XMFLOAT3A collisionPoint;
+		XMStoreFloat3A(&collisionPoint, XMVectorMultiplyAdd(delta, t, source) - zombiePosition);
+		
+		float deltaX = sqrt(collisionPoint.x * collisionPoint.x + collisionPoint.z * collisionPoint.z);
+		
+		if (deltaX < 0.5f && collisionPoint.y >= 0.0f && collisionPoint.y < 1.5f)
+		{
+			// Hit
+			zombie->TakeDamage(collisionPoint.y / 1.2f);
+		}
+	}
 }

@@ -2,6 +2,7 @@
 
 #include "ModelInstance3D.h"
 
+class ZombieInstanceBase;
 class WeaponInstance :
 	public ModelInstance3D
 {
@@ -12,7 +13,7 @@ public:
 	WeaponInstance();
 	virtual ~WeaponInstance();
 
-	void Fire();
+	void Fire(const vector<weak_ptr<ZombieInstanceBase>>& zombies, const DirectX::XMFLOAT3& playerPosition);
 
 	static const DirectX::XMFLOAT3 kWeaponPositionOffset;
 };

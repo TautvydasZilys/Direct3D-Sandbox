@@ -51,6 +51,12 @@ public:
 	void SetPosition(const DirectX::XMFLOAT3& position);
 	void SetRotation(const DirectX::XMFLOAT3& rotation);
 	void SetScale(const DirectX::XMFLOAT3& scale);
+	void SetColor(const DirectX::XMFLOAT4& color);
+	
+	const DirectX::XMFLOAT3& GetPosition() const { return m_Parameters.position; }
+	const DirectX::XMFLOAT3& GetRotation() const { return m_Parameters.rotation; }
+	const DirectX::XMFLOAT3& GetScale() const { return m_Parameters.scale; }
+	const DirectX::XMFLOAT4& GetColor() const { return m_Parameters.color; }
 
 	float HorizontalDistanceSqrTo(const DirectX::XMFLOAT2& position);
 };

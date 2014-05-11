@@ -25,7 +25,6 @@ class ZombieInstance :
 	const vector<weak_ptr<ZombieInstanceBase>>& m_Zombies;
 
 	AnimationStateMachine<ZombieStates, ZombieStates::StateCount, kAnimationPeriods, kDoesAnimationLoop, kAnimationTransitionLength> m_AnimationStateMachine;
-	float m_GonnaLiveFor;
 
 	static bool CanMoveTo(const DirectX::XMFLOAT2& position, const vector<weak_ptr<ZombieInstanceBase>>& zombies,
 		const ZombieInstanceBase* thisPtr);

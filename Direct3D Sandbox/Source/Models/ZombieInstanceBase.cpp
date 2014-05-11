@@ -11,6 +11,7 @@ ZombieInstanceBase::ZombieInstanceBase(IShader& shader, const wstring& modelPath
 	m_TargetPlayer(targetPlayer),
 	m_Speed(speed),
 	m_IsDead(false),
+	m_Health(1.0f),
 	m_SpawnTime(static_cast<float>(Tools::GetTime()))
 {
 }
@@ -22,6 +23,17 @@ ZombieInstanceBase::~ZombieInstanceBase()
 void ZombieInstanceBase::UpdateAndRender3D(RenderParameters& renderParameters)
 {
 	ModelInstance3D::UpdateAndRender3D(renderParameters);
+}
+
+void ZombieInstanceBase::TakeDamage(float damage)
+{
+	m_Health -= damage;
+
+	if (m_Health <= 0.0f)
+	{
+		m_DeathTime = static_cast<float>(Tools::GetTime());
+		m_IsDead = true;
+	}
 }
 
 ModelParameters ZombieInstanceBase::GetRandomZombieParameters(const PlayerInstance& targetPlayer)

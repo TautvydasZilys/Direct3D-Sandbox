@@ -21,8 +21,7 @@ ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, const Pla
 						targetPlayer,
 						kZombieDistancePerRunningAnimationTime / kAnimationPeriods[ZombieStates::Running]),
 	m_AnimationStateMachine(ZombieStates::Idle),
-	m_Zombies(zombies),
-	m_GonnaLiveFor(Tools::Random::GetNextReal<float>(5.0f, 15.0f))
+	m_Zombies(zombies)
 {
 	for (int i = 0; i < ZombieStates::Death; i++)
 	{
@@ -98,18 +97,13 @@ void ZombieInstance::UpdateAndRender3D(RenderParameters& renderParameters)
 			targetState = ZombieStates::Hitting;
 		}
 
-		if (renderParameters.time - m_SpawnTime > m_GonnaLiveFor)
-		{
-			m_IsDead = true;
-		}
-
 		SetRotation(DirectX::XMFLOAT3(0.0f, angleY, 0.0f));
 	}
 	else
 	{
 		targetState = ZombieStates::Death;
 
-		if (renderParameters.time - m_SpawnTime - m_GonnaLiveFor > kZombieBodyLastingTime)
+		if (renderParameters.time - m_DeathTime > kZombieBodyLastingTime)
 		{
 			System::GetInstance().RemoveModel(this);
 		}

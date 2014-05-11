@@ -122,7 +122,7 @@ void PlayerInstance::UpdateWeapon()
 
 	if (input.IsMouseButtonDown(1))
 	{
-		m_Weapon.Fire();
+		m_Weapon.Fire(m_Zombies, m_Camera.GetPosition());
 		input.MouseButtonUp(1);
 	}
 }

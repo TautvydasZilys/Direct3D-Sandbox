@@ -4,7 +4,7 @@
 #include "Source\Graphics\IShader.h"
 #include "System.h"
 
-static const float kRayWidth = 0.1f;
+static const float kRayWidth = 0.3f;
 static const float kRayLifetime = 0.2f;
 
 LaserProjectileInstance::LaserProjectileInstance(const ModelParameters& modelParameters, const DirectX::XMVECTOR& rayDirection) :

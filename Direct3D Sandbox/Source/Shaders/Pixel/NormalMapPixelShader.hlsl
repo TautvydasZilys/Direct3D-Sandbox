@@ -21,16 +21,16 @@ struct PixelInput
 float4 main(PixelInput input) : SV_TARGET
 {
     float lightIntensity;
-    float4 color;
+    float4 finalColor;
 	float4 normalMap;
 
-    color = Texture.Sample(WrapSampler, input.tex);
+    finalColor = Texture.Sample(WrapSampler, input.tex);
 
 	normalMap = NormalMap.Sample(WrapSampler, input.tex) * 2.0f - 1.0f;
     input.normal = -normalMap.x * normalize(input.tangent) + -normalMap.y * normalize(input.binormal) + normalMap.z * normalize(input.normal);
 	input.normal = normalize(input.normal);
     lightIntensity = saturate(dot(input.normal, lightDirection));
-	color *= float4(saturate(lightColor * lightIntensity + ambientColor), 1.0f);
+	finalColor *= float4(saturate(lightColor * lightIntensity + ambientColor), 1.0f);
 
-    return color;
+    return finalColor;
 }

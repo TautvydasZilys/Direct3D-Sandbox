@@ -75,6 +75,11 @@ void ModelInstance::SetScale(const DirectX::XMFLOAT3& scale)
 	m_DirtyWorldMatrix = true;
 }
 
+void ModelInstance::SetColor(const DirectX::XMFLOAT4& color)
+{
+	m_Parameters.color = color;
+}
+
 float ModelInstance::HorizontalDistanceSqrTo(const DirectX::XMFLOAT2& position)
 {
 	auto deltaX = position.x - m_Parameters.position.x;
