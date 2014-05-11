@@ -5,7 +5,7 @@
 #include "System.h"
 
 static const float kRayWidth = 0.3f;
-static const float kRayLifetime = 0.2f;
+static const float kRayLifetime = 0.4f;
 
 LaserProjectileInstance::LaserProjectileInstance(const ModelParameters& modelParameters, const DirectX::XMVECTOR& rayDirection) :
 	ModelInstance3D(IShader::GetShader(ShaderType::LASER_SHADER), L"Assets\\Models\\Laser.model", modelParameters),
@@ -22,7 +22,9 @@ LaserProjectileInstance::~LaserProjectileInstance()
 
 void LaserProjectileInstance::UpdateAndRender3D(RenderParameters& renderParameters)
 {
-	if (renderParameters.time - m_SpawnedAt > kRayLifetime)
+	renderParameters.transitionProgress = (renderParameters.time - m_SpawnedAt) / kRayLifetime;
+
+	if (renderParameters.transitionProgress > 1.0f)
 	{
 		System::GetInstance().RemoveModel(this);
 		return;
