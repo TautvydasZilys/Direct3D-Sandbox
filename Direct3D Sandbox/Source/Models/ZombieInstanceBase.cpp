@@ -6,7 +6,7 @@
 
 
 ZombieInstanceBase::ZombieInstanceBase(IShader& shader, const wstring& modelPath, const wstring& texturePath, const wstring& normalMapPath,
-		const ModelParameters& modelParameters, const PlayerInstance& targetPlayer, float speed) :
+		const ModelParameters& modelParameters, PlayerInstance& targetPlayer, float speed) :
 	ModelInstance3D(shader, modelPath, modelParameters, texturePath, normalMapPath),
 	m_TargetPlayer(targetPlayer),
 	m_Speed(speed),

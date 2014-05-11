@@ -7,7 +7,7 @@ class ZombieInstanceBase :
 	public ModelInstance3D
 {	
 protected:
-	const PlayerInstance& m_TargetPlayer;
+	PlayerInstance& m_TargetPlayer;
 	const float m_Speed;
 
 	bool m_IsDead;
@@ -16,7 +16,7 @@ protected:
 	float m_DeathTime;
 
 	ZombieInstanceBase(IShader& shader, const wstring& modelPath, const wstring& texturePath, const wstring& normalMapPath,
-		const ModelParameters& modelParameters, const PlayerInstance& targetPlayer, float speed);
+		const ModelParameters& modelParameters, PlayerInstance& targetPlayer, float speed);
 
 	static ModelParameters GetRandomZombieParameters(const PlayerInstance& targetPlayer);
 

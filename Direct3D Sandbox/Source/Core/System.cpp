@@ -215,8 +215,10 @@ void System::RemoveModelImpl(const IModelInstance* model)
 
 void System::AddAndRemoveModels()
 {
-	for (auto& addRemoveModel : m_AddRemoveModelQueue)
+	for (auto i = 0u; i < m_AddRemoveModelQueue.size(); i++)
 	{
+		const auto& addRemoveModel = m_AddRemoveModelQueue[i];
+
 		switch (addRemoveModel.operation)
 		{
 		case AddRemoveModelItem::AddRemoveOperation::ADD:

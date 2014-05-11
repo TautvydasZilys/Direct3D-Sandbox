@@ -10,11 +10,11 @@ class SuperZombieInstance :
 	SuperZombieInstance& operator=(const ModelInstance& other);		// Not implemented (no copying allowed)
 
 public:
-	SuperZombieInstance(const ModelParameters& modelParameters, const PlayerInstance& targetPlayer);
+	SuperZombieInstance(const ModelParameters& modelParameters, PlayerInstance& targetPlayer);
 	virtual ~SuperZombieInstance();
 
 	virtual void UpdateAndRender3D(RenderParameters& renderParameters);
 
-	static shared_ptr<ZombieInstanceBase> Spawn(const PlayerInstance& targetPlayer);
+	static shared_ptr<ZombieInstanceBase> Spawn(PlayerInstance& targetPlayer);
 };
 

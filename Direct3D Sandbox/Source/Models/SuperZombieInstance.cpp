@@ -5,7 +5,7 @@
 #include "SuperZombieInstance.h"
 
 
-SuperZombieInstance::SuperZombieInstance(const ModelParameters& modelParameters, const PlayerInstance& targetPlayer) :
+SuperZombieInstance::SuperZombieInstance(const ModelParameters& modelParameters, PlayerInstance& targetPlayer) :
 	ZombieInstanceBase(IShader::GetShader(ShaderType::LIGHTING_SHADER), 
 						L"Assets\\Models\\SuperZombie.model",
 						L"Assets\\Textures\\SuperZombie.dds",
@@ -25,7 +25,7 @@ void SuperZombieInstance::UpdateAndRender3D(RenderParameters& renderParameters)
 	ZombieInstanceBase::UpdateAndRender3D(renderParameters);
 }
 
-shared_ptr<ZombieInstanceBase> SuperZombieInstance::Spawn(const PlayerInstance& targetPlayer)
+shared_ptr<ZombieInstanceBase> SuperZombieInstance::Spawn(PlayerInstance& targetPlayer)
 {
 	return shared_ptr<ZombieInstanceBase>(new SuperZombieInstance(GetRandomZombieParameters(targetPlayer), targetPlayer));
 }

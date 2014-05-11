@@ -153,14 +153,17 @@ void PlayerInstance::UpdateStateGameOver3D(RenderParameters& renderParameters)
 
 void PlayerInstance::UpdateStateGameOver2D(RenderParameters& renderParameters)
 {
-	m_BoldFont.DrawText("GAME OVER!", renderParameters.screenWidth / 2 - 50, renderParameters.screenHeight / 2 - 50, renderParameters);
+	m_BoldFont.DrawText("GAME OVER!", renderParameters.screenWidth / 2 - 350, renderParameters.screenHeight / 2 - 200, renderParameters);
 	
 	auto text = "You have survived for " + Tools::FloatToString(m_DeathTime - m_StartTime) +
-		" seconds and you have killed " + to_string(m_ZombiesKilled) + " zombies";
-	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 200, renderParameters.screenHeight / 2 + 50, renderParameters);
+		" seconds";
+	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 355, renderParameters.screenHeight / 2 + 50, renderParameters);
 
-	text = "Press spacebar to try again";
-	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 100, renderParameters.screenHeight / 2 + 100, renderParameters);
+	text = to_string(m_ZombiesKilled) + " zombies have fallen beneath you";
+	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 360, renderParameters.screenHeight / 2 + 112, renderParameters);
+
+	text = "Press spacebar to play again";
+	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 290, renderParameters.screenHeight / 2 + 300, renderParameters);
 }
 
 void PlayerInstance::StartGame()

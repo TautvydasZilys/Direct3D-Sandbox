@@ -10,18 +10,20 @@ const bool ZombieInstance::kDoesAnimationLoop[ZombieStates::StateCount] = { true
 const float ZombieInstance::kAnimationTransitionLength = 0.5f;
 const float ZombieInstance::kZombieDistancePerRunningAnimationTime = 1.5f;
 const float ZombieInstance::kZombieBodyLastingTime = 20.0f;
+const float ZombieInstance::kZombieHitInterval = 1.0f;
 
-ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, const PlayerInstance& targetPlayer, 
+ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, PlayerInstance& targetPlayer, 
 							   const vector<shared_ptr<ZombieInstanceBase>>& zombies) :
 	ZombieInstanceBase(IShader::GetShader(ShaderType::ANIMATION_NORMAL_MAP_SHADER), 
-						L"Assets\\Animated Models\\Zombie.animatedModel", 
-						L"Assets\\Textures\\Zombie.dds",
-						L"Assets\\Normal Maps\\Zombie.dds",
-						modelParameters,
-						targetPlayer,
-						kZombieDistancePerRunningAnimationTime / kAnimationPeriods[ZombieStates::Running]),
+					   L"Assets\\Animated Models\\Zombie.animatedModel", 
+					   L"Assets\\Textures\\Zombie.dds",
+					   L"Assets\\Normal Maps\\Zombie.dds",
+					   modelParameters,
+					   targetPlayer,
+					   kZombieDistancePerRunningAnimationTime / kAnimationPeriods[ZombieStates::Running]),
 	m_AnimationStateMachine(ZombieStates::Idle),
-	m_Zombies(zombies)
+	m_Zombies(zombies),
+	m_LastHitPlayerAt(static_cast<float>(Tools::GetTime()))
 {
 	for (int i = 0; i < ZombieStates::Death; i++)
 	{
@@ -54,7 +56,7 @@ bool ZombieInstance::CanMoveTo(const DirectX::XMFLOAT2& position, const vector<s
 			}
 		}
 	}
-	
+
 	return true;
 }
 
@@ -67,31 +69,38 @@ void ZombieInstance::UpdateAndRender3D(RenderParameters& renderParameters)
 		auto playerPosition = m_TargetPlayer.GetPosition();
 		auto angleY = -atan2(m_Parameters.position.z - playerPosition.z, m_Parameters.position.x - playerPosition.x) - DirectX::XM_PI / 2.0f;
 
-		DirectX::XMFLOAT2 vectorToPlayer(playerPosition.x - m_Parameters.position.x, playerPosition.z - m_Parameters.position.z);
-		auto distanceToPlayerSqr = vectorToPlayer.x * vectorToPlayer.x + vectorToPlayer.y * vectorToPlayer.y;	
-
-		if (distanceToPlayerSqr > 1.5f)
+		if (m_TargetPlayer.GetGameState() == GameState::Playing)
 		{
-			auto vectorMultiplier = m_Speed * renderParameters.frameTime / sqrt(distanceToPlayerSqr);
+			DirectX::XMFLOAT2 vectorToPlayer(playerPosition.x - m_Parameters.position.x, playerPosition.z - m_Parameters.position.z);
+			auto distanceToPlayerSqr = vectorToPlayer.x * vectorToPlayer.x + vectorToPlayer.y * vectorToPlayer.y;	
 
-			DirectX::XMFLOAT2 newPosition(m_Parameters.position.x + vectorMultiplier * vectorToPlayer.x, 
-										  m_Parameters.position.z + vectorMultiplier * vectorToPlayer.y);
-
-			if (CanMoveTo(newPosition, m_Zombies, this))
+			if (distanceToPlayerSqr > 1.5f)
 			{
-				targetState = ZombieStates::Running;
+				auto vectorMultiplier = m_Speed * renderParameters.frameTime / sqrt(distanceToPlayerSqr);
 
-				m_Parameters.position.x = newPosition.x;
-				m_Parameters.position.z = newPosition.y;
+				DirectX::XMFLOAT2 newPosition(m_Parameters.position.x + vectorMultiplier * vectorToPlayer.x, 
+					m_Parameters.position.z + vectorMultiplier * vectorToPlayer.y);
+
+				if (CanMoveTo(newPosition, m_Zombies, this))
+				{
+					targetState = ZombieStates::Running;
+
+					m_Parameters.position.x = newPosition.x;
+					m_Parameters.position.z = newPosition.y;
+				}
+				else
+				{
+					targetState = ZombieStates::Idle;
+				}
 			}
 			else
 			{
-				targetState = ZombieStates::Idle;
+				targetState = ZombieStates::Hitting;
 			}
 		}
 		else
 		{
-			targetState = ZombieStates::Hitting;
+			targetState = ZombieStates::Idle;
 		}
 
 		SetRotation(DirectX::XMFLOAT3(0.0f, angleY, 0.0f));
@@ -108,10 +117,19 @@ void ZombieInstance::UpdateAndRender3D(RenderParameters& renderParameters)
 
 	m_AnimationStateMachine.Update(renderParameters, targetState);
 
+	if (renderParameters.currentAnimationState == ZombieStates::Hitting && 
+		!renderParameters.isTransitioningAnimationStates &&
+		renderParameters.currentStateAnimationProgress > 0.4f && renderParameters.currentStateAnimationProgress < 0.6f &&
+		renderParameters.time - m_LastHitPlayerAt >= kZombieHitInterval)
+	{
+		m_LastHitPlayerAt = renderParameters.time;
+		m_TargetPlayer.TakeDamage(Tools::Random::GetNextReal<float>(0.03f, 0.1f));
+	}
+
 	ZombieInstanceBase::UpdateAndRender3D(renderParameters);
 }
 
-shared_ptr<ZombieInstanceBase> ZombieInstance::Spawn(const PlayerInstance& targetPlayer, const vector<shared_ptr<ZombieInstanceBase>>& zombies)
+shared_ptr<ZombieInstanceBase> ZombieInstance::Spawn(PlayerInstance& targetPlayer, const vector<shared_ptr<ZombieInstanceBase>>& zombies)
 {
 	ModelParameters zombieParameters;
 
