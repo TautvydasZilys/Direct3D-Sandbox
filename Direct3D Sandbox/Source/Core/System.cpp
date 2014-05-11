@@ -145,7 +145,8 @@ void System::Draw()
 	
 	m_Direct3D.TurnZBufferOff();
 	m_OrthoCamera->SetRenderParameters(renderParameters);
-
+	
+	renderParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	Font::GetDefault().DrawText("FPS: " + to_string(m_LastFrameFps), 25, 25, renderParameters);
 
 	for (auto& model : m_Models)

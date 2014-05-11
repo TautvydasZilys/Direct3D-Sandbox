@@ -81,6 +81,8 @@ void PlayerInstance::UpdateStateNotStarted3D(RenderParameters& renderParameters)
 
 void PlayerInstance::UpdateStateNotStarted2D(RenderParameters& renderParameters)
 {
+	renderParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+
 	m_BoldFont.DrawText("  Welcome to\nZombie Siege!", renderParameters.screenWidth / 2 - 385, 
 		renderParameters.screenHeight / 2 - 200, renderParameters);
 	
@@ -129,7 +131,12 @@ void PlayerInstance::UpdateStatePlaying2D(RenderParameters& renderParameters)
 	auto text = "Kill count: " + to_string(m_ZombiesKilled) + "\n"
 		"Number of alive zombies: " + to_string(m_Zombies.size()) + "\n"
 		"You have survived for " + Tools::FloatToString(delta) + " seconds";
+	renderParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	Font::GetDefault().DrawText(text, 25, renderParameters.screenHeight - 200, renderParameters);
+	
+	text = "Health: " + to_string(static_cast<int>(m_Health * 100));
+	renderParameters.color = DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+	Font::GetDefault().DrawText(text, renderParameters.screenWidth - 250, renderParameters.screenHeight - 74, renderParameters);
 }
 
 void PlayerInstance::UpdateStateGameOver3D(RenderParameters& renderParameters)
@@ -153,8 +160,12 @@ void PlayerInstance::UpdateStateGameOver3D(RenderParameters& renderParameters)
 
 void PlayerInstance::UpdateStateGameOver2D(RenderParameters& renderParameters)
 {
+	renderParameters.color = DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+
 	m_BoldFont.DrawText("GAME OVER!", renderParameters.screenWidth / 2 - 350, renderParameters.screenHeight / 2 - 200, renderParameters);
 	
+	renderParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+
 	auto text = "You have survived for " + Tools::FloatToString(m_DeathTime - m_StartTime) +
 		" seconds";
 	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 355, renderParameters.screenHeight / 2 + 50, renderParameters);

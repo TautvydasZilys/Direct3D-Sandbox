@@ -1,6 +1,11 @@
 Texture2D Texture;
 SamplerState WrapSampler;
 
+cbuffer ColorBuffer
+{
+	float4 color;
+}
+
 struct PixelInput
 {
     float4 position : SV_POSITION;
@@ -9,5 +14,5 @@ struct PixelInput
 
 float4 main(PixelInput input) : SV_TARGET
 {
-	return Texture.Sample(WrapSampler, input.tex);
+	return color * Texture.Sample(WrapSampler, input.tex);
 }
