@@ -14,7 +14,7 @@ public:
 	WeaponInstance();
 	virtual ~WeaponInstance();
 
-	int Fire(const vector<weak_ptr<ZombieInstanceBase>>& zombies, const DirectX::XMFLOAT3& playerPosition);
+	int Fire(const vector<shared_ptr<ZombieInstanceBase>>& zombies, const DirectX::XMFLOAT3& playerPosition);
 
 	static const DirectX::XMFLOAT3 kWeaponPositionOffset;
 };

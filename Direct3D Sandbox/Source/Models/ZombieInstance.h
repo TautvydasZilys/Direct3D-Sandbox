@@ -22,11 +22,11 @@ class ZombieInstance :
 	static const float kZombieDistancePerRunningAnimationTime;
 	static const float kZombieBodyLastingTime;
 	
-	const vector<weak_ptr<ZombieInstanceBase>>& m_Zombies;
+	const vector<shared_ptr<ZombieInstanceBase>>& m_Zombies;
 
 	AnimationStateMachine<ZombieStates, ZombieStates::StateCount, kAnimationPeriods, kDoesAnimationLoop, kAnimationTransitionLength> m_AnimationStateMachine;
 
-	static bool CanMoveTo(const DirectX::XMFLOAT2& position, const vector<weak_ptr<ZombieInstanceBase>>& zombies,
+	static bool CanMoveTo(const DirectX::XMFLOAT2& position, const vector<shared_ptr<ZombieInstanceBase>>& zombies,
 		const ZombieInstanceBase* thisPtr);
 
 	ZombieInstance(const ModelInstance& other);					// Not implemented (no copying allowed)
@@ -34,11 +34,11 @@ class ZombieInstance :
 
 public:
 	ZombieInstance(const ModelParameters& modelParameters, const PlayerInstance& targetPlayer, 
-		const vector<weak_ptr<ZombieInstanceBase>>& zombies);
+		const vector<shared_ptr<ZombieInstanceBase>>& zombies);
 	virtual ~ZombieInstance();
 
 	virtual void UpdateAndRender3D(RenderParameters& renderParameters);
 
-	static shared_ptr<ZombieInstanceBase> Spawn(const PlayerInstance& targetPlayer, const vector<weak_ptr<ZombieInstanceBase>>& zombies);
+	static shared_ptr<ZombieInstanceBase> Spawn(const PlayerInstance& targetPlayer, const vector<shared_ptr<ZombieInstanceBase>>& zombies);
 };
 

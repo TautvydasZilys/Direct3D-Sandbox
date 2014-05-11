@@ -29,5 +29,9 @@ const float Constants::DefaultMouseSensitivity = 0.5f;
 const float Constants::GravityConstant = -9.81f;
 
 const int Constants::StartingZombieCount = 10;
+#if WINDOWS_PHONE
 const int Constants::MaxZombies = 50;
+#else
+const int Constants::MaxZombies = 800;
+#endif
 const float Constants::ZombieSpawnIntervalInSeconds = 2.0f;

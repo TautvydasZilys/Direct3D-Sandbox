@@ -12,7 +12,7 @@ class PlayerInstance :
 private:
 	const Camera& m_Camera;
 	WeaponInstance& m_Weapon;
-	vector<weak_ptr<ZombieInstanceBase>> m_Zombies;
+	vector<shared_ptr<ZombieInstanceBase>> m_Zombies;
 	float m_StartTime;
 	float m_LastSpawnTime;
 	float m_SpawnInterval;

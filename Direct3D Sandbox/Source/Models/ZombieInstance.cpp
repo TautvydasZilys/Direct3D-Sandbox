@@ -12,7 +12,7 @@ const float ZombieInstance::kZombieDistancePerRunningAnimationTime = 1.5f;
 const float ZombieInstance::kZombieBodyLastingTime = 20.0f;
 
 ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, const PlayerInstance& targetPlayer, 
-							   const vector<weak_ptr<ZombieInstanceBase>>& zombies) :
+							   const vector<shared_ptr<ZombieInstanceBase>>& zombies) :
 	ZombieInstanceBase(IShader::GetShader(ShaderType::ANIMATION_NORMAL_MAP_SHADER), 
 						L"Assets\\Animated Models\\Zombie.animatedModel", 
 						L"Assets\\Textures\\Zombie.dds",
@@ -35,25 +35,22 @@ ZombieInstance::~ZombieInstance()
 {
 }
 
-bool ZombieInstance::CanMoveTo(const DirectX::XMFLOAT2& position, const vector<weak_ptr<ZombieInstanceBase>>& zombies,
+bool ZombieInstance::CanMoveTo(const DirectX::XMFLOAT2& position, const vector<shared_ptr<ZombieInstanceBase>>& zombies,
 	const ZombieInstanceBase* thisPtr)
 {
 	auto zombieCount = zombies.size();
 
 	for (auto i = 0u; i < zombieCount; i++)
 	{
-		if (!zombies[i].expired())
+		auto zombie = zombies[i].get();
+
+		if (zombie != thisPtr)
 		{
-			auto zombie = zombies[i].lock().get();
+			auto distanceSqr = zombie->HorizontalDistanceSqrTo(position);
 
-			if (zombie != thisPtr)
+			if (!zombie->IsDead() && distanceSqr < 1.0f)
 			{
-				auto distanceSqr = zombie->HorizontalDistanceSqrTo(position);
-
-				if (!zombie->IsDead() && distanceSqr < 1.0f)
-				{
-					return false;
-				}
+				return false;
 			}
 		}
 	}
@@ -114,7 +111,7 @@ void ZombieInstance::UpdateAndRender3D(RenderParameters& renderParameters)
 	ZombieInstanceBase::UpdateAndRender3D(renderParameters);
 }
 
-shared_ptr<ZombieInstanceBase> ZombieInstance::Spawn(const PlayerInstance& targetPlayer, const vector<weak_ptr<ZombieInstanceBase>>& zombies)
+shared_ptr<ZombieInstanceBase> ZombieInstance::Spawn(const PlayerInstance& targetPlayer, const vector<shared_ptr<ZombieInstanceBase>>& zombies)
 {
 	ModelParameters zombieParameters;
 

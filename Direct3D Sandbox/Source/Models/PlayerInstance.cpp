@@ -33,10 +33,7 @@ PlayerInstance::~PlayerInstance()
 {
 	for (auto& zombie : m_Zombies)
 	{
-		if (!zombie.expired())
-		{
-			System::GetInstance().RemoveModel(zombie.lock().get());
-		}
+		System::GetInstance().RemoveModel(zombie.get());
 	}
 
 	System::GetInstance().RemoveModel(&m_Weapon);
@@ -47,7 +44,7 @@ void PlayerInstance::UpdateAndRender3D(RenderParameters& renderParameters)
 	// Remove destroyed/dead zombies
 	for (auto i = 0u; i < m_Zombies.size(); i++)
 	{
-		if (m_Zombies[i].expired() || m_Zombies[i].lock()->IsDead())
+		if (m_Zombies[i]->IsDead())
 		{
 			m_Zombies[i] = m_Zombies[m_Zombies.size() - 1];
 			m_Zombies.pop_back();
@@ -55,7 +52,7 @@ void PlayerInstance::UpdateAndRender3D(RenderParameters& renderParameters)
 		}
 	}
 
-	if (renderParameters.time - m_LastSpawnTime >= m_SpawnInterval)// && static_cast<int>(m_Zombies.size()) < Constants::MaxZombies)
+	if (renderParameters.time - m_LastSpawnTime >= m_SpawnInterval) && static_cast<int>(m_Zombies.size()) < Constants::MaxZombies)
 	{
 		for (int i = 0; i < m_SpawnCount; i++)
 		{
@@ -68,7 +65,7 @@ void PlayerInstance::UpdateAndRender3D(RenderParameters& renderParameters)
 		if (m_SpawnInterval < kSmallestSpawnInterval)
 		{
 			m_SpawnInterval *= 2;
-			m_SpawnCount++;
+			m_SpawnCount *= 2;
 		}
 	}
 	

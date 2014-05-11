@@ -29,7 +29,7 @@ WeaponInstance::~WeaponInstance()
 }
 
 // Returns number of zombies killed
-int WeaponInstance::Fire(const vector<weak_ptr<ZombieInstanceBase>>& zombies, const DirectX::XMFLOAT3& playerPosition)
+int WeaponInstance::Fire(const vector<shared_ptr<ZombieInstanceBase>>& zombies, const DirectX::XMFLOAT3& playerPosition)
 {
 	using namespace DirectX;
 	
@@ -78,14 +78,9 @@ int WeaponInstance::Fire(const vector<weak_ptr<ZombieInstanceBase>>& zombies, co
 	XMVECTOR delta = target - source;
 	auto zombiesKilled = 0;
 
-	for (auto& zombieWeakRef : zombies)
+	for (auto& zombieRef : zombies)
 	{
-		if (zombieWeakRef.expired())
-		{
-			continue;
-		}
-
-		auto zombie = zombieWeakRef.lock().get();
+		auto zombie = zombieRef.get();
 
 		if (zombie->IsDead())
 		{
