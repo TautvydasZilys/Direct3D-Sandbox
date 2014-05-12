@@ -95,16 +95,22 @@ int WeaponInstance::Fire(const vector<shared_ptr<ZombieInstanceBase>>& zombies, 
 		XMVECTOR zombieD = XMVector3Dot(zombiePosition, zombieNormal);		
 		XMVECTOR t = (zombieD - XMVector3Dot(zombieNormal, source)) / XMVector3Dot(zombieNormal, delta);
 
-		XMFLOAT3A collisionPoint;
-		XMStoreFloat3A(&collisionPoint, XMVectorMultiplyAdd(delta, t, source) - zombiePosition);
-		
-		float deltaX = sqrt(collisionPoint.x * collisionPoint.x + collisionPoint.z * collisionPoint.z);
-		
-		if (deltaX < 0.5f && collisionPoint.y >= 0.0f && collisionPoint.y < 1.5f)
+		XMVECTOR collisionPoint = XMVectorMultiplyAdd(delta, t, source); 
+
+		// Only register hits if zombie is in front
+		if (XMVectorGetX(XMVector3Dot(collisionPoint - source, delta)) > 0.0f)
 		{
-			if (zombie->TakeDamage(collisionPoint.y / 1.2f))
+			XMFLOAT3A collisionPointDelta;
+			XMStoreFloat3A(&collisionPointDelta, collisionPoint - zombiePosition);
+		
+			float deltaX = sqrt(collisionPointDelta.x * collisionPointDelta.x + collisionPointDelta.z * collisionPointDelta.z);
+		
+			if (deltaX < 0.5f && collisionPointDelta.y >= 0.0f && collisionPointDelta.y < 1.5f)
 			{
-				zombiesKilled++;
+				if (zombie->TakeDamage(collisionPointDelta.y / 1.2f))
+				{
+					zombiesKilled++;
+				}
 			}
 		}
 	}
