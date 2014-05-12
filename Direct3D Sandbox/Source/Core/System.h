@@ -25,7 +25,7 @@ private:
 	int m_Fps;
 	int m_LastFrameFps;
 	
-	unique_ptr<Camera> m_Camera;
+	unique_ptr<Camera> m_Camera;	// Allocated on the heap for proper alignment
 	unique_ptr<Camera> m_OrthoCamera;
 	DirectionalLight m_Light;
 	

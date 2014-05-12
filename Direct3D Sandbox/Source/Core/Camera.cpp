@@ -26,46 +26,6 @@ Camera::Camera(bool usePerspective, float fovY, float aspectRatio, float orthoWi
 Camera::~Camera()
 {
 }
-	
-void Camera::LookUp(float value)
-{
-	m_Rotation.x += value;
-	CheckRotationBounds();
-
-	m_DirtyViewMatrix = true;
-}
-
-void Camera::LookDown(float value)
-{
-	m_Rotation.x -= value;
-	CheckRotationBounds();
-
-	m_DirtyViewMatrix = true;
-}
-
-void Camera::LookLeft(float value)
-{
-	m_Rotation.y += value;
-	m_DirtyViewMatrix = true;
-}
-
-void Camera::LookRight(float value)
-{
-	m_Rotation.y -= value;
-	m_DirtyViewMatrix = true;
-}
-
-void Camera::CheckRotationBounds()
-{
-	if (m_Rotation.x > DirectX::XM_PI / 2.0f)
-	{
-		m_Rotation.x = DirectX::XM_PI / 2.0f;
-	}
-	else if (m_Rotation.x < -DirectX::XM_PI / 2.0f)
-	{
-		m_Rotation.x = -DirectX::XM_PI / 2.0f;
-	}
-}
 
 void Camera::RecalculateFrustumPlanes()
 {

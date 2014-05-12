@@ -40,8 +40,8 @@
     <Filter Include="Source\Models">
       <UniqueIdentifier>{fe196ddd-5ba2-4dbb-af78-540370bd309d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Cameras">
-      <UniqueIdentifier>{ca27439b-fadf-4094-93ac-68756328f51b}</UniqueIdentifier>
+    <Filter Include="Source\CameraControllers">
+      <UniqueIdentifier>{11257987-0eb3-4b32-9957-bd01dfca8298}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -123,15 +123,6 @@
     <ClCompile Include="Source\Models\CameraPositionLockedModelInstance.cpp">
       <Filter>Source\Models</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Cameras\Camera.cpp">
-      <Filter>Source\Cameras</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Cameras\FPSControllerCamera.cpp">
-      <Filter>Source\Cameras</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Cameras\FreeMovementCamera.cpp">
-      <Filter>Source\Cameras</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Graphics\Font.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
@@ -173,6 +164,18 @@
     </ClCompile>
     <ClCompile Include="Source\Models\LaserProjectileInstance.cpp">
       <Filter>Source\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Camera.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CameraControllers\FPSController.cpp">
+      <Filter>Source\CameraControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CameraControllers\FreeMovementController.cpp">
+      <Filter>Source\CameraControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CameraControllers\BaseCameraController.cpp">
+      <Filter>Source\CameraControllers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -257,15 +260,6 @@
     <ClInclude Include="Source\Models\CameraPositionLockedModelInstance.h">
       <Filter>Source\Models</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Cameras\Camera.h">
-      <Filter>Source\Cameras</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Cameras\FPSControllerCamera.h">
-      <Filter>Source\Cameras</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Cameras\FreeMovementCamera.h">
-      <Filter>Source\Cameras</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Graphics\Font.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
@@ -310,6 +304,18 @@
     </ClInclude>
     <ClInclude Include="Source\Models\LaserProjectileInstance.h">
       <Filter>Source\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Camera.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CameraControllers\FPSController.h">
+      <Filter>Source\CameraControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CameraControllers\FreeMovementController.h">
+      <Filter>Source\CameraControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CameraControllers\BaseCameraController.h">
+      <Filter>Source\CameraControllers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

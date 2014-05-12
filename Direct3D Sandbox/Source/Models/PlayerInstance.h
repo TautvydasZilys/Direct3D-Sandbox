@@ -2,7 +2,7 @@
 
 #include "IModelInstance.h"
 #include "ZombieInstanceBase.h"
-#include "Source\Cameras\Camera.h"
+#include "Source\CameraControllers\FPSController.h"
 
 class WeaponInstance;
 
@@ -18,7 +18,7 @@ class PlayerInstance :
 	public IModelInstance
 {
 private:
-	Camera& m_Camera;
+	FPSController m_CameraController;
 	shared_ptr<WeaponInstance> m_Weapon;
 	vector<shared_ptr<ZombieInstanceBase>> m_Zombies;
 	float m_StartTime;
@@ -33,7 +33,7 @@ private:
 	
 	GameState m_GameState;
 	Font& m_BoldFont;
-
+	
 	void UpdateInput(float frameTime);
 	void UpdateWeapon();
 
@@ -61,7 +61,7 @@ public:
 	virtual void Render2D(RenderParameters& renderParameters);
 
 	inline GameState GetGameState() const { return m_GameState; }
-	inline DirectX::XMFLOAT3 GetPosition() const { return m_Camera.GetPosition(); }
+	inline const DirectX::XMFLOAT3& GetPosition() const { return m_CameraController.GetPosition(); }
 	void TakeDamage(float damage);
 };
 

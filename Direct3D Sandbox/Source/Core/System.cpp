@@ -1,7 +1,6 @@
 #include "PrecompiledHeader.h"
 #include "Constants.h"
-#include "Source\Cameras\FreeMovementCamera.h"
-#include "Source\Cameras\FPSControllerCamera.h"
+#include "Camera.h"
 #include "Source\Graphics\Font.h"
 #include "Source\Graphics\IShader.h"
 #include "Source\Graphics\SamplerState.h"
@@ -22,7 +21,7 @@ System::System() :
 	m_LastFrameFps(0),
 	m_LastFpsTime(m_CurrentTime),
 	m_MouseSensitivity(Constants::DefaultMouseSensitivity),
-	m_Camera(new FPSControllerCamera(true, Constants::VerticalFieldOfView, m_Windowing.GetAspectRatio(), 0, 0, 2.0f)),
+	m_Camera(new Camera(true, Constants::VerticalFieldOfView, m_Windowing.GetAspectRatio(), 0, 0)),
 	m_OrthoCamera(new Camera(false, 0.0f, 0.0f, static_cast<float>(m_Windowing.GetWidth()), static_cast<float>(m_Windowing.GetHeight()))),
 	m_Light(DirectX::XMFLOAT3(3.0f, -2.0f, -1.0f), DirectX::XMFLOAT3(0.7f, 0.7f, 0.6f), DirectX::XMFLOAT3(0.4f, 0.4f, 0.4f), 32)
 {

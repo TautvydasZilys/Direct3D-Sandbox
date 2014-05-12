@@ -560,10 +560,11 @@ del xcopyexclude.txt
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Cameras\Camera.cpp" />
-    <ClCompile Include="Source\Cameras\FPSControllerCamera.cpp" />
-    <ClCompile Include="Source\Cameras\FreeMovementCamera.cpp" />
+    <ClCompile Include="Source\CameraControllers\BaseCameraController.cpp" />
+    <ClCompile Include="Source\CameraControllers\FPSController.cpp" />
+    <ClCompile Include="Source\CameraControllers\FreeMovementController.cpp" />
     <ClCompile Include="Source\Core\AlignedClass.cpp" />
+    <ClCompile Include="Source\Core\Camera.cpp" />
     <ClCompile Include="Source\Core\Constants.cpp" />
     <ClCompile Include="Source\Core\DirectionalLight.cpp" />
     <ClCompile Include="Source\Core\Input.cpp" />
@@ -608,11 +609,12 @@ del xcopyexclude.txt
     <ClCompile Include="Source\PlatformSpecific\Windows\DesktopWindowing.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Cameras\Camera.h" />
-    <ClInclude Include="Source\Cameras\FPSControllerCamera.h" />
-    <ClInclude Include="Source\Cameras\FreeMovementCamera.h" />
+    <ClInclude Include="Source\CameraControllers\BaseCameraController.h" />
+    <ClInclude Include="Source\CameraControllers\FPSController.h" />
+    <ClInclude Include="Source\CameraControllers\FreeMovementController.h" />
     <ClInclude Include="Source\Core\AlignedClass.h" />
     <ClInclude Include="Source\Core\AnimationStateMachine.h" />
+    <ClInclude Include="Source\Core\Camera.h" />
     <ClInclude Include="Source\Core\Constants.h" />
     <ClInclude Include="Source\Core\DirectionalLight.h" />
     <ClInclude Include="Source\Core\Input.h" />
