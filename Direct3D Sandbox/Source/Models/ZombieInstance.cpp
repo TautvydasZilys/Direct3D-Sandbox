@@ -50,7 +50,7 @@ bool ZombieInstance::CanMoveTo(const DirectX::XMFLOAT2& position, const vector<s
 		{
 			auto distanceSqr = zombie->HorizontalDistanceSqrTo(position);
 
-			if (!zombie->IsDead() && distanceSqr < 1.0f)
+			if (distanceSqr < 1.0f)
 			{
 				return false;
 			}
@@ -76,21 +76,30 @@ void ZombieInstance::Update(const RenderParameters& renderParameters)
 
 			if (distanceToPlayerSqr > 1.5f)
 			{
-				auto vectorMultiplier = m_Speed * renderParameters.frameTime / sqrt(distanceToPlayerSqr);
-
-				DirectX::XMFLOAT2 newPosition(m_Parameters.position.x + vectorMultiplier * vectorToPlayer.x, 
-					m_Parameters.position.z + vectorMultiplier * vectorToPlayer.y);
-
-				if (CanMoveTo(newPosition, m_Zombies, this))
+				if (distanceToPlayerSqr > 100.0f * 100.0f)
 				{
-					targetState = ZombieStates::Running;
-
-					m_Parameters.position.x = newPosition.x;
-					m_Parameters.position.z = newPosition.y;
+					m_IsDead = true;
+					System::GetInstance().RemoveModel(this);
+					return;
 				}
 				else
 				{
-					targetState = ZombieStates::Idle;
+					auto vectorMultiplier = m_Speed * renderParameters.frameTime / sqrt(distanceToPlayerSqr);
+
+					DirectX::XMFLOAT2 newPosition(m_Parameters.position.x + vectorMultiplier * vectorToPlayer.x, 
+						m_Parameters.position.z + vectorMultiplier * vectorToPlayer.y);
+
+					if (CanMoveTo(newPosition, m_Zombies, this))
+					{
+						targetState = ZombieStates::Running;
+
+						m_Parameters.position.x = newPosition.x;
+						m_Parameters.position.z = newPosition.y;
+					}
+					else
+					{
+						targetState = ZombieStates::Idle;
+					}
 				}
 			}
 			else
