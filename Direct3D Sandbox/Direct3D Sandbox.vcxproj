@@ -562,7 +562,6 @@ del xcopyexclude.txt
   <ItemGroup>
     <ClCompile Include="Source\Audio\AudioEmitter.cpp" />
     <ClCompile Include="Source\Audio\AudioManager.cpp" />
-    <ClCompile Include="Source\Audio\CoInitializeWrapper.cpp" />
     <ClCompile Include="Source\Audio\FourCCWrapper.cpp" />
     <ClCompile Include="Source\Audio\RiffChunk.cpp" />
     <ClCompile Include="Source\Audio\RiffFile.cpp" />
@@ -572,6 +571,7 @@ del xcopyexclude.txt
     <ClCompile Include="Source\CameraControllers\FreeMovementController.cpp" />
     <ClCompile Include="Source\Core\AlignedClass.cpp" />
     <ClCompile Include="Source\Core\Camera.cpp" />
+    <ClCompile Include="Source\Core\CoInitializeWrapper.cpp" />
     <ClCompile Include="Source\Core\Constants.cpp" />
     <ClCompile Include="Source\Core\DirectionalLight.cpp" />
     <ClCompile Include="Source\Core\Input.cpp" />
@@ -618,7 +618,6 @@ del xcopyexclude.txt
   <ItemGroup>
     <ClInclude Include="Source\Audio\AudioEmitter.h" />
     <ClInclude Include="Source\Audio\AudioManager.h" />
-    <ClInclude Include="Source\Audio\CoInitializeWrapper.h" />
     <ClInclude Include="Source\Audio\FourCCWrapper.h" />
     <ClInclude Include="Source\Audio\RiffChunk.h" />
     <ClInclude Include="Source\Audio\RiffFile.h" />
@@ -629,6 +628,7 @@ del xcopyexclude.txt
     <ClInclude Include="Source\Core\AlignedClass.h" />
     <ClInclude Include="Source\Core\AnimationStateMachine.h" />
     <ClInclude Include="Source\Core\Camera.h" />
+    <ClInclude Include="Source\Core\CoInitializeWrapper.h" />
     <ClInclude Include="Source\Core\Constants.h" />
     <ClInclude Include="Source\Core\DirectionalLight.h" />
     <ClInclude Include="Source\Core\Input.h" />

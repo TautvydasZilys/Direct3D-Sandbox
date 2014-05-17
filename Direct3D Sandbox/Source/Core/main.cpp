@@ -1,4 +1,5 @@
 #include "PrecompiledHeader.h"
+#include "CoInitializeWrapper.h"
 #include "System.h"
 
 #if !WINDOWS_PHONE
@@ -13,6 +14,8 @@ int CALLBACK WinMain(
 #if DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF);
 #endif
+	CoInitializeWrapper coInitialize;
+
 	System system;
 	system.Run();
 

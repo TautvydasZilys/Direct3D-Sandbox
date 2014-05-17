@@ -189,9 +189,6 @@
     <ClCompile Include="Source\Audio\AudioManager.cpp">
       <Filter>Source\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Audio\CoInitializeWrapper.cpp">
-      <Filter>Source\Audio</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Audio\FourCCWrapper.cpp">
       <Filter>Source\Audio</Filter>
     </ClCompile>
@@ -200,6 +197,9 @@
     </ClCompile>
     <ClCompile Include="Source\Audio\RiffFile.cpp">
       <Filter>Source\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\CoInitializeWrapper.cpp">
+      <Filter>Source\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -350,9 +350,6 @@
     <ClInclude Include="Source\Audio\AudioManager.h">
       <Filter>Source\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Audio\CoInitializeWrapper.h">
-      <Filter>Source\Audio</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Audio\FourCCWrapper.h">
       <Filter>Source\Audio</Filter>
     </ClInclude>
@@ -361,6 +358,9 @@
     </ClInclude>
     <ClInclude Include="Source\Audio\RiffFile.h">
       <Filter>Source\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\CoInitializeWrapper.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

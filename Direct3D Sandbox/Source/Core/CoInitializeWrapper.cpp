@@ -2,7 +2,6 @@
 #include "CoInitializeWrapper.h"
 #include "Tools.h"
 
-
 CoInitializeWrapper::CoInitializeWrapper()
 {
 	auto result = CoInitializeEx(0, COINIT_MULTITHREADED);
