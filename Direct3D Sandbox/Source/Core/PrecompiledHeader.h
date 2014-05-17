@@ -33,6 +33,10 @@
 #include <D3D11.h>
 #include <DirectXMath.h>
 
+#include <xaudio2.h>
+#include <xaudio2fx.h>
+#include <x3daudio.h>
+
 using namespace Microsoft::WRL;
 using namespace std;
 

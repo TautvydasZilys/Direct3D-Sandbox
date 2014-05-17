@@ -43,6 +43,9 @@
     <Filter Include="Source\CameraControllers">
       <UniqueIdentifier>{11257987-0eb3-4b32-9957-bd01dfca8298}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Audio">
+      <UniqueIdentifier>{64058d53-3dce-4005-82b0-7c600bfcad4a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\PrecompiledHeader.cpp">
@@ -176,6 +179,27 @@
     </ClCompile>
     <ClCompile Include="Source\CameraControllers\BaseCameraController.cpp">
       <Filter>Source\CameraControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Audio\Sound.cpp">
+      <Filter>Source\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Audio\AudioEmitter.cpp">
+      <Filter>Source\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Audio\AudioManager.cpp">
+      <Filter>Source\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Audio\CoInitializeWrapper.cpp">
+      <Filter>Source\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Audio\FourCCWrapper.cpp">
+      <Filter>Source\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Audio\RiffChunk.cpp">
+      <Filter>Source\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Audio\RiffFile.cpp">
+      <Filter>Source\Audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -316,6 +340,27 @@
     </ClInclude>
     <ClInclude Include="Source\CameraControllers\BaseCameraController.h">
       <Filter>Source\CameraControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Audio\Sound.h">
+      <Filter>Source\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Audio\AudioEmitter.h">
+      <Filter>Source\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Audio\AudioManager.h">
+      <Filter>Source\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Audio\CoInitializeWrapper.h">
+      <Filter>Source\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Audio\FourCCWrapper.h">
+      <Filter>Source\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Audio\RiffChunk.h">
+      <Filter>Source\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Audio\RiffFile.h">
+      <Filter>Source\Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
