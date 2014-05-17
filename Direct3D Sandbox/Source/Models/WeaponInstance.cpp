@@ -17,7 +17,8 @@ WeaponInstance::WeaponInstance() :
 									L"Assets\\Models\\Square.model", 
 									ModelParameters(), 
 									L"Assets\\Textures\\Crosshair.dds")),
-	m_LastShot(-kShootingInterval)
+	m_LastShot(-kShootingInterval),
+	m_weaponTriggerSound(L"Assets\\Sounds\\WeaponTrigger.wav", false, true)
 {
 	m_Crosshair.SetScale(DirectX::XMFLOAT3(50.0f, 50.0f, 50.0f));
 	System::GetInstance().AddModel(shared_ptr<IModelInstance>(&m_Crosshair));
@@ -115,5 +116,6 @@ int WeaponInstance::Fire(const vector<shared_ptr<ZombieInstanceBase>>& zombies, 
 		}
 	}
 
+	m_weaponTriggerSound.Play();
 	return zombiesKilled;
 }

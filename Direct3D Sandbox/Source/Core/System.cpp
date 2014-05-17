@@ -1,6 +1,7 @@
 #include "PrecompiledHeader.h"
 #include "Constants.h"
 #include "Camera.h"
+#include "Source\Audio\AudioManager.h"
 #include "Source\Graphics\Font.h"
 #include "Source\Graphics\IShader.h"
 #include "Source\Graphics\SamplerState.h"
@@ -26,6 +27,9 @@ System::System() :
 	m_Light(DirectX::XMFLOAT3(3.0f, -2.0f, -1.0f), DirectX::XMFLOAT3(0.7f, 0.7f, 0.6f), DirectX::XMFLOAT3(0.4f, 0.4f, 0.4f), 32)
 {
 	s_Instance = this;
+
+	// Initialize audio manager
+	AudioManager::Initialize();
 
 	// Initialize sample states
 	SamplerState::Initialize();
