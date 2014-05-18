@@ -16,6 +16,7 @@ namespace ManagedPostProcessor
 {
     public static class FontCreator
     {
+        const int kMaxFontWidth = 4096;
         const int BitmapSize = 1024;
         const int characterRangeFrom = 32;
         const int characterRangeTo = 128;
@@ -151,7 +152,7 @@ namespace ManagedPostProcessor
             {
                 currentRowWidth += characters[i].Bitmap.Width;
 
-                if (currentRowWidth > 4096)
+                if (currentRowWidth > kMaxFontWidth)
                 {
                     currentRowWidth = characters[i].Bitmap.Width;
                     bitmapHeight += lineSpace;
@@ -171,7 +172,7 @@ namespace ManagedPostProcessor
                 var sourceBitmapData = sourceBitmap.LockBits(new Rectangle(0, 0, sourceBitmap.Width, sourceBitmap.Height), 
                         ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
-                if (offsetX + (uint)characters[i].Bitmap.Width > 4096)
+                if (offsetX + (uint)characters[i].Bitmap.Width > kMaxFontWidth)
                 {
                     offsetX = 0;
                     offsetY += (uint)lineSpace;
@@ -200,7 +201,7 @@ namespace ManagedPostProcessor
             }
 
             GrayToAlpha(bitmap);
-           // SaveAsBitmap(bitmapWidth, bitmapHeight, bitmap);
+            //SaveAsBitmap(bitmapWidth, bitmapHeight, bitmap);
             return bitmap;
         }
 
@@ -212,6 +213,11 @@ namespace ManagedPostProcessor
             Marshal.Copy(data, 0, bitmapData.Scan0, 4 * width * height);
 
             bitmap.UnlockBits(bitmapData);
+
+            var temp = Path.GetTempFileName();
+            File.Delete(temp);            
+
+            bitmap.Save(Path.GetFileName(Path.ChangeExtension(temp, ".png")));
         }
 
         private static void GrayToAlpha(byte[] bitmapData)
