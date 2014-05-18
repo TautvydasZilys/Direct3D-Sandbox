@@ -210,7 +210,7 @@ int Tools::GetMemoryUsage()
 #if !WINDOWS_PHONE
 	PROCESS_MEMORY_COUNTERS memoryInfo;
 	auto myProcess = GetCurrentProcess();
-	auto result = K32GetProcessMemoryInfo(myProcess, &memoryInfo, sizeof(memoryInfo));
+	auto result = GetProcessMemoryInfo(myProcess, &memoryInfo, sizeof(memoryInfo));
  
 	Assert(result != 0);
 

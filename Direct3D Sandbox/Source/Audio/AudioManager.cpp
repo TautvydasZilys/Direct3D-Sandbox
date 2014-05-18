@@ -47,7 +47,15 @@ AudioManager::AudioManager()
 	// Init X3DAudio
 
 	DWORD channelMask;
+#if !WINDOWS_PHONE
+	XAUDIO2_DEVICE_DETAILS deviceDetails;
+	result = m_XAudio2->GetDeviceDetails(0, &deviceDetails); 
+	Assert(result == S_OK);
+
+	channelMask = deviceDetails.OutputFormat.dwChannelMask;
+#else
 	result = m_MasteringVoice->GetChannelMask(&channelMask);
+#endif
 	Assert(result == S_OK);
 
 	m_MasteringVoice->GetVoiceDetails(&m_VoiceDetails);
@@ -126,10 +134,18 @@ IXAudio2SourceVoice* AudioManager::CreateSourceVoice(const WAVEFORMATEX* waveFor
 void AudioManager::SetListenerPosition(const DirectX::XMFLOAT3& position, const DirectX::XMFLOAT3& velocity, 
 									   const DirectX::XMFLOAT3& front, const DirectX::XMFLOAT3& up)
 {
+#if !WINDOWS_PHONE
+	Assert(sizeof(DirectX::XMFLOAT3) == sizeof(D3DVECTOR));
+	memcpy(&m_Listener.Position, &position, sizeof(DirectX::XMFLOAT3));
+	memcpy(&m_Listener.Velocity, &velocity, sizeof(DirectX::XMFLOAT3));
+	memcpy(&m_Listener.OrientFront, &front, sizeof(DirectX::XMFLOAT3));
+	memcpy(&m_Listener.OrientTop, &up, sizeof(DirectX::XMFLOAT3));
+#else
 	m_Listener.Position = position;
 	m_Listener.Velocity = velocity;
 	m_Listener.OrientFront = front;
 	m_Listener.OrientTop = up;
+#endif
 }
 
 void AudioManager::Calculate3DAudioForVoice(const X3DAUDIO_EMITTER& audioEmitter, IXAudio2SourceVoice* sourceVoice, int sourceChannels,
