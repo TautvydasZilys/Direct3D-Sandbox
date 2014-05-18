@@ -18,7 +18,8 @@ WeaponInstance::WeaponInstance() :
 									ModelParameters(), 
 									L"Assets\\Textures\\Crosshair.dds")),
 	m_LastShot(-kShootingInterval),
-	m_weaponTriggerSound(L"Assets\\Sounds\\WeaponTrigger.wav", false, true)
+	m_weaponTriggerSound(L"Assets\\Sounds\\WeaponTrigger.wav", false, true),
+	m_AudioEmitter(0.0f)
 {
 	m_Crosshair.SetScale(DirectX::XMFLOAT3(50.0f, 50.0f, 50.0f));
 	System::GetInstance().AddModel(shared_ptr<IModelInstance>(&m_Crosshair));
@@ -52,6 +53,11 @@ int WeaponInstance::Fire(const vector<shared_ptr<ZombieInstanceBase>>& zombies, 
 	XMVECTOR target = source + targetDelta;
 
 	LaserProjectileInstance::Spawn(source, target);
+
+	DirectX::XMFLOAT3 sourceFloat3;
+	XMStoreFloat3(&sourceFloat3, source);
+	m_AudioEmitter.SetPosition(sourceFloat3, DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f));
+	m_weaponTriggerSound.Play3D(m_AudioEmitter);
 
 	/*
 	Does it hit the zombie?
@@ -116,6 +122,5 @@ int WeaponInstance::Fire(const vector<shared_ptr<ZombieInstanceBase>>& zombies, 
 		}
 	}
 
-	m_weaponTriggerSound.Play();
 	return zombiesKilled;
 }

@@ -16,8 +16,10 @@ static const float kHealthRegenerationRate = 0.02f;
 PlayerInstance::PlayerInstance(Camera& playerCamera) :
 	m_CameraController(playerCamera),
 	m_GameState(GameState::NotStarted),
-	m_BoldFont(Font::Get(L"Assets\\Fonts\\Segoe UI.font"))
+	m_BoldFont(Font::Get(L"Assets\\Fonts\\Segoe UI.font")),
+	m_AmbientSound(L"Assets\\Sounds\\Ambient.wav", true, false)
 {
+	m_AmbientSound.Play();
 }
 
 PlayerInstance::~PlayerInstance()
@@ -185,6 +187,8 @@ void PlayerInstance::RenderStateGameOver2D(RenderParameters& renderParameters)
 
 void PlayerInstance::StartGame()
 {
+	UpdateInput(0.001f);
+
 	for (int i = 0; i < Constants::StartingZombieCount; i++)
 	{
 		SpawnRandomZombie();

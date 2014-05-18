@@ -2,6 +2,7 @@
 
 #include "IModelInstance.h"
 #include "ZombieInstanceBase.h"
+#include "Source\Audio\Sound.h"
 #include "Source\CameraControllers\FPSController.h"
 
 class WeaponInstance;
@@ -33,6 +34,8 @@ private:
 	
 	GameState m_GameState;
 	Font& m_BoldFont;
+
+	Sound m_AmbientSound;
 	
 	void UpdateInput(float frameTime);
 	void UpdateWeapon();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AnimationStateMachine.h"
+#include "Source\Audio\AudioEmitter.h"
 #include "ZombieInstanceBase.h"
 
 class PlayerInstance;
@@ -22,9 +23,13 @@ class ZombieInstance :
 	static const float kZombieDistancePerRunningAnimationTime;
 	static const float kZombieBodyLastingTime;
 	static const float kZombieHitInterval;
+	static const float kNearPlayerSoundInterval;
 	
 	const vector<shared_ptr<ZombieInstanceBase>>& m_Zombies;
 	float m_LastHitPlayerAt;
+	float m_LastMadeNearPlayerSound;
+	AudioEmitter m_AudioEmitter;
+	Sound& m_NearPlayerSound;
 
 	AnimationStateMachine<ZombieStates, ZombieStates::StateCount, kAnimationPeriods, kDoesAnimationLoop, kAnimationTransitionLength> m_AnimationStateMachine;
 

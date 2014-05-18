@@ -20,8 +20,6 @@ protected:
 
 	void CheckRotationBounds();
 	void RecalculateFrustumPlanes();
-	const DirectX::XMMATRIX& GetViewMatrix();
-	const DirectX::XMMATRIX& GetViewProjectionMatrix();
 
 	Camera(const Camera&);
 
@@ -36,6 +34,9 @@ public:
 
 	inline const DirectX::XMFLOAT3& GetPosition() const { return m_Position; }
 	inline const DirectX::XMFLOAT3& GetRotation() const { return m_Rotation; }
+
+	const DirectX::XMMATRIX& GetViewMatrix();
+	const DirectX::XMMATRIX& GetViewProjectionMatrix();
 	
 	void SetRenderParameters(RenderParameters& renderParameters);
 };

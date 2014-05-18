@@ -6,7 +6,8 @@
 #include "Tools.h"
 
 Sound::Sound(const wstring& waveFilePath, bool loopForever, bool hasReverb) :
-	m_SoundCallbacks(this)
+	m_SoundCallbacks(this),
+	m_SubmixVoice(nullptr)
 {
 	auto waveFile = RiffFile::Create(waveFilePath);
 	Assert(waveFile.GetFormat() == RiffFourCC::WAVE);
@@ -30,6 +31,19 @@ Sound::Sound(const wstring& waveFilePath, bool loopForever, bool hasReverb) :
 	{
 		m_SubmixVoice = AudioManager::GetInstance().CreateSubmixVoice(m_WaveFormat);
 	}
+}
+
+Sound::Sound(Sound&& other) :
+	m_SoundDataBuffer(std::move(other.m_SoundDataBuffer)),
+	m_AudioBuffer(other.m_AudioBuffer),
+	m_WaveFormat(other.m_WaveFormat),
+	m_Voices(std::move(other.m_Voices)),
+	m_SoundCallbacks(this),
+	m_SubmixVoice(other.m_SubmixVoice)
+{
+	other.m_SubmixVoice = nullptr;
+	other.m_AudioBuffer.pAudioData = nullptr;
+	other.m_AudioBuffer.pContext = nullptr;
 }
 
 Sound::~Sound()
@@ -100,6 +114,6 @@ void Sound::Play3D(const AudioEmitter& audioEmitter)
 	auto& audioManager = AudioManager::GetInstance();
 	auto& voice = GetVoiceForPlayback();
 	
-	audioManager.Calculate3DAudioForVoice(audioEmitter.GetEmitter(), voice.sourceVoice, m_SubmixVoice);
+	audioManager.Calculate3DAudioForVoice(audioEmitter.GetEmitter(), voice.sourceVoice, m_WaveFormat.Format.nChannels, m_SubmixVoice);
 	PlayImpl(voice);
 }

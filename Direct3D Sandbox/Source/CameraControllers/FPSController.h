@@ -33,9 +33,7 @@ void FPSController::Update(float frameTime, CanMoveToFunctor canMoveTo)
 {
 	auto& input = Input::GetInstance();
 	auto cameraPosition = m_Camera.GetPosition();
-
-	UpdateLookAround(frameTime);
-
+	
 	if (input.IsKeyDown(VK_SPACE) && !m_IsJumping)
 	{
 		m_IsJumping = true;
@@ -60,6 +58,9 @@ void FPSController::Update(float frameTime, CanMoveToFunctor canMoveTo)
 		// v0 = sqrt(m_JumpHeight * g / (-2))
 		m_Velocity.y = sqrt(kJumpHeight * Constants::GravityConstant / (-2));
 	}
+	
+	UpdateLookAround(frameTime);
+	auto lastPosition = m_Camera.GetPosition();
 
 	if (m_IsJumping)
 	{
@@ -89,8 +90,6 @@ void FPSController::Update(float frameTime, CanMoveToFunctor canMoveTo)
 
 	if (!m_IsJumping)
 	{
-		m_LastPosition = cameraPosition;
-
 		auto deltaX = GetInputX();
 		auto deltaZ = GetInputZ();
 		
@@ -129,4 +128,7 @@ void FPSController::Update(float frameTime, CanMoveToFunctor canMoveTo)
 			}
 		}
 	}
+	
+	UpdateSoundListener(frameTime, m_LastPosition);
+	m_LastPosition = lastPosition;
 }

@@ -64,9 +64,11 @@ private:
 	void PlayImpl(Voice& voiceToPlay);
 
 	friend class SoundCallbacks;
+	Sound(const Sound& other);
 
 public:
 	Sound(const wstring& waveFilePath, bool loopForever, bool hasReverb);
+	Sound(Sound&& other);
 	~Sound();
 
 	void Play();

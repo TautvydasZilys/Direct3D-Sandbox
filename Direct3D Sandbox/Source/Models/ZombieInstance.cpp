@@ -2,7 +2,8 @@
 #include "Constants.h"
 #include "PlayerInstance.h"
 #include "System.h"
-#include "Source\\Graphics\\IShader.h"
+#include "Source\Audio\AudioManager.h"
+#include "Source\Graphics\IShader.h"
 #include "ZombieInstance.h"
 
 const float ZombieInstance::kAnimationPeriods[ZombieStates::StateCount] = { 2.0f, 0.8f, 1.167f, 1.333f };
@@ -11,6 +12,7 @@ const float ZombieInstance::kAnimationTransitionLength = 0.5f;
 const float ZombieInstance::kZombieDistancePerRunningAnimationTime = 1.5f;
 const float ZombieInstance::kZombieBodyLastingTime = 20.0f;
 const float ZombieInstance::kZombieHitInterval = 1.0f;
+const float ZombieInstance::kNearPlayerSoundInterval = 5.0f;
 
 ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, PlayerInstance& targetPlayer, 
 							   const vector<shared_ptr<ZombieInstanceBase>>& zombies) :
@@ -23,7 +25,10 @@ ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, PlayerIns
 					   kZombieDistancePerRunningAnimationTime / kAnimationPeriods[ZombieStates::Running]),
 	m_AnimationStateMachine(ZombieStates::Idle),
 	m_Zombies(zombies),
-	m_LastHitPlayerAt(static_cast<float>(Tools::GetTime()))
+	m_LastHitPlayerAt(static_cast<float>(Tools::GetTime())),
+	m_LastMadeNearPlayerSound(-kNearPlayerSoundInterval),
+	m_AudioEmitter(0.0f),
+	m_NearPlayerSound(AudioManager::GetCachedSound(L"Assets\\Sounds\\ZombieSpawn.wav", false, false))
 {
 	for (int i = 0; i < ZombieStates::Death; i++)
 	{
@@ -105,6 +110,16 @@ void ZombieInstance::Update(const RenderParameters& renderParameters)
 			else
 			{
 				targetState = ZombieStates::Hitting;
+
+				if (renderParameters.time - m_LastMadeNearPlayerSound >= kNearPlayerSoundInterval)
+				{
+					m_LastMadeNearPlayerSound = renderParameters.time;
+					auto emitterPosition = m_Parameters.position;
+					emitterPosition.y += 1.6f;
+
+					m_AudioEmitter.SetPosition(m_Parameters.position, DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f));
+					m_NearPlayerSound.Play3D(m_AudioEmitter);
+				}
 			}
 		}
 		else
@@ -124,6 +139,7 @@ void ZombieInstance::Update(const RenderParameters& renderParameters)
 		}
 	}
 
+	Assert(targetState >= 0 && targetState < ZombieStates::StateCount);
 	m_AnimationStateMachine.Update(renderParameters, targetState);
 
 	if (m_AnimationStateMachine.GetCurrentAnimationState() == ZombieStates::Hitting && 

@@ -7,6 +7,9 @@ struct RenderParameters;
 class FreeMovementController : 
 	public BaseCameraController
 {
+private:
+	DirectX::XMFLOAT3 m_LastPosition;
+
 public:
 	FreeMovementController(Camera& camera);
 	~FreeMovementController();

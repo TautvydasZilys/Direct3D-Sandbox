@@ -6,7 +6,8 @@
 
 
 FreeMovementController::FreeMovementController(Camera& camera) :
-	BaseCameraController(camera)
+	BaseCameraController(camera),
+	m_LastPosition(camera.GetPosition())
 {
 }
 
@@ -17,6 +18,8 @@ FreeMovementController::~FreeMovementController()
 void FreeMovementController::Update(float frameTime)
 {
 	auto& input = Input::GetInstance();
+
+	UpdateLookAround(frameTime);
 
 	auto deltaX = GetInputX();
 	auto deltaZ = GetInputZ();
@@ -55,6 +58,8 @@ void FreeMovementController::Update(float frameTime)
 	cameraPosition.x += deltaZ * cos(cameraRotation.x) * sin(cameraRotation.y);
 	cameraPosition.y -= deltaZ * sin(cameraRotation.x);
 	cameraPosition.z += deltaZ * cos(cameraRotation.x) * cos(cameraRotation.y);
-
+	
+	UpdateSoundListener(frameTime, m_LastPosition);
+	m_LastPosition = m_Camera.GetPosition();
 	m_Camera.SetPosition(cameraPosition);
 }

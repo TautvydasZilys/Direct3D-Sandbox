@@ -3,9 +3,11 @@
 #include "Camera.h"
 #include "Input.h"
 #include "System.h"
+#include "Source\Audio\AudioManager.h"
 
 BaseCameraController::BaseCameraController(Camera& camera) :
-	m_Camera(camera)
+	m_Camera(camera),
+	m_CameraStartingHeight(camera.GetPosition().y)
 {
 }
 
@@ -105,4 +107,23 @@ void BaseCameraController::UpdateLookAround(float frameTime)
 	cameraRotation.y -= deltaRight;
 
 	m_Camera.SetRotation(cameraRotation);
+}
+
+void BaseCameraController::UpdateSoundListener(float frameTime, const DirectX::XMFLOAT3& lastPosition)
+{
+	using namespace DirectX;
+	auto cameraPosition = m_Camera.GetPosition();
+	auto& rotationMatrix = m_Camera.GetViewMatrix();
+
+	XMFLOAT3 velocity((cameraPosition.x - lastPosition.x) / frameTime,
+					  (cameraPosition.y - lastPosition.y) / frameTime, 
+					  (cameraPosition.z - lastPosition.z) / frameTime);
+	
+	XMFLOAT3 up;
+	XMFLOAT3 lookAt;
+	
+	XMStoreFloat3(&up, XMVector3Transform(XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f), rotationMatrix));
+	XMStoreFloat3(&lookAt, XMVector3Transform(XMVectorSet(0.0f, 0.0f, -1.0f, 1.0f), rotationMatrix));
+
+	AudioManager::GetInstance().SetListenerPosition(cameraPosition, velocity, up, lookAt);
 }

@@ -12,7 +12,7 @@ FPSController::FPSController(Camera& camera) :
 	BaseCameraController(camera),
 	m_IsJumping(false),
 	m_Velocity(0.0f, 0.0f, 0.0f),
-	m_LastPosition(camera.GetPosition())
+	m_LastPosition(m_Camera.GetPosition())
 {
 }
 

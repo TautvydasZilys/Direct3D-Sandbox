@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ModelInstance3D.h"
+#include "Source\Audio\AudioEmitter.h"
 #include "Source\Audio\Sound.h"
 
 class ZombieInstanceBase;
@@ -10,7 +11,9 @@ class WeaponInstance :
 private:
 	ModelInstance& m_Crosshair;
 	float m_LastShot;
+
 	Sound m_weaponTriggerSound;
+	AudioEmitter m_AudioEmitter;
 
 public:
 	WeaponInstance();

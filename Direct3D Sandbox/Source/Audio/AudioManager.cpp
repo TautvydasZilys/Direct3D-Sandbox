@@ -1,5 +1,6 @@
 #include "PrecompiledHeader.h"
 #include "AudioManager.h"
+#include "Sound.h"
 #include "Tools.h"
 
 unique_ptr<AudioManager> AudioManager::s_Instance;
@@ -57,12 +58,14 @@ AudioManager::AudioManager()
 		
 	m_X3DSettings.SrcChannelCount = 1;
 	m_X3DSettings.DstChannelCount = m_VoiceDetails.InputChannels;
-	m_3DAudioMatrixCoeficients = unique_ptr<FLOAT32[]>(new FLOAT32[m_VoiceDetails.InputChannels]);
+	m_3DAudioMatrixCoeficients = unique_ptr<FLOAT32[]>(new FLOAT32[2 * m_VoiceDetails.InputChannels]);
 	m_X3DSettings.pMatrixCoefficients = m_3DAudioMatrixCoeficients.get();
 }
 
 AudioManager::~AudioManager()
 {
+	m_CachedSounds.clear();
+
 	if (m_MasteringVoice != nullptr)
 	{
 		m_MasteringVoice->DestroyVoice();
@@ -87,7 +90,7 @@ IXAudio2SubmixVoice* AudioManager::CreateSubmixVoice(const WAVEFORMATEXTENSIBLE&
 	effectChain.EffectCount = 1;
 	effectChain.pEffectDescriptors = &effectDescriptor;
 
-	result = m_XAudio2->CreateSubmixVoice(&submixVoice, 1, m_VoiceDetails.InputSampleRate, 0, 0, nullptr, &effectChain);
+	result = m_XAudio2->CreateSubmixVoice(&submixVoice, waveFormat.Format.nChannels, m_VoiceDetails.InputSampleRate, 0, 0, nullptr, &effectChain);
 	Assert(result == S_OK);
 
 	reverbEffect->Release();
@@ -97,7 +100,7 @@ IXAudio2SubmixVoice* AudioManager::CreateSubmixVoice(const WAVEFORMATEXTENSIBLE&
 IXAudio2SourceVoice* AudioManager::CreateSourceVoice(const WAVEFORMATEX* waveFormat, IXAudio2VoiceCallback* voiceCallback, IXAudio2SubmixVoice* submixVoice)
 {
 	HRESULT result;
-		IXAudio2SourceVoice* sourceVoice;
+	IXAudio2SourceVoice* sourceVoice;
 
 	if (submixVoice != nullptr)
 	{
@@ -129,7 +132,8 @@ void AudioManager::SetListenerPosition(const DirectX::XMFLOAT3& position, const 
 	m_Listener.OrientTop = up;
 }
 
-void AudioManager::Calculate3DAudioForVoice(const X3DAUDIO_EMITTER& audioEmitter, IXAudio2SourceVoice* sourceVoice, IXAudio2SubmixVoice* submixVoice)
+void AudioManager::Calculate3DAudioForVoice(const X3DAUDIO_EMITTER& audioEmitter, IXAudio2SourceVoice* sourceVoice, int sourceChannels,
+											IXAudio2SubmixVoice* submixVoice)
 {
 	X3DAudioCalculate(m_X3DAudio, &m_Listener, &audioEmitter, k3DAudioCalculationFlags, &m_X3DSettings);
 	
@@ -141,8 +145,16 @@ void AudioManager::Calculate3DAudioForVoice(const X3DAUDIO_EMITTER& audioEmitter
 	};
 
 	HRESULT result;
+	
+	for (int i = static_cast<int>(m_VoiceDetails.InputChannels - 1); i > -1; i--)
+	{
+		for (int j = 0; j < sourceChannels; j++)
+		{
+			m_X3DSettings.pMatrixCoefficients[i * sourceChannels + j] = m_X3DSettings.pMatrixCoefficients[i];
+		}
+	}
 
-	result = sourceVoice->SetOutputMatrix(m_MasteringVoice, 1, m_VoiceDetails.InputChannels, m_X3DSettings.pMatrixCoefficients);
+	result = sourceVoice->SetOutputMatrix(m_MasteringVoice, sourceChannels, m_VoiceDetails.InputChannels, m_X3DSettings.pMatrixCoefficients);
 	Assert(result == S_OK);
 
 	result = sourceVoice->SetFrequencyRatio(m_X3DSettings.DopplerFactor);
@@ -153,7 +165,21 @@ void AudioManager::Calculate3DAudioForVoice(const X3DAUDIO_EMITTER& audioEmitter
 
 	if (submixVoice != nullptr)
 	{
-		result = sourceVoice->SetOutputMatrix(submixVoice, 1, 1, m_X3DSettings.pMatrixCoefficients);
+		result = sourceVoice->SetOutputMatrix(submixVoice, sourceChannels, sourceChannels, m_X3DSettings.pMatrixCoefficients);
 		Assert(result == S_OK);
 	}
+}
+
+Sound& AudioManager::GetCachedSound(const wstring& path, bool loopForever, bool hasReverb)
+{
+	SoundCacheKey key(path, loopForever, hasReverb);
+	auto& sound = s_Instance->m_CachedSounds.find(key);
+
+	if (sound == s_Instance->m_CachedSounds.end())
+	{
+		s_Instance->m_CachedSounds.emplace(key, Sound(path, loopForever, hasReverb));
+		sound = s_Instance->m_CachedSounds.find(key);
+	}
+
+	return sound->second;
 }

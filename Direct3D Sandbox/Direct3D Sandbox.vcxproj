@@ -622,6 +622,7 @@ del xcopyexclude.txt
     <ClInclude Include="Source\Audio\RiffChunk.h" />
     <ClInclude Include="Source\Audio\RiffFile.h" />
     <ClInclude Include="Source\Audio\Sound.h" />
+    <ClInclude Include="Source\Audio\SoundCacheKey.h" />
     <ClInclude Include="Source\CameraControllers\BaseCameraController.h" />
     <ClInclude Include="Source\CameraControllers\FPSController.h" />
     <ClInclude Include="Source\CameraControllers\FreeMovementController.h" />

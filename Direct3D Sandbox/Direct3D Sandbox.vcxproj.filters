@@ -362,6 +362,9 @@
     <ClInclude Include="Source\Core\CoInitializeWrapper.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Audio\SoundCacheKey.h">
+      <Filter>Source\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\ApplicationIcon.png">
