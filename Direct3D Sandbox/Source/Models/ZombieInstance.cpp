@@ -12,7 +12,9 @@ const float ZombieInstance::kAnimationTransitionLength = 0.5f;
 const float ZombieInstance::kZombieDistancePerRunningAnimationTime = 1.5f;
 const float ZombieInstance::kZombieBodyLastingTime = 20.0f;
 const float ZombieInstance::kZombieHitInterval = 1.0f;
-const float ZombieInstance::kNearPlayerSoundInterval = 5.0f;
+
+static const float kNearPlayerSoundInterval = 5.0f;
+static const float kFootStepInterval = 0.4f;
 
 ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, PlayerInstance& targetPlayer, 
 							   const vector<shared_ptr<ZombieInstanceBase>>& zombies) :
@@ -27,8 +29,10 @@ ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, PlayerIns
 	m_Zombies(zombies),
 	m_LastHitPlayerAt(static_cast<float>(Tools::GetTime())),
 	m_LastMadeNearPlayerSound(-kNearPlayerSoundInterval),
+	m_LastFootStep(-kFootStepInterval),
 	m_AudioEmitter(0.0f),
-	m_NearPlayerSound(AudioManager::GetCachedSound(L"Assets\\Sounds\\ZombieSpawn.wav", false, false))
+	m_NearPlayerSound(AudioManager::GetCachedSound(L"Assets\\Sounds\\ZombieNear.wav", false, true)),
+	m_FootStepSound(AudioManager::GetCachedSound(L"Assets\\Sounds\\FootStep.wav", false, true))
 {
 	for (int i = 0; i < ZombieStates::Death; i++)
 	{
@@ -68,6 +72,12 @@ bool ZombieInstance::CanMoveTo(const DirectX::XMFLOAT2& position, const vector<s
 void ZombieInstance::Update(const RenderParameters& renderParameters)
 {
 	ZombieStates targetState;
+	
+	auto emitterPosition = m_Parameters.position;
+	emitterPosition.y += 1.6f;
+	m_AudioEmitter.SetPosition(m_Parameters.position, DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f));
+
+	float distanceToPlayerSqr;
 
 	if (!m_IsDead)
 	{
@@ -77,7 +87,7 @@ void ZombieInstance::Update(const RenderParameters& renderParameters)
 		if (m_TargetPlayer.GetGameState() == GameState::Playing)
 		{
 			DirectX::XMFLOAT2 vectorToPlayer(playerPosition.x - m_Parameters.position.x, playerPosition.z - m_Parameters.position.z);
-			auto distanceToPlayerSqr = vectorToPlayer.x * vectorToPlayer.x + vectorToPlayer.y * vectorToPlayer.y;	
+			distanceToPlayerSqr = vectorToPlayer.x * vectorToPlayer.x + vectorToPlayer.y * vectorToPlayer.y;	
 
 			if (distanceToPlayerSqr > 1.5f)
 			{
@@ -114,10 +124,6 @@ void ZombieInstance::Update(const RenderParameters& renderParameters)
 				if (renderParameters.time - m_LastMadeNearPlayerSound >= kNearPlayerSoundInterval)
 				{
 					m_LastMadeNearPlayerSound = renderParameters.time;
-					auto emitterPosition = m_Parameters.position;
-					emitterPosition.y += 1.6f;
-
-					m_AudioEmitter.SetPosition(m_Parameters.position, DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f));
 					m_NearPlayerSound.Play3D(m_AudioEmitter);
 				}
 			}
@@ -150,6 +156,14 @@ void ZombieInstance::Update(const RenderParameters& renderParameters)
 	{
 		m_LastHitPlayerAt = renderParameters.time;
 		m_TargetPlayer.TakeDamage(Tools::Random::GetNextReal<float>(0.03f, 0.1f));
+	}
+	else if (renderParameters.time - m_LastFootStep >= kFootStepInterval &&
+			 m_AnimationStateMachine.GetCurrentAnimationState() == ZombieStates::Running && 
+			 !m_AnimationStateMachine.IsTransitioningAnimationStates() && 
+			 distanceToPlayerSqr < 100.0f)
+	{
+		m_LastFootStep = renderParameters.time;
+		m_FootStepSound.Play3D(m_AudioEmitter, 16.0f);
 	}
 }
 

@@ -109,11 +109,12 @@ void Sound::Play()
 	PlayImpl(GetVoiceForPlayback());
 }
 
-void Sound::Play3D(const AudioEmitter& audioEmitter)
+void Sound::Play3D(const AudioEmitter& audioEmitter, float volume)
 {
 	auto& audioManager = AudioManager::GetInstance();
 	auto& voice = GetVoiceForPlayback();
 	
+	voice.sourceVoice->SetVolume(volume);
 	audioManager.Calculate3DAudioForVoice(audioEmitter.GetEmitter(), voice.sourceVoice, m_WaveFormat.Format.nChannels, m_SubmixVoice);
 	PlayImpl(voice);
 }

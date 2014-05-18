@@ -23,13 +23,15 @@ class ZombieInstance :
 	static const float kZombieDistancePerRunningAnimationTime;
 	static const float kZombieBodyLastingTime;
 	static const float kZombieHitInterval;
-	static const float kNearPlayerSoundInterval;
 	
 	const vector<shared_ptr<ZombieInstanceBase>>& m_Zombies;
 	float m_LastHitPlayerAt;
-	float m_LastMadeNearPlayerSound;
+	
 	AudioEmitter m_AudioEmitter;
+	float m_LastMadeNearPlayerSound;
 	Sound& m_NearPlayerSound;
+	float m_LastFootStep;
+	Sound& m_FootStepSound;
 
 	AnimationStateMachine<ZombieStates, ZombieStates::StateCount, kAnimationPeriods, kDoesAnimationLoop, kAnimationTransitionLength> m_AnimationStateMachine;
 

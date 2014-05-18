@@ -72,5 +72,5 @@ public:
 	~Sound();
 
 	void Play();
-	void Play3D(const AudioEmitter& audioEmitter);
+	void Play3D(const AudioEmitter& audioEmitter, float volume = 1.0f);
 };
