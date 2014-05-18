@@ -1,8 +1,12 @@
 #include "PrecompiledHeader.h"
 #include "AudioManager.h"
+#include "CoInitializeWrapper.h"
 #include "Sound.h"
 #include "Tools.h"
 
+#if !WINDOWS_PHONE
+static CoInitializeWrapper s_CoInitialize;
+#endif
 unique_ptr<AudioManager> AudioManager::s_Instance;
 
 static const float kSpeedOfSound = X3DAUDIO_SPEED_OF_SOUND;
@@ -73,11 +77,12 @@ AudioManager::AudioManager()
 AudioManager::~AudioManager()
 {
 	m_CachedSounds.clear();
-
 	if (m_MasteringVoice != nullptr)
 	{
 		m_MasteringVoice->DestroyVoice();
 	}
+
+	m_XAudio2->StopEngine();
 }
 
 IXAudio2SubmixVoice* AudioManager::CreateSubmixVoice(const WAVEFORMATEXTENSIBLE& waveFormat)
