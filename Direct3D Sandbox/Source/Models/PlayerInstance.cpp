@@ -75,9 +75,16 @@ void PlayerInstance::Render2D(RenderParameters& renderParameters)
 void PlayerInstance::UpdateStateNotStarted(const RenderParameters& renderParameters)
 {
 	auto& input = Input::GetInstance();
-	input.IgnoreDisplacements();
 
+#if WINDOWS_PHONE	
+	auto pinch = input.HandlePinchDisplacement();
+#endif
+
+#if !WINDOWS_PHONE
 	if (input.IsKeyDown(VK_RETURN))
+#else
+	if (pinch > 0)
+#endif
 	{
 		StartGame();
 	}
@@ -88,10 +95,14 @@ void PlayerInstance::RenderStateNotStarted2D(RenderParameters& renderParameters)
 	renderParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	m_BoldFont.DrawText("  Welcome to\nZombie Siege!", renderParameters.screenWidth / 2 - 385, 
-		renderParameters.screenHeight / 2 - 200, renderParameters);
+		renderParameters.screenHeight / 2 - 200, renderParameters, true);
 	
+#if !WINDOWS_PHONE
 	auto text = "Press enter to begin";
-	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 200, renderParameters.screenHeight / 2 + 300, renderParameters);
+#else
+	auto text = "Pinch in to begin";
+#endif
+	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 200, renderParameters.screenHeight / 2 + 300, renderParameters, true);
 }
 
 void PlayerInstance::UpdateStatePlaying(const RenderParameters& renderParameters)
@@ -151,9 +162,17 @@ void PlayerInstance::RenderStatePlaying2D(RenderParameters& renderParameters)
 void PlayerInstance::UpdateStateGameOver(const RenderParameters& renderParameters)
 {
 	auto& input = Input::GetInstance();
+	
+#if WINDOWS_PHONE	
+	auto pinch = input.HandlePinchDisplacement();
+#endif
 	input.IgnoreDisplacements();
 
+#if !WINDOWS_PHONE
 	if (input.IsKeyDown(VK_RETURN))
+#else
+	if (pinch > 0)
+#endif
 	{
 		auto& systemInstance = System::GetInstance();
 
@@ -171,19 +190,22 @@ void PlayerInstance::RenderStateGameOver2D(RenderParameters& renderParameters)
 {
 	renderParameters.color = DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
 
-	m_BoldFont.DrawText("GAME OVER!", renderParameters.screenWidth / 2 - 350, renderParameters.screenHeight / 2 - 200, renderParameters);
+	m_BoldFont.DrawText("GAME OVER!", renderParameters.screenWidth / 2 - 350, renderParameters.screenHeight / 2 - 200, renderParameters, true);
 	
 	renderParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	auto text = "You have survived for " + Tools::FloatToString(m_DeathTime - m_StartTime) +
-		" seconds";
+	auto text = "You have survived for " + Tools::FloatToString(m_DeathTime - m_StartTime) + " seconds";
 	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 355, renderParameters.screenHeight / 2 + 50, renderParameters);
 
 	text = to_string(m_ZombiesKilled) + " zombies have fallen beneath you";
 	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 360, renderParameters.screenHeight / 2 + 112, renderParameters);
 
+#if !WINDOWS_PHONE
 	text = "Press enter to play again";
-	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 245, renderParameters.screenHeight / 2 + 300, renderParameters);
+#else
+	text = "Pinch in to play again";
+#endif
+	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 245, renderParameters.screenHeight / 2 + 300, renderParameters, true);
 }
 
 void PlayerInstance::StartGame()
