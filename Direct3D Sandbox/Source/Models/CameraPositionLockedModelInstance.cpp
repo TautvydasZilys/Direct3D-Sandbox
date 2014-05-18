@@ -10,9 +10,17 @@ CameraPositionLockedModelInstance::CameraPositionLockedModelInstance(IShader& sh
 {
 }
 
-CameraPositionLockedModelInstance::CameraPositionLockedModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, 
-																		const wstring& texturePath, TypedDimensions<bool> lockedDimentions) :
+CameraPositionLockedModelInstance::CameraPositionLockedModelInstance(IShader& shader, const wstring& modelPath, 
+		const ModelParameters& modelParameters,	const wstring& texturePath, TypedDimensions<bool> lockedDimentions) :
 	ModelInstance3D(shader, modelPath, modelParameters, texturePath),
+	m_OriginalPosition(modelParameters.position),
+	m_LockedDimensions(lockedDimentions)
+{
+}
+
+CameraPositionLockedModelInstance::CameraPositionLockedModelInstance(IShader& shader, const wstring& modelPath, 
+		const ModelParameters& modelParameters,	const wstring& texturePath, const wstring& normalMapPath, TypedDimensions<bool> lockedDimentions) :
+	ModelInstance3D(shader, modelPath, modelParameters, texturePath, normalMapPath),
 	m_OriginalPosition(modelParameters.position),
 	m_LockedDimensions(lockedDimentions)
 {

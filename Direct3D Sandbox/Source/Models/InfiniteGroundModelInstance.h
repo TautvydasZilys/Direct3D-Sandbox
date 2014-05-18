@@ -10,7 +10,7 @@ private:
 	DirectX::XMFLOAT2 m_uvTiling;
 
 public:
-	InfiniteGroundModelInstance(const ModelParameters& modelParameters, const wstring& texturePath, DirectX::XMFLOAT2 uvTiling);
+	InfiniteGroundModelInstance(const ModelParameters& modelParameters, const wstring& texturePath, const wstring& normalMapPath, DirectX::XMFLOAT2 uvTiling);
 	virtual ~InfiniteGroundModelInstance();
 
 	virtual void Update(const RenderParameters& renderParameters) { }

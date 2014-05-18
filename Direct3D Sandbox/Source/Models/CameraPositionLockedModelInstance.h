@@ -10,9 +10,12 @@ private:
 	TypedDimensions<bool> m_LockedDimensions;
 
 public:
-	CameraPositionLockedModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, TypedDimensions<bool> lockedDimentions);
-	CameraPositionLockedModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, const wstring& texturePath, 
+	CameraPositionLockedModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, 
 		TypedDimensions<bool> lockedDimentions);
+	CameraPositionLockedModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, const wstring& texturePath,
+		TypedDimensions<bool> lockedDimentions);
+	CameraPositionLockedModelInstance(IShader& shader, const wstring& modelPath, const ModelParameters& modelParameters, const wstring& texturePath,
+		const wstring& normalMapPath, TypedDimensions<bool> lockedDimentions);
 	virtual ~CameraPositionLockedModelInstance();
 	
 	virtual void Update(const RenderParameters& renderParameters) { }

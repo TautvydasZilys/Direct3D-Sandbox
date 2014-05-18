@@ -2,9 +2,10 @@
 #include "InfiniteGroundModelInstance.h"
 #include "Source\Graphics\IShader.h"
 
-InfiniteGroundModelInstance::InfiniteGroundModelInstance(const ModelParameters& modelParameters, const wstring& texturePath, DirectX::XMFLOAT2 uvTiling) :
-	CameraPositionLockedModelInstance(IShader::GetShader(ShaderType::INFINITE_GROUND_SHADER), L"Assets\\Models\\ground.model", modelParameters, texturePath,
-		TypedDimensions<bool>(true, false, true)),
+InfiniteGroundModelInstance::InfiniteGroundModelInstance(const ModelParameters& modelParameters, const wstring& texturePath, 
+														 const wstring& normalMapPath, DirectX::XMFLOAT2 uvTiling) :
+	CameraPositionLockedModelInstance(IShader::GetShader(ShaderType::INFINITE_GROUND_SHADER), L"Assets\\Models\\ground.model", modelParameters, 
+		texturePath, normalMapPath, TypedDimensions<bool>(true, false, true)),
 	m_uvTiling(uvTiling)
 {
 	m_Scale.x = modelParameters.scale.x;
