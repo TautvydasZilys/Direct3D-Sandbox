@@ -57,7 +57,7 @@ namespace ManagedPostProcessor
                         var lineSpace = font.GetHeight();
 
                         int fontBitmapWidth, fontBitmapHeight;
-                        var fontBitmap = PackCharacters(characters, out fontBitmapWidth, out fontBitmapHeight);                        
+                        var fontBitmap = PackCharacters(characters, (int)lineSpace, out fontBitmapWidth, out fontBitmapHeight);                        
                         SaveFont(characters, lineSpace, fontBitmapWidth, fontBitmapHeight, fontBitmap, Path.Combine(outputDirectory, fontName + ".font"));
                     }
                 }
@@ -137,12 +137,31 @@ namespace ManagedPostProcessor
             }
         }
 
-        static byte[] PackCharacters(CharacterGlyph[] characters, out int bitmapWidth, out int bitmapHeight)
+        static byte[] PackCharacters(CharacterGlyph[] characters, int lineSpace, out int bitmapWidth, out int bitmapHeight)
         {
-            var offset = 0u;
+            var offsetX = 0u;
+            var offsetY = 0u;
 
+            bitmapWidth = 0;
             bitmapHeight = characters.Max(x => x.Bitmap.Height);
-            bitmapWidth = characters.Sum(x => x.Bitmap.Width);
+
+            int currentRowWidth = 0;
+
+            for (int i = 0; i < characters.Length; i++)
+            {
+                currentRowWidth += characters[i].Bitmap.Width;
+
+                if (currentRowWidth > 4096)
+                {
+                    currentRowWidth = characters[i].Bitmap.Width;
+                    bitmapHeight += lineSpace;
+                }
+
+                if (currentRowWidth > bitmapWidth)
+                {
+                    bitmapWidth = currentRowWidth;
+                }                
+            }
 
             var bitmap = new byte[4 * bitmapHeight * bitmapWidth];
         
@@ -152,6 +171,13 @@ namespace ManagedPostProcessor
                 var sourceBitmapData = sourceBitmap.LockBits(new Rectangle(0, 0, sourceBitmap.Width, sourceBitmap.Height), 
                         ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
+                if (offsetX + (uint)characters[i].Bitmap.Width > 4096)
+                {
+                    offsetX = 0;
+                    offsetY += (uint)lineSpace;
+                }
+
+                var offset = offsetY * bitmapWidth + offsetX;
                 for (int u = 0; u < sourceBitmap.Height; u++)
                 {
                     unsafe
@@ -168,12 +194,13 @@ namespace ManagedPostProcessor
 
                 characters[i].Bitmap.UnlockBits(sourceBitmapData);
 
-                characters[i].XOffset = offset;
-                offset += (uint)characters[i].Bitmap.Width;
+                characters[i].XOffset = offsetX;
+                characters[i].YOffset = offsetY;
+                offsetX += (uint)characters[i].Bitmap.Width;
             }
 
             GrayToAlpha(bitmap);
-            //SaveAsBitmap(bitmapWidth, bitmapHeight, bitmap);
+           // SaveAsBitmap(bitmapWidth, bitmapHeight, bitmap);
             return bitmap;
         }
 
