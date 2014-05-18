@@ -24,7 +24,7 @@ System::System() :
 	m_MouseSensitivity(Constants::DefaultMouseSensitivity),
 	m_Camera(new Camera(true, Constants::VerticalFieldOfView, m_Windowing.GetAspectRatio(), 0, 0)),
 	m_OrthoCamera(new Camera(false, 0.0f, 0.0f, static_cast<float>(m_Windowing.GetWidth()), static_cast<float>(m_Windowing.GetHeight()))),
-	m_Light(DirectX::XMFLOAT3(3.0f, -2.0f, -1.0f), DirectX::XMFLOAT3(0.7f, 0.7f, 0.6f), DirectX::XMFLOAT3(0.4f, 0.4f, 0.4f), 32)
+	m_Light(DirectX::XMFLOAT3(3.0f, -2.0f, -1.0f), DirectX::XMFLOAT3(0.4f, 0.2f, 0.2f), DirectX::XMFLOAT3(0.15f, 0.15f, 0.15f), 32)
 {
 	s_Instance = this;
 
@@ -66,7 +66,7 @@ System::System() :
 	modelParameters.scale = DirectX::XMFLOAT3(5000.0f, 5000.0f, 5000.0f);
 
 	m_Models.emplace_back(new CameraPositionLockedModelInstance(textureShader, L"Assets\\Models\\skybox.model", modelParameters, 
-		L"Assets\\Textures\\Skybox.dds", TypedDimensions<bool>(true, true, true)));
+		L"Assets\\Textures\\SkyboxRed.dds", TypedDimensions<bool>(true, true, true)));
 	
 	modelParameters.position = DirectX::XMFLOAT3(10.0f, 0.0f, 10.0f);
 	modelParameters.scale = DirectX::XMFLOAT3(4000.0f, 4000.0f, 4000.0f);
