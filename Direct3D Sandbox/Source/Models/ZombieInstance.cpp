@@ -32,7 +32,8 @@ ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, PlayerIns
 	m_LastFootStep(-kFootStepInterval),
 	m_AudioEmitter(0.0f),
 	m_NearPlayerSound(AudioManager::GetCachedSound(L"Assets\\Sounds\\ZombieNear.wav", false, true)),
-	m_FootStepSound(AudioManager::GetCachedSound(L"Assets\\Sounds\\FootStep.wav", false, true))
+	m_FootStepSound(AudioManager::GetCachedSound(L"Assets\\Sounds\\FootStep.wav", false, true)),
+	m_PunchSound(AudioManager::GetCachedSound(L"Assets\\Sounds\\Punch.wav", false, true))
 {
 	for (int i = 0; i < ZombieStates::Death; i++)
 	{
@@ -150,12 +151,13 @@ void ZombieInstance::Update(const RenderParameters& renderParameters)
 
 	if (m_AnimationStateMachine.GetCurrentAnimationState() == ZombieStates::Hitting && 
 		!m_AnimationStateMachine.IsTransitioningAnimationStates() &&
-		m_AnimationStateMachine.GetCurrentStateAnimationProgress() > 0.4f && 
-		m_AnimationStateMachine.GetCurrentStateAnimationProgress() < 0.6f &&
+		m_AnimationStateMachine.GetCurrentStateAnimationProgress() > 0.1f && 
+		m_AnimationStateMachine.GetCurrentStateAnimationProgress() < 0.2f &&
 		renderParameters.time - m_LastHitPlayerAt >= kZombieHitInterval)
 	{
 		m_LastHitPlayerAt = renderParameters.time;
 		m_TargetPlayer.TakeDamage(Tools::Random::GetNextReal<float>(0.03f, 0.1f));
+		m_PunchSound.Play3D(m_AudioEmitter);
 	}
 	else if (renderParameters.time - m_LastFootStep >= kFootStepInterval &&
 			 m_AnimationStateMachine.GetCurrentAnimationState() == ZombieStates::Running && 

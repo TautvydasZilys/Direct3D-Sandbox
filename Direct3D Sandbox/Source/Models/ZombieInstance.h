@@ -32,6 +32,7 @@ class ZombieInstance :
 	Sound& m_NearPlayerSound;
 	float m_LastFootStep;
 	Sound& m_FootStepSound;
+	Sound& m_PunchSound;
 
 	AnimationStateMachine<ZombieStates, ZombieStates::StateCount, kAnimationPeriods, kDoesAnimationLoop, kAnimationTransitionLength> m_AnimationStateMachine;
 
