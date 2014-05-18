@@ -17,7 +17,8 @@ PlayerInstance::PlayerInstance(Camera& playerCamera) :
 	m_CameraController(playerCamera),
 	m_GameState(GameState::NotStarted),
 	m_BoldFont(Font::Get(L"Assets\\Fonts\\Segoe UI.font")),
-	m_AmbientSound(L"Assets\\Sounds\\Ambient.wav", true, false)
+	m_AmbientSound(L"Assets\\Sounds\\Ambient.wav", true, false),
+	m_GameOverSound(L"Assets\\Sounds\\GameOver.wav", false, false)
 {
 	m_AmbientSound.Play();
 }
@@ -212,6 +213,7 @@ void PlayerInstance::GameOver()
 
 	m_GameState = GameState::GameOver;
 	m_DeathTime = static_cast<float>(Tools::GetTime());
+	m_GameOverSound.Play();
 }
 
 void PlayerInstance::SpawnRandomZombie()

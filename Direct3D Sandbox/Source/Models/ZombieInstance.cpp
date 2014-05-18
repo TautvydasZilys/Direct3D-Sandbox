@@ -30,7 +30,6 @@ ZombieInstance::ZombieInstance(const ModelParameters& modelParameters, PlayerIns
 	m_LastHitPlayerAt(static_cast<float>(Tools::GetTime())),
 	m_LastMadeNearPlayerSound(-kNearPlayerSoundInterval),
 	m_LastFootStep(-kFootStepInterval),
-	m_AudioEmitter(0.0f),
 	m_NearPlayerSound(AudioManager::GetCachedSound(L"Assets\\Sounds\\ZombieNear.wav", false, true)),
 	m_FootStepSound(AudioManager::GetCachedSound(L"Assets\\Sounds\\FootStep.wav", false, true)),
 	m_PunchSound(AudioManager::GetCachedSound(L"Assets\\Sounds\\Punch.wav", false, true))
@@ -165,7 +164,7 @@ void ZombieInstance::Update(const RenderParameters& renderParameters)
 			 distanceToPlayerSqr < 100.0f)
 	{
 		m_LastFootStep = renderParameters.time;
-		m_FootStepSound.Play3D(m_AudioEmitter, 16.0f);
+		m_FootStepSound.Play3D(m_AudioEmitter, 8.0f);
 	}
 }
 

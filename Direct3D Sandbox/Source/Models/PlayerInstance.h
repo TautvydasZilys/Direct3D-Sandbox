@@ -36,6 +36,7 @@ private:
 	Font& m_BoldFont;
 
 	Sound m_AmbientSound;
+	Sound m_GameOverSound;
 	
 	void UpdateInput(float frameTime);
 	void UpdateWeapon();

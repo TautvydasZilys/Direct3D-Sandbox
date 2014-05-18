@@ -44,7 +44,7 @@ RiffFile RiffFile::Create(const wstring& filePath)
 	while (bufferPosition < dataSize + 8)
 	{
 		auto chunkFourCC = Tools::BufferReader::ReadUInt(riffData, bufferPosition);
-		Assert(chunkFourCC != RiffFourCC::LIST);	// Lists currently not supported
+		//Assert(chunkFourCC != RiffFourCC::LIST);	// Lists currently not supported
 
 		auto chunkSize = Tools::BufferReader::ReadUInt(riffData, bufferPosition);
 		

@@ -1,8 +1,11 @@
 #pragma once
 
 #include "ModelInstance3D.h"
+#include "Source\Audio\AudioEmitter.h"
 
 class PlayerInstance;
+class Sound;
+
 class ZombieInstanceBase :
 	public ModelInstance3D
 {	
@@ -14,6 +17,9 @@ protected:
 	float m_Health;
 	float m_SpawnTime;
 	float m_DeathTime;
+
+	AudioEmitter m_AudioEmitter;
+	Sound& m_DeathSound;
 
 	ZombieInstanceBase(IShader& shader, const wstring& modelPath, const wstring& texturePath, const wstring& normalMapPath,
 		const ModelParameters& modelParameters, PlayerInstance& targetPlayer, float speed);

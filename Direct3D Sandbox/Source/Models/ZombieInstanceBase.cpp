@@ -1,7 +1,8 @@
 #include "PrecompiledHeader.h"
 #include "Constants.h"
 #include "PlayerInstance.h"
-#include "Source\\Graphics\\IShader.h"
+#include "Source\Audio\AudioManager.h"
+#include "Source\Graphics\IShader.h"
 #include "ZombieInstanceBase.h"
 
 
@@ -12,7 +13,9 @@ ZombieInstanceBase::ZombieInstanceBase(IShader& shader, const wstring& modelPath
 	m_Speed(speed),
 	m_IsDead(false),
 	m_Health(1.0f),
-	m_SpawnTime(static_cast<float>(Tools::GetTime()))
+	m_SpawnTime(static_cast<float>(Tools::GetTime())),
+	m_AudioEmitter(0.5f),
+	m_DeathSound(AudioManager::GetCachedSound(L"Assets\\Sounds\\ZombieDeath.wav", false, true))
 {
 }
 
@@ -34,6 +37,7 @@ bool ZombieInstanceBase::TakeDamage(float damage)
 	{
 		m_DeathTime = static_cast<float>(Tools::GetTime());
 		m_IsDead = true;
+		m_DeathSound.Play3D(m_AudioEmitter);
 	}
 
 	return m_IsDead;

@@ -27,7 +27,6 @@ class ZombieInstance :
 	const vector<shared_ptr<ZombieInstanceBase>>& m_Zombies;
 	float m_LastHitPlayerAt;
 	
-	AudioEmitter m_AudioEmitter;
 	float m_LastMadeNearPlayerSound;
 	Sound& m_NearPlayerSound;
 	float m_LastFootStep;
