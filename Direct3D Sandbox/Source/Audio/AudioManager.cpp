@@ -55,8 +55,8 @@ AudioManager::AudioManager()
 	channelMask = deviceDetails.OutputFormat.dwChannelMask;
 #else
 	result = m_MasteringVoice->GetChannelMask(&channelMask);
-#endif
 	Assert(result == S_OK);
+#endif
 
 	m_MasteringVoice->GetVoiceDetails(&m_VoiceDetails);
 

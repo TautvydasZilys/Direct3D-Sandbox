@@ -376,7 +376,7 @@ static void ValidateModel(const vector<vector<ModelData>>& modelStates, size_t i
 			cout << "WARNING: error count exceeded 1000. Will stop printing." << endl;
 		}
 
-		for (int i = 0; i < errorCount; i++)
+		for (auto i = 0u; i < errorCount; i++)
 		{
 			cout << errors[i];
 		}
