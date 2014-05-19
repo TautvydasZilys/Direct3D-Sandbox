@@ -133,6 +133,7 @@ LRESULT DesktopWindowing::HandleMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 {	
 	switch (uMsg)
 	{
+		case WM_DESTROY:
 		case WM_QUIT:
 			Input::GetInstance().Quit();
 			return 0;
