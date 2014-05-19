@@ -48,7 +48,7 @@ void FPSController::Update(float frameTime, CanMoveToFunctor canMoveTo)
 		// h - h0 == v0 * t - g * t^2
 		// m_JumpHeight == v0 * t - g * t^2
 		//
-		// v0 + g * t == 0	// Vertical velocity at heighest point is zero
+		// v0 + g * t == 0	// Vertical velocity at highest point is zero
 		// t == -v0 / g
 		//
 		// m_JumpHeight == v0 * (-v0 / g) - g * (v0^2 / g^2)
