@@ -61,6 +61,7 @@ void FPSController::Update(float frameTime, CanMoveToFunctor canMoveTo)
 	
 	UpdateLookAround(frameTime);
 	auto lastPosition = m_Camera.GetPosition();
+	bool wasJumping = m_IsJumping;
 
 	if (m_IsJumping)
 	{
@@ -88,7 +89,7 @@ void FPSController::Update(float frameTime, CanMoveToFunctor canMoveTo)
 		m_Camera.SetPosition(cameraPosition);	// Set to ensure y coordinate change even if subsequent not jumping block cannot move
 	}
 
-	if (!m_IsJumping)
+	if (!wasJumping)
 	{
 		auto deltaX = GetInputX();
 		auto deltaZ = GetInputZ();
