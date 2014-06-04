@@ -41,7 +41,7 @@
 
 #if !WINDOWS_PHONE
 #include <C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\XAudio2.h> 
-#include <C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\\XAudio2fx.h>
+#include <C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\XAudio2fx.h>
 #include <C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\X3DAudio.h>
 #else
 #include <XAudio2.h>
