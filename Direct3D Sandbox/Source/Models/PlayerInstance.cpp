@@ -17,8 +17,11 @@ PlayerInstance::PlayerInstance(Camera& playerCamera) :
 	m_CameraController(playerCamera),
 	m_GameState(GameState::NotStarted),
 	m_BoldFont(Font::Get(L"Assets\\Fonts\\Segoe UI.font")),
+	m_SmallFont(Font::Get(L"Assets\\Fonts\\Calibri.font")),
 	m_AmbientSound(L"Assets\\Sounds\\Ambient.wav", true, false),
-	m_GameOverSound(L"Assets\\Sounds\\GameOver.wav", false, false)
+	m_GameOverSound(L"Assets\\Sounds\\GameOver.wav", false, false),
+	m_Highscore(Highscore::Load()),
+	m_AchievedHighscore(false)
 {
 	m_AmbientSound.Play();
 }
@@ -103,6 +106,8 @@ void PlayerInstance::RenderStateNotStarted2D(RenderParameters& renderParameters)
 	auto text = "Pinch in to begin";
 #endif
 	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 200, renderParameters.screenHeight / 2 + 300, renderParameters, true);
+
+	RenderHighscore(renderParameters);
 }
 
 void PlayerInstance::UpdateStatePlaying(const RenderParameters& renderParameters)
@@ -192,11 +197,17 @@ void PlayerInstance::RenderStateGameOver2D(RenderParameters& renderParameters)
 
 	m_BoldFont.DrawText("GAME OVER!", renderParameters.screenWidth / 2 - 350, renderParameters.screenHeight / 2 - 200, renderParameters, true);
 	
+	string text;
 	renderParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	auto text = "You have survived for " + Tools::FloatToString(m_DeathTime - m_StartTime) + " seconds";
+	if (m_AchievedHighscore)
+	{
+		text = "NEW HIGHSCORE!\r\n";		
+	}
+	
+	text += "You have survived for " + Tools::FloatToString(m_DeathTime - m_StartTime) + " seconds";
 	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 355, renderParameters.screenHeight / 2 + 50, renderParameters);
-
+	
 	text = to_string(m_ZombiesKilled) + " zombies have fallen beneath you";
 	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 360, renderParameters.screenHeight / 2 + 112, renderParameters);
 
@@ -206,6 +217,30 @@ void PlayerInstance::RenderStateGameOver2D(RenderParameters& renderParameters)
 	text = "Pinch in to play again";
 #endif
 	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 245, renderParameters.screenHeight / 2 + 300, renderParameters, true);
+	
+	RenderHighscore(renderParameters);
+}
+
+void PlayerInstance::RenderHighscore(RenderParameters& renderParameters)
+{
+	string text;
+
+	if (m_Highscore.GetLongestSurvivalScore() != m_Highscore.GetMostZombiesKilledScore())
+	{
+		text = "Longest survival highscore: survived for " + Tools::FloatToString(m_Highscore.GetLongestSurvivalScore().secondsSurvived) + " seconds" +
+			", killed " + to_string(m_Highscore.GetLongestSurvivalScore().zombiesKilled) +  " zombies.\r\n" + 
+			"Most zombies killed highscore: survived for " + Tools::FloatToString(m_Highscore.GetMostZombiesKilledScore().secondsSurvived) + " seconds" +
+			", killed " + to_string(m_Highscore.GetMostZombiesKilledScore().zombiesKilled) +  " zombies.";
+
+		m_SmallFont.DrawText(text, 25, renderParameters.screenHeight - 77, renderParameters);
+	}
+	else
+	{
+		text = "Highscore: survived for " + Tools::FloatToString(m_Highscore.GetLongestSurvivalScore().secondsSurvived) + " seconds" +
+			", killed " + to_string(m_Highscore.GetLongestSurvivalScore().zombiesKilled) +  " zombies.";
+
+		m_SmallFont.DrawText(text, 25, renderParameters.screenHeight - 51, renderParameters);
+	}
 }
 
 void PlayerInstance::StartGame()
@@ -236,6 +271,7 @@ void PlayerInstance::GameOver()
 	m_GameState = GameState::GameOver;
 	m_DeathTime = static_cast<float>(Tools::GetTime());
 	m_GameOverSound.Play();
+	m_AchievedHighscore = m_Highscore.SubmitScore(m_DeathTime - m_StartTime, m_ZombiesKilled);
 }
 
 void PlayerInstance::SpawnRandomZombie()

@@ -17,6 +17,7 @@ namespace Tools
 	bool DirectoryExists(const wstring& path);
 
 	int GetMemoryUsage();
+	wstring GetAppDataPath(const wstring& appName);
 
 	string ToLower(const string& str);
 	wstring ToLower(const wstring& str);

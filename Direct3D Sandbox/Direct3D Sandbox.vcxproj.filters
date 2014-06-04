@@ -46,6 +46,12 @@
     <Filter Include="Source\Audio">
       <UniqueIdentifier>{64058d53-3dce-4005-82b0-7c600bfcad4a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Games">
+      <UniqueIdentifier>{40720476-df12-41c8-a169-2f085f9612a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Games\ZombieSurvival">
+      <UniqueIdentifier>{69cd416e-8d49-4851-af61-092b099b47a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\PrecompiledHeader.cpp">
@@ -200,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="Source\Core\CoInitializeWrapper.cpp">
       <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Games\ZombieSurvival\Highscore.cpp">
+      <Filter>Source\Games\ZombieSurvival</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -364,6 +373,9 @@
     </ClInclude>
     <ClInclude Include="Source\Audio\SoundCacheKey.h">
       <Filter>Source\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Games\ZombieSurvival\Highscore.h">
+      <Filter>Source\Games\ZombieSurvival</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

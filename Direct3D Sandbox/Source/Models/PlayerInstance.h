@@ -4,6 +4,7 @@
 #include "ZombieInstanceBase.h"
 #include "Source\Audio\Sound.h"
 #include "Source\CameraControllers\FPSController.h"
+#include "Source\Games\ZombieSurvival\Highscore.h"
 
 class WeaponInstance;
 
@@ -34,9 +35,13 @@ private:
 	
 	GameState m_GameState;
 	Font& m_BoldFont;
+	Font& m_SmallFont;
 
 	Sound m_AmbientSound;
 	Sound m_GameOverSound;
+
+	Highscore m_Highscore;
+	bool m_AchievedHighscore;
 	
 	void UpdateInput(float frameTime);
 	void UpdateWeapon();
@@ -52,6 +57,8 @@ private:
 	void RenderStateNotStarted2D(RenderParameters& renderParameters);
 	void RenderStatePlaying2D(RenderParameters& renderParameters);
 	void RenderStateGameOver2D(RenderParameters& renderParameters);
+
+	void RenderHighscore(RenderParameters& renderParameters);
 
 	void StartGame();
 	void GameOver();

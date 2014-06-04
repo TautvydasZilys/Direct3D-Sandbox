@@ -105,6 +105,7 @@ static void ProcessFonts(const wstring& fontOutputDirectory)
 {
 	ProcessFont(L"Segoe UI", 92, fontOutputDirectory);
 	ProcessFont(L"Segoe UI Light", 36, fontOutputDirectory);
+	ProcessFont(L"Calibri", 16, fontOutputDirectory);
 }
 
 int CALLBACK wWinMain(

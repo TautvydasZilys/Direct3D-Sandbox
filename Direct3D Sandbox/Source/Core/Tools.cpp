@@ -208,6 +208,7 @@ bool Tools::DirectoryExists(const wstring& path)
 int Tools::GetMemoryUsage()
 {
 #if !WINDOWS_PHONE
+
 	PROCESS_MEMORY_COUNTERS memoryInfo;
 	auto myProcess = GetCurrentProcess();
 	auto result = GetProcessMemoryInfo(myProcess, &memoryInfo, sizeof(memoryInfo));
@@ -215,8 +216,40 @@ int Tools::GetMemoryUsage()
 	Assert(result != 0);
 
 	return static_cast<int>(memoryInfo.WorkingSetSize / (1024 * 1024));
+
 #else
 	return static_cast<int>(Windows::Phone::System::Memory::MemoryManager::ProcessCommittedBytes / (1024 * 1024));
+#endif
+}
+
+wstring Tools::GetAppDataPath(const wstring& appName)
+{
+#if !WINDOWS_PHONE
+
+	PWSTR path;
+	bool success = SHGetKnownFolderPath(FOLDERID_LocalAppData, KF_FLAG_CREATE, nullptr, &path) == S_OK;
+
+	if (success)
+	{
+		wstring result(path);
+		CoTaskMemFree(path);
+		result = result + L"\\" + appName;
+
+		if (!DirectoryExists(result))
+		{
+			success &= CreateDirectoryW(result.c_str(), nullptr) != 0;
+		}
+
+		if (success)
+		{
+			return result;
+		}
+	}
+
+	return L".";
+
+#else
+	return Windows::Storage::ApplicationData::Current->LocalFolder->Path->Data();
 #endif
 }
 

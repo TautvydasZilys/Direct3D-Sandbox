@@ -31,7 +31,9 @@
 #include <wrl.h>
 
 #if !WINDOWS_PHONE
+#include <KnownFolders.h>
 #include <psapi.h>
+#include <ShlObj.h>
 #endif
 
 #include <D3D11.h>
