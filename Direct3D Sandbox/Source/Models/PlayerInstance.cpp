@@ -200,16 +200,20 @@ void PlayerInstance::RenderStateGameOver2D(RenderParameters& renderParameters)
 	string text;
 	renderParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
+	int offset = 0;
 	if (m_AchievedHighscore)
 	{
-		text = "NEW HIGHSCORE!\r\n";		
+		text = "NEW HIGHSCORE!";
+		Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 176, renderParameters.screenHeight / 2 + 50 + offset, renderParameters);
+		offset += 62;
 	}
 	
-	text += "You have survived for " + Tools::FloatToString(m_DeathTime - m_StartTime) + " seconds";
-	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 355, renderParameters.screenHeight / 2 + 50, renderParameters);
-	
+	text = "You have survived for " + Tools::FloatToString(m_DeathTime - m_StartTime) + " seconds";
+	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 355, renderParameters.screenHeight / 2 + 50 + offset, renderParameters);
+	offset += 62;
+
 	text = to_string(m_ZombiesKilled) + " zombies have fallen beneath you";
-	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 360, renderParameters.screenHeight / 2 + 112, renderParameters);
+	Font::GetDefault().DrawText(text, renderParameters.screenWidth / 2 - 360, renderParameters.screenHeight / 2 + 50 + offset, renderParameters);
 
 #if !WINDOWS_PHONE
 	text = "Press enter to play again";
