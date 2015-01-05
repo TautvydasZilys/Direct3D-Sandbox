@@ -75,7 +75,6 @@ struct Point2D
 enum ModelType
 {
 	Still = 0,
-	Animated,
 	ModelTypeCount
 };
 
@@ -103,37 +102,6 @@ struct ModelData
 private:
 	ModelData(const ModelData& other);
 	ModelData& operator=(const ModelData& other);
-};
-
-struct AnimatedModelState
-{
-	size_t frameCount;
-	size_t frameOffset;
-
-	AnimatedModelState() : frameCount(0), frameOffset(0) {}
-};
-
-struct AnimatedModelData : public ModelData
-{
-	size_t totalFrameCount;
-	size_t stateCount;
-	unique_ptr<AnimatedModelState[]> stateData;
-
-	AnimatedModelData() : totalFrameCount(0), stateCount(0) {}
-
-	AnimatedModelData(AnimatedModelData&& other) :
-		ModelData(std::move(other)),
-		totalFrameCount(other.totalFrameCount),
-		stateCount(other.stateCount),
-		stateData(std::move(other.stateData))
-	{
-	}
-
-	virtual ~AnimatedModelData() {}
-
-private:
-	AnimatedModelData(const AnimatedModelData& other);
-	AnimatedModelData& operator=(const AnimatedModelData& other);
 };
 
 template <typename T>

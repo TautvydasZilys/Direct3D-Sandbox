@@ -1,11 +1,10 @@
 #pragma once
 
+#include "DesktopWindowing.h"
 #include "DirectionalLight.h"
 #include "Input.h"
 #include "Source\Graphics\Direct3D.h"
 #include "Source\Models\IModelInstance.h"
-#include "Source\PlatformSpecific\Windows\DesktopWindowing.h"
-#include "Source\PlatformSpecific\WindowsPhone\PhoneWindowing.h"
 
 class Camera;
 

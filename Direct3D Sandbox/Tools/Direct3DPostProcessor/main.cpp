@@ -36,27 +36,6 @@ static void ProcessModels(wstring modelInputDirectory, wstring modelOutputDirect
 	}
 }
 
-static void ProcessAnimatedModels(wstring modelInputDirectory, wstring modelOutputDirectory)
-{
-	if (!Tools::DirectoryExists(modelInputDirectory))
-	{
-		wcout << "ERROR: Could not find animated models input directory: \"" << modelInputDirectory << "\"." << endl;
-		exit(-1);
-	}
-
-	if (!Tools::DirectoryExists(modelOutputDirectory))
-	{
-		CreateDirectory(modelOutputDirectory.c_str(), nullptr);
-	}
-
-	wcout << endl;
-	for (auto& animatedModelDirectory : Tools::GetDirectories(modelInputDirectory, false))
-	{
-		wcout << L"Processing animated model: " << animatedModelDirectory << endl << endl;
-		ModelProcessor::ProcessAnimatedModel(animatedModelDirectory, modelOutputDirectory);
-	}
-}
-
 static void PutItem(SAFEARRAY* safeArray, LONG index, _variant_t item)
 {
 	auto result = SafeArrayPutElement(safeArray, &index, &item);
@@ -125,21 +104,20 @@ int CALLBACK wWinMain(
 	}
 	wcout << endl;
 
-	if (argc != 6)
+	if (argc != 4)
 	{
 		wchar_t exeName[MAX_PATH];
 		GetModuleFileName(nullptr, exeName, MAX_PATH);
 
 		wcout << L"Invalid number of arguments! Usage: " << exeName << L" <shaderDirectory> <modelInputDirectory> <modelOutputDirectory>" 
-			<< L" <animatedModelInputDirectory> <animatedModelOutputDirectory> <fontOutputDirectory>" << endl;
+			<< L" <fontOutputDirectory>" << endl;
 		return -1;
 	}
 	
 	wcout << endl;
 	ProcessShaders(argv[0]);
 	ProcessModels(argv[1], argv[2]);
-	ProcessAnimatedModels(argv[3], argv[4]);
-	ProcessFonts(argv[5]);
+	ProcessFonts(argv[3]);
 	
 	LocalFree(argv);
 	return 0;

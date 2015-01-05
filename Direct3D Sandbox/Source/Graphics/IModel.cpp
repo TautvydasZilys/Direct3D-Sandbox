@@ -1,7 +1,6 @@
 #include "PrecompiledHeader.h"
 
 #include "IModel.h"
-#include "AnimatedModel.h"
 #include "Direct3D.h"
 #include "IShader.h"
 #include "Model.h"
@@ -47,19 +46,9 @@ void IModel::InitializeModel(IShader& shader, const wstring& modelPath)
 	Assert(s_ModelCache.find(ModelId(modelPath, shader)) == s_ModelCache.end());
 
 	auto modelType = GetModelData(modelPath).modelType;
-	Assert(modelType < ModelType::ModelTypeCount);
+	Assert(modelType == ModelType::Still);
 
-	switch (modelType)
-	{
-	case ModelType::Still:
-		model = make_shared<Model>(shader, modelPath);
-		break;
-
-	case ModelType::Animated:
-		model = make_shared<AnimatedModel>(shader, modelPath);
-		break;
-	}
-
+	model = make_shared<Model>(shader, modelPath);
 	s_ModelCache.emplace(ModelId(modelPath, shader), model);
 }
 

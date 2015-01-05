@@ -1,14 +1,10 @@
 #include "PrecompiledHeader.h"
 #include "Constants.h"
 #include "Camera.h"
-#include "Source\Audio\AudioManager.h"
 #include "Source\Graphics\Font.h"
 #include "Source\Graphics\IShader.h"
 #include "Source\Graphics\SamplerState.h"
 #include "Source\Graphics\Texture.h"
-#include "Source\Models\InfiniteGroundModelInstance.h"
-#include "Source\Models\PlayerInstance.h"
-#include "Source\Models\ZombieInstance.h"
 #include "System.h"
 #include "Tools.h"
 
@@ -27,9 +23,6 @@ System::System() :
 	m_Light(DirectX::XMFLOAT3(3.0f, -2.0f, -1.0f), DirectX::XMFLOAT3(0.4f, 0.2f, 0.2f), DirectX::XMFLOAT3(0.15f, 0.15f, 0.15f), 32)
 {
 	s_Instance = this;
-
-	// Initialize audio manager
-	AudioManager::Initialize();
 
 	// Initialize sample states
 	SamplerState::Initialize();
@@ -59,24 +52,8 @@ System::System() :
 
 	// Create scene
 	
-	auto& textureShader = IShader::GetShader(ShaderType::TEXTURE_SHADER);
-	auto& normalMapShader = IShader::GetShader(ShaderType::NORMAL_MAP_SHADER);
-	
-	ModelParameters modelParameters;	
-	modelParameters.scale = DirectX::XMFLOAT3(5000.0f, 5000.0f, 5000.0f);
-
-	m_Models.emplace_back(new CameraPositionLockedModelInstance(textureShader, L"Assets\\Models\\skybox.model", modelParameters, 
-		L"Assets\\Textures\\SkyboxRed.dds", TypedDimensions<bool>(true, true, true)));
-	
-	modelParameters.position = DirectX::XMFLOAT3(10.0f, 0.0f, 10.0f);
-	modelParameters.scale = DirectX::XMFLOAT3(4000.0f, 4000.0f, 4000.0f);
-	m_Models.emplace_back(new InfiniteGroundModelInstance(modelParameters, L"Assets\\Textures\\Lava.dds", L"Assets\\Normal Maps\\Lava.dds",
-		DirectX::XMFLOAT2(2000.0f, 2000.0f)));
-	
 	m_Camera->SetPosition(0.0f, 1.5f, 0.0f);
 	m_OrthoCamera->SetPosition(0.0f, 0.0f, 1.0f);
-
-	m_Models.emplace_back(new PlayerInstance(*m_Camera));
 }
 
 System::~System()
@@ -161,7 +138,9 @@ void System::Draw(RenderParameters& renderParameters)
 	m_OrthoCamera->SetRenderParameters(renderParameters);
 	
 	renderParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+
 	Font::GetDefault().DrawText("FPS: " + to_string(m_LastFrameFps), 25, 25, renderParameters);
+	Font::GetDefault().DrawText("Memory Usage: " + to_string(Tools::GetMemoryUsage()) + " MB", 25, 75, renderParameters, true);
 
 	for (auto& model : m_Models)
 	{
@@ -177,13 +156,6 @@ void System::IncrementFpsCounter()
 	
 	if (m_CurrentTime - m_LastFpsTime > 1.0)
 	{
-		wstringstream debugOutput;
-
-		debugOutput << L"FPS: " << m_Fps << endl;
-		debugOutput << L"Memory usage: " << Tools::GetMemoryUsage() << " MB" << endl;
-
-		OutputDebugStringW(debugOutput.str().c_str());
-
 		m_LastFrameFps = m_Fps;
 		m_Fps = 0;
 		m_LastFpsTime = m_CurrentTime;

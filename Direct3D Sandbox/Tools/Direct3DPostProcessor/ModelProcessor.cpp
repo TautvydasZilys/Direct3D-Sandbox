@@ -244,33 +244,6 @@ static void SaveModel(const wstring& path, const ModelData& model)
 	out.close();
 }
 
-static void SaveAnimatedModel(const wstring& path, const AnimatedModelData& model)
-{
-	ofstream out(path, ios::binary);
-	
-	// Model type
-	auto modelType = ModelType::Animated;
-	out.write(reinterpret_cast<const char*>(&modelType), sizeof(ModelType));
-	out.write(reinterpret_cast<const char*>(&model.totalFrameCount), sizeof(int));
-	out.write(reinterpret_cast<const char*>(&model.stateCount), sizeof(int));
-
-	// Frame data for each state
-	out.write(reinterpret_cast<const char*>(model.stateData.get()), model.stateCount * sizeof(AnimatedModelState));
-
-	// Vertices
-	out.write(reinterpret_cast<const char*>(&model.vertexCount), sizeof(int));
-	out.write(reinterpret_cast<const char*>(model.vertices.get()), model.totalFrameCount * model.vertexCount * sizeof(VertexParameters));
-
-	// Indices
-	out.write(reinterpret_cast<const char*>(&model.indexCount), sizeof(int));
-	out.write(reinterpret_cast<const char*>(model.indices.get()), model.indexCount * sizeof(unsigned int));
-
-	// Radius
-	out.write(reinterpret_cast<const char*>(&model.radius), sizeof(float));
-
-	out.close();
-}
-
 void ModelProcessor::ProcessModel(const wstring& path, const wstring& outputPath)
 {
 	auto modelName = path.substr(path.find_last_of(L'\\') + 1);		// Remove folder
@@ -383,80 +356,4 @@ static void ValidateModel(const vector<vector<ModelData>>& modelStates, size_t i
 
 		exit(1);
 	}
-}
-
-static void SerializeAnimatedModel(const vector<vector<ModelData>>& modelStates, float& radius, unique_ptr<VertexParameters[]>& modelVertices)
-{	
-	size_t vertexOffset = 0u;
-	auto stateCount = modelStates.size();
-	auto vertexCount = modelStates[0][0].vertexCount;
-
-	for (auto i = 0u; i < stateCount; i++)
-	{
-		const auto& modelFrames = modelStates[i];
-		auto frameCount = modelStates[i].size();
-
-		for (auto j = 0u; j < frameCount; j++)
-		{
-			for (auto u = 0u; u < vertexCount; u++)
-			{
-				auto& targetVertex = modelVertices[vertexOffset + u];
-			
-				targetVertex.position = modelFrames[j].vertices[u].position;
-				targetVertex.textureCoordinates = modelFrames[j].vertices[u].textureCoordinates;
-				targetVertex.normal = modelFrames[j].vertices[u].normal;
-				targetVertex.tangent = modelFrames[j].vertices[u].tangent;
-				targetVertex.binormal = modelFrames[j].vertices[u].binormal;
-			}
-
-			vertexOffset += vertexCount;
-
-			if (radius < modelFrames[j].radius)
-			{
-				radius = modelFrames[j].radius;
-			}
-		}
-	}
-}
-
-void ModelProcessor::ProcessAnimatedModel(const wstring& rootPath, const wstring& outputPath)
-{
-	auto modelStates = LoadModelStates(rootPath);
-
-	if (modelStates.empty())
-	{
-		return;
-	}
-	
-	AnimatedModelData animatedModelData;
-	animatedModelData.indexCount = modelStates[0][0].indexCount;
-	animatedModelData.vertexCount = modelStates[0][0].vertexCount;
-	animatedModelData.stateCount = modelStates.size();
-	animatedModelData.stateData = unique_ptr<AnimatedModelState[]>(new AnimatedModelState[animatedModelData.stateCount]);
-
-	for (auto i = 0u; i < animatedModelData.stateCount; i++)
-	{
-		animatedModelData.stateData[i].frameCount = modelStates[i].size();		
-		animatedModelData.totalFrameCount += modelStates[i].size();
-
-		if (i > 0)
-		{
-			animatedModelData.stateData[i].frameOffset = animatedModelData.stateData[i - 1].frameOffset + animatedModelData.stateData[i - 1].frameCount;
-		}
-	}
-
-	// Check all frames actually match
-	ValidateModel(modelStates, animatedModelData.indexCount);
-
-	animatedModelData.indices = std::move(modelStates[0][0].indices);
-	animatedModelData.vertices = unique_ptr<VertexParameters[]>(new VertexParameters[modelStates[0][0].vertexCount * animatedModelData.totalFrameCount]);
-
-	SerializeAnimatedModel(modelStates, animatedModelData.radius, animatedModelData.vertices);
-
-	auto modelName = rootPath.substr(rootPath.find_last_of('\\') + 1) + L".animatedModel";
-	auto modelPath = outputPath + L"\\" + modelName;
-
-	wcout << L"Saving animated model to \"" << modelPath << "\"...";
-	SaveAnimatedModel(modelPath, animatedModelData);
-	wcout << " Done!" << endl << endl;
 }

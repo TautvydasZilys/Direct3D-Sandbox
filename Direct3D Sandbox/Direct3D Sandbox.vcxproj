@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug PostProcessor|ARM">
-      <Configuration>Debug PostProcessor</Configuration>
-      <Platform>ARM</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug PostProcessor|Win32">
       <Configuration>Debug PostProcessor</Configuration>
       <Platform>Win32</Platform>
@@ -13,14 +9,6 @@
       <Configuration>Debug PostProcessor</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|ARM">
-      <Configuration>Debug</Configuration>
-      <Platform>ARM</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|ARM">
-      <Configuration>Debug</Configuration>
-      <Platform>ARM</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -28,10 +16,6 @@
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|ARM">
-      <Configuration>Release</Configuration>
-      <Platform>ARM</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
@@ -42,15 +26,6 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <PropertyGroup Condition="'$(Platform)'=='ARM'" Label="Globals">
-    <ProjectGuid>{02CC7373-1DE5-457E-A28E-727459CCBB51}</ProjectGuid>
-    <RootNamespace>Direct3DSandbox</RootNamespace>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
-    <XapOutputs>true</XapOutputs>
-    <XapFilename>Direct3D Sandbox_$(Configuration)_$(Platform).xap</XapFilename>
-    <WinMDAssembly>true</WinMDAssembly>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Platform)'=='Win32'" Label="Globals">
     <ProjectGuid>{02CC7373-1DE5-457E-A28E-727459CCBB51}</ProjectGuid>
     <RootNamespace>Direct3DSandbox</RootNamespace>
@@ -60,18 +35,6 @@
     <RootNamespace>Direct3DSandbox</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|ARM'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -94,13 +57,6 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -148,21 +104,6 @@
     <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
     <IncludePath>$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\</IncludePath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
-    <CustomBuildAfterTargets>XapPackager</CustomBuildAfterTargets>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|ARM'">
-    <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
-    <CustomBuildAfterTargets>XapPackager</CustomBuildAfterTargets>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
-    <CustomBuildAfterTargets>XapPackager</CustomBuildAfterTargets>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IntDir>$(SolutionDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
@@ -178,114 +119,6 @@
     <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
     <IncludePath>$(IncludePath);C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\</IncludePath>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_VARIADIC_MAX=10;_DEBUG=1;WINDOWS_PHONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
-      <PrecompiledHeaderFile>PrecompiledHeader.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Source\Core\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <CompileAsWinRT>true</CompileAsWinRT>
-      <MinimalRebuild>false</MinimalRebuild>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
-      <IgnoreSpecificDefaultLibraries>ole32.lib</IgnoreSpecificDefaultLibraries>
-      <AdditionalOptions>DXGI.lib d3d11.lib xaudio2.lib %(AdditionalOptions)</AdditionalOptions>
-    </Link>
-    <FxCompile>
-      <ShaderModel>4.0_level_9_3</ShaderModel>
-    </FxCompile>
-    <PostBuildEvent>
-      <Command>if not exist "$(OutDir)Shaders" mkdir "$(OutDir)Shaders"
-xcopy "$(OutDir)*.cso" "$(OutDir)Shaders\" /Y
-del "$(OutDir)*.cso"
-
-if not exist "$(OutDir)Assets" mkdir "$(OutDir)Assets"
-echo \Models\ &gt; xcopyexclude.txt
-echo. &gt;&gt; xcopyexclude.txt
-echo \Animated Models\ &gt;&gt; xcopyexclude.txt
-xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
-del xcopyexclude.txt
-
-"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Win32\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(ProjectDir)Assets\Animated Models" "$(OutDir)Assets\Animated Models" "$(OutDir)Assets\Fonts"</Command>
-    </PostBuildEvent>
-    <CustomBuildStep>
-      <Command>del "$(OutDir)$(ProjectName)_$(Configuration)_$(Platform).xap"
-"$(ProjectDir)Tools\7z\7z.exe" a -tzip "$(OutDir)$(ProjectName)_$(Configuration)_$(Platform).xap" "$(OutDir)*.*" -r
-</Command>
-    </CustomBuildStep>
-    <CustomBuildStep>
-      <Message>Packing XAP.</Message>
-    </CustomBuildStep>
-    <CustomBuildStep>
-      <Outputs>dummy</Outputs>
-    </CustomBuildStep>
-    <CustomBuildStep>
-      <TreatOutputAsContent>true</TreatOutputAsContent>
-    </CustomBuildStep>
-    <PreLinkEvent>
-      <Command>
-      </Command>
-    </PreLinkEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|ARM'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_VARIADIC_MAX=10;DEBUG;WINDOWS_PHONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
-      <PrecompiledHeaderFile>PrecompiledHeader.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Source\Core\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <CompileAsWinRT>true</CompileAsWinRT>
-      <MinimalRebuild>false</MinimalRebuild>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
-      <IgnoreSpecificDefaultLibraries>ole32.lib</IgnoreSpecificDefaultLibraries>
-      <AdditionalOptions>DXGI.lib d3d11.lib xaudio2.lib %(AdditionalOptions)</AdditionalOptions>
-    </Link>
-    <FxCompile>
-      <ShaderModel>4.0_level_9_3</ShaderModel>
-    </FxCompile>
-    <PostBuildEvent>
-      <Command>if not exist "$(OutDir)Shaders" mkdir "$(OutDir)Shaders"
-xcopy "$(OutDir)*.cso" "$(OutDir)Shaders\" /Y
-del "$(OutDir)*.cso"
-
-if not exist "$(OutDir)Assets" mkdir "$(OutDir)Assets"
-echo \Models\ &gt; xcopyexclude.txt
-echo. &gt;&gt; xcopyexclude.txt
-echo \Animated Models\ &gt;&gt; xcopyexclude.txt
-xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
-del xcopyexclude.txt</Command>
-    </PostBuildEvent>
-    <CustomBuildStep>
-      <Command>del "$(OutDir)$(ProjectName)_$(Configuration)_$(Platform).xap"
-"$(ProjectDir)Tools\7z\7z.exe" a -tzip "$(OutDir)$(ProjectName)_$(Configuration)_$(Platform).xap" "$(OutDir)*.*" -r
-</Command>
-    </CustomBuildStep>
-    <CustomBuildStep>
-      <Message>Packing XAP.</Message>
-    </CustomBuildStep>
-    <CustomBuildStep>
-      <Outputs>dummy</Outputs>
-    </CustomBuildStep>
-    <CustomBuildStep>
-      <TreatOutputAsContent>true</TreatOutputAsContent>
-    </CustomBuildStep>
-    <PreLinkEvent>
-      <Command>
-      </Command>
-    </PreLinkEvent>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -316,7 +149,7 @@ echo \Animated Models\ &gt;&gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt
 
-"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Win32\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(ProjectDir)Assets\Animated Models" "$(OutDir)Assets\Animated Models" "$(OutDir)Assets\Fonts"</Command>
+"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Win32\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(OutDir)Assets\Fonts"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|Win32'">
@@ -380,7 +213,7 @@ echo \Animated Models\ &gt;&gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt
 
-"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\x64\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(ProjectDir)Assets\Animated Models" "$(OutDir)Assets\Animated Models" "$(OutDir)Assets\Fonts"</Command>
+"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\x64\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(OutDir)Assets\Fonts"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|x64'">
@@ -413,69 +246,6 @@ echo \Animated Models\ &gt;&gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt</Command>
     </PostBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <Optimization>Full</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>
-      </SDLCheck>
-      <PreprocessorDefinitions>_VARIADIC_MAX=10;WINDOWS_PHONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeaderFile>PrecompiledHeader.h</PrecompiledHeaderFile>
-      <CompileAsWinRT>true</CompileAsWinRT>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Source\Core\;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OmitFramePointers />
-      <FloatingPointModel>Fast</FloatingPointModel>
-      <BufferSecurityCheck>false</BufferSecurityCheck>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
-      <IgnoreSpecificDefaultLibraries>ole32.lib</IgnoreSpecificDefaultLibraries>
-      <AdditionalOptions>DXGI.lib d3d11.lib xaudio2.lib %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>WindowsPhoneCore.lib;RuntimeObject.lib;PhoneAppModelHost.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-    <FxCompile>
-      <ShaderModel>4.0_level_9_3</ShaderModel>
-    </FxCompile>
-    <PostBuildEvent>
-      <Command>if not exist "$(OutDir)Shaders" mkdir "$(OutDir)Shaders"
-xcopy "$(OutDir)*.cso" "$(OutDir)Shaders\" /Y
-del "$(OutDir)*.cso"
-
-if not exist "$(OutDir)Assets" mkdir "$(OutDir)Assets"
-echo \Models\ &gt; xcopyexclude.txt
-echo. &gt;&gt; xcopyexclude.txt
-echo \Animated Models\ &gt;&gt; xcopyexclude.txt
-xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
-del xcopyexclude.txt
-
-"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Win32\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(ProjectDir)Assets\Animated Models" "$(OutDir)Assets\Animated Models" "$(OutDir)Assets\Fonts"</Command>
-    </PostBuildEvent>
-    <CustomBuildStep>
-      <Command>del "$(OutDir)$(ProjectName)_$(Configuration)_$(Platform).xap"
-"$(ProjectDir)Tools\7z\7z.exe" a -tzip "$(OutDir)$(ProjectName)_$(Configuration)_$(Platform).xap" "$(OutDir)*.*" -r
-</Command>
-    </CustomBuildStep>
-    <CustomBuildStep>
-      <Message>Packing XAP.</Message>
-    </CustomBuildStep>
-    <CustomBuildStep>
-      <Outputs>dummy</Outputs>
-    </CustomBuildStep>
-    <CustomBuildStep>
-      <TreatOutputAsContent>true</TreatOutputAsContent>
-    </CustomBuildStep>
-    <PreLinkEvent>
-      <Command>
-      </Command>
-    </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -515,7 +285,7 @@ echo \Animated Models\ &gt;&gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt
 
-"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Win32\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(ProjectDir)Assets\Animated Models" "$(OutDir)Assets\Animated Models" "$(OutDir)Assets\Fonts"</Command>
+"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\Win32\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(OutDir)Assets\Fonts"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -556,29 +326,21 @@ echo \Animated Models\ &gt;&gt; xcopyexclude.txt
 xcopy "$(ProjectDir)Assets\*.*" "$(OutDir)Assets\" /Y /E /EXCLUDE:xcopyexclude.txt
 del xcopyexclude.txt
 
-"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\x64\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(ProjectDir)Assets\Animated Models" "$(OutDir)Assets\Animated Models" "$(OutDir)Assets\Fonts"</Command>
+"$(ProjectDir)Tools\Direct3DPostProcessor\Bin\x64\Release\Direct3DPostProcessor.exe" "$(OutDir)Shaders" "$(ProjectDir)Assets\Models" "$(OutDir)Assets\Models" "$(OutDir)Assets\Fonts"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemGroup Condition="'$(Platform)'=='ARM'">
-    <Reference Include="platform.winmd">
-      <IsWinMDFile>true</IsWinMDFile>
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Audio\AudioEmitter.cpp" />
-    <ClCompile Include="Source\Audio\AudioManager.cpp" />
-    <ClCompile Include="Source\Audio\FourCCWrapper.cpp" />
-    <ClCompile Include="Source\Audio\RiffChunk.cpp" />
-    <ClCompile Include="Source\Audio\RiffFile.cpp" />
-    <ClCompile Include="Source\Audio\Sound.cpp" />
-    <ClCompile Include="Source\CameraControllers\BaseCameraController.cpp" />
-    <ClCompile Include="Source\CameraControllers\FPSController.cpp" />
-    <ClCompile Include="Source\CameraControllers\FreeMovementController.cpp" />
+    <ClCompile Include="Source\Audio\XAudio2\AudioEmitter.cpp" />
+    <ClCompile Include="Source\Audio\XAudio2\AudioManager.cpp" />
+    <ClCompile Include="Source\Audio\XAudio2\FourCCWrapper.cpp" />
+    <ClCompile Include="Source\Audio\XAudio2\RiffChunk.cpp" />
+    <ClCompile Include="Source\Audio\XAudio2\RiffFile.cpp" />
+    <ClCompile Include="Source\Audio\XAudio2\Sound.cpp" />
     <ClCompile Include="Source\Core\AlignedClass.cpp" />
     <ClCompile Include="Source\Core\Camera.cpp" />
     <ClCompile Include="Source\Core\CoInitializeWrapper.cpp" />
     <ClCompile Include="Source\Core\Constants.cpp" />
+    <ClCompile Include="Source\Core\DesktopWindowing.cpp" />
     <ClCompile Include="Source\Core\DirectionalLight.cpp" />
     <ClCompile Include="Source\Core\Input.cpp" />
     <ClCompile Include="Source\Core\main.cpp" />
@@ -590,8 +352,6 @@ del xcopyexclude.txt
     <ClCompile Include="Source\Core\Parameters.cpp" />
     <ClCompile Include="Source\Core\Tools.cpp" />
     <ClCompile Include="Source\External\DirectXTK\DDSTextureLoader.cpp" />
-    <ClCompile Include="Source\Games\ZombieSurvival\Highscore.cpp" />
-    <ClCompile Include="Source\Graphics\AnimatedModel.cpp" />
     <ClCompile Include="Source\Graphics\AutoShader.cpp" />
     <ClCompile Include="Source\Graphics\ConstantBuffer.cpp" />
     <ClCompile Include="Source\Graphics\ConstantBufferField.cpp" />
@@ -607,37 +367,25 @@ del xcopyexclude.txt
     <ClCompile Include="Source\Graphics\ShaderProgram.cpp" />
     <ClCompile Include="Source\Graphics\Texture.cpp" />
     <ClCompile Include="Source\Graphics\VertexShader.cpp" />
-    <ClCompile Include="Source\Models\CameraPositionLockedModelInstance.cpp" />
     <ClCompile Include="Source\Models\IModelInstance.cpp" />
-    <ClCompile Include="Source\Models\InfiniteGroundModelInstance.cpp" />
-    <ClCompile Include="Source\Models\LaserProjectileInstance.cpp" />
     <ClCompile Include="Source\Models\ModelInstance.cpp" />
     <ClCompile Include="Source\Models\ModelInstance2D.cpp" />
     <ClCompile Include="Source\Models\ModelInstance3D.cpp" />
-    <ClCompile Include="Source\Models\PlayerInstance.cpp" />
-    <ClCompile Include="Source\Models\SuperZombieInstance.cpp" />
-    <ClCompile Include="Source\Models\WeaponInstance.cpp" />
-    <ClCompile Include="Source\Models\ZombieInstance.cpp" />
-    <ClCompile Include="Source\Models\ZombieInstanceBase.cpp" />
-    <ClCompile Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.cpp" />
-    <ClCompile Include="Source\PlatformSpecific\Windows\DesktopWindowing.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Audio\AudioEmitter.h" />
-    <ClInclude Include="Source\Audio\AudioManager.h" />
-    <ClInclude Include="Source\Audio\FourCCWrapper.h" />
-    <ClInclude Include="Source\Audio\RiffChunk.h" />
-    <ClInclude Include="Source\Audio\RiffFile.h" />
-    <ClInclude Include="Source\Audio\Sound.h" />
-    <ClInclude Include="Source\Audio\SoundCacheKey.h" />
-    <ClInclude Include="Source\CameraControllers\BaseCameraController.h" />
-    <ClInclude Include="Source\CameraControllers\FPSController.h" />
-    <ClInclude Include="Source\CameraControllers\FreeMovementController.h" />
+    <ClInclude Include="Source\Audio\XAudio2\AudioEmitter.h" />
+    <ClInclude Include="Source\Audio\XAudio2\AudioManager.h" />
+    <ClInclude Include="Source\Audio\XAudio2\FourCCWrapper.h" />
+    <ClInclude Include="Source\Audio\XAudio2\RiffChunk.h" />
+    <ClInclude Include="Source\Audio\XAudio2\RiffFile.h" />
+    <ClInclude Include="Source\Audio\XAudio2\Sound.h" />
+    <ClInclude Include="Source\Audio\XAudio2\SoundCacheKey.h" />
     <ClInclude Include="Source\Core\AlignedClass.h" />
     <ClInclude Include="Source\Core\AnimationStateMachine.h" />
     <ClInclude Include="Source\Core\Camera.h" />
     <ClInclude Include="Source\Core\CoInitializeWrapper.h" />
     <ClInclude Include="Source\Core\Constants.h" />
+    <ClInclude Include="Source\Core\DesktopWindowing.h" />
     <ClInclude Include="Source\Core\DirectionalLight.h" />
     <ClInclude Include="Source\Core\Input.h" />
     <ClInclude Include="Source\Core\Parameters.h" />
@@ -647,8 +395,6 @@ del xcopyexclude.txt
     <ClInclude Include="Source\External\DirectXTK\dds.h" />
     <ClInclude Include="Source\External\DirectXTK\DDSTextureLoader.h" />
     <ClInclude Include="Source\External\DirectXTK\PlatformHelpers.h" />
-    <ClInclude Include="Source\Games\ZombieSurvival\Highscore.h" />
-    <ClInclude Include="Source\Graphics\AnimatedModel.h" />
     <ClInclude Include="Source\Graphics\AutoShader.h" />
     <ClInclude Include="Source\Graphics\ConstantBuffer.h" />
     <ClInclude Include="Source\Graphics\ConstantBufferField.h" />
@@ -664,187 +410,58 @@ del xcopyexclude.txt
     <ClInclude Include="Source\Graphics\ShaderProgram.h" />
     <ClInclude Include="Source\Graphics\Texture.h" />
     <ClInclude Include="Source\Graphics\VertexShader.h" />
-    <ClInclude Include="Source\Models\CameraPositionLockedModelInstance.h" />
     <ClInclude Include="Source\Models\IModelInstance.h" />
-    <ClInclude Include="Source\Models\InfiniteGroundModelInstance.h" />
-    <ClInclude Include="Source\Models\LaserProjectileInstance.h" />
     <ClInclude Include="Source\Models\ModelInstance.h" />
     <ClInclude Include="Source\Models\ModelInstance2D.h" />
     <ClInclude Include="Source\Models\ModelInstance3D.h" />
-    <ClInclude Include="Source\Models\PlayerInstance.h" />
-    <ClInclude Include="Source\Models\SuperZombieInstance.h" />
-    <ClInclude Include="Source\Models\WeaponInstance.h" />
-    <ClInclude Include="Source\Models\ZombieInstance.h" />
-    <ClInclude Include="Source\Models\ZombieInstanceBase.h" />
-    <ClInclude Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.h" />
-    <ClInclude Include="Source\PlatformSpecific\Windows\DesktopWindowing.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Assets\ApplicationIcon.png" />
-    <Image Include="Assets\TileMedium.png" />
-    <Image Include="Assets\TileSmall.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="WMAppManifest.xml" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shaders\Pixel\ColorPixelShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|ARM'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Source\Shaders\Pixel\LaserPixelShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|ARM'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Source\Shaders\Pixel\LightingPixelShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|ARM'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Source\Shaders\Pixel\NormalMapPixelShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|ARM'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Source\Shaders\Pixel\PlaygroundPixelShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|ARM'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Source\Shaders\Pixel\TexturePixelShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|ARM'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Source\Shaders\Vertex\AnimationNormalMapVertexShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Source\Shaders\Vertex\ColorVertexShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|ARM'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Source\Shaders\Vertex\InfiniteGroundVertexShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Source\Shaders\Vertex\LaserVertexShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Source\Shaders\Vertex\LightingVertexShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Source\Shaders\Vertex\NormalMapVertexShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Source\Shaders\Vertex\PlaygroundVertexShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Source\Shaders\Vertex\TextureVertexShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|ARM'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug PostProcessor|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <Import Condition="'$(Platform)'=='ARM'" Project="$(MSBuildExtensionsPath)\Microsoft\WindowsPhone\v$(TargetPlatformVersion)\Microsoft.Cpp.WindowsPhone.$(TargetPlatformVersion).targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
 </Project>

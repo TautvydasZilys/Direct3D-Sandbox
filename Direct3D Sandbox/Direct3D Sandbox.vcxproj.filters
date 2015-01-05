@@ -1,23 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Assets">
-      <UniqueIdentifier>{15a7ffaa-a53f-409d-b330-9acc6dda8271}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source">
       <UniqueIdentifier>{d5c2a3ad-02ba-4586-8d56-27d2682342b5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Core">
       <UniqueIdentifier>{1d5075ad-20f1-4d42-a37d-f9c6cd0763a0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\PlatformSpecific">
-      <UniqueIdentifier>{fd35f04f-090c-4842-914e-3ae7ef510b94}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\PlatformSpecific\Windows">
-      <UniqueIdentifier>{c6e9f5f2-596e-489f-b749-e3f434053e88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\PlatformSpecific\WindowsPhone">
-      <UniqueIdentifier>{caf05c39-bf26-4b46-8a85-bf643735b61d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Graphics">
       <UniqueIdentifier>{e6d5f0c7-82f7-4f30-b49a-136d86326d33}</UniqueIdentifier>
@@ -40,17 +28,11 @@
     <Filter Include="Source\Models">
       <UniqueIdentifier>{fe196ddd-5ba2-4dbb-af78-540370bd309d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\CameraControllers">
-      <UniqueIdentifier>{11257987-0eb3-4b32-9957-bd01dfca8298}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Audio">
+      <UniqueIdentifier>{24f82a9a-4172-4abc-b1f3-a211594fa5b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Audio\XAudio2">
       <UniqueIdentifier>{64058d53-3dce-4005-82b0-7c600bfcad4a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Games">
-      <UniqueIdentifier>{40720476-df12-41c8-a169-2f085f9612a1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Games\ZombieSurvival">
-      <UniqueIdentifier>{69cd416e-8d49-4851-af61-092b099b47a6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -59,12 +41,6 @@
     </ClCompile>
     <ClCompile Include="Source\Core\main.cpp">
       <Filter>Source\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.cpp">
-      <Filter>Source\PlatformSpecific\WindowsPhone</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PlatformSpecific\Windows\DesktopWindowing.cpp">
-      <Filter>Source\PlatformSpecific\Windows</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Tools.cpp">
       <Filter>Source\Core</Filter>
@@ -120,40 +96,16 @@
     <ClCompile Include="Source\Graphics\Texture.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\DirectionalLight.cpp">
-      <Filter>Source\Core</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Models\ModelInstance.cpp">
-      <Filter>Source\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Models\InfiniteGroundModelInstance.cpp">
-      <Filter>Source\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Models\CameraPositionLockedModelInstance.cpp">
       <Filter>Source\Models</Filter>
     </ClCompile>
     <ClCompile Include="Source\Graphics\Font.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Models\ZombieInstance.cpp">
-      <Filter>Source\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Models\PlayerInstance.cpp">
-      <Filter>Source\Models</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Models\IModelInstance.cpp">
       <Filter>Source\Models</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Models\SuperZombieInstance.cpp">
-      <Filter>Source\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Models\ZombieInstanceBase.cpp">
-      <Filter>Source\Models</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Graphics\IModel.cpp">
-      <Filter>Source\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics\AnimatedModel.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\AlignedClass.cpp">
@@ -162,64 +114,46 @@
     <ClCompile Include="Source\Graphics\MutableModel.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Models\WeaponInstance.cpp">
-      <Filter>Source\Models</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Models\ModelInstance2D.cpp">
-      <Filter>Source\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Models\ModelInstance3D.cpp">
-      <Filter>Source\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Models\LaserProjectileInstance.cpp">
       <Filter>Source\Models</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Camera.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Source\CameraControllers\FPSController.cpp">
-      <Filter>Source\CameraControllers</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\CameraControllers\FreeMovementController.cpp">
-      <Filter>Source\CameraControllers</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\CameraControllers\BaseCameraController.cpp">
-      <Filter>Source\CameraControllers</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Audio\Sound.cpp">
-      <Filter>Source\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Audio\AudioEmitter.cpp">
-      <Filter>Source\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Audio\AudioManager.cpp">
-      <Filter>Source\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Audio\FourCCWrapper.cpp">
-      <Filter>Source\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Audio\RiffChunk.cpp">
-      <Filter>Source\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Audio\RiffFile.cpp">
-      <Filter>Source\Audio</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Core\CoInitializeWrapper.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Games\ZombieSurvival\Highscore.cpp">
-      <Filter>Source\Games\ZombieSurvival</Filter>
+    <ClCompile Include="Source\Core\DesktopWindowing.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Audio\XAudio2\FourCCWrapper.cpp">
+      <Filter>Source\Audio\XAudio2</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Audio\XAudio2\RiffChunk.cpp">
+      <Filter>Source\Audio\XAudio2</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Audio\XAudio2\RiffFile.cpp">
+      <Filter>Source\Audio\XAudio2</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Audio\XAudio2\Sound.cpp">
+      <Filter>Source\Audio\XAudio2</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Audio\XAudio2\AudioEmitter.cpp">
+      <Filter>Source\Audio\XAudio2</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Audio\XAudio2\AudioManager.cpp">
+      <Filter>Source\Audio\XAudio2</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Models\ModelInstance3D.cpp">
+      <Filter>Source\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\DirectionalLight.cpp">
+      <Filter>Source\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\PrecompiledHeader.h">
       <Filter>Source\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PlatformSpecific\WindowsPhone\PhoneWindowing.h">
-      <Filter>Source\PlatformSpecific\WindowsPhone</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PlatformSpecific\Windows\DesktopWindowing.h">
-      <Filter>Source\PlatformSpecific\Windows</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\Tools.h">
       <Filter>Source\Core</Filter>
@@ -281,40 +215,16 @@
     <ClInclude Include="Source\Graphics\Texture.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Core\DirectionalLight.h">
-      <Filter>Source\Core</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Models\ModelInstance.h">
-      <Filter>Source\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Models\InfiniteGroundModelInstance.h">
-      <Filter>Source\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Models\CameraPositionLockedModelInstance.h">
       <Filter>Source\Models</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics\Font.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Models\ZombieInstance.h">
-      <Filter>Source\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Models\PlayerInstance.h">
-      <Filter>Source\Models</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Models\IModelInstance.h">
       <Filter>Source\Models</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Models\SuperZombieInstance.h">
-      <Filter>Source\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Models\ZombieInstanceBase.h">
-      <Filter>Source\Models</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Graphics\IModel.h">
-      <Filter>Source\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Graphics\AnimatedModel.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\AlignedClass.h">
@@ -326,71 +236,45 @@
     <ClInclude Include="Source\Core\AnimationStateMachine.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Models\WeaponInstance.h">
-      <Filter>Source\Models</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Models\ModelInstance2D.h">
-      <Filter>Source\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Models\ModelInstance3D.h">
-      <Filter>Source\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Models\LaserProjectileInstance.h">
       <Filter>Source\Models</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\Camera.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Source\CameraControllers\FPSController.h">
-      <Filter>Source\CameraControllers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\CameraControllers\FreeMovementController.h">
-      <Filter>Source\CameraControllers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\CameraControllers\BaseCameraController.h">
-      <Filter>Source\CameraControllers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Audio\Sound.h">
-      <Filter>Source\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Audio\AudioEmitter.h">
-      <Filter>Source\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Audio\AudioManager.h">
-      <Filter>Source\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Audio\FourCCWrapper.h">
-      <Filter>Source\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Audio\RiffChunk.h">
-      <Filter>Source\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Audio\RiffFile.h">
-      <Filter>Source\Audio</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Core\CoInitializeWrapper.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Audio\SoundCacheKey.h">
-      <Filter>Source\Audio</Filter>
+    <ClInclude Include="Source\Core\DesktopWindowing.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Games\ZombieSurvival\Highscore.h">
-      <Filter>Source\Games\ZombieSurvival</Filter>
+    <ClInclude Include="Source\Audio\XAudio2\FourCCWrapper.h">
+      <Filter>Source\Audio\XAudio2</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Assets\ApplicationIcon.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\TileMedium.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\TileSmall.png">
-      <Filter>Assets</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="WMAppManifest.xml" />
+    <ClInclude Include="Source\Audio\XAudio2\RiffChunk.h">
+      <Filter>Source\Audio\XAudio2</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Audio\XAudio2\RiffFile.h">
+      <Filter>Source\Audio\XAudio2</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Audio\XAudio2\Sound.h">
+      <Filter>Source\Audio\XAudio2</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Audio\XAudio2\SoundCacheKey.h">
+      <Filter>Source\Audio\XAudio2</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Audio\XAudio2\AudioEmitter.h">
+      <Filter>Source\Audio\XAudio2</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Audio\XAudio2\AudioManager.h">
+      <Filter>Source\Audio\XAudio2</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Models\ModelInstance3D.h">
+      <Filter>Source\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\DirectionalLight.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shaders\Vertex\ColorVertexShader.hlsl">
@@ -405,34 +289,16 @@
     <FxCompile Include="Source\Shaders\Vertex\TextureVertexShader.hlsl">
       <Filter>Source\Shaders\Vertex</Filter>
     </FxCompile>
-    <FxCompile Include="Source\Shaders\Pixel\PlaygroundPixelShader.hlsl">
+    <FxCompile Include="Source\Shaders\Pixel\LightingPixelShader.hlsl">
       <Filter>Source\Shaders\Pixel</Filter>
     </FxCompile>
-    <FxCompile Include="Source\Shaders\Vertex\PlaygroundVertexShader.hlsl">
-      <Filter>Source\Shaders\Vertex</Filter>
-    </FxCompile>
-    <FxCompile Include="Source\Shaders\Vertex\InfiniteGroundVertexShader.hlsl">
-      <Filter>Source\Shaders\Vertex</Filter>
-    </FxCompile>
-    <FxCompile Include="Source\Shaders\Pixel\LightingPixelShader.hlsl">
+    <FxCompile Include="Source\Shaders\Pixel\NormalMapPixelShader.hlsl">
       <Filter>Source\Shaders\Pixel</Filter>
     </FxCompile>
     <FxCompile Include="Source\Shaders\Vertex\NormalMapVertexShader.hlsl">
       <Filter>Source\Shaders\Vertex</Filter>
     </FxCompile>
-    <FxCompile Include="Source\Shaders\Pixel\NormalMapPixelShader.hlsl">
-      <Filter>Source\Shaders\Pixel</Filter>
-    </FxCompile>
     <FxCompile Include="Source\Shaders\Vertex\LightingVertexShader.hlsl">
-      <Filter>Source\Shaders\Vertex</Filter>
-    </FxCompile>
-    <FxCompile Include="Source\Shaders\Vertex\AnimationNormalMapVertexShader.hlsl">
-      <Filter>Source\Shaders\Vertex</Filter>
-    </FxCompile>
-    <FxCompile Include="Source\Shaders\Pixel\LaserPixelShader.hlsl">
-      <Filter>Source\Shaders\Pixel</Filter>
-    </FxCompile>
-    <FxCompile Include="Source\Shaders\Vertex\LaserVertexShader.hlsl">
       <Filter>Source\Shaders\Vertex</Filter>
     </FxCompile>
   </ItemGroup>
