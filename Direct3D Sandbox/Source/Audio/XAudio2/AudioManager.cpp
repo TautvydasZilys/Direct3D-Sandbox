@@ -26,7 +26,7 @@ AudioManager::AudioManager()
 {
 	// Init XAudio2
 
-	HRESULT result;
+	HRESULT result = S_OK;
 	Assert(false);	// Fix me: we don't want to create this dependency
 	//auto result = XAudio2Create(&m_XAudio2);
 	Assert(result == S_OK);
@@ -79,9 +79,9 @@ AudioManager::~AudioManager()
 
 IXAudio2SubmixVoice* AudioManager::CreateSubmixVoice(const WAVEFORMATEXTENSIBLE& waveFormat)
 {
-	HRESULT result;
+	HRESULT result = S_OK;
 	IXAudio2SubmixVoice* submixVoice;
-	IUnknown* reverbEffect;
+	IUnknown* reverbEffect = nullptr;
 	XAUDIO2_EFFECT_DESCRIPTOR effectDescriptor;	
 	XAUDIO2_EFFECT_CHAIN effectChain;
 

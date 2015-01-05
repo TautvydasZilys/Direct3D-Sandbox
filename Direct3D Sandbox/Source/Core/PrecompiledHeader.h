@@ -32,7 +32,7 @@
 #include <psapi.h>
 #include <ShlObj.h>
 
-#include <D3D11.h>
+#include <d3d11_1.h>
 #include <DirectXMath.h>
 
 #include <XAudio2.h>

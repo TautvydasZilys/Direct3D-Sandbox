@@ -5,9 +5,10 @@ class Direct3D
 private:
 	static Direct3D* s_Instance;
 
-	ComPtr<ID3D11Device> m_Device;
+	ComPtr<ID3D11Device1> m_Device;
 	ComPtr<ID3D11DeviceContext> m_DeviceContext;
-	ComPtr<IDXGISwapChain> m_SwapChain;
+	ComPtr<IDXGISwapChain1> m_SwapChain;
+	ComPtr<IDXGIFactory2> m_DXGIFactory;
 	ComPtr<ID3D11RenderTargetView> m_RenderTargetView;
 	ComPtr<ID3D11Texture2D> m_DepthStencilBuffer;
 	ComPtr<ID3D11DepthStencilState> m_DepthStencilState;
@@ -16,21 +17,22 @@ private:
 	ComPtr<ID3D11RasterizerState> m_RasterizerState;
 	ComPtr<ID3D11BlendState> m_BlendState;
 
-	void Direct3D::GetDXGIAdapterAndOutput(ComPtr<IDXGIAdapter1>& dxgiAdapter, ComPtr<IDXGIOutput>& dxgiOutput) const;
-	D3D_FEATURE_LEVEL CreateDeviceAndSwapChain(HWND hWnd, int width, int height, const DXGI_RATIONAL& refreshRate, bool fullscreen);
+	void ExtractDXGIContext(ComPtr<IDXGIAdapter1>& dxgiAdapter, ComPtr<IDXGIOutput>& dxgiOutput);
+	D3D_FEATURE_LEVEL CreateDevice();
+	void CreateSwapChain(HWND hWnd, int width, int height, const DXGI_RATIONAL& refreshRate, bool fullscreen);
 	void CreateBackBufferResources(int width, int height);
 	void CreateRasterizerAndBlendStates(int width, int height);
 
-	void PrintAdapterInfo(ComPtr<IDXGIAdapter1> dxgiAdapter, D3D_FEATURE_LEVEL featureLevel) const;
+	static void PrintAdapterInfo(ComPtr<IDXGIAdapter1> dxgiAdapter, D3D_FEATURE_LEVEL featureLevel);
 	
-	DXGI_RATIONAL GetRefreshRate(ComPtr<IDXGIOutput> dxgiOutput, int width, int height) const;
-	void GetSwapChainDescription(HWND hWnd, int width, int height, const DXGI_RATIONAL& refreshRate, bool fullscreen, DXGI_SWAP_CHAIN_DESC& swapChainDescription) const;
-	void GetDepthBufferDescription(int width, int height, D3D11_TEXTURE2D_DESC& depthBufferDescription) const;
-	void GetDepthStencilDescription(D3D11_DEPTH_STENCIL_DESC& depthStencilDescription) const;
-	void GetDepthStencilViewDescription(D3D11_DEPTH_STENCIL_VIEW_DESC& depthStencilViewDescription) const;
-	void GetRasterizerStateDescription(D3D11_RASTERIZER_DESC& rasterizerDescription) const;
-	void GetViewPort(int width, int height, D3D11_VIEWPORT& viewport) const;
-	void GetBlendStateDescription(D3D11_BLEND_DESC& blendDescription) const;
+	static DXGI_RATIONAL GetRefreshRate(ComPtr<IDXGIOutput> dxgiOutput, int width, int height);
+	static void GetSwapChainDescription(HWND hWnd, int width, int height, const DXGI_RATIONAL& refreshRate, bool fullscreen, DXGI_SWAP_CHAIN_DESC1& swapChainDescription);
+	static void GetDepthBufferDescription(int width, int height, D3D11_TEXTURE2D_DESC& depthBufferDescription);
+	static void GetDepthStencilDescription(D3D11_DEPTH_STENCIL_DESC& depthStencilDescription);
+	static void GetDepthStencilViewDescription(D3D11_DEPTH_STENCIL_VIEW_DESC& depthStencilViewDescription);
+	static void GetRasterizerStateDescription(D3D11_RASTERIZER_DESC& rasterizerDescription);
+	static void GetViewPort(int width, int height, D3D11_VIEWPORT& viewport);
+	static void GetBlendStateDescription(D3D11_BLEND_DESC& blendDescription);
 
 	static inline const Direct3D& GetInstance() { return *s_Instance; }
 

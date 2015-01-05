@@ -85,7 +85,12 @@ static vector<wstring> FindFiles(const wstring& searchPath, DWORD fileAttributeM
 	WIN32_FIND_DATA findData;
 
 	auto searchHandle = FindFirstFileEx(searchPath.c_str(), FindExInfoStandard, &findData, FindExSearchNameMatch, nullptr, 0);
-	Assert(searchHandle != INVALID_HANDLE_VALUE);
+
+	if (searchHandle == INVALID_HANDLE_VALUE)
+	{
+		SetLastError(ERROR_SUCCESS);
+		return result;
+	}
 
 	do
 	{
@@ -239,7 +244,7 @@ void Tools::FatalError(const wstring& msg)
 
 	OutputDebugStringW(L"Fatal error:\r\n");
 	OutputDebugStringW((msg + L"\r\n").c_str());
-	exit(-1);
+	__fastfail(-1);
 }
 
 string Tools::BufferReader::ReadString(const vector<uint8_t>& buffer, unsigned int& position)

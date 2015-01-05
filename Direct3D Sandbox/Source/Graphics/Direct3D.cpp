@@ -12,9 +12,10 @@ Direct3D::Direct3D(HWND hWnd, int width, int height, bool fullscreen)
 	ComPtr<IDXGIAdapter1> dxgiAdapter;
 	ComPtr<IDXGIOutput> dxgiOutput;
 
-	GetDXGIAdapterAndOutput(dxgiAdapter, dxgiOutput);
+	auto featureLevel = CreateDevice();
+	ExtractDXGIContext(dxgiAdapter, dxgiOutput);
 	auto refreshRate = GetRefreshRate(dxgiOutput, width, height);
-	auto featureLevel = CreateDeviceAndSwapChain(hWnd, width, height, refreshRate, fullscreen);
+	CreateSwapChain(hWnd, width, height, refreshRate, fullscreen);
 	CreateBackBufferResources(width, height);
 	CreateRasterizerAndBlendStates(width, height);
 
@@ -25,50 +26,62 @@ Direct3D::~Direct3D()
 {
 }
 
-void Direct3D::GetDXGIAdapterAndOutput(ComPtr<IDXGIAdapter1>& dxgiAdapter, ComPtr<IDXGIOutput>& dxgiOutput) const
+void Direct3D::ExtractDXGIContext(ComPtr<IDXGIAdapter1>& dxgiAdapter, ComPtr<IDXGIOutput>& dxgiOutput)
 {
 	HRESULT result;
-	ComPtr<IDXGIFactory1> dxgiFactory;
+	ComPtr<IDXGIDevice2> dxgiDevice;
 
-	result = CreateDXGIFactory1(__uuidof(IDXGIFactory1), &dxgiFactory);
+	result = m_Device.As(&dxgiDevice);
 	Assert(result == S_OK);
 
-	result = dxgiFactory->EnumAdapters1(0, &dxgiAdapter);
+	result = dxgiDevice->GetParent(__uuidof(IDXGIAdapter1), &dxgiAdapter);
+	Assert(result == S_OK);
+	
+	result = dxgiAdapter->GetParent(__uuidof(IDXGIFactory2), &m_DXGIFactory);
 	Assert(result == S_OK);
 
 	result = dxgiAdapter->EnumOutputs(0, &dxgiOutput);
 	Assert(result == S_OK);
+
+	Assert(m_DXGIFactory->IsWindowedStereoEnabled());
 }
 
-D3D_FEATURE_LEVEL Direct3D::CreateDeviceAndSwapChain(HWND hWnd, int width, int height, const DXGI_RATIONAL& refreshRate, bool fullscreen)
+D3D_FEATURE_LEVEL Direct3D::CreateDevice()
 {
-	HRESULT result;
-	DXGI_SWAP_CHAIN_DESC swapChainDescription;
 	UINT deviceFlags = Constants::D3DDeviceFlags;
 	D3D_FEATURE_LEVEL supportedFeatureLevel;
-	D3D_FEATURE_LEVEL featureLevels[] = 
+
+	const D3D_FEATURE_LEVEL featureLevels[] =
 	{
 		D3D_FEATURE_LEVEL_11_1,
 		D3D_FEATURE_LEVEL_11_0,
 		D3D_FEATURE_LEVEL_10_1,
-		D3D_FEATURE_LEVEL_10_0,
-		D3D_FEATURE_LEVEL_9_3,
-		D3D_FEATURE_LEVEL_9_2,
-		D3D_FEATURE_LEVEL_9_1,
+		D3D_FEATURE_LEVEL_10_0
 	};
 
 #if DEBUG
 	deviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
-	
-	GetSwapChainDescription(hWnd, width, height, refreshRate, fullscreen, swapChainDescription);
 
-	result = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, deviceFlags, 
-		featureLevels, sizeof(featureLevels) / sizeof(D3D_FEATURE_LEVEL), D3D11_SDK_VERSION, &swapChainDescription, 
-		&m_SwapChain, &m_Device, &supportedFeatureLevel, &m_DeviceContext);
+	ComPtr<ID3D11Device> device;
+
+	auto result = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, deviceFlags, featureLevels,
+		sizeof(featureLevels) / sizeof(D3D_FEATURE_LEVEL), D3D11_SDK_VERSION, &device, &supportedFeatureLevel, &m_DeviceContext);
+	Assert(result == S_OK);
+
+	result = device.As(&m_Device);
 	Assert(result == S_OK);
 
 	return supportedFeatureLevel;
+}
+
+void Direct3D::CreateSwapChain(HWND hWnd, int width, int height, const DXGI_RATIONAL& refreshRate, bool fullscreen)
+{
+	DXGI_SWAP_CHAIN_DESC1 swapChainDescription;	
+	GetSwapChainDescription(hWnd, width, height, refreshRate, fullscreen, swapChainDescription);
+
+	auto result = m_DXGIFactory->CreateSwapChainForHwnd(m_Device.Get(), hWnd, &swapChainDescription, nullptr, nullptr, &m_SwapChain);
+	Assert(result == S_OK);
 }
 
 void Direct3D::CreateBackBufferResources(int width, int height)
@@ -127,7 +140,7 @@ void Direct3D::CreateRasterizerAndBlendStates(int width, int height)
 	m_DeviceContext->OMSetBlendState(m_BlendState.Get(), blendFactor, 0xFFFFFFFF);
 }
 
-void Direct3D::PrintAdapterInfo(ComPtr<IDXGIAdapter1> dxgiAdapter, D3D_FEATURE_LEVEL featureLevel) const
+void Direct3D::PrintAdapterInfo(ComPtr<IDXGIAdapter1> dxgiAdapter, D3D_FEATURE_LEVEL featureLevel)
 {
 	HRESULT result;
 	DXGI_ADAPTER_DESC1 adapterDescription;
@@ -146,7 +159,7 @@ void Direct3D::PrintAdapterInfo(ComPtr<IDXGIAdapter1> dxgiAdapter, D3D_FEATURE_L
 	OutputDebugStringW(adapterInfoReport.str().c_str());
 }
 
-DXGI_RATIONAL Direct3D::GetRefreshRate(ComPtr<IDXGIOutput> dxgiOutput, int width, int height) const
+DXGI_RATIONAL Direct3D::GetRefreshRate(ComPtr<IDXGIOutput> dxgiOutput, int width, int height)
 {
 	DXGI_RATIONAL refreshRate;
 
@@ -186,31 +199,24 @@ DXGI_RATIONAL Direct3D::GetRefreshRate(ComPtr<IDXGIOutput> dxgiOutput, int width
 }
 
 void Direct3D::GetSwapChainDescription(HWND hWnd, int width, int height, const DXGI_RATIONAL& refreshRate,
-										bool fullscreen, DXGI_SWAP_CHAIN_DESC& swapChainDescription) const
+										bool fullscreen, DXGI_SWAP_CHAIN_DESC1& swapChainDescription)
 {
 	ZeroMemory(&swapChainDescription, sizeof(swapChainDescription));
-
-	swapChainDescription.BufferDesc.Width = width;
-	swapChainDescription.BufferDesc.Height = height;
-	swapChainDescription.BufferDesc.RefreshRate.Numerator = refreshRate.Numerator;
-	swapChainDescription.BufferDesc.RefreshRate.Denominator = refreshRate.Denominator;
-
-	swapChainDescription.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-	swapChainDescription.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_PROGRESSIVE;
-	swapChainDescription.BufferDesc.Scaling = DXGI_MODE_SCALING_CENTERED;
-
-	swapChainDescription.BufferCount = fullscreen ? 2 : 1;
-
+	
+	swapChainDescription.Width = width;
+	swapChainDescription.Height = height;
+	swapChainDescription.Stereo = TRUE;
+	swapChainDescription.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+	swapChainDescription.BufferCount = 2;
 	swapChainDescription.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	swapChainDescription.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-	swapChainDescription.OutputWindow = hWnd;
-	swapChainDescription.Windowed = !fullscreen;
+	swapChainDescription.Scaling = DXGI_SCALING_NONE;
+	swapChainDescription.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
 
 	swapChainDescription.SampleDesc.Count = Constants::MultiSampingAntiAliasing;
 	swapChainDescription.SampleDesc.Quality = 0;
 }
 
-void Direct3D::GetDepthBufferDescription(int width, int height, D3D11_TEXTURE2D_DESC& depthBufferDescription) const
+void Direct3D::GetDepthBufferDescription(int width, int height, D3D11_TEXTURE2D_DESC& depthBufferDescription)
 {
 	ZeroMemory(&depthBufferDescription, sizeof(depthBufferDescription));
 
@@ -230,7 +236,7 @@ void Direct3D::GetDepthBufferDescription(int width, int height, D3D11_TEXTURE2D_
 	depthBufferDescription.MiscFlags = 0;
 }
 
-void Direct3D::GetDepthStencilDescription(D3D11_DEPTH_STENCIL_DESC& depthStencilDescription) const
+void Direct3D::GetDepthStencilDescription(D3D11_DEPTH_STENCIL_DESC& depthStencilDescription)
 {
 	ZeroMemory(&depthStencilDescription, sizeof(depthStencilDescription));
 
@@ -252,7 +258,7 @@ void Direct3D::GetDepthStencilDescription(D3D11_DEPTH_STENCIL_DESC& depthStencil
 	depthStencilDescription.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 }
 
-void Direct3D::GetDepthStencilViewDescription(D3D11_DEPTH_STENCIL_VIEW_DESC& depthStencilViewDescription) const
+void Direct3D::GetDepthStencilViewDescription(D3D11_DEPTH_STENCIL_VIEW_DESC& depthStencilViewDescription)
 {
 	ZeroMemory(&depthStencilViewDescription, sizeof(depthStencilViewDescription));
 
@@ -262,7 +268,7 @@ void Direct3D::GetDepthStencilViewDescription(D3D11_DEPTH_STENCIL_VIEW_DESC& dep
 	depthStencilViewDescription.Texture2D.MipSlice = 0;
 }
 
-void Direct3D::GetRasterizerStateDescription(D3D11_RASTERIZER_DESC& rasterizerDescription) const
+void Direct3D::GetRasterizerStateDescription(D3D11_RASTERIZER_DESC& rasterizerDescription)
 {
 	ZeroMemory(&rasterizerDescription, sizeof(rasterizerDescription));
 
@@ -280,7 +286,7 @@ void Direct3D::GetRasterizerStateDescription(D3D11_RASTERIZER_DESC& rasterizerDe
 	rasterizerDescription.AntialiasedLineEnable = false;
 }
 
-void Direct3D::GetViewPort(int width, int height, D3D11_VIEWPORT& viewport) const
+void Direct3D::GetViewPort(int width, int height, D3D11_VIEWPORT& viewport)
 {
 	ZeroMemory(&viewport, sizeof(viewport));
 
@@ -294,7 +300,7 @@ void Direct3D::GetViewPort(int width, int height, D3D11_VIEWPORT& viewport) cons
 	viewport.MaxDepth = 1.0f;
 }
 
-void Direct3D::GetBlendStateDescription(D3D11_BLEND_DESC& blendDescription) const
+void Direct3D::GetBlendStateDescription(D3D11_BLEND_DESC& blendDescription)
 {
 	ZeroMemory(&blendDescription, sizeof(blendDescription));
 
