@@ -31,6 +31,7 @@ private:
 	void UpdateAndDraw();
 	void Update(const RenderParameters& renderParameters);
 	void Draw(RenderParameters& renderParameters);
+	void DrawForSingleEye(RenderParameters& renderParameters);
 	void IncrementFpsCounter();
 
 	void UpdateInput();

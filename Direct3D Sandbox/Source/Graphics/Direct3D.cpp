@@ -91,6 +91,7 @@ void Direct3D::CreateBackBufferResources(int width, int height)
 	D3D11_TEXTURE2D_DESC depthBufferDescription;
 	D3D11_DEPTH_STENCIL_DESC depthStencilDescription;
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDescription;
+	D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDescription;
 
 	GetDepthBufferDescription(width, height, depthBufferDescription);
 	GetDepthStencilDescription(depthStencilDescription);
@@ -99,7 +100,27 @@ void Direct3D::CreateBackBufferResources(int width, int height)
 	result = m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &backBuffer);
 	Assert(result == S_OK);
 
-	result = m_Device->CreateRenderTargetView(backBuffer.Get(), NULL, &m_RenderTargetView);
+	renderTargetViewDescription.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+
+	if (Constants::MultiSampingAntiAliasing > 1)
+	{
+		renderTargetViewDescription.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DMSARRAY;
+		renderTargetViewDescription.Texture2DMSArray.FirstArraySlice = 0;
+		renderTargetViewDescription.Texture2DMSArray.ArraySize = 1;
+	}
+	else
+	{
+		renderTargetViewDescription.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+		renderTargetViewDescription.Texture2DArray.MipSlice = 0;
+		renderTargetViewDescription.Texture2DArray.FirstArraySlice = 0;
+		renderTargetViewDescription.Texture2DArray.ArraySize = 1;
+	}
+
+	result = m_Device->CreateRenderTargetView(backBuffer.Get(), &renderTargetViewDescription, &m_RenderTargetViewLeft);
+	Assert(result == S_OK);
+
+	renderTargetViewDescription.Texture2DArray.FirstArraySlice = 1;
+	result = m_Device->CreateRenderTargetView(backBuffer.Get(), &renderTargetViewDescription, &m_RenderTargetViewRight);
 	Assert(result == S_OK);
 
 	result = m_Device->CreateTexture2D(&depthBufferDescription, nullptr, &m_DepthStencilBuffer);
@@ -228,12 +249,9 @@ void Direct3D::GetDepthBufferDescription(int width, int height, D3D11_TEXTURE2D_
 
 	depthBufferDescription.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	depthBufferDescription.SampleDesc.Count = Constants::MultiSampingAntiAliasing;
-	depthBufferDescription.SampleDesc.Quality = 0;
 
 	depthBufferDescription.Usage = D3D11_USAGE_DEFAULT;
 	depthBufferDescription.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	depthBufferDescription.CPUAccessFlags = 0;
-	depthBufferDescription.MiscFlags = 0;
 }
 
 void Direct3D::GetDepthStencilDescription(D3D11_DEPTH_STENCIL_DESC& depthStencilDescription)
@@ -263,9 +281,7 @@ void Direct3D::GetDepthStencilViewDescription(D3D11_DEPTH_STENCIL_VIEW_DESC& dep
 	ZeroMemory(&depthStencilViewDescription, sizeof(depthStencilViewDescription));
 
 	depthStencilViewDescription.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	depthStencilViewDescription.ViewDimension = Constants::MultiSampingAntiAliasing > 1 ? D3D11_DSV_DIMENSION_TEXTURE2DMS : D3D11_DSV_DIMENSION_TEXTURE2D;
-	depthStencilViewDescription.Flags = 0;
-	depthStencilViewDescription.Texture2D.MipSlice = 0;
+	depthStencilViewDescription.ViewDimension = Constants::MultiSampingAntiAliasing > 1 ? D3D11_DSV_DIMENSION_TEXTURE2DMSARRAY : D3D11_DSV_DIMENSION_TEXTURE2D;
 }
 
 void Direct3D::GetRasterizerStateDescription(D3D11_RASTERIZER_DESC& rasterizerDescription)
@@ -321,8 +337,8 @@ void Direct3D::StartDrawing(float red, float green, float blue, float alpha)
 {
 	float color[] = { red, green, blue, alpha };
 
-	m_DeviceContext->ClearRenderTargetView(m_RenderTargetView.Get(), color);
-	m_DeviceContext->ClearDepthStencilView(m_DepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+	m_DeviceContext->ClearRenderTargetView(m_RenderTargetViewLeft.Get(), color);
+	m_DeviceContext->ClearRenderTargetView(m_RenderTargetViewRight.Get(), color);
 }
 
 void Direct3D::SwapBuffers()
@@ -341,9 +357,18 @@ void Direct3D::SwapBuffers()
 	}
 }
 
-void Direct3D::SetBackBufferAsRenderTarget()
+void Direct3D::SetBackBufferAsRenderTarget(Eye eye)
 {
-	m_DeviceContext->OMSetRenderTargets(1, m_RenderTargetView.GetAddressOf(), m_DepthStencilView.Get());
+	if (eye == Eye::Left)
+	{
+		m_DeviceContext->ClearDepthStencilView(m_DepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+		m_DeviceContext->OMSetRenderTargets(1, m_RenderTargetViewLeft.GetAddressOf(), m_DepthStencilView.Get());
+	}
+	else
+	{
+		m_DeviceContext->ClearDepthStencilView(m_DepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+		m_DeviceContext->OMSetRenderTargets(1, m_RenderTargetViewRight.GetAddressOf(), m_DepthStencilView.Get());
+	}
 }
 
 void Direct3D::TurnZBufferOn()

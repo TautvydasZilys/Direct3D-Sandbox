@@ -1,5 +1,11 @@
 #pragma once
 
+enum class Eye
+{
+	Left,
+	Right
+};
+
 class Direct3D
 {
 private:
@@ -9,11 +15,11 @@ private:
 	ComPtr<ID3D11DeviceContext> m_DeviceContext;
 	ComPtr<IDXGISwapChain1> m_SwapChain;
 	ComPtr<IDXGIFactory2> m_DXGIFactory;
-	ComPtr<ID3D11RenderTargetView> m_RenderTargetView;
+	ComPtr<ID3D11RenderTargetView> m_RenderTargetViewLeft, m_RenderTargetViewRight;
 	ComPtr<ID3D11Texture2D> m_DepthStencilBuffer;
+	ComPtr<ID3D11DepthStencilView> m_DepthStencilView;
 	ComPtr<ID3D11DepthStencilState> m_DepthStencilState;
 	ComPtr<ID3D11DepthStencilState> m_DisabledDepthStencilState;
-	ComPtr<ID3D11DepthStencilView> m_DepthStencilView;
 	ComPtr<ID3D11RasterizerState> m_RasterizerState;
 	ComPtr<ID3D11BlendState> m_BlendState;
 
@@ -46,7 +52,7 @@ public:
 	void StartDrawing(float red = 0.0f, float green = 0.0f, float blue = 0.0f, float alpha = 1.0f);
 	void SwapBuffers();
 
-	void SetBackBufferAsRenderTarget();
+	void SetBackBufferAsRenderTarget(Eye eye);
 	
 	void TurnZBufferOn();
 	void TurnZBufferOff();

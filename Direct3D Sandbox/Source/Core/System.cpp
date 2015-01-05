@@ -54,6 +54,8 @@ System::System() :
 	
 	m_Camera->SetPosition(0.0f, 1.5f, 0.0f);
 	m_OrthoCamera->SetPosition(0.0f, 0.0f, 1.0f);
+
+
 }
 
 System::~System()
@@ -122,21 +124,38 @@ void System::UpdateInput()
 
 void System::Draw(RenderParameters& renderParameters)
 {
-	m_Direct3D.SetBackBufferAsRenderTarget();
-	m_Direct3D.TurnZBufferOn();
 	m_Direct3D.StartDrawing();
+	
+	{
+		m_Direct3D.SetBackBufferAsRenderTarget(Eye::Left);
+		m_Camera->SetPosition(-0.2f, 1.5f, 0.0f);
+		DrawForSingleEye(renderParameters);
+	}
+	
+	{
+		m_Direct3D.SetBackBufferAsRenderTarget(Eye::Right);
+		m_Camera->SetPosition(0.2f, 1.5f, 0.0f);
+		DrawForSingleEye(renderParameters);
+	}
+
+	m_Direct3D.SwapBuffers();
+}
+
+void System::DrawForSingleEye(RenderParameters& renderParameters)
+{
+	m_Direct3D.TurnZBufferOn();
 	
 	m_Camera->SetRenderParameters(renderParameters);
 	m_Light.SetRenderParameters(renderParameters);
-	
+
 	for (auto& model : m_Models)
 	{
 		model->Render3D(renderParameters);
 	}
-	
+
 	m_Direct3D.TurnZBufferOff();
 	m_OrthoCamera->SetRenderParameters(renderParameters);
-	
+
 	renderParameters.color = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	Font::GetDefault().DrawText("FPS: " + to_string(m_LastFrameFps), 25, 25, renderParameters);
@@ -146,8 +165,6 @@ void System::Draw(RenderParameters& renderParameters)
 	{
 		model->Render2D(renderParameters);
 	}
-
-	m_Direct3D.SwapBuffers();
 }
 
 void System::IncrementFpsCounter()
