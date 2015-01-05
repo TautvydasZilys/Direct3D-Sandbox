@@ -1,7 +1,5 @@
 #pragma once
 
-#if !WINDOWS_PHONE
-
 class DesktopWindowing
 {
 private:
@@ -33,5 +31,3 @@ public:
 };
 
 typedef DesktopWindowing Windowing;
-
-#endif

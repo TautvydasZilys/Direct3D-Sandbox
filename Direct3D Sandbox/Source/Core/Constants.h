@@ -21,11 +21,5 @@ public:
 	static const float VerticalFieldOfView;
 
 	static const float DefaultMouseSensitivity;
-
-	static const float GravityConstant;
-	
-	static const int StartingZombieCount;
-	static const int MaxZombies;
-	static const float ZombieSpawnIntervalInSeconds;
 };
 

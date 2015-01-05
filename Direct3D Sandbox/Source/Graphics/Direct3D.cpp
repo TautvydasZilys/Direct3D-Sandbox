@@ -199,11 +199,7 @@ void Direct3D::GetSwapChainDescription(HWND hWnd, int width, int height, const D
 	swapChainDescription.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_PROGRESSIVE;
 	swapChainDescription.BufferDesc.Scaling = DXGI_MODE_SCALING_CENTERED;
 
-#if !WINDOWS_PHONE
 	swapChainDescription.BufferCount = fullscreen ? 2 : 1;
-#else
-	swapChainDescription.BufferCount = 1;
-#endif
 
 	swapChainDescription.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	swapChainDescription.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;

@@ -181,8 +181,6 @@ bool Tools::DirectoryExists(const wstring& path)
 
 int Tools::GetMemoryUsage()
 {
-#if !WINDOWS_PHONE
-
 	PROCESS_MEMORY_COUNTERS memoryInfo;
 	auto myProcess = GetCurrentProcess();
 	auto result = GetProcessMemoryInfo(myProcess, &memoryInfo, sizeof(memoryInfo));
@@ -190,16 +188,10 @@ int Tools::GetMemoryUsage()
 	Assert(result != 0);
 
 	return static_cast<int>(memoryInfo.WorkingSetSize / (1024 * 1024));
-
-#else
-	return static_cast<int>(Windows::Phone::System::Memory::MemoryManager::ProcessCommittedBytes / (1024 * 1024));
-#endif
 }
 
 wstring Tools::GetAppDataPath(const wstring& appName)
 {
-#if !WINDOWS_PHONE
-
 	PWSTR path;
 	bool success = SHGetKnownFolderPath(FOLDERID_LocalAppData, KF_FLAG_CREATE, nullptr, &path) == S_OK;
 
@@ -221,10 +213,6 @@ wstring Tools::GetAppDataPath(const wstring& appName)
 	}
 
 	return L".";
-
-#else
-	return Windows::Storage::ApplicationData::Current->LocalFolder->Path->Data();
-#endif
 }
 
 string Tools::ToLower(const string& str)
@@ -247,9 +235,7 @@ wstring Tools::ToLower(const wstring& str)
 
 void Tools::FatalError(const wstring& msg)
 {
-#if !WINDOWS_PHONE
 	MessageBoxW(nullptr, msg.c_str(), L"Fatal error!", MB_OK | MB_ICONERROR);
-#endif
 
 	OutputDebugStringW(L"Fatal error:\r\n");
 	OutputDebugStringW((msg + L"\r\n").c_str());

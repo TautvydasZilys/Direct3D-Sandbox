@@ -4,9 +4,7 @@
 #include "Sound.h"
 #include "Tools.h"
 
-#if !WINDOWS_PHONE
 static CoInitializeWrapper s_CoInitialize;
-#endif
 unique_ptr<AudioManager> AudioManager::s_Instance;
 
 static const float kSpeedOfSound = X3DAUDIO_SPEED_OF_SOUND;
@@ -28,7 +26,9 @@ AudioManager::AudioManager()
 {
 	// Init XAudio2
 
-	auto result = XAudio2Create(&m_XAudio2);
+	HRESULT result;
+	Assert(false);	// Fix me: we don't want to create this dependency
+	//auto result = XAudio2Create(&m_XAudio2);
 	Assert(result == S_OK);
 
 #if DEBUG
@@ -51,16 +51,8 @@ AudioManager::AudioManager()
 	// Init X3DAudio
 
 	DWORD channelMask;
-#if !WINDOWS_PHONE
-	XAUDIO2_DEVICE_DETAILS deviceDetails;
-	result = m_XAudio2->GetDeviceDetails(0, &deviceDetails); 
-	Assert(result == S_OK);
-
-	channelMask = deviceDetails.OutputFormat.dwChannelMask;
-#else
 	result = m_MasteringVoice->GetChannelMask(&channelMask);
 	Assert(result == S_OK);
-#endif
 
 	m_MasteringVoice->GetVoiceDetails(&m_VoiceDetails);
 
@@ -93,7 +85,8 @@ IXAudio2SubmixVoice* AudioManager::CreateSubmixVoice(const WAVEFORMATEXTENSIBLE&
 	XAUDIO2_EFFECT_DESCRIPTOR effectDescriptor;	
 	XAUDIO2_EFFECT_CHAIN effectChain;
 
-	result = XAudio2CreateReverb(&reverbEffect);
+	Assert(false);	// Fix me: we don't want to create this dependency
+	//result = XAudio2CreateReverb(&reverbEffect);
 	Assert(result == S_OK);
 
 	effectDescriptor.InitialState = true;
@@ -139,18 +132,10 @@ IXAudio2SourceVoice* AudioManager::CreateSourceVoice(const WAVEFORMATEX* waveFor
 void AudioManager::SetListenerPosition(const DirectX::XMFLOAT3& position, const DirectX::XMFLOAT3& velocity, 
 									   const DirectX::XMFLOAT3& front, const DirectX::XMFLOAT3& up)
 {
-#if !WINDOWS_PHONE
-	Assert(sizeof(DirectX::XMFLOAT3) == sizeof(D3DVECTOR));
-	memcpy(&m_Listener.Position, &position, sizeof(DirectX::XMFLOAT3));
-	memcpy(&m_Listener.Velocity, &velocity, sizeof(DirectX::XMFLOAT3));
-	memcpy(&m_Listener.OrientFront, &front, sizeof(DirectX::XMFLOAT3));
-	memcpy(&m_Listener.OrientTop, &up, sizeof(DirectX::XMFLOAT3));
-#else
 	m_Listener.Position = position;
 	m_Listener.Velocity = velocity;
 	m_Listener.OrientFront = front;
 	m_Listener.OrientTop = up;
-#endif
 }
 
 void AudioManager::Calculate3DAudioForVoice(const X3DAUDIO_EMITTER& audioEmitter, IXAudio2SourceVoice* sourceVoice, int sourceChannels,

@@ -1,16 +1,11 @@
 #include "PrecompiledHeader.h"
 #include "Constants.h"
 
-const wstring Constants::ApplicationName = L"Direct3D Sandbox";
+const wstring Constants::ApplicationName = L"Stereo 3D Player";
 const bool Constants::ShowCursor = false;
 
-#if !WINDOWS_PHONE
-const bool Constants::VSyncEnabled = false;
-const int Constants::MultiSampingAntiAliasing = 4;
-#else
 const bool Constants::VSyncEnabled = true;
 const int Constants::MultiSampingAntiAliasing = 1;
-#endif
 
 const UINT Constants::D3DDeviceFlags = D3D11_CREATE_DEVICE_SINGLETHREADED;
 
@@ -20,18 +15,4 @@ const float Constants::CameraNear = 0.01f;
 const float Constants::CameraFar = 10000.0f;
 const float Constants::VerticalFieldOfView = 95.0f;
 
-#if WINDOWS_PHONE
-const float Constants::DefaultMouseSensitivity = 0.2f;
-#else
 const float Constants::DefaultMouseSensitivity = 0.5f;
-#endif
-
-const float Constants::GravityConstant = -9.81f;
-
-const int Constants::StartingZombieCount = 10;
-#if WINDOWS_PHONE
-const int Constants::MaxZombies = 50;
-#else
-const int Constants::MaxZombies = 800;
-#endif
-const float Constants::ZombieSpawnIntervalInSeconds = 2.0f;
